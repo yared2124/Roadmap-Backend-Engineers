@@ -31,6 +31,18 @@ export interface HandsOnChallenge {
   solutionExplanation?: string;
 }
 
+export interface VideoTimestamp {
+  timeFormatted: string;
+  seconds: number;
+  label: string;
+}
+
+export interface AdditionalReference {
+  title: string;
+  url: string;
+  description: string;
+}
+
 export interface RoadmapTopic {
   id: string;
   number: number;
@@ -46,6 +58,8 @@ export interface RoadmapTopic {
   recommendedBook: RecommendedBook;
   handsOnChallenge: HandsOnChallenge;
   selfCheckQuestions: string[];
+  timestamps?: VideoTimestamp[];
+  additionalReferences?: AdditionalReference[];
 }
 
 export interface RoadmapPhase {

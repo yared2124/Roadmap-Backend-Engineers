@@ -122,6 +122,7 @@ export function TopicViewer({
         youtubeId={topic.youtubeId}
         title={topic.title}
         duration={topic.duration}
+        timestamps={topic.timestamps}
       />
 
       {/* 2. Deep Architectural Breakdown */}
@@ -191,7 +192,42 @@ export function TopicViewer({
       {/* 4. Production Engineering Challenge & Solution */}
       <ChallengeSection challenge={topic.handsOnChallenge} />
 
-      {/* 5. Self-Assessment Checklist */}
+      {/* 5. Additional Authoritative References (RFCs, Papers, Official Specs) */}
+      {topic.additionalReferences && topic.additionalReferences.length > 0 && (
+        <div className="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-3">
+          <div className="flex items-center gap-2">
+            <Code2 className="h-4 w-4 text-zinc-900 dark:text-white" />
+            <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white">
+              Primary Sources & Canonical Specifications
+            </h4>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+            {topic.additionalReferences.map((ref, idx) => (
+              <a
+                key={idx}
+                href={ref.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col justify-between rounded-lg border border-zinc-200/80 bg-zinc-50/50 p-3 hover:border-zinc-400 hover:bg-zinc-100 dark:border-zinc-800/80 dark:bg-zinc-900/40 dark:hover:border-zinc-600 dark:hover:bg-zinc-900 transition-colors"
+              >
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-xs text-zinc-900 dark:text-white group-hover:underline">
+                      {ref.title}
+                    </span>
+                    <span className="font-mono text-[10px] text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white">↗</span>
+                  </div>
+                  <p className="mt-1 text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                    {ref.description}
+                  </p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 6. Self-Assessment Checklist */}
       <div className="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-3">
         <div className="flex items-center gap-2">
           <HelpCircle className="h-4 w-4 text-zinc-900 dark:text-white" />
@@ -215,7 +251,7 @@ export function TopicViewer({
         </ul>
       </div>
 
-      {/* 6. Student Personal Notes Scratchpad */}
+      {/* 7. Student Personal Notes Scratchpad */}
       <NotesDrawer
         topicId={topic.id}
         initialNote={note}

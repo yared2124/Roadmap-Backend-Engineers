@@ -6,68 +6,105 @@ export const CHANNEL_NAME = "@sriniously";
 export const ROADMAP_TOPICS: RoadmapTopic[] = [
   // Phase 1: Foundations & Web Protocols
   {
-    id: "backend-frontend-high-level",
+    id: "backend-from-first-principles",
     number: 1,
-    title: "High-Level Understanding of Backend and Frontend",
+    title: "Backend from First Principles: Architecture & Systems Roadmap",
     phaseId: 1,
     phaseName: "Web Protocols & Foundations",
-    duration: "40 min",
-    youtubeId: "4r6WdaY3SOA",
+    duration: "31 min",
+    youtubeId: "0Rwb4Xmlcwc",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Client-server architecture, separation of concerns, network boundaries, and how requests travel across the internet.",
+    shortSummary: "Deconstructing backend engineering from first principles: Why it extends far beyond CRUD APIs to reliability, scalability, and maintainability across any language or stack.",
+    timestamps: [
+      { timeFormatted: "00:00", seconds: 0, label: "Introduction to First Principles" },
+      { timeFormatted: "02:22", seconds: 142, label: "Foundations (Architecture, HTTP, Routing, Serialization)" },
+      { timeFormatted: "07:13", seconds: 433, label: "Request Handling (Auth, Validation, Middlewares, Context)" },
+      { timeFormatted: "16:33", seconds: 993, label: "Architecture & Data (REST, BLL, Databases, Caching)" },
+      { timeFormatted: "20:04", seconds: 1204, label: "System Operations (Queues, Scheduling, Emails, Errors)" },
+      { timeFormatted: "23:16", seconds: 1396, label: "Observability & Reliability (Config, Logging, Metrics, Shutdown)" },
+      { timeFormatted: "26:23", seconds: 1583, label: "Scalability & Quality (Performance, Concurrency, DevOps)" },
+    ],
     seniorInsight: {
-      quote: "Never trust the client. The frontend is an untrusted remote environment that can be modified by anyone with DevTools.",
-      productionLesson: "In production, client-side validation is solely for UI responsiveness. Every single invariant, business rule, and permission must be strictly re-validated on the backend server.",
-      commonMistake: "Relying on frontend checks to calculate pricing or assuming data sent from mobile apps or web forms has not been tampered with."
+      quote: "Backend engineering is not about writing frameworks; it is about managing state, latency, and failure across network boundaries.",
+      productionLesson: "When you reason from first principles, you stop asking 'Which framework is trending?' and start asking 'What are my disk I/O constraints, network latencies, memory footprints, and fault boundaries?'",
+      commonMistake: "Learning by superficial analogy—copy-pasting tutorials without understanding the underlying transport protocol, operating system processes, or database storage engines."
     },
     coreDeepDive: {
-      what: "The separation between the presentation tier (browsers, mobile apps) and the data & business logic tier (backend servers, databases, microservices).",
-      why: "Allows independent scaling, multi-client support (one API for iOS, Android, and Web), and centralized security enforcement.",
+      what: "First Principles Thinking applied to backend systems: Deconstructing software into fundamental engineering truths (CPU cycles, sockets, bytes on wire, ACID guarantees, fault tolerance) rather than framework-specific abstractions.",
+      why: "Frameworks and language popularity shift every 3–5 years, but first-principles (TCP three-way handshakes, B-Tree indexes, race conditions, idempotency, distributed consensus) remain durable across your entire career.",
       howItWorks: [
-        "1. Client initiates DNS resolution to translate hostname into an IP address.",
-        "2. TCP three-way handshake (SYN, SYN-ACK, ACK) and TLS 1.3 cryptographic negotiation establish a secure channel.",
-        "3. Reverse proxy / Load Balancer terminates TLS and forwards the HTTP request to private application subnets.",
-        "4. Application server processes logic, interacts with persistence layers (DB/Cache), and returns a formatted response."
+        "1. Foundations Tier (02:22): Request travel across the internet, DNS, TCP/TLS negotiation, routing lookup algorithms, and data encoding.",
+        "2. Request Processing Tier (07:13): Secure perimeter authentication, schema validation, interceptor pipelines, and context cancellation deadlines.",
+        "3. Persistence & Data Tier (16:33): Relational ACID transactions, MVCC, indexing strategies, and caching tiers.",
+        "4. Asynchronous & Reliability Tier (20:04): Decoupling heavy workloads into worker queues, idempotency, structured error domains, and telemetry (RED metrics)."
       ],
-      blueprintTitle: "Reverse Proxy Architecture Flow",
-      blueprintCode: `[Public Internet]
+      blueprintTitle: "First-Principles System Architecture Hierarchy",
+      blueprintCode: `[Untrusted Public Internet]
        │
-       ▼ (HTTPS :443)
-[Nginx / Cloudflare Edge]  <-- SSL Termination, DDoS mitigation, Static Caching
+       ▼ (HTTPS :443 / TLS 1.3)
+[Edge & Reverse Proxy]     <-- SSL termination, DDoS protection, Rate Limiting
        │
-       ▼ (Private VPC :8080)
-[Backend App Instance]     <-- Stateless business logic
-   ├── [PostgreSQL]        <-- ACID persistence
-   └── [Redis]             <-- In-memory session / cache`,
+       ▼ (Private VPC Network)
+[Application Service]      <-- Stateless execution, Request Context, Validation
+       │
+       ├──► [PostgreSQL]    <-- ACID persistence, MVCC, B-Trees, Connection Pool
+       ├──► [Redis]         <-- In-memory cache-aside, locks, transient sessions
+       └──► [Task Queue]    <-- Asynchronous background workers, Outbox relay`,
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "High Performance Browser Networking",
-      author: "Ilya Grigorik",
-      keyChapters: "Chapters 1 & 2 (Latency: The Defining Constraint, TCP Fundamentals)",
-      whyReadThis: "Explains how the physical reality of light through fiber optic cables and packet handshakes dictates backend latency."
+      title: "Designing Data-Intensive Applications (DDIA)",
+      author: "Martin Kleppmann",
+      keyChapters: "Chapter 1: Reliable, Scalable, and Maintainable Applications",
+      whyReadThis: "The definitive first-principles text for backend engineers. Kleppmann establishes how to rigorously analyze hardware faults, network unreliability, and traffic scaling without framework bias."
     },
+    additionalReferences: [
+      {
+        title: "The Twelve-Factor App Methodology",
+        url: "https://12factor.net",
+        description: "Canonical rules for designing modern, scalable, maintainable cloud-native applications."
+      },
+      {
+        title: "End-to-End Arguments in System Design (MIT Paper)",
+        url: "https://web.mit.edu/Saltzer/www/publications/endtoend/endtoend.pdf",
+        description: "The foundational MIT research paper that established how intelligence and reliability must be placed in network endpoints."
+      },
+      {
+        title: "Google SRE Book - Reliability Principles",
+        url: "https://sre.google/sre-book/introduction/",
+        description: "Google's definitive engineering manual on error budgets, SLOs, and systems resilience."
+      },
+      {
+        title: "Martin Fowler: Patterns of Enterprise Architecture",
+        url: "https://martinfowler.com/architecture/",
+        description: "Foundational architectural patterns for enterprise software and domain boundaries."
+      }
+    ],
     handsOnChallenge: {
-      ticketNumber: "TICKET-101",
-      title: "Trace Request Latency & Security Boundaries",
-      scenario: "Your team noticed high latency for users connecting from different continents. You must identify where the time is spent (DNS, TCP, TLS, TTFB).",
+      ticketNumber: "TICKET-001",
+      title: "Calculate System Error Budgets & Map Network Latency Hops",
+      scenario: "Your team is designing a new microservice. Management demands a 99.9% availability Service Level Objective (SLO). You must calculate the permissible monthly downtime budget, trace packet latency across network boundaries, and draft a first-principles architectural RFC.",
       acceptanceCriteria: [
-        "Use curl with write-out variables to measure DNS lookup, TCP connect, and TTFB times.",
-        "Simulate an untrusted request attempting to pass an unauthorized user_id in the body."
+        "Calculate the exact monthly error budget in minutes for a 99.9% uptime SLO.",
+        "Map out the 4 critical network boundaries: Client Browser -> Edge CDN -> Reverse Proxy -> Internal VPC Service.",
+        "Use curl with write-out flags to measure DNS lookup, TCP connect, and TTFB latencies."
       ],
-      terminalLab: `curl -w "@curl-format.txt" -o /dev/null -s https://api.github.com
-# format file contains: time_namelookup, time_connect, time_appconnect, time_starttransfer, time_total`,
+      terminalLab: `curl -w "DNS: %{time_namelookup}s | TCP: %{time_connect}s | TLS: %{time_appconnect}s | TTFB: %{time_starttransfer}s | Total: %{time_total}s\\n" -o /dev/null -s https://api.github.com`,
       hints: [
-        "Time To First Byte (TTFB) includes backend processing time plus network latency.",
-        "Check curl's -w flag documentation for connection timing metrics."
+        "A 30-day month contains 43,200 total minutes (30 * 24 * 60).",
+        "99.9% availability allows a 0.1% failure rate: 43,200 * 0.001 = 43.2 minutes."
       ],
-      solutionCode: `curl -w "DNS: %{time_namelookup}s\\nTCP: %{time_connect}s\\nTLS: %{time_appconnect}s\\nTTFB: %{time_starttransfer}s\\nTotal: %{time_total}s\\n" -o /dev/null -s https://httpbin.org/get`,
-      solutionExplanation: "By isolating TLS and connect times, you can determine whether latency is caused by backend query execution or network round-trips."
+      solutionCode: `// First-Principles Availability Formula
+// Total Month Minutes = 30 * 24 * 60 = 43,200 minutes
+// 99.9% ("Three Nines") allowed downtime = 43.2 minutes / month
+// 99.99% ("Four Nines") allowed downtime = 4.32 minutes / month
+// 99.999% ("Five Nines") allowed downtime = 25.9 seconds / month`,
+      solutionExplanation: "Reasoning from first principles reveals that high availability is an engineering trade-off. Every extra nine costs exponentially more in redundant infrastructure and multi-region synchronization."
     },
     selfCheckQuestions: [
-      "Why must business logic never reside purely in the client?",
-      "What is the difference between a forward proxy and a reverse proxy?",
-      "What does Time To First Byte (TTFB) measure?"
+      "What is First Principles thinking and how does it differentiate a senior systems engineer from a framework user?",
+      "What are the Three Pillars of software systems defined in Chapter 1 of DDIA?",
+      "How much downtime does a 99.9% SLA allow per month, and why is 100% uptime physically impossible?"
     ]
   },
   {
