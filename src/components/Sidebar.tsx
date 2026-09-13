@@ -94,15 +94,15 @@ export function Sidebar({
                     className="flex w-full items-center justify-between rounded-md p-2 text-left hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
                   >
                     <div className="flex-1 pr-2">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-[11px] font-semibold text-zinc-400 dark:text-zinc-500">
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <span className="font-mono text-xs font-black tracking-wider text-zinc-900 dark:text-white uppercase bg-zinc-200/80 dark:bg-zinc-800 px-2 py-0.5 rounded">
                           PHASE 0{phase.id}
                         </span>
-                        <span className="font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
+                        <span className="font-mono text-xs font-bold text-zinc-600 dark:text-zinc-300">
                           {progress.completed}/{progress.total}
                         </span>
                       </div>
-                      <h3 className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
+                      <h3 className="text-sm font-black tracking-tight text-zinc-950 dark:text-white leading-snug">
                         {phase.name}
                       </h3>
                     </div>

@@ -49,9 +49,13 @@ export function TopicViewer({
       {/* Top Meta Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-200 pb-5 dark:border-zinc-800">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-              PHASE 0{topic.phaseId} • {topic.phaseName}
+          <div className="inline-flex items-center gap-2.5 rounded-md border border-zinc-300 bg-zinc-100/90 px-3 py-1 dark:border-zinc-700 dark:bg-zinc-900 mb-2 shadow-xs">
+            <span className="font-mono text-xs font-black tracking-widest text-black dark:text-white uppercase">
+              PHASE 0{topic.phaseId}
+            </span>
+            <span className="text-zinc-300 dark:text-zinc-700 font-bold">•</span>
+            <span className="text-xs font-black uppercase tracking-wider text-zinc-900 dark:text-zinc-100">
+              {topic.phaseName}
             </span>
           </div>
           <h1 className="mt-1 text-2xl font-black tracking-tight text-zinc-900 dark:text-white sm:text-3xl">
