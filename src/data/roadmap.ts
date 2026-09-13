@@ -85,82 +85,126 @@ export const ROADMAP_TOPICS: RoadmapTopic[] = [
     ]
   },
   {
-    id: "http-protocol",
+    id: "what-is-a-backend",
     number: 2,
-    title: "HTTP Protocol Deep Dive",
+    title: "What is a Backend, How They Work & Why We Need Them",
     phaseId: 1,
     phaseName: "Web Protocols & Foundations",
-    duration: "55 min",
-    youtubeId: "iYM2zFP3Zn0",
+    duration: "20 min",
+    youtubeId: "6Ss4dJD9Kzg",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "HTTP/1.1 vs HTTP/2 vs HTTP/3, status codes, headers, and idempotent vs safe methods.",
+    shortSummary: "Deconstructing the anatomy of a backend: Request traversal from browser through DNS, Firewalls, and Nginx reverse proxies to state management, centralized computing, and security isolation.",
     seniorInsight: {
-      quote: "Understanding idempotency is what separates engineers who build billing bugs from engineers who build fault-tolerant payment systems.",
-      productionLesson: "Network packets fail, retry, and duplicate. If your POST or payment endpoint is not idempotent, network retries will charge the customer multiple times.",
-      commonMistake: "Using GET requests for operations that mutate state, or using 200 OK for every response including errors."
+      quote: "The client device is an untrusted, ephemeral execution environment. The backend exists as the single source of truth for business invariants, data integrity, and secret management.",
+      productionLesson: "Never trust the frontend. Everything running in a browser—input values, cookies, local storage, network requests—can be modified in DevTools. The backend must enforce absolute validation and authorization on every byte received.",
+      commonMistake: "Exposing database credentials or third-party secret API keys on the frontend, or expecting browsers to perform database connection pooling safely."
     },
     coreDeepDive: {
-      what: "Hypertext Transfer Protocol (HTTP) is the application-layer foundation of web data exchange.",
-      why: "Proper HTTP usage leverages web proxies, CDN caching, browser prefetching, and standardized error parsing.",
+      what: "A backend is a centralized server system that listens on network ports for incoming protocol streams (HTTP, WebSocket, gRPC), processes domain logic, safely interacts with storage engines, and strictly coordinates system state.",
+      why: "Client browsers have severe security and architectural boundaries: they cannot safely hold secret environment keys, cannot pool TCP database connections without exhaustion, suffer from CORS restrictions, and vary unpredictably in hardware compute power.",
       howItWorks: [
-        "Safe Methods: GET, HEAD, OPTIONS (do not alter server state).",
-        "Idempotent Methods: PUT, DELETE, GET (repeating the same request N times produces the exact same server state as 1 request).",
-        "HTTP/2 Multiplexing: Multiple bi-directional streams interleaved over a single TCP connection, eliminating head-of-line blocking."
+        "1. DNS Resolution (Browser to IP): The browser queries recursive DNS nameservers to resolve domains into routable IPv4/IPv6 addresses.",
+        "2. Perimeter Firewall & Edge Security: Cloud/VPC firewalls filter malicious packets, enforce DDoS throttling, and terminate TLS certificates.",
+        "3. Reverse Proxy (Nginx/Envoy): Receives traffic on public ports 80/443, handles SSL termination, and proxies raw TCP/HTTP to application ports (e.g. Node.js on 127.0.0.1:3000).",
+        "4. Centralized State & Compute: The backend coordinates ACID transactions against PostgreSQL/Redis and delegates heavy compute tasks safely away from resource-constrained user devices."
       ],
-      blueprintTitle: "Standardized RFC 7807 Error Response",
-      blueprintCode: `// Return Content-Type: application/problem+json
-{
-  "type": "https://api.example.com/errors/insufficient-funds",
-  "title": "Insufficient Funds",
-  "status": 422,
-  "detail": "Your wallet balance is 40.00 ETB, but transfer requires 100.00 ETB.",
-  "instance": "/transfers/tx_9921",
-  "code": "WALLET_BALANCE_TOO_LOW"
-}`,
-      blueprintLanguage: "json"
+      blueprintTitle: "Production Request Traversal Lifecycle",
+      blueprintCode: `[Client Browser (Untrusted)]
+          │
+          ▼ 1. Query Recursive DNS Resolver (A / AAAA Record)
+[DNS Name Server: 1.1.1.1] ──► Returns Server IP
+          │
+          ▼ 2. TCP Handshake + TLS 1.3 Negotiation
+[Cloud Perimeter Firewall / WAF]
+          │
+          ▼ 3. Port 443 (HTTPS)
+[Nginx Reverse Proxy]
+          │   ├── Terminates SSL
+          │   ├── Enforces Rate Limiting
+          │   └── Upstream Proxy Pass: http://127.0.0.1:3000
+          ▼
+[Backend Application Service (Node.js / Go)]
+          │
+          ├──► Connection Pool ──► [PostgreSQL] (ACID State)
+          └──► In-memory Cache ──► [Redis] (Key-Value State)`,
+      blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "HTTP: The Definitive Guide",
-      author: "David Gourley & Brian Totty",
-      keyChapters: "Chapters 3, 7 & 11 (HTTP Messages, Caching, and Content Negotiation)",
-      whyReadThis: "The undisputed reference for headers, caching directives (ETag, Cache-Control), and proxy traversal."
+      title: "Designing Data-Intensive Applications",
+      author: "Martin Kleppmann",
+      keyChapters: "Chapter 1: Reliability, Scalability & Maintainability & Chapter 3: Storage and Retrieval",
+      whyReadThis: "Essential for understanding why persistent servers and centralized state engines are necessary, how transactions preserve integrity, and why client devices cannot replace robust backend architectures."
     },
+    additionalReferences: [
+      {
+        title: "Cloudflare: How Does the Internet Work? (DNS & IP Routing)",
+        url: "https://www.cloudflare.com/learning/network-layer/how-does-the-internet-work/",
+        description: "Comprehensive breakdown of how DNS resolvers, BGP routing, and IP packet exchange function."
+      },
+      {
+        title: "Nginx Official Architecture Guide: Inside NGINX",
+        url: "https://www.nginx.com/blog/inside-nginx-how-we-designed-for-performance-scale/",
+        description: "Official whitepaper explaining event-driven non-blocking reverse proxy architecture."
+      },
+      {
+        title: "OWASP Top 10 API Security Risks",
+        url: "https://owasp.org/www-project-api-security/",
+        description: "Standard architectural security guidance for securing backend servers against client manipulation."
+      }
+    ],
     handsOnChallenge: {
       ticketNumber: "TICKET-102",
-      title: "Implement Idempotency Key Handling in HTTP",
-      scenario: "Users on unstable mobile networks double-tap 'Pay Now', causing double charges. Implement an Idempotency-Key header check.",
+      title: "Inspect Request Traversal & Reverse Proxy Headers",
+      scenario: "Your application is deployed behind an Nginx reverse proxy. A security incident requires you to identify the real client IP and ensure sensitive environment secrets are never leaked to client responses.",
       acceptanceCriteria: [
-        "Extract 'Idempotency-Key' from request headers.",
-        "If key exists in cache, return cached response immediately without re-executing payment.",
-        "If new, acquire lock, process, cache response with TTL, and return 201 Created."
+        "Configure your server to correctly read 'x-forwarded-for' and 'x-real-ip' headers instead of the immediate socket remote address.",
+        "Implement a health check endpoint at /healthz returning server uptime, process memory RSS, and active timestamp.",
+        "Ensure no process environment variables (e.g. DB_PASS, API_SECRET) are serialized in any error handler payload."
       ],
       hints: [
-        "Use an in-memory Map or Redis SETNX (SET with NX and EX) to store the idempotency key.",
-        "Return the identical status code and payload as the original execution."
+        "In Node.js/Express, enable 'app.set(\"trust proxy\", 1)' to accurately parse X-Forwarded-For headers from Nginx.",
+        "Never return 'process.env' or raw database error dumps to client responses."
       ],
-      solutionCode: `// Express / Next.js API route middleware example
-const idempotencyStore = new Map();
+      solutionCode: `import express from "express";
 
-export async function handlePayment(req, res) {
-  const key = req.headers['idempotency-key'];
-  if (!key) return res.status(400).json({ error: "Missing Idempotency-Key" });
+const app = express();
+// 1. Trust first reverse proxy (Nginx)
+app.set("trust proxy", 1);
 
-  if (idempotencyStore.has(key)) {
-    const cached = idempotencyStore.get(key);
-    return res.status(cached.status).json(cached.body);
-  }
+app.use(express.json());
 
-  // Process transaction
-  const result = await chargeCustomer(req.body);
-  idempotencyStore.set(key, { status: 201, body: result });
-  return res.status(201).json(result);
-}`,
-      solutionExplanation: "Storing completed responses against unique client-provided UUIDs guarantees duplicate network packets never trigger multiple state mutations."
+// 2. Health check endpoint reporting infrastructure telemetry
+app.get("/healthz", (req, res) => {
+  const memoryUsage = process.memoryUsage();
+  res.status(200).json({
+    status: "healthy",
+    uptimeSeconds: Math.floor(process.uptime()),
+    memoryMb: Math.round(memoryUsage.rss / 1024 / 1024),
+    clientIp: req.ip, // Correctly resolved via X-Forwarded-For
+    timestamp: new Date().toISOString()
+  });
+});
+
+// 3. Centralized error boundary preventing secret leakage
+app.use((err, req, res, next) => {
+  console.error("[INTERNAL_ERROR]", err);
+  // Safe client response - internal traces hidden
+  res.status(500).json({
+    error: "Internal Server Error",
+    requestId: req.headers["x-request-id"] || "req_gen_001"
+  });
+});
+
+app.listen(3000, "127.0.0.1", () => {
+  console.log("Backend listening on internal port 3000 behind reverse proxy");
+});`,
+      solutionExplanation: "When running behind reverse proxies like Nginx or AWS ALB, the socket remote IP is always 127.0.0.1. Reading X-Forwarded-For headers with trust proxy enabled ensures correct client tracking, while centralized error guards prevent environment secret exposure."
     },
     selfCheckQuestions: [
-      "Why is PUT idempotent while PATCH is typically not guaranteed to be idempotent?",
-      "What is the exact purpose of an ETag header and 304 Not Modified?",
-      "How does HTTP/2 multiplexing eliminate HTTP/1.1 head-of-line blocking?"
+      "Why can't frontend browser applications connect directly to a PostgreSQL database safely?",
+      "Trace the path of an HTTP request from typing an address in Chrome to the application handler in Node.js/Go.",
+      "What is the role of an Nginx reverse proxy in front of an application server, and what is SSL termination?",
+      "Why do CORS (Cross-Origin Resource Sharing) restrictions only exist in web browsers and not between two backend servers?"
     ]
   },
   {
