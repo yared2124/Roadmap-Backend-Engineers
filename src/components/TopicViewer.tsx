@@ -224,16 +224,35 @@ export function TopicViewer({
         <p className="text-xs text-zinc-500 dark:text-zinc-400">
           After reviewing the lecture and reading the canonical book chapters, you should be able to clearly explain:
         </p>
-        <ul className="space-y-2 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
-          {topic.selfCheckQuestions.map((q, idx) => (
-            <li
-              key={idx}
-              className="flex items-start gap-2.5 rounded-md border border-zinc-100 bg-zinc-50/50 p-2.5 dark:border-zinc-900 dark:bg-zinc-900/40"
-            >
-              <span className="font-mono font-bold text-zinc-400">0{idx + 1}.</span>
-              <span className="leading-relaxed">{q}</span>
-            </li>
-          ))}
+        <ul className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
+          {topic.selfCheckQuestions.map((qItem, idx) => {
+            const isObj = typeof qItem === "object" && qItem !== null;
+            const questionText = isObj ? qItem.question : qItem;
+            const answerText = isObj ? qItem.answerExplanation : null;
+
+            return (
+              <li
+                key={idx}
+                className="rounded-md border border-zinc-200/80 bg-zinc-50/60 p-3 dark:border-zinc-900 dark:bg-zinc-900/40 space-y-2"
+              >
+                <div className="flex items-start gap-2.5">
+                  <span className="font-mono font-bold text-zinc-400">0{idx + 1}.</span>
+                  <span className="leading-relaxed font-medium text-zinc-900 dark:text-zinc-100">{questionText}</span>
+                </div>
+                {answerText && (
+                  <details className="pl-6 group">
+                    <summary className="cursor-pointer font-mono text-[11px] font-semibold text-zinc-500 hover:text-black dark:hover:text-white transition-colors list-none flex items-center gap-1.5">
+                      <span className="text-[10px] text-zinc-400 group-open:rotate-90 transition-transform">▶</span>
+                      Reveal Engineering Answer & Takeaway
+                    </summary>
+                    <p className="mt-2 rounded border border-zinc-200/80 bg-white p-2.5 text-[11.5px] leading-relaxed text-zinc-600 dark:border-zinc-800 dark:bg-black dark:text-zinc-400">
+                      {answerText}
+                    </p>
+                  </details>
+                )}
+              </li>
+            );
+          })}
         </ul>
       </div>
 

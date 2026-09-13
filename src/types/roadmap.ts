@@ -43,6 +43,11 @@ export interface AdditionalReference {
   description: string;
 }
 
+export interface SelfCheckQuestion {
+  question: string;
+  answerExplanation: string;
+}
+
 export interface RoadmapTopic {
   id: string;
   number: number;
@@ -57,7 +62,7 @@ export interface RoadmapTopic {
   coreDeepDive: CoreDeepDive;
   recommendedBook: RecommendedBook;
   handsOnChallenge?: HandsOnChallenge;
-  selfCheckQuestions: string[];
+  selfCheckQuestions: (string | SelfCheckQuestion)[];
   timestamps?: VideoTimestamp[];
   additionalReferences?: AdditionalReference[];
   secondaryVideo?: {

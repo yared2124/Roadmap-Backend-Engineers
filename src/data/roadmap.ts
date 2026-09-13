@@ -79,9 +79,18 @@ export const ROADMAP_TOPICS: RoadmapTopic[] = [
       }
     ],
     selfCheckQuestions: [
-      "What is First Principles thinking and how does it differentiate a senior systems engineer from a framework user?",
-      "What are the Three Pillars of software systems defined in Chapter 1 of DDIA?",
-      "How much downtime does a 99.9% SLA allow per month, and why is 100% uptime physically impossible?"
+      {
+        question: "What is First Principles thinking and how does it differentiate a senior systems engineer from a framework user?",
+        answerExplanation: "Framework users reason by superficial analogy (e.g. 'Express uses app.use(), Next.js uses server actions'). First-principles engineers reason from physics and computer architecture: CPU cycles, memory allocations, TCP socket state, disk I/O bottlenecks, and network latency boundaries. This makes them instantly adaptable to any tech stack without syntax fatigue."
+      },
+      {
+        question: "What are the Three Pillars of software systems defined in Chapter 1 of DDIA?",
+        answerExplanation: "1. Reliability: Continuing to function correctly despite hardware faults, software bugs, and human error. 2. Scalability: Having viable strategies to handle increased load (data volume, traffic velocity, complexity). 3. Maintainability: Enabling new engineers to productively understand, refactor, and operate the system over years."
+      },
+      {
+        question: "How much downtime does a 99.9% SLA allow per month, and why is 100% uptime physically impossible?",
+        answerExplanation: "A 99.9% SLA allows ~43.8 minutes of downtime per month. 100% uptime is physically impossible due to the FLP Impossibility Result, CAP Theorem constraints, hardware degradation, fiber cuts, kernel panic bugs, and cloud provider availability zone maintenance."
+      }
     ]
   },
   {
@@ -201,10 +210,22 @@ app.listen(3000, "127.0.0.1", () => {
       solutionExplanation: "When running behind reverse proxies like Nginx or AWS ALB, the socket remote IP is always 127.0.0.1. Reading X-Forwarded-For headers with trust proxy enabled ensures correct client tracking, while centralized error guards prevent environment secret exposure."
     },
     selfCheckQuestions: [
-      "Why can't frontend browser applications connect directly to a PostgreSQL database safely?",
-      "Trace the path of an HTTP request from typing an address in Chrome to the application handler in Node.js/Go.",
-      "What is the role of an Nginx reverse proxy in front of an application server, and what is SSL termination?",
-      "Why do CORS (Cross-Origin Resource Sharing) restrictions only exist in web browsers and not between two backend servers?"
+      {
+        question: "Why can't frontend browser applications connect directly to a PostgreSQL database safely?",
+        answerExplanation: "1. Security: Browsers execute in an untrusted client sandbox; exposing database credentials in client-side code gives attackers full control over the database. 2. Connection Exhaustion: Browsers cannot pool long-lived stateful TCP connections safely without exhausting PostgreSQL's max_connections limit (causing denial of service). 3. Business Invariants: The backend must enforce validation, row-level access control, and transaction boundaries."
+      },
+      {
+        question: "Trace the path of an HTTP request from typing an address in Chrome to the application handler in Node.js/Go.",
+        answerExplanation: "1. Browser checks local cache, then queries recursive DNS (A/AAAA record) to resolve IP. 2. Initiates TCP 3-way handshake + TLS 1.3 cryptographic negotiation on port 443. 3. Traverses cloud border firewalls/WAF. 4. Nginx Reverse Proxy terminates TLS, applies rate-limits, and proxies HTTP request to localhost:3000. 5. Node.js/Go HTTP parser extracts method/headers/body and dispatches to the route handler."
+      },
+      {
+        question: "What is the role of an Nginx reverse proxy in front of an application server, and what is SSL termination?",
+        answerExplanation: "Nginx acts as an event-driven edge gateway: it offloads CPU-heavy SSL/TLS cryptographic decryption (SSL termination) so internal application servers only handle raw HTTP, enforces DDoS rate-limiting, buffers slow client network connections, serves static files at zero-copy kernel speed, and load-balances across multiple application instances."
+      },
+      {
+        question: "Why do CORS (Cross-Origin Resource Sharing) restrictions only exist in web browsers and not between two backend servers?",
+        answerExplanation: "CORS is a browser-enforced security mechanism (Same-Origin Policy) designed to protect end-users from malicious websites making unauthorized authenticated requests (using stored cookies/credentials) to a third-party bank or API. Server-to-server communication has no ambient browser credential store, so CORS does not apply to backend HTTP clients like curl, Axios, or gRPC."
+      }
     ]
   },
   {
