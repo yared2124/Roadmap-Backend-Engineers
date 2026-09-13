@@ -14,29 +14,21 @@ export const ROADMAP_TOPICS: RoadmapTopic[] = [
     duration: "31 min",
     youtubeId: "0Rwb4Xmlcwc",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Deconstructing backend engineering from first principles: Why it extends far beyond CRUD APIs to reliability, scalability, and maintainability across any language or stack.",
-    timestamps: [
-      { timeFormatted: "00:00", seconds: 0, label: "Introduction to First Principles" },
-      { timeFormatted: "02:22", seconds: 142, label: "Foundations (Architecture, HTTP, Routing, Serialization)" },
-      { timeFormatted: "07:13", seconds: 433, label: "Request Handling (Auth, Validation, Middlewares, Context)" },
-      { timeFormatted: "16:33", seconds: 993, label: "Architecture & Data (REST, BLL, Databases, Caching)" },
-      { timeFormatted: "20:04", seconds: 1204, label: "System Operations (Queues, Scheduling, Emails, Errors)" },
-      { timeFormatted: "23:16", seconds: 1396, label: "Observability & Reliability (Config, Logging, Metrics, Shutdown)" },
-      { timeFormatted: "26:23", seconds: 1583, label: "Scalability & Quality (Performance, Concurrency, DevOps)" },
-    ],
+    shortSummary: "Foundational roadmap to Backend Engineering from First Principles: Moving beyond CRUD APIs and framework syntax to master reliable, scalable, and maintainable distributed systems.",
+    timestamps: [],
     seniorInsight: {
       quote: "Backend engineering is not about writing frameworks; it is about managing state, latency, and failure across network boundaries.",
       productionLesson: "When you reason from first principles, you stop asking 'Which framework is trending?' and start asking 'What are my disk I/O constraints, network latencies, memory footprints, and fault boundaries?'",
       commonMistake: "Learning by superficial analogy—copy-pasting tutorials without understanding the underlying transport protocol, operating system processes, or database storage engines."
     },
     coreDeepDive: {
-      what: "First Principles Thinking applied to backend systems: Deconstructing software into fundamental engineering truths (CPU cycles, sockets, bytes on wire, ACID guarantees, fault tolerance) rather than framework-specific abstractions.",
-      why: "Frameworks and language popularity shift every 3–5 years, but first-principles (TCP three-way handshakes, B-Tree indexes, race conditions, idempotency, distributed consensus) remain durable across your entire career.",
+      what: "First Principles Thinking applied to backend systems: Deconstructing software into fundamental engineering truths (CPU cycles, sockets, bytes on wire, ACID guarantees, fault boundaries) rather than framework-specific abstractions.",
+      why: "Frameworks and languages shift constantly, but first-principles (networking, data integrity, caching, asynchronous queuing, and fault tolerance) remain durable throughout your entire career.",
       howItWorks: [
-        "1. Foundations Tier (02:22): Request travel across the internet, DNS, TCP/TLS negotiation, routing lookup algorithms, and data encoding.",
-        "2. Request Processing Tier (07:13): Secure perimeter authentication, schema validation, interceptor pipelines, and context cancellation deadlines.",
-        "3. Persistence & Data Tier (16:33): Relational ACID transactions, MVCC, indexing strategies, and caching tiers.",
-        "4. Asynchronous & Reliability Tier (20:04): Decoupling heavy workloads into worker queues, idempotency, structured error domains, and telemetry (RED metrics)."
+        "1. Foundations & Networking: High-level system architecture, HTTP semantics, routing algorithms, and byte serialization/deserialization.",
+        "2. Core API Development: Perimeter authentication/authorization, schema validation, interceptor middlewares, and request context deadlines.",
+        "3. Data & Business Logic: Database integrity, service layers, caching hierarchies, transactional emails, and decoupled task queues.",
+        "4. System Reliability & Operations: Structured logging, observability (metrics & tracing), config isolation, graceful shutdown, and continuous testing."
       ],
       blueprintTitle: "First-Principles System Architecture Hierarchy",
       blueprintCode: `[Untrusted Public Internet]
