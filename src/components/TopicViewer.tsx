@@ -122,7 +122,6 @@ export function TopicViewer({
         youtubeId={topic.youtubeId}
         title={topic.title}
         duration={topic.duration}
-        timestamps={topic.timestamps}
       />
 
       {/* 2. Deep Architectural Breakdown */}
