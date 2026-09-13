@@ -121,7 +121,7 @@ export function ChallengeSection({ challenge }: ChallengeSectionProps) {
             className="inline-flex items-center gap-1.5 rounded-md border border-zinc-900 bg-black px-3 py-1.5 text-xs font-medium text-white hover:bg-zinc-800 dark:border-white dark:bg-white dark:text-black dark:hover:bg-zinc-200 transition-colors"
           >
             <Code2 className="h-3.5 w-3.5" />
-            <span>{showSolution ? "Hide Solution" : "View Staff Engineer Solution"}</span>
+            <span>{showSolution ? "Hide Solution" : "View Complete Solution & Explanation"}</span>
             {showSolution ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
           </button>
         )}
@@ -147,7 +147,7 @@ export function ChallengeSection({ challenge }: ChallengeSectionProps) {
         <div className="space-y-3 rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900/60">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono font-bold text-zinc-900 dark:text-white">
-              Staff Engineer Implementation
+              Production Solution & Implementation
             </span>
             <button
               onClick={() => copyToClipboard(challenge.solutionCode!, false)}

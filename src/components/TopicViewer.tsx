@@ -79,14 +79,14 @@ export function TopicViewer({
         </button>
       </div>
 
-      {/* Senior Engineer Advisory Card */}
+      {/* Architectural Insights Card */}
       <div className="rounded-xl border border-zinc-200 bg-gradient-to-br from-zinc-50 to-white p-5 dark:border-zinc-800 dark:from-zinc-950 dark:to-zinc-900/40 shadow-sm space-y-3">
         <div className="flex items-center gap-2">
-          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-black text-white dark:bg-white dark:text-black text-[10px] font-mono font-bold">
-            SE
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-black text-white dark:bg-white dark:text-black text-xs font-mono font-bold">
+            💡
           </div>
           <span className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white">
-            10+ Year Staff Engineer Advisory
+            Architectural Insights & Best Practices
           </span>
         </div>
 
@@ -189,8 +189,10 @@ export function TopicViewer({
         onToggleRead={onToggleBookRead}
       />
 
-      {/* 4. Production Engineering Challenge & Solution */}
-      <ChallengeSection challenge={topic.handsOnChallenge} />
+      {/* 4. Production Engineering Challenge & Solution (Omitted for Module 1 overview) */}
+      {topic.number !== 1 && topic.handsOnChallenge && (
+        <ChallengeSection challenge={topic.handsOnChallenge} />
+      )}
 
       {/* 5. Additional Authoritative References (RFCs, Papers, Official Specs) */}
       {topic.additionalReferences && topic.additionalReferences.length > 0 && (
@@ -236,7 +238,7 @@ export function TopicViewer({
           </h4>
         </div>
         <p className="text-xs text-zinc-500 dark:text-zinc-400">
-          A staff engineer should be able to explain each of these without looking at notes:
+          You should be able to explain each of these concepts clearly:
         </p>
         <ul className="space-y-2 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
           {topic.selfCheckQuestions.map((q, idx) => (
@@ -251,12 +253,14 @@ export function TopicViewer({
         </ul>
       </div>
 
-      {/* 7. Student Personal Notes Scratchpad */}
-      <NotesDrawer
-        topicId={topic.id}
-        initialNote={note}
-        onSaveNote={onSaveNote}
-      />
+      {/* 7. Student Personal Notes Scratchpad (Omitted for Module 1 overview) */}
+      {topic.number !== 1 && (
+        <NotesDrawer
+          topicId={topic.id}
+          initialNote={note}
+          onSaveNote={onSaveNote}
+        />
+      )}
 
       {/* Bottom Prev / Next Navigation */}
       <div className="flex items-center justify-between border-t border-zinc-200 pt-6 dark:border-zinc-800">

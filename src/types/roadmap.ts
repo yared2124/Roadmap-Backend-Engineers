@@ -56,7 +56,7 @@ export interface RoadmapTopic {
   seniorInsight: SeniorInsight;
   coreDeepDive: CoreDeepDive;
   recommendedBook: RecommendedBook;
-  handsOnChallenge: HandsOnChallenge;
+  handsOnChallenge?: HandsOnChallenge;
   selfCheckQuestions: string[];
   timestamps?: VideoTimestamp[];
   additionalReferences?: AdditionalReference[];

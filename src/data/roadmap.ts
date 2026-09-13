@@ -80,27 +80,6 @@ export const ROADMAP_TOPICS: RoadmapTopic[] = [
         description: "Foundational architectural patterns for enterprise software and domain boundaries."
       }
     ],
-    handsOnChallenge: {
-      ticketNumber: "TICKET-001",
-      title: "Calculate System Error Budgets & Map Network Latency Hops",
-      scenario: "Your team is designing a new microservice. Management demands a 99.9% availability Service Level Objective (SLO). You must calculate the permissible monthly downtime budget, trace packet latency across network boundaries, and draft a first-principles architectural RFC.",
-      acceptanceCriteria: [
-        "Calculate the exact monthly error budget in minutes for a 99.9% uptime SLO.",
-        "Map out the 4 critical network boundaries: Client Browser -> Edge CDN -> Reverse Proxy -> Internal VPC Service.",
-        "Use curl with write-out flags to measure DNS lookup, TCP connect, and TTFB latencies."
-      ],
-      terminalLab: `curl -w "DNS: %{time_namelookup}s | TCP: %{time_connect}s | TLS: %{time_appconnect}s | TTFB: %{time_starttransfer}s | Total: %{time_total}s\\n" -o /dev/null -s https://api.github.com`,
-      hints: [
-        "A 30-day month contains 43,200 total minutes (30 * 24 * 60).",
-        "99.9% availability allows a 0.1% failure rate: 43,200 * 0.001 = 43.2 minutes."
-      ],
-      solutionCode: `// First-Principles Availability Formula
-// Total Month Minutes = 30 * 24 * 60 = 43,200 minutes
-// 99.9% ("Three Nines") allowed downtime = 43.2 minutes / month
-// 99.99% ("Four Nines") allowed downtime = 4.32 minutes / month
-// 99.999% ("Five Nines") allowed downtime = 25.9 seconds / month`,
-      solutionExplanation: "Reasoning from first principles reveals that high availability is an engineering trade-off. Every extra nine costs exponentially more in redundant infrastructure and multi-region synchronization."
-    },
     selfCheckQuestions: [
       "What is First Principles thinking and how does it differentiate a senior systems engineer from a framework user?",
       "What are the Three Pillars of software systems defined in Chapter 1 of DDIA?",
