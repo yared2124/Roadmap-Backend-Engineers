@@ -1,16 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import {
   ExternalLink,
   Youtube,
   Clock,
   Maximize2,
   Minimize2,
-  Volume2,
-  VolumeX,
-  Gauge,
-  Sliders,
   Expand,
   X,
 } from "lucide-react";
@@ -24,13 +20,6 @@ interface VideoPlayerProps {
   timestamps?: VideoTimestamp[];
 }
 
-declare global {
-  interface Window {
-    YT: any;
-    onYouTubeIframeAPIReady: () => void;
-  }
-}
-
 export function VideoPlayer({
   youtubeId,
   title,
@@ -39,117 +28,32 @@ export function VideoPlayer({
 }: VideoPlayerProps) {
   const [startSeconds, setStartSeconds] = useState<number | null>(null);
   const [isTheater, setIsTheater] = useState(false);
-  const [currentSpeed, setCurrentSpeed] = useState<number>(1);
-  const [isMuted, setIsMuted] = useState(false);
-  const [playerReady, setPlayerReady] = useState(false);
 
-  const containerRef = useRef<HTMLDivElement>(null);
-  const playerRef = useRef<any>(null);
-  const iframeContainerId = `yt-player-${youtubeId.replace(/[^a-zA-Z0-9_-]/g, "")}`;
-
-  // Load YouTube IFrame API
-  useEffect(() => {
-    if (!window.YT) {
-      const tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
-      const firstScriptTag = document.getElementsByTagName("script")[0];
-      firstScriptTag?.parentNode?.insertBefore(tag, firstScriptTag);
-    }
-
-    const initPlayer = () => {
-      if (window.YT && window.YT.Player) {
-        try {
-          if (playerRef.current) {
-            playerRef.current.destroy();
-          }
-          playerRef.current = new window.YT.Player(iframeContainerId, {
-            videoId: youtubeId,
-            playerVars: {
-              autoplay: startSeconds ? 1 : 0,
-              start: startSeconds || 0,
-              rel: 0,
-              modestbranding: 1,
-              enablejsapi: 1,
-            },
-            events: {
-              onReady: (event: any) => {
-                setPlayerReady(true);
-                if (currentSpeed !== 1) {
-                  event.target.setPlaybackRate(currentSpeed);
-                }
-              },
-            },
-          });
-        } catch (e) {
-          console.error("Error initializing YT Player", e);
-        }
-      }
-    };
-
-    if (window.YT && window.YT.Player) {
-      initPlayer();
-    } else {
-      window.onYouTubeIframeAPIReady = initPlayer;
-    }
-
-    return () => {
-      if (playerRef.current) {
-        try {
-          playerRef.current.destroy();
-        } catch {}
-      }
-    };
-  }, [youtubeId]);
-
-  // Handle Seek
   const handleSeek = (seconds: number) => {
     setStartSeconds(seconds);
-    if (playerRef.current && typeof playerRef.current.seekTo === "function") {
-      playerRef.current.seekTo(seconds, true);
-      playerRef.current.playVideo();
-    }
   };
 
-  // Handle Speed Change
-  const handleSpeedChange = (speed: number) => {
-    setCurrentSpeed(speed);
-    if (playerRef.current && typeof playerRef.current.setPlaybackRate === "function") {
-      playerRef.current.setPlaybackRate(speed);
-    }
-  };
-
-  // Handle Mute Toggle
-  const handleToggleMute = () => {
-    if (playerRef.current) {
-      if (isMuted) {
-        playerRef.current.unMute();
-        setIsMuted(false);
-      } else {
-        playerRef.current.mute();
-        setIsMuted(true);
+  const handleFullscreen = () => {
+    const iframe = document.getElementById(`iframe-${youtubeId}`);
+    if (iframe) {
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+      } else if ((iframe as any).webkitRequestFullscreen) {
+        (iframe as any).webkitRequestFullscreen();
       }
     }
   };
 
-  // Handle Native Fullscreen
-  const handleNativeFullscreen = () => {
-    const el = document.getElementById(iframeContainerId);
-    if (el) {
-      if (el.requestFullscreen) {
-        el.requestFullscreen();
-      } else if ((el as any).webkitRequestFullscreen) {
-        (el as any).webkitRequestFullscreen();
-      }
-    }
-  };
+  const embedUrl = startSeconds !== null
+    ? `https://www.youtube-nocookie.com/embed/${youtubeId}?start=${startSeconds}&autoplay=1&rel=0&modestbranding=1`
+    : `https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0&modestbranding=1`;
 
-  const watchUrl = startSeconds
+  const watchUrl = startSeconds !== null
     ? `https://www.youtube.com/watch?v=${youtubeId}&t=${startSeconds}s`
     : `https://www.youtube.com/watch?v=${youtubeId}`;
 
   return (
     <div
-      ref={containerRef}
       className={`transition-all duration-300 ${
         isTheater
           ? "fixed inset-0 z-50 flex flex-col justify-center bg-black/95 p-4 sm:p-8 backdrop-blur-md"
@@ -192,9 +96,9 @@ export function VideoPlayer({
 
           {/* Fullscreen Button */}
           <button
-            onClick={handleNativeFullscreen}
+            onClick={handleFullscreen}
             className="inline-flex items-center gap-1 rounded-md border border-zinc-300 bg-white px-2.5 py-1 text-xs font-medium text-zinc-800 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 transition-colors"
-            title="Native Fullscreen"
+            title="Fullscreen"
           >
             <Expand className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Fullscreen</span>
@@ -239,53 +143,15 @@ export function VideoPlayer({
           isTheater ? "max-h-[75vh] max-w-5xl mx-auto aspect-video" : "aspect-video"
         }`}
       >
-        <div id={iframeContainerId} className="absolute inset-0 h-full w-full" />
-      </div>
-
-      {/* Built-in Settings Control Bar (Speed, Volume, Audio) */}
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-3 border-t border-zinc-200/70 pt-3 dark:border-zinc-800/70">
-        {/* Playback Speed Controller */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 text-xs font-mono font-semibold text-zinc-700 dark:text-zinc-300">
-            <Gauge className="h-3.5 w-3.5 text-zinc-500" />
-            <span>Speed:</span>
-          </div>
-          <div className="flex items-center gap-1">
-            {[0.75, 1, 1.25, 1.5, 1.75, 2].map((rate) => (
-              <button
-                key={rate}
-                onClick={() => handleSpeedChange(rate)}
-                className={`rounded px-2 py-0.5 font-mono text-[11px] font-medium transition-colors ${
-                  currentSpeed === rate
-                    ? "bg-black text-white dark:bg-white dark:text-black font-bold"
-                    : "border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
-                }`}
-              >
-                {rate}x
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Audio / Volume Controls */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={handleToggleMute}
-            className="inline-flex items-center gap-1.5 rounded-md border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
-          >
-            {isMuted ? (
-              <>
-                <VolumeX className="h-3.5 w-3.5 text-rose-500" />
-                <span>Unmute</span>
-              </>
-            ) : (
-              <>
-                <Volume2 className="h-3.5 w-3.5" />
-                <span>Mute Audio</span>
-              </>
-            )}
-          </button>
-        </div>
+        <iframe
+          id={`iframe-${youtubeId}`}
+          key={`${youtubeId}-${startSeconds}`}
+          src={embedUrl}
+          title={title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          className="absolute inset-0 h-full w-full border-0"
+        />
       </div>
 
       {/* Video Chapter Timestamps (if available) */}
