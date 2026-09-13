@@ -1,7 +1,7 @@
 import { RoadmapTopic, RoadmapPhase } from "../types/roadmap";
 
-export const CHANNEL_URL = "https://www.youtube.com/@sriniously";
-export const CHANNEL_NAME = "@sriniously";
+export const CHANNEL_URL = "https://www.youtube.com";
+export const CHANNEL_NAME = "YouTube";
 
 export const ROADMAP_TOPICS: RoadmapTopic[] = [
   // Phase 1: Foundations & Web Protocols

@@ -2,7 +2,7 @@
 
 An open-access, production-grade learning platform built with **Next.js (App Router)**, **TypeScript**, and **Tailwind CSS**. Designed for backend engineers and students to achieve staff-level understanding without any login or registration barriers.
 
-Featuring curated video walkthroughs from [**@sriniously**](https://www.youtube.com/@sriniously), canonical engineering literature, and real-world production challenge tickets.
+Featuring curated video walkthroughs, canonical engineering literature, and real-world production challenge tickets.
 
 ---
 
@@ -97,8 +97,8 @@ To swap in your own video for any topic:
 
 The global channel URL is configured at the top of the file:
 ```typescript
-export const CHANNEL_URL = "https://www.youtube.com/@sriniously";
-export const CHANNEL_NAME = "@sriniously";
+export const CHANNEL_URL = "https://www.youtube.com";
+export const CHANNEL_NAME = "YouTube";
 ```
 
 ---

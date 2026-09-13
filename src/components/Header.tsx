@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import { Moon, Sun, CheckCircle2, Search, ExternalLink, Menu, X, BookOpen } from "lucide-react";
-import { CHANNEL_URL, CHANNEL_NAME } from "../data/roadmap";
+import { Moon, Sun, CheckCircle2, Search, Menu, X, BookOpen } from "lucide-react";
 
 interface HeaderProps {
   completedCount: number;
@@ -49,15 +48,6 @@ export function Header({
                 <span className="font-semibold tracking-tight text-zinc-900 dark:text-white text-base">
                   Backend Engineer Hub
                 </span>
-                <a
-                  href={CHANNEL_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hidden sm:inline-flex items-center gap-1 rounded-full border border-zinc-200 px-2 py-0.5 text-xs font-medium text-zinc-600 hover:border-zinc-400 dark:border-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-600 transition-colors"
-                >
-                  <span>{CHANNEL_NAME}</span>
-                  <ExternalLink className="h-3 w-3" />
-                </a>
               </div>
               <p className="hidden md:block text-[11px] text-zinc-500 dark:text-zinc-400">
                 Principal Engineer Roadmap • Curated Books • Real Practice
