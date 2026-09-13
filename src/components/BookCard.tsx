@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { BookOpen, Check, BookmarkCheck } from "lucide-react";
+import { BookOpen, Check, BookmarkCheck, ExternalLink } from "lucide-react";
 import { RecommendedBook } from "../types/roadmap";
 
 interface BookCardProps {
@@ -13,7 +13,7 @@ interface BookCardProps {
 export function BookCard({ book, isRead, onToggleRead }: BookCardProps) {
   return (
     <div className="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm transition-all">
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-start justify-between gap-4 flex-wrap sm:flex-nowrap">
         <div className="flex items-start gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900">
             <BookOpen className="h-5 w-5 text-zinc-900 dark:text-zinc-100" />
@@ -33,27 +33,40 @@ export function BookCard({ book, isRead, onToggleRead }: BookCardProps) {
           </div>
         </div>
 
-        {/* Read Checklist Button */}
-        <button
-          onClick={onToggleRead}
-          className={`flex shrink-0 items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
-            isRead
-              ? "border-zinc-900 bg-zinc-900 text-white dark:border-white dark:bg-white dark:text-black"
-              : "border-zinc-300 bg-zinc-50 text-zinc-700 hover:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300"
-          }`}
-        >
-          {isRead ? (
-            <>
-              <Check className="h-3.5 w-3.5" />
-              <span>Chapter Read</span>
-            </>
-          ) : (
-            <>
-              <BookmarkCheck className="h-3.5 w-3.5" />
-              <span>Mark Read</span>
-            </>
+        {/* Read Actions */}
+        <div className="flex items-center gap-2 shrink-0">
+          {book.readingUrl && (
+            <a
+              href={book.readingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-800 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 transition-colors shadow-xs"
+            >
+              <span>Read Online</span>
+              <ExternalLink className="h-3 w-3" />
+            </a>
           )}
-        </button>
+          <button
+            onClick={onToggleRead}
+            className={`flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
+              isRead
+                ? "border-zinc-900 bg-zinc-900 text-white dark:border-white dark:bg-white dark:text-black"
+                : "border-zinc-300 bg-zinc-50 text-zinc-700 hover:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300"
+            }`}
+          >
+            {isRead ? (
+              <>
+                <Check className="h-3.5 w-3.5" />
+                <span>Chapter Read</span>
+              </>
+            ) : (
+              <>
+                <BookmarkCheck className="h-3.5 w-3.5" />
+                <span>Mark Read</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       <div className="mt-4 space-y-2 border-t border-zinc-100 pt-3 dark:border-zinc-900 text-xs">

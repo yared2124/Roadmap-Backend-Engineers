@@ -18,6 +18,7 @@ export interface RecommendedBook {
   author: string;
   keyChapters: string;
   whyReadThis: string;
+  readingUrl?: string;
 }
 
 export interface HandsOnChallenge {

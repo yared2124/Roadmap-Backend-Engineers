@@ -4,173 +4,255 @@ export const CHANNEL_URL = "https://www.youtube.com";
 export const CHANNEL_NAME = "YouTube";
 
 export const ROADMAP_TOPICS: RoadmapTopic[] = [
-  // Phase 1: Foundations & Web Protocols
+  // ==========================================
+  // PHASE 1: Foundations & Web Protocols
+  // ==========================================
   {
-    id: "backend-frontend-high-level",
+    id: "backend-first-principles",
     number: 1,
-    title: "High-Level Understanding of Backend and Frontend",
+    title: "Backend from First Principles (Orientation & Architecture)",
     phaseId: 1,
-    phaseName: "Web Protocols & Foundations",
-    duration: "40 min",
-    youtubeId: "4r6WdaY3SOA",
+    phaseName: "Foundations & Web Protocols",
+    duration: "31 min",
+    youtubeId: "0Rwb4Xmlcwc",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Client-server architecture, separation of concerns, network boundaries, and how requests travel across the internet.",
+    shortSummary: "Foundations of backend systems: CPU, memory, OS processes, network sockets, disk I/O, and distributed computing mental models.",
     seniorInsight: {
-      quote: "Never trust the client. The frontend is an untrusted remote environment that can be modified by anyone with DevTools.",
-      productionLesson: "In production, client-side validation is solely for UI responsiveness. Every single invariant, business rule, and permission must be strictly re-validated on the backend server.",
-      commonMistake: "Relying on frontend checks to calculate pricing or assuming data sent from mobile apps or web forms has not been tampered with."
+      quote: "Software is an illusion run on physical silicon, electricity, and packet switches. High-scale engineers optimize for hardware constraints, not framework abstractions.",
+      productionLesson: "Understand memory vs disk latency: CPU cache (1ns), RAM (100ns), NVMe SSD (100,000ns), Cross-datacenter network packet (50,000,000ns). System bottlenecks are almost always network round-trips and unindexed disk scans.",
+      commonMistake: "Treating the server as an abstract magic box and assuming memory allocations and network round-trips are free."
     },
     coreDeepDive: {
-      what: "The separation between the presentation tier (browsers, mobile apps) and the data & business logic tier (backend servers, databases, microservices).",
-      why: "Allows independent scaling, multi-client support (one API for iOS, Android, and Web), and centralized security enforcement.",
+      what: "Backend engineering is the discipline of creating reliable, fault-tolerant software that processes business operations, safeguards state, and exposes APIs over networks.",
+      why: "Without a disciplined systems approach, applications succumb to memory leaks, thread starvation, data corruption, and catastrophic cascading outages.",
       howItWorks: [
-        "1. Client initiates DNS resolution to translate hostname into an IP address.",
-        "2. TCP three-way handshake (SYN, SYN-ACK, ACK) and TLS 1.3 cryptographic negotiation establish a secure channel.",
-        "3. Reverse proxy / Load Balancer terminates TLS and forwards the HTTP request to private application subnets.",
-        "4. Application server processes logic, interacts with persistence layers (DB/Cache), and returns a formatted response."
+        "1. Operating systems manage memory pages, file descriptors, and non-blocking I/O event loops (epoll/kqueue).",
+        "2. Sockets accept incoming TCP byte streams and hand them off to worker threads or asynchronous runtimes.",
+        "3. Business code validates state changes and commits mutations into ACID-compliant storage engines.",
+        "4. Telemetry engines emit distributed traces to capture latencies at hardware and network boundaries."
       ],
-      blueprintTitle: "Reverse Proxy Architecture Flow",
-      blueprintCode: `[Public Internet]
+      blueprintTitle: "System Latency Hierarchy & Resource Model",
+      blueprintCode: `[L1/L2 Cache: ~1ns]   <-- Registers & CPU execution
        │
-       ▼ (HTTPS :443)
-[Nginx / Cloudflare Edge]  <-- SSL Termination, DDoS mitigation, Static Caching
+[Main Memory (RAM): ~100ns]   <-- Hot working sets, Redis cache, in-memory buffers
        │
-       ▼ (Private VPC :8080)
-[Backend App Instance]     <-- Stateless business logic
-   ├── [PostgreSQL]        <-- ACID persistence
-   └── [Redis]             <-- In-memory session / cache`,
+[NVMe Flash SSD: ~100,000ns]  <-- PostgreSQL write-ahead logs (WAL), disk tables
+       │
+[Cross-AZ Network: ~2,000,000ns] <-- Intra-cluster microservices, replica sync
+       │
+[Transatlantic WAN: ~150,000,000ns] <-- Client browser to origin server`,
       blueprintLanguage: "text"
     },
     recommendedBook: {
       title: "High Performance Browser Networking",
       author: "Ilya Grigorik",
-      keyChapters: "Chapters 1 & 2 (Latency: The Defining Constraint, TCP Fundamentals)",
-      whyReadThis: "Explains how the physical reality of light through fiber optic cables and packet handshakes dictates backend latency."
+      keyChapters: "Chapters 1 & 2 (Primer on Latency, TCP Fundamentals)",
+      whyReadThis: "Explains how the physical speed of light in fiber optics and packet handshakes govern all backend latencies.",
+      readingUrl: "https://hpbn.co/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-101",
-      title: "Trace Request Latency & Security Boundaries",
-      scenario: "Your team noticed high latency for users connecting from different continents. You must identify where the time is spent (DNS, TCP, TLS, TTFB).",
+      ticketNumber: "TICKET-001",
+      title: "Measure Network Latency & Process Resource Footprint",
+      scenario: "Identify memory page allocations and system call overhead for an API handling concurrent network connections.",
       acceptanceCriteria: [
-        "Use curl with write-out variables to measure DNS lookup, TCP connect, and TTFB times.",
-        "Simulate an untrusted request attempting to pass an unauthorized user_id in the body."
+        "Measure system socket connections and file descriptors using lsof or netstat.",
+        "Profile request latency breakdown between DNS, TCP handshake, TLS negotiation, and TTFB."
       ],
-      terminalLab: `curl -w "@curl-format.txt" -o /dev/null -s https://api.github.com
-# format file contains: time_namelookup, time_connect, time_appconnect, time_starttransfer, time_total`,
+      terminalLab: `# Inspect file descriptors and open network sockets for your backend process
+lsof -p $(pgrep -f node) -a -i
+curl -w "DNS: %{time_namelookup}s | Connect: %{time_connect}s | TLS: %{time_appconnect}s | TTFB: %{time_starttransfer}s | Total: %{time_total}s\n" -o /dev/null -s https://httpbin.org/get`,
       hints: [
-        "Time To First Byte (TTFB) includes backend processing time plus network latency.",
-        "Check curl's -w flag documentation for connection timing metrics."
+        "Remember that everything in UNIX is a file descriptor, including network sockets.",
+        "High socket counts without closure result in 'EMFILE: too many open files' errors."
       ],
-      solutionCode: `curl -w "DNS: %{time_namelookup}s\\nTCP: %{time_connect}s\\nTLS: %{time_appconnect}s\\nTTFB: %{time_starttransfer}s\\nTotal: %{time_total}s\\n" -o /dev/null -s https://httpbin.org/get`,
-      solutionExplanation: "By isolating TLS and connect times, you can determine whether latency is caused by backend query execution or network round-trips."
+      solutionCode: `curl -w "DNS: %{time_namelookup}s\nConnect: %{time_connect}s\nTLS: %{time_appconnect}s\nTTFB: %{time_starttransfer}s\nTotal: %{time_total}s\n" -o /dev/null -s https://httpbin.org/get`,
+      solutionExplanation: "Isolating network handshake latency from TTFB proves whether performance issues stem from physical routing or backend execution."
     },
     selfCheckQuestions: [
-      "Why must business logic never reside purely in the client?",
-      "What is the difference between a forward proxy and a reverse proxy?",
-      "What does Time To First Byte (TTFB) measure?"
+      {
+        question: "Why is network latency fundamentally bounded by physics (speed of light in fiber optic cables)?",
+        answerExplanation: "Light travels through silica glass at roughly 200,000 km/s (~67% speed of light in vacuum). Round trips across continents require dozens of milliseconds regardless of how fast your CPU is."
+      },
+      {
+        question: "What is the difference between CPU-bound and I/O-bound bottlenecks?",
+        answerExplanation: "CPU-bound tasks peg compute cores (e.g. video encoding, cryptographic hashing, JSON parsing), whereas I/O-bound tasks wait for external bytes across networks or storage disks."
+      }
     ]
   },
   {
-    id: "http-protocol",
+    id: "backend-high-level",
     number: 2,
-    title: "HTTP Protocol Deep Dive",
+    title: "High-Level Understanding: What is a Backend, How it Works & Why We Need It",
     phaseId: 1,
-    phaseName: "Web Protocols & Foundations",
-    duration: "55 min",
-    youtubeId: "iYM2zFP3Zn0",
+    phaseName: "Foundations & Web Protocols",
+    duration: "2 hrs 26 min",
+    youtubeId: "KOutPbKc9UM",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "HTTP/1.1 vs HTTP/2 vs HTTP/3, status codes, headers, and idempotent vs safe methods.",
+    shortSummary: "Client-server architecture, reverse proxies, edge gateways, application runtimes, and distributed state boundaries.",
     seniorInsight: {
-      quote: "Understanding idempotency is what separates engineers who build billing bugs from engineers who build fault-tolerant payment systems.",
-      productionLesson: "Network packets fail, retry, and duplicate. If your POST or payment endpoint is not idempotent, network retries will charge the customer multiple times.",
-      commonMistake: "Using GET requests for operations that mutate state, or using 200 OK for every response including errors."
+      quote: "The frontend is an untrusted remote sandbox. Never delegate authority or data integrity checks to the client.",
+      productionLesson: "In production, client-side validation is strictly for user experience. Every single business invariant, pricing computation, and permission rule must be authoritatively enforced on the backend.",
+      commonMistake: "Allowing the client to dictate database foreign keys or assuming HTTP parameters haven't been tampered with in transit."
     },
     coreDeepDive: {
-      what: "Hypertext Transfer Protocol (HTTP) is the application-layer foundation of web data exchange.",
-      why: "Proper HTTP usage leverages web proxies, CDN caching, browser prefetching, and standardized error parsing.",
+      what: "The backend is the centralized tier that executes critical business logic, orchestrates data persistence, and coordinates microservices.",
+      why: "Enables independent horizontal scaling, multi-client support (one API for iOS, Android, and Web), and unified security enforcement.",
       howItWorks: [
-        "Safe Methods: GET, HEAD, OPTIONS (do not alter server state).",
-        "Idempotent Methods: PUT, DELETE, GET (repeating the same request N times produces the exact same server state as 1 request).",
-        "HTTP/2 Multiplexing: Multiple bi-directional streams interleaved over a single TCP connection, eliminating head-of-line blocking."
+        "1. Client resolves host IP via DNS recursive resolvers.",
+        "2. Reverse proxy terminates TLS, applies rate limits, and load balances traffic to private subnets.",
+        "3. Application server processes requests, executes business rules, queries databases, and emits telemetry.",
+        "4. Formatted responses return via standardized status codes and serializations."
       ],
-      blueprintTitle: "Standardized RFC 7807 Error Response",
-      blueprintCode: `// Return Content-Type: application/problem+json
+      blueprintTitle: "Three-Tier Backend Topology",
+      blueprintCode: `[Client (Mobile/Web)]
+       │ (HTTPS :443)
+       ▼
+[Edge / Reverse Proxy: Nginx/Cloudflare]
+       │ (Private VPC HTTP :8080)
+       ▼
+[Stateless App Servers (Node/Go/Python)]
+    ├── [Primary DB: PostgreSQL] (ACID state)
+    └── [Cache Tier: Redis]      (In-memory sessions)`,
+      blueprintLanguage: "text"
+    },
+    recommendedBook: {
+      title: "Designing Data-Intensive Applications (DDIA)",
+      author: "Martin Kleppmann",
+      keyChapters: "Chapter 1: Reliable, Scalable, and Maintainable Applications",
+      whyReadThis: "The seminal master text explaining how distributed backend systems guarantee reliability, scalability, and maintainability.",
+      readingUrl: "https://dataintensive.net/"
+    },
+    handsOnChallenge: {
+      ticketNumber: "TICKET-002",
+      title: "Architect an Isolated Three-Tier Network Boundary",
+      scenario: "Configure reverse proxy TLS termination and verify that private databases and services cannot be accessed directly from the public internet.",
+      acceptanceCriteria: [
+        "Bind application services to private localhost or VPC IP addresses.",
+        "Ensure public traffic only enters through the reverse proxy on port 443."
+      ],
+      terminalLab: `# Verify public port listening
+netstat -tuln | grep -E ":80|:443|:5432|:6379"`,
+      hints: [
+        "Databases should NEVER bind to 0.0.0.0 in production.",
+        "Use private Docker networks or VPC security groups."
+      ],
+      solutionCode: `# Docker Compose isolated backend subnet
+networks:
+  frontend-tier:
+  backend-db:
+    internal: true`,
+      solutionExplanation: "Declaring internal: true isolates databases onto private virtual interfaces, preventing accidental exposure to public interfaces."
+    },
+    selfCheckQuestions: [
+      {
+        question: "Why should databases never be exposed directly to the public internet?",
+        answerExplanation: "Exposing database ports (e.g. 5432 or 6379) invites brute-force attacks, connection exhaustion DoS, zero-day exploit vulnerabilities, and lacks application-level RBAC auditing."
+      }
+    ]
+  },
+  {
+    id: "http-protocol-deep-dive",
+    number: 3,
+    title: "HTTP Protocol Deep Dive (HTTP/1.1 vs HTTP/2 vs HTTP/3, Headers, Status Codes, Idempotency)",
+    phaseId: 1,
+    phaseName: "Foundations & Web Protocols",
+    duration: "39 min",
+    youtubeId: "iYM2zFP3Zn0",
+    youtubeChannelUrl: CHANNEL_URL,
+    shortSummary: "HTTP/1.1 pipelining, HTTP/2 binary framing & multiplexing, HTTP/3 QUIC over UDP, idempotency, and standardized status codes.",
+    seniorInsight: {
+      quote: "Understanding idempotency separates engineers who build billing race conditions from engineers who build fault-tolerant payment systems.",
+      productionLesson: "Networks will duplicate packets and users will double-click. If state-mutating endpoints (like payments or checkout) lack idempotency keys, duplicate network packets will charge customers multiple times.",
+      commonMistake: "Using GET for mutations, or blindly returning 200 OK with an error payload inside the JSON body."
+    },
+    coreDeepDive: {
+      what: "HTTP is the application-layer foundation protocol of the internet, defining methods, headers, status codes, and message semantics.",
+      why: "Adhering to HTTP semantics enables CDN caching, transparent proxy routing, browser prefetching, and robust automated client retries.",
+      howItWorks: [
+        "1. Safe methods (GET, HEAD, OPTIONS) never mutate server state.",
+        "2. Idempotent methods (PUT, DELETE, GET) produce the identical server state whether executed 1 time or 10 times.",
+        "3. HTTP/2 eliminates head-of-line blocking via interleaved binary streams over a single TCP connection.",
+        "4. HTTP/3 replaces TCP with QUIC over UDP, preventing packet loss on one stream from stalling unrelated streams."
+      ],
+      blueprintTitle: "RFC 9457 Problem Details Standard",
+      blueprintCode: `// HTTP/1.1 422 Unprocessable Entity
+// Content-Type: application/problem+json
 {
   "type": "https://api.example.com/errors/insufficient-funds",
-  "title": "Insufficient Funds",
+  "title": "Insufficient Account Balance",
   "status": 422,
-  "detail": "Your wallet balance is 40.00 ETB, but transfer requires 100.00 ETB.",
-  "instance": "/transfers/tx_9921",
-  "code": "WALLET_BALANCE_TOO_LOW"
+  "detail": "Transfer of 100 ETB requested, but available balance is 45 ETB.",
+  "instance": "/accounts/acc_9281/transfers",
+  "code": "INSUFFICIENT_FUNDS"
 }`,
       blueprintLanguage: "json"
     },
     recommendedBook: {
       title: "HTTP: The Definitive Guide",
       author: "David Gourley & Brian Totty",
-      keyChapters: "Chapters 3, 7 & 11 (HTTP Messages, Caching, and Content Negotiation)",
-      whyReadThis: "The undisputed reference for headers, caching directives (ETag, Cache-Control), and proxy traversal."
+      keyChapters: "Chapters 3, 7 & 11 (HTTP Messages, Caching Directives, and Proxies)",
+      whyReadThis: "The timeless canonical guide to web protocols, caching headers (ETag, Cache-Control), and proxy negotiation.",
+      readingUrl: "https://developer.mozilla.org/en-US/docs/Web/HTTP"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-102",
-      title: "Implement Idempotency Key Handling in HTTP",
-      scenario: "Users on unstable mobile networks double-tap 'Pay Now', causing double charges. Implement an Idempotency-Key header check.",
+      ticketNumber: "TICKET-003",
+      title: "Implement Idempotency Key Middleware for Financial Transactions",
+      scenario: "Mobile users on unstable network connections experience dropouts and retry payment requests. Enforce Idempotency-Key headers.",
       acceptanceCriteria: [
-        "Extract 'Idempotency-Key' from request headers.",
-        "If key exists in cache, return cached response immediately without re-executing payment.",
-        "If new, acquire lock, process, cache response with TTL, and return 201 Created."
+        "Check for presence of Idempotency-Key header.",
+        "If key was processed within 24h, return cached status code and payload without re-executing business logic.",
+        "If key is active, acquire atomic lock to reject concurrent double submissions with 409 Conflict."
       ],
+      terminalLab: `# Send initial payment request
+curl -X POST https://httpbin.org/post -H "Idempotency-Key: 9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d" -d '{"amount": 500}'`,
       hints: [
-        "Use an in-memory Map or Redis SETNX (SET with NX and EX) to store the idempotency key.",
-        "Return the identical status code and payload as the original execution."
+        "Use Redis SET key payload NX EX 86400 to atomically claim the idempotency token."
       ],
-      solutionCode: `// Express / Next.js API route middleware example
-const idempotencyStore = new Map();
-
-export async function handlePayment(req, res) {
+      solutionCode: `async function idempotencyMiddleware(req, res, next) {
   const key = req.headers['idempotency-key'];
-  if (!key) return res.status(400).json({ error: "Missing Idempotency-Key" });
-
-  if (idempotencyStore.has(key)) {
-    const cached = idempotencyStore.get(key);
-    return res.status(cached.status).json(cached.body);
+  if (!key) return res.status(400).json({ error: 'Missing Idempotency-Key header' });
+  const cached = await redis.get('idemp:' + key);
+  if (cached) {
+    const { status, body } = JSON.parse(cached);
+    return res.status(status).json(body);
   }
-
-  // Process transaction
-  const result = await chargeCustomer(req.body);
-  idempotencyStore.set(key, { status: 201, body: result });
-  return res.status(201).json(result);
+  next();
 }`,
-      solutionExplanation: "Storing completed responses against unique client-provided UUIDs guarantees duplicate network packets never trigger multiple state mutations."
+      solutionExplanation: "Storing completed responses against unique client-generated UUIDs ensures that retries replay the saved outcome safely."
     },
     selfCheckQuestions: [
-      "Why is PUT idempotent while PATCH is typically not guaranteed to be idempotent?",
-      "What is the exact purpose of an ETag header and 304 Not Modified?",
-      "How does HTTP/2 multiplexing eliminate HTTP/1.1 head-of-line blocking?"
+      {
+        question: "Why is PUT idempotent while PATCH is not guaranteed to be idempotent?",
+        answerExplanation: "PUT replaces the entire resource with the provided payload (repeating it produces the same entity). PATCH applies a delta (e.g. 'increment count by 1'), which changes state on every repeat."
+      },
+      {
+        question: "What problem does HTTP/3 QUIC solve that HTTP/2 could not?",
+        answerExplanation: "HTTP/2 multiplexes streams over a single TCP connection; when one packet is dropped, TCP stalls all streams (TCP head-of-line blocking). HTTP/3 uses QUIC over UDP where packet loss only impacts the single affected stream."
+      }
     ]
   },
   {
-    id: "routing",
-    number: 3,
-    title: "Routing & Request Dispatching",
+    id: "routing-request-dispatching",
+    number: 4,
+    title: "Routing & Request Dispatching (Radix Trees, Versioning)",
     phaseId: 1,
-    phaseName: "Web Protocols & Foundations",
-    duration: "40 min",
-    youtubeId: "WXsD0ZgRrw8",
+    phaseName: "Foundations & Web Protocols",
+    duration: "3 hrs 07 min",
+    youtubeId: "WXsD0ZgxjRw",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Trie/Radix trees, path parameters, query strings, and API versioning strategies.",
+    shortSummary: "URL dispatching, Trie and Radix tree data structures, path parameters, route grouping, and API versioning strategies.",
     seniorInsight: {
-      quote: "Never break your public API contract. URL versioning (/v1) gives you the freedom to refactor internal models without breaking mobile apps in the wild.",
-      productionLesson: "Regex-based routing engines degrade to O(N) lookup times as routes scale into hundreds. Production routers (like Go's Chi/Gin or Fastify) use Radix Trees (O(K) where K is route length).",
-      commonMistake: "Putting API version numbers in domain names rather than URI paths, or neglecting 404 vs 405 (Method Not Allowed) differentiation."
+      quote: "Never break public API contracts. URL versioning (/v1) allows internal schema refactoring without bricking mobile applications in the wild.",
+      productionLesson: "Linear regex-based routers degrade to O(N) lookup time as routes grow into hundreds. Production web frameworks (Go Gin/Chi, Fastify) utilize Radix Trees (O(K) where K is URL path depth), maintaining constant lookup speed.",
+      commonMistake: "Failing to return 405 Method Not Allowed with an 'Allow' header when a route matches the URL path but not the HTTP verb."
     },
     coreDeepDive: {
-      what: "Routing maps an incoming HTTP method + URL path to the specific controller function responsible for executing the request.",
-      why: "Clean routing ensures predictable API discovery, prevents routing conflicts, and enables group-level middleware application.",
+      what: "Routing is the mechanism of matching incoming HTTP Method + URL Path combinations to the designated controller handler function.",
+      why: "Efficient routing enables scalable API discovery, clean resource nesting, and hierarchical middleware application.",
       howItWorks: [
-        "1. Exact matches are evaluated first.",
-        "2. Parameterized segments (/users/:id) extract variables into the request context.",
-        "3. Wildcard routes (/*) catch remaining subpaths."
+        "1. Static prefixes are organized into Radix Tree edges with shared common prefixes.",
+        "2. Dynamic parameterized nodes (:userId) match variable path segments and inject them into request parameters.",
+        "3. Catch-all wildcards (*filepath) handle remaining subpath captures."
       ],
       blueprintTitle: "Radix Tree Routing Structure",
       blueprintCode: `/api
@@ -187,2327 +269,2080 @@ export async function handlePayment(req, res) {
       title: "Designing Web APIs",
       author: "Brenda Jin, Saurabh Sahni & Amir Shevat",
       keyChapters: "Chapter 3: API Design Basics & URL Structure",
-      whyReadThis: "Practical guidelines for constructing intuitive, durable, and REST-compliant route hierarchies."
+      whyReadThis: "Practical guidelines for constructing intuitive, durable, and REST-compliant route hierarchies.",
+      readingUrl: "https://swagger.io/resources/articles/best-practices-in-api-design/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-103",
-      title: "Build a Versioned Radix-based Router Group",
-      scenario: "Refactor legacy flat endpoints into structured /api/v1 and /api/v2 route groups with shared authentication middleware.",
+      ticketNumber: "TICKET-004",
+      title: "Implement API Versioning and Method Validation",
+      scenario: "Refactor unversioned flat routes into structured /api/v1 groups and ensure invalid HTTP methods return 405 with an Allow header.",
       acceptanceCriteria: [
-        "Prefix all routes with /api/v1.",
-        "Differentiate 404 (Resource Not Found) from 405 (Method Not Allowed).",
-        "Extract path parameters into a strongly typed DTO."
+        "Prefix all resource routes with /api/v1.",
+        "Return 405 Method Not Allowed when method does not match.",
+        "Include the Allow header listing supported methods."
       ],
+      terminalLab: `# Test 405 response
+curl -i -X POST https://api.github.com/zen`,
       hints: [
-        "Use route groups with prefix inheritance.",
-        "If a route matches the path but not the HTTP verb, RFC dictates returning a 405 with an 'Allow' header."
+        "Inspect RFC 9110 Section 15.5.6: 405 responses MUST generate an Allow header field containing supported methods."
       ],
-      solutionCode: `// Example Router Setup
-const router = new Router();
-const v1 = router.group("/api/v1");
-
-v1.use(authMiddleware);
-v1.get("/users/:userId/orders", (req, res) => {
-  const { userId } = req.params;
-  // Handled
+      solutionCode: `app.use('/api/v1/users', (req, res) => {
+  if (!['GET', 'POST'].includes(req.method)) {
+    res.setHeader('Allow', 'GET, POST');
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
 });`,
-      solutionExplanation: "Router groups allow applying middlewares (auth, rate limits, telemetry) at the prefix boundary without code duplication."
+      solutionExplanation: "Returning 405 rather than 404 communicates to the client that the endpoint exists but the HTTP verb is incorrect."
     },
     selfCheckQuestions: [
-      "Why is a Radix Tree faster than an array of regular expressions for matching URLs?",
-      "When should you return 405 Method Not Allowed instead of 404 Not Found?",
-      "What are the pros and cons of URI versioning (/v1) vs Header versioning (Accept: application/vnd.api.v1+json)?"
+      {
+        question: "Why is a Radix Tree more efficient than an array of regular expressions for routing?",
+        answerExplanation: "A regex array requires testing routes sequentially in O(N) time. A Radix Tree splits paths by common prefixes, matching in O(K) time where K is path length, regardless of how many thousands of routes exist."
+      }
     ]
   },
   {
     id: "serialization-deserialization",
-    number: 4,
-    title: "Serialization and Deserialization",
+    number: 5,
+    title: "Serialization & Deserialization (JSON vs Protobuf, 64-bit Int Precision)",
     phaseId: 1,
-    phaseName: "Web Protocols & Foundations",
-    duration: "45 min",
-    youtubeId: "4c74i_w89L8",
+    phaseName: "Foundations & Web Protocols",
+    duration: "36 min",
+    youtubeId: "46O73On0gyI",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "JSON parsing, Protobuf, binary protocols, 64-bit int precision pitfalls, and security risks.",
+    shortSummary: "JSON parsing overhead, Protocol Buffers binary framing, gRPC, and the JavaScript 64-bit integer precision bug.",
     seniorInsight: {
-      quote: "JSON numbers are IEEE 754 floating point. A 64-bit database ID (e.g. 9007199254740993) will silently corrupt in Javascript unless serialized as a string.",
-      productionLesson: "Always serialize IDs as strings (or use UUIDv7) when targeting web clients. In high-throughput internal microservices, switch from JSON to Protocol Buffers (Protobuf) for 5-10x throughput gains.",
+      quote: "JSON numbers are IEEE 754 floating point. A 64-bit database ID (e.g. 9007199254740993) will silently corrupt into 9007199254740992 in JavaScript unless serialized as a string.",
+      productionLesson: "Always serialize IDs as strings (or use UUIDv7) when targeting web and mobile clients. For high-throughput internal microservice communication, migrate from JSON to Protocol Buffers for 5x throughput and 80% bandwidth savings.",
       commonMistake: "Deserializing untrusted user inputs directly into internal domain models without strict schema stripping (Mass Assignment vulnerability)."
     },
     coreDeepDive: {
-      what: "Converting in-memory data structures into a transportable byte stream (serialization) and reconstructing objects from bytes (deserialization).",
-      why: "Different programming languages and runtime architectures must exchange structured data over TCP sockets safely.",
+      what: "Serialization converts in-memory objects into transportable byte streams; deserialization reconstructs objects from bytes.",
+      why: "Different programming languages and runtimes must exchange structured data over TCP sockets safely and efficiently.",
       howItWorks: [
-        "Text-based (JSON, XML): Human readable, higher CPU overhead, larger payload size.",
-        "Binary (Protobuf, MsgPack, FlatBuffers): Schema-enforced, zero-copy parsing, compact wire footprint."
+        "1. Text-based (JSON, XML): Human-readable, higher CPU parse overhead, verbose text representation.",
+        "2. Binary (Protobuf, MsgPack, FlatBuffers): Schema-enforced, zero-copy parsing, compact byte serialization."
       ],
-      blueprintTitle: "Safe DTO Parsing with Zod / Typebox",
+      blueprintTitle: "Safe DTO Schema Validation",
       blueprintCode: `import { z } from "zod";
 
 export const CreateUserSchema = z.object({
   email: z.string().email(),
+  // Always accept 64-bit IDs as strings to prevent JS float corruption
+  organizationId: z.string().regex(/^\\d+$/),
   age: z.number().int().min(18),
-  // Explicitly prevent extra fields (mass assignment protection)
-}).strict();
-
-export type CreateUserDTO = z.infer<typeof CreateUserSchema>;`,
+}).strict(); // Strip unauthorized fields`,
       blueprintLanguage: "typescript"
     },
     recommendedBook: {
       title: "Designing Data-Intensive Applications (DDIA)",
       author: "Martin Kleppmann",
       keyChapters: "Chapter 4: Encoding and Evolution (Formats, Thrift, Protocol Buffers, Avro)",
-      whyReadThis: "The definitive guide on binary encodings, forward and backward schema compatibility, and data evolution."
+      whyReadThis: "The definitive analysis of binary formats, schema evolution, backward/forward compatibility, and RPC serialization.",
+      readingUrl: "https://dataintensive.net/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-104",
-      title: "Fix 64-Bit Integer Truncation in API Responses",
-      scenario: "Frontend reports that order ID 18446744073709551614 displays as 18446744073709552000 in browser clients due to JavaScript MAX_SAFE_INTEGER limits.",
+      ticketNumber: "TICKET-005",
+      title: "Debug 64-bit Integer Corruption & Implement Protobuf Schema",
+      scenario: "Database primary keys exceeding Number.MAX_SAFE_INTEGER (9007199254740991) are corrupting when fetched by web frontends.",
       acceptanceCriteria: [
-        "Implement a custom JSON serializer or DTO transformer.",
-        "Ensure all 64-bit integer IDs (BigInt) are serialized as strings in outbound HTTP responses."
+        "Demonstrate precision loss with JSON.parse on 9007199254740993.",
+        "Implement a custom serializer that converts BIGINT columns to strings."
       ],
+      terminalLab: `node -e 'console.log("JSON Parse:", JSON.parse("{\\"id\\": 9007199254740993}").id); console.log("Max Safe:", Number.MAX_SAFE_INTEGER);'`,
       hints: [
-        "JavaScript's Number.MAX_SAFE_INTEGER is 2^53 - 1 (9007199254740991).",
-        "Override BigInt.prototype.toJSON or use schema mapping before res.json()."
+        "Notice how 9007199254740993 rounds down to 9007199254740992!"
       ],
-      solutionCode: `// Global BigInt serializer fallback
-(BigInt.prototype as any).toJSON = function () {
+      solutionCode: `// Custom BigInt serializer for JSON.stringify
+BigInt.prototype.toJSON = function() {
   return this.toString();
-};
-
-// Or via explicit DTO mapping:
-const responseDTO = {
-  ...order,
-  id: order.id.toString(),
-  amountCents: order.amountCents.toString(),
 };`,
-      solutionExplanation: "Transforming 64-bit integers into strings preserves precision across web, iOS, and external API integrations."
+      solutionExplanation: "Transforming BigInt primitives into strings before serialization prevents the V8 engine from coercing integers into lossy IEEE 754 floats."
     },
     selfCheckQuestions: [
-      "What is the maximum integer JavaScript can safely represent without precision loss?",
-      "Why is Protobuf significantly faster to deserialize than JSON?",
-      "How do schema registries prevent breaking changes in binary serialization?"
+      {
+        question: "Why does JavaScript corrupt 64-bit integers like 9007199254740993 in JSON payloads?",
+        answerExplanation: "The JavaScript Number primitive is an IEEE 754 double-precision float with only 53 bits for the mantissa. Values exceeding 2^53 - 1 lose precision and round to the nearest even number."
+      }
     ]
   },
 
-  // Phase 2: Architecture & Request Lifecycle
+  // ==========================================
+  // PHASE 2: Core API Architecture & Request Lifecycle
+  // ==========================================
   {
-    id: "handlers-controllers-services",
-    number: 5,
-    title: "Handlers, Controllers, and Services",
-    phaseId: 2,
-    phaseName: "Application Architecture & Request Lifecycle",
-    duration: "50 min",
-    youtubeId: "Cnae5GMWBag",
-    youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Clean 3-tier layered architecture, separation of transport from business logic, and DTOs.",
-    seniorInsight: {
-      quote: "If your database queries are written inside your HTTP controllers, your code is already legacy on the day it's written.",
-      productionLesson: "A controller should be so lightweight that replacing HTTP with a CLI command, WebSocket handler, or gRPC endpoint requires zero changes to the underlying Service layer.",
-      commonMistake: "Passing the raw HTTP Request/Response objects down into domain service methods."
-    },
-    coreDeepDive: {
-      what: "A structural pattern dividing backend applications into three distinct layers: Controller (Transport), Service (Business Logic), and Repository (Data Access).",
-      why: "Ensures testability, reusability across multiple protocols, and clean separation of concerns.",
-      howItWorks: [
-        "1. Controller: Extracts headers, body, params; validates syntax; calls Service.",
-        "2. Service: Executes domain business rules, coordinates transactions, emits events.",
-        "3. Repository: Runs raw SQL or ORM queries; returns domain entities."
-      ],
-      blueprintTitle: "Clean Layered Flow",
-      blueprintCode: `HTTP Request
-     │
-     ▼
-[Controller]  <-- Knows HTTP (Status 200/400, cookies, headers)
-     │ (DTO)
-     ▼
-[Service]     <-- Pure business rules (Transfer funds, calculate discounts)
-     │ (Domain Model)
-     ▼
-[Repository]  <-- Knows SQL (PostgreSQL, queries, connection pools)`,
-      blueprintLanguage: "text"
-    },
-    recommendedBook: {
-      title: "Clean Architecture: A Craftsman's Guide",
-      author: "Robert C. Martin (Uncle Bob)",
-      keyChapters: "Chapters 20 & 22 (Business Rules & The Clean Architecture Hexagon)",
-      whyReadThis: "Learn how the Dependency Inversion Principle protects core domain logic from framework lock-in."
-    },
-    handsOnChallenge: {
-      ticketNumber: "TICKET-201",
-      title: "Decouple a Bloated Controller into 3 Tiers",
-      scenario: "Refactor a 300-line controller method that directly calls SQL queries and sends emails into separate Controller, Service, and Repository units.",
-      acceptanceCriteria: [
-        "Controller handles HTTP status codes and body parsing only.",
-        "Service layer is pure TypeScript with no dependencies on Express/Next.js req/res.",
-        "Write a unit test for the Service layer using a mock repository."
-      ],
-      hints: [
-        "Pass only plain data (primitives, DTO objects) to the service method.",
-        "Use dependency injection or repository interfaces."
-      ],
-      solutionCode: `export class OrderService {
-  constructor(private repo: OrderRepository, private mailer: EmailService) {}
-
-  async createOrder(dto: CreateOrderDTO): Promise<Order> {
-    const order = await this.repo.save(dto);
-    await this.mailer.sendConfirmation(order.userEmail, order.id);
-    return order;
-  }
-}`,
-      solutionExplanation: "Decoupling transport from business logic allows testing core rules without spinning up mock HTTP servers."
-    },
-    selfCheckQuestions: [
-      "Why should you never pass `req` or `res` into a Service class method?",
-      "What is the difference between an Entity and a Data Transfer Object (DTO)?",
-      "How does Dependency Injection simplify unit testing in the Service layer?"
-    ]
-  },
-  {
-    id: "middlewares",
+    id: "middlewares-interceptor-patterns",
     number: 6,
-    title: "Middlewares and the Onion Architecture",
+    title: "Request Lifecycle: Middlewares & Interceptor Patterns",
     phaseId: 2,
-    phaseName: "Application Architecture & Request Lifecycle",
-    duration: "45 min",
-    youtubeId: "lY6icfhap2o",
+    phaseName: "Core API Architecture & Request Lifecycle",
+    duration: "1 hr 46 min",
+    youtubeId: "CnH3kAXSrmU",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Interceptor pattern, request pipelines, panic recovery, CORS, and rate limiting.",
+    shortSummary: "The Onion architecture: Inbound interceptors, auth guards, rate limiters, logging, short-circuiting, and error-handling middleware.",
     seniorInsight: {
-      quote: "Middlewares are the security guards and telemetry probes of your application. Keep them focused, idempotent, and blazing fast.",
-      productionLesson: "A slow middleware (e.g., executing an unindexed DB query on every request to check permissions) introduces artificial latency to every single endpoint in your system.",
-      commonMistake: "Forgetting to call `next()` or calling `next()` multiple times, leading to socket hang or double-execution errors."
+      quote: "Middlewares are the immune system of your backend. Every cross-cutting concern must be intercepted before reaching business domain handlers.",
+      productionLesson: "Order of middleware execution is critical. If your body-parser middleware runs after your signature verification middleware, raw webhook bytes will be mutated and cryptographic HMAC checks will fail.",
+      commonMistake: "Forgetting to call next() or neglecting to return after sending an HTTP response, triggering 'Headers already sent' runtime crashes."
     },
     coreDeepDive: {
-      what: "Functions chained in sequence that execute before, around, or after the main request handler.",
-      why: "Cross-cutting concerns (Auth, Logging, Metrics, Tracing, CORS) can be abstracted without polluting business logic.",
+      what: "Middleware is a pipeline of functions that intercept HTTP requests and responses before and after controller execution.",
+      why: "Prevents code duplication across endpoints for authentication, request logging, rate limiting, and global error handling.",
       howItWorks: [
-        "Inbound: Middleware 1 -> Middleware 2 -> Handler.",
-        "Outbound: Handler -> Middleware 2 (post-processing) -> Middleware 1 (response timer) -> Client."
+        "1. Request traverses inbound middlewares (Onion exterior -> interior).",
+        "2. Any middleware can short-circuit the chain by returning early (e.g. 401 Unauthorized or 429 Too Many Requests).",
+        "3. Controller executes core logic and sends response.",
+        "4. Response traverses outbound path (e.g. response compression, telemetry timing)."
       ],
-      blueprintTitle: "Standard Request ID Injection Middleware",
-      blueprintCode: `export function requestIdMiddleware(req, res, next) {
-  // Use client trace ID if provided, otherwise generate UUIDv7
-  const requestId = req.headers['x-request-id'] || crypto.randomUUID();
-  req.id = requestId;
-  res.setHeader('X-Request-ID', requestId);
-  
-  const start = performance.now();
-  res.on('finish', () => {
-    const duration = (performance.now() - start).toFixed(2);
-    console.log(JSON.stringify({
-      requestId,
-      method: req.method,
-      path: req.path,
-      status: res.statusCode,
-      durationMs: duration
-    }));
-  });
-  next();
-}`,
-      blueprintLanguage: "typescript"
+      blueprintTitle: "Onion Middleware Pipeline Execution",
+      blueprintCode: `[Incoming Request]
+       │
+       ▼
+[1. Request Correlation ID & Logger]
+       │
+       ▼
+[2. Rate Limiting & IP Filter]
+       │
+       ▼
+[3. Auth Token Verification (JWT/Session)]
+       │
+       ▼
+[4. Controller Handler Execution]
+       │
+       ▼
+[5. Error Handler Catch-All (if thrown)]`,
+      blueprintLanguage: "text"
     },
     recommendedBook: {
       title: "Node.js Design Patterns (3rd Edition)",
       author: "Mario Casciaro & Luciano Mammino",
       keyChapters: "Chapter 9: Behavioral Design Patterns (Middleware & Pipeline)",
-      whyReadThis: "Mastering the Chain of Responsibility and asynchronous flow control in server runtimes."
+      whyReadThis: "Comprehensive breakdown of interceptor, chain of responsibility, and pipeline patterns in production web backends.",
+      readingUrl: "https://www.nodejsdesignpatterns.com/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-202",
-      title: "Build an Unhandled Exception Recovery Middleware",
-      scenario: "An uncaught runtime error in an endpoint crashed the server process. Build a robust recovery middleware that catches exceptions, logs the stack trace with request ID, and returns a safe 500 JSON payload.",
+      ticketNumber: "TICKET-006",
+      title: "Build an Execution-Timing and Request-ID Correlation Middleware",
+      scenario: "Requests are failing across microservices with no trace. Implement a middleware that generates a unique X-Request-ID and measures execution duration.",
       acceptanceCriteria: [
-        "Catch synchronous errors and rejected promises.",
-        "Prevent server crash.",
-        "Do NOT leak internal database connection strings or stack traces to the client."
+        "Extract existing X-Request-ID or generate UUIDv7.",
+        "Attach request ID to incoming headers and outgoing response headers.",
+        "Log request start, completion status code, and total latency in milliseconds."
       ],
+      terminalLab: `curl -i -H "X-Request-ID: test-trace-uuid-123" https://httpbin.org/headers`,
       hints: [
-        "Express error middlewares must have 4 parameters: (err, req, res, next).",
-        "Always check if headers have already been sent before attempting to write res.status(500)."
+        "Use process.hrtime.bigint() for microsecond-precise latency measurement."
       ],
-      solutionCode: `export function errorHandler(err: any, req: any, res: any, next: any) {
-  const requestId = req.id || "unknown";
-  logger.error({ err, requestId, message: "Unhandled exception caught" });
-
-  if (res.headersSent) {
-    return next(err);
-  }
-
-  res.status(500).json({
-    error: "Internal Server Error",
-    requestId: requestId,
-    message: "An unexpected error occurred. Please quote this requestId to support."
+      solutionCode: `function correlationMiddleware(req, res, next) {
+  const reqId = req.headers['x-request-id'] || crypto.randomUUID();
+  req.id = reqId;
+  res.setHeader('X-Request-ID', reqId);
+  const start = process.hrtime.bigint();
+  res.on('finish', () => {
+    const elapsedMs = Number(process.hrtime.bigint() - start) / 1e6;
+    console.log('[' + reqId + '] ' + req.method + ' ' + req.url + ' ' + res.statusCode + ' - ' + elapsedMs.toFixed(2) + 'ms');
   });
+  next();
 }`,
-      solutionExplanation: "Centralized error handling guarantees safe client responses and ensures structured error telemetry reaches monitoring tools."
+      solutionExplanation: "Binding correlation IDs at the outermost middleware layer guarantees that all subsequent logs and sub-service calls carry the same trace identifier."
     },
     selfCheckQuestions: [
-      "Why must panic/error recovery middlewares always be placed at the very end of the middleware chain?",
-      "How does CORS preflight (OPTIONS request) work and when is it triggered?",
-      "What happens if an asynchronous error is thrown inside a middleware without a try/catch or async wrapper?"
+      {
+        question: "What happens if a middleware encounters an uncaught asynchronous exception without calling next(err)?",
+        answerExplanation: "The request hangs until the client or reverse proxy hits a timeout (e.g. 504 Gateway Timeout), consuming server socket resources and connection pool capacity."
+      }
     ]
   },
   {
-    id: "request-context",
+    id: "request-context-deadlines",
     number: 7,
-    title: "Request Context and Deadlines",
+    title: "Request Context & Cancellation Deadlines",
     phaseId: 2,
-    phaseName: "Application Architecture & Request Lifecycle",
-    duration: "40 min",
-    youtubeId: "kaZOXXKZgvw",
+    phaseName: "Core API Architecture & Request Lifecycle",
+    duration: "33 min",
+    youtubeId: "LSzR0VEraWw",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "AsyncLocalStorage, context propagation, request-scoped metadata, and proactive cancellation deadlines.",
+    shortSummary: "Context propagation, cancellation signals, deadline timeouts, and preventing zombie database queries when clients disconnect.",
     seniorInsight: {
-      quote: "When a user closes their browser tab or a mobile app loses connection, stop doing work for them immediately.",
-      productionLesson: "Without context cancellation and proactive timeouts, your database will keep executing heavy 10-second queries for clients that disconnected 9 seconds ago.",
-      commonMistake: "Storing mutable global state instead of using request-scoped context, resulting in cross-request data leaks between users."
+      quote: "When a user closes their browser tab, your server should immediately stop burning CPU and abort pending database queries.",
+      productionLesson: "Always pass the request context or AbortSignal into database queries and downstream HTTP fetches. Without deadline propagation, a slow 30-second query will continue running on PostgreSQL even though the client gave up 29 seconds ago.",
+      commonMistake: "Creating detached background promises inside HTTP handlers that run indefinitely without cancellation boundaries."
     },
     coreDeepDive: {
-      what: "Carrying request-scoped values (user ID, tenant ID, trace context, cancellation signals) down the call stack without passing them as explicit arguments to every function.",
-      why: "Enables distributed tracing, tenant data isolation, and graceful cancellation of downstream database and HTTP calls.",
+      what: "Request Context carries request-scoped values, cancellation signals, and deadlines across API boundaries, worker goroutines, and database drivers.",
+      why: "Halts wasted compute and prevents database pool exhaustion when users abandon slow requests.",
       howItWorks: [
-        "Node.js: AsyncLocalStorage provides thread-local-like storage across asynchronous hops.",
-        "Go: context.Context with WithCancel and WithTimeout.",
-        "AbortController: Propagates cancellation signals to fetch() and database drivers."
+        "1. Middleware attaches an AbortController or context.WithTimeout(ctx, 3*time.Second).",
+        "2. The cancellation signal is passed into database queries (e.g. pg.query({ text, signal })).",
+        "3. If the client socket closes or timeout expires, the signal triggers an abort event.",
+        "4. PostgreSQL driver sends an immediate cancel packet to terminate the remote query."
       ],
-      blueprintTitle: "Timeout & Cancellation Propagation",
-      blueprintCode: `// Propagating cancellation to downstream queries
-export async function fetchUserData(userId: string, signal: AbortSignal) {
-  const query = db.query("SELECT * FROM users WHERE id = $1", [userId]);
-  
-  signal.addEventListener("abort", () => {
-    query.cancel(); // Abort Postgres query immediately
-  });
-
-  return await query;
-}`,
-      blueprintLanguage: "typescript"
+      blueprintTitle: "Context Cancellation Propagation",
+      blueprintCode: `[Client Disconnects / Timeout Expires]
+       │
+       ▼ (AbortSignal Emitted)
+[Express / Go HTTP Context]
+       ├── [Downstream Fetch Aborted]
+       └── [PostgreSQL Query Cancelled via Driver]`,
+      blueprintLanguage: "text"
     },
     recommendedBook: {
       title: "Concurrency in Go",
       author: "Katherine Cox-Buday",
       keyChapters: "Chapter 4: Concurrency Patterns in Go (The Context Package)",
-      whyReadThis: "Even if you code in TypeScript or Python, Go's context cancellation architecture is the gold standard for backend systems."
+      whyReadThis: "The gold-standard resource for understanding request timeouts, cancellation trees, and deadline propagation.",
+      readingUrl: "https://go.dev/blog/context"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-203",
-      title: "Implement Global 3-Second Request Timeout with AbortSignal",
-      scenario: "Prevent slow external APIs from holding server connections open indefinitely by enforcing a hard 3-second deadline on all incoming requests.",
+      ticketNumber: "TICKET-007",
+      title: "Cancel Long-Running Database Query on Client Disconnect",
+      scenario: "A heavy analytics query causes database connection pool starvation when users refresh the dashboard repeatedly.",
       acceptanceCriteria: [
-        "Attach an AbortController with a 3000ms timeout to each incoming request context.",
-        "If timeout fires before completion, cancel pending downstream DB calls and return 504 Gateway Timeout."
+        "Attach AbortSignal to database query.",
+        "Simulate client disconnect with curl --max-time 1.",
+        "Verify in PostgreSQL pg_stat_activity that query terminates immediately."
       ],
+      terminalLab: `# Simulate client closing connection after 1 second
+curl -m 1 http://localhost:3000/api/heavy-query`,
       hints: [
-        "Use AbortSignal.timeout(3000) or setTimeout with controller.abort().",
-        "Listen for the 'abort' event in downstream fetch or database queries."
+        "Listen to req.on('close') in Node.js or inspect ctx.Done() in Go."
       ],
-      solutionCode: `export function timeoutMiddleware(timeoutMs = 3000) {
-  return (req, res, next) => {
-    const controller = new AbortController();
-    req.signal = controller.signal;
-
-    const timer = setTimeout(() => {
-      controller.abort();
-      if (!res.headersSent) {
-        res.status(504).json({ error: "Gateway Timeout: Request exceeded 3s limit" });
-      }
-    }, timeoutMs);
-
-    res.on("finish", () => clearTimeout(timer));
-    next();
-  };
-}`,
-      solutionExplanation: "Proactive deadlines protect server connection pools from cascading exhaustion during downstream provider outages."
+      solutionCode: `app.get('/api/heavy-query', async (req, res) => {
+  const controller = new AbortController();
+  req.on('close', () => controller.abort());
+  try {
+    const result = await db.query('SELECT pg_sleep(10)', { signal: controller.signal });
+    res.json(result);
+  } catch (err) {
+    if (err.name === 'AbortError') console.log('Query successfully cancelled');
+  }
+});`,
+      solutionExplanation: "Propagating the cancellation signal to PostgreSQL instructs the database engine to release locks and terminate execution immediately."
     },
     selfCheckQuestions: [
-      "What problem does Node.js AsyncLocalStorage solve?",
-      "Why should you cancel database queries when an HTTP client disconnects?",
-      "What is the difference between a timeout and a deadline?"
+      {
+        question: "What is a 'zombie query' and why is it dangerous to backend database clusters?",
+        answerExplanation: "A zombie query is a database query that continues executing after the requesting client has disconnected. It holds row locks, consumes CPU, and starves connection pools with zero benefit."
+      }
     ]
   },
   {
-    id: "validation-transformation",
+    id: "validation-transformation-dtos",
     number: 8,
-    title: "Validation and Transformation",
+    title: "Validation & Transformation (Data Transfer Objects - DTOs, Schema Guards)",
     phaseId: 2,
-    phaseName: "Application Architecture & Request Lifecycle",
-    duration: "45 min",
-    youtubeId: "L6BE-U3oykg",
+    phaseName: "Core API Architecture & Request Lifecycle",
+    duration: "37 min",
+    youtubeId: "Dgym6yLNUbM",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Schema validation (Zod/Pydantic), sanitization, DTO coercion, and preventing injection attacks.",
+    shortSummary: "Data Transfer Objects (DTOs), schema guards (Zod/class-validator), type coercion, stripping mass-assignment fields, and domain primitives.",
     seniorInsight: {
-      quote: "Parse, don't validate. Convert raw, untyped strings into verified, strongly-typed domain values as early as possible.",
-      productionLesson: "Input validation is not just about error messages; it is your primary defense against SQL injection, prototype pollution, and buffer overflows.",
-      commonMistake: "Validating inputs manually with ad-hoc `if` statements instead of declarative, schema-enforced validators."
+      quote: "Make illegal states unrepresentable. A validated DTO guarantees that business services never deal with undefined, null, or malformed data.",
+      productionLesson: "Never pass raw request bodies directly into database ORM save methods. Attackers exploit Mass Assignment vulnerabilities by submitting fields like { role: 'admin', isVerified: true } to elevate permissions.",
+      commonMistake: "Validating data inside controllers instead of enforcing strict schema validation at the HTTP boundary."
     },
     coreDeepDive: {
-      what: "Checking that incoming data matches expected types, ranges, formats, and structural invariants, and transforming strings into domain primitives.",
-      why: "Guarantees that downstream business logic can operate with 100% confidence on clean, well-formed data.",
+      what: "DTO validation parses raw, untrusted client inputs, coerces types, strips unrecognized properties, and guarantees type safety before entering service layers.",
+      why: "Eliminates injection attacks, prevents unexpected runtime null pointers, and shields database schemas from mass assignment exploits.",
       howItWorks: [
-        "1. Schema definition: Declare expected shapes and constraints.",
-        "2. Coercion: Convert query strings ('page=2') into integers.",
-        "3. Stripping: Strip unknown properties to prevent mass assignment."
+        "1. HTTP request payload lands in controller boundary.",
+        "2. Validation schema parses and validates fields (email, password strength, regex).",
+        "3. Unknown keys are rejected or stripped (.strict()).",
+        "4. Validated DTO object is passed into the service layer."
       ],
-      blueprintTitle: "Declarative Validation with Zod",
+      blueprintTitle: "DTO Validation & Domain Guard",
       blueprintCode: `import { z } from "zod";
 
-export const TransferFundsSchema = z.object({
-  recipientIban: z.string().regex(/^[A-Z]{2}[0-9]{2}[A-Z0-9]{4}[0-9]{7}([A-Z0-9]?){0,16}$/),
-  amountCents: z.number().int().positive().max(10_000_000), // Max $100k
-  currency: z.enum(["ETB", "USD", "EUR"]),
-  note: z.string().trim().max(140).optional(),
-});`,
+export const UpdateProfileSchema = z.object({
+  displayName: z.string().trim().min(2).max(50),
+  bio: z.string().max(500).optional(),
+  // Strict mode explicitly throws if client attempts to inject 'role' or 'isAdmin'
+}).strict();
+
+export type UpdateProfileDTO = z.infer<typeof UpdateProfileSchema>;`,
       blueprintLanguage: "typescript"
     },
     recommendedBook: {
       title: "Secure by Design",
       author: "Dan Bergh Johnsson, Daniel Deogun & Daniel Sawano",
       keyChapters: "Chapter 3: Domain Primitives (Making illegal states unrepresentable)",
-      whyReadThis: "Shows how designing robust value objects and validated domain primitives eliminates security vulnerabilities."
+      whyReadThis: "Teaches how domain primitives and strict input typing eliminate whole classes of security and logic bugs.",
+      readingUrl: "https://cheatsheetseries.owasp.org/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-204",
-      title: "Build a Strict Request Validation Pipe",
-      scenario: "Attackers are submitting payloads containing unexpected administrative flags (e.g. `isAdmin: true`). Build a validation pipe that strictly rejects unexpected properties.",
+      ticketNumber: "TICKET-008",
+      title: "Prevent Mass Assignment Security Vulnerability",
+      scenario: "An attacker upgraded their account to superadmin by sending { role: 'ADMIN' } in the user profile update endpoint.",
       acceptanceCriteria: [
-        "Reject payloads containing undeclared fields with 400 Bad Request.",
-        "Transform string date inputs into native JavaScript Date objects.",
-        "Return structured error details listing the invalid field paths."
+        "Create a strict DTO schema that only permits allowed fields (name, bio).",
+        "Reject requests with unknown keys with a 400 Bad Request explaining the violation."
       ],
+      terminalLab: `# Simulate exploit payload
+curl -X PUT http://localhost:3000/api/profile -H "Content-Type: application/json" -d '{"name": "Alice", "role": "ADMIN"}'`,
       hints: [
-        "In Zod, use `.strict()` on objects to disallow unknown keys.",
-        "Use `safeParse` to inspect validation issues without throwing."
+        "Use Zod's .strict() or Joi's .unknown(false) to disallow unexpected properties."
       ],
-      solutionCode: `export function validateBody(schema: z.ZodSchema) {
-  return (req, res, next) => {
-    const result = schema.safeParse(req.body);
-    if (!result.success) {
-      return res.status(400).json({
-        error: "Validation Failed",
-        details: result.error.errors.map(e => ({
-          field: e.path.join("."),
-          message: e.message
-        }))
-      });
-    }
-    req.body = result.data; // Stripped & transformed
-    next();
-  };
+      solutionCode: `const schema = z.object({
+  name: z.string().min(1),
+  bio: z.string().optional()
+}).strict();
+
+function validate(req, res, next) {
+  const result = schema.safeParse(req.body);
+  if (!result.success) return res.status(400).json({ error: result.error.format() });
+  req.validatedBody = result.data;
+  next();
 }`,
-      solutionExplanation: "Strict schema validation ensures only permitted fields ever reach your application's service and database tiers."
+      solutionExplanation: "Strict validation rejects any property not explicitly declared in the DTO whitelist, blocking unauthorized state tampering."
     },
     selfCheckQuestions: [
-      "What is the Mass Assignment vulnerability?",
-      "What is the concept of 'Parse, Don't Validate'?",
-      "Why should validation return HTTP 400 or 422 instead of 500?"
+      {
+        question: "What is a Mass Assignment vulnerability and how do DTOs prevent it?",
+        answerExplanation: "Mass Assignment occurs when client inputs are blindly bound to database models, allowing attackers to modify protected columns (e.g. role, balance, verified). DTO whitelisting ensures only permitted fields reach database queries."
+      }
     ]
   },
   {
-    id: "crud-deep-dive",
+    id: "handlers-controllers-services",
     number: 9,
-    title: "CRUD Operations Deep Dive",
+    title: "Handlers, Controllers, and Services (Layered Architecture & Separation of Concerns)",
     phaseId: 2,
-    phaseName: "Application Architecture & Request Lifecycle",
-    duration: "50 min",
-    youtubeId: "W6NZfCO5SIk",
+    phaseName: "Core API Architecture & Request Lifecycle",
+    duration: "58 min",
+    youtubeId: "f7Su4KoqSio",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Create, Read, Update, Delete edge cases: Cursor pagination, optimistic locking, and soft deletes.",
+    shortSummary: "Three-tier architecture, Clean Architecture, decoupling transport layers from business logic, and repository patterns.",
     seniorInsight: {
-      quote: "Offset pagination (OFFSET 1000000) will bring your production database to its knees. Master cursor-based pagination early.",
-      productionLesson: "When two users edit the same document simultaneously, the second write silently overwrites the first (Lost Update Problem). Always implement Optimistic Concurrency Control using a version column.",
-      commonMistake: "Soft deleting rows (`deleted_at IS NOT NULL`) without adding partial indexes, causing all normal queries to scan dead rows."
+      quote: "Controllers should be dumb. They unpack HTTP requests, call the service layer, and format the response. Never write SQL or business rules in a controller.",
+      productionLesson: "When business logic lives inside HTTP controllers, you cannot test it without mocking HTTP servers, and you cannot reuse it in background queues, cron jobs, or CLI tools.",
+      commonMistake: "Mixing SQL queries, authentication parsing, validation, and email dispatching inside a single massive controller function."
     },
     coreDeepDive: {
-      what: "The four fundamental persistence operations and their associated production edge cases.",
-      why: "Every scalable application relies on high-performance reads and conflict-safe writes.",
+      what: "Layered architecture isolates concerns into distinct tiers: Transport/Controller (HTTP), Service/Domain (Business Rules), and Repository (Data Access).",
+      why: "Allows switching web frameworks or databases without rewriting business logic, and makes unit testing fast and decoupled from network sockets.",
       howItWorks: [
-        "Cursor Pagination: WHERE id > :last_seen_id ORDER BY id ASC LIMIT 20 (O(1) index seek vs O(N) offset scan).",
-        "Optimistic Locking: UPDATE items SET data = :data, version = version + 1 WHERE id = :id AND version = :current_version.",
-        "Soft Delete: UPDATE items SET deleted_at = NOW() WHERE id = :id."
+        "1. Controller receives HTTP request, parses DTO, and extracts user identity.",
+        "2. Service evaluates business invariants, executes domain workflows, and coordinates transactions.",
+        "3. Repository executes SQL queries against PostgreSQL and maps rows to domain entities."
       ],
-      blueprintTitle: "Optimistic Concurrency Control Query",
-      blueprintCode: `-- Update row only if nobody changed it in between
-UPDATE bank_accounts
-SET balance = balance - 50, version = version + 1
-WHERE id = 'acc_123' AND version = 4;
+      blueprintTitle: "Clean Layered Architecture Flow",
+      blueprintCode: `[HTTP Request]
+       │
+       ▼
+[Controller Layer]  <-- Parses DTO, returns HTTP 200/400 status codes
+       │
+       ▼
+[Service Layer]     <-- Pure business logic, pricing calculation, invariants
+       │
+       ▼
+[Repository Layer]  <-- SQL queries, database transactions, Redis cache`,
+      blueprintLanguage: "text"
+    },
+    recommendedBook: {
+      title: "Clean Architecture: A Craftsman's Guide",
+      author: "Robert C. Martin (Uncle Bob)",
+      keyChapters: "Chapters 20 & 22 (Business Rules and Clean Architecture)",
+      whyReadThis: "The classic architectural treatise on decoupling business logic from databases, frameworks, and UI boundaries.",
+      readingUrl: "https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html"
+    },
+    handsOnChallenge: {
+      ticketNumber: "TICKET-009",
+      title: "Refactor a 500-line Fat Controller into Three-Tier Layers",
+      scenario: "A legacy endpoint contains database queries, password hashing, and payment gateway calls all inside one Express handler.",
+      acceptanceCriteria: [
+        "Extract business logic into UserService.",
+        "Extract database queries into UserRepository.",
+        "Keep UserController under 20 lines of code."
+      ],
+      terminalLab: `npm test -- test/user-service.test.js`,
+      hints: [
+        "The service layer should never accept (req, res) objects. Pass clean domain objects."
+      ],
+      solutionCode: `// Clean Controller
+export async function registerController(req, res) {
+  const dto = req.validatedBody;
+  const user = await userService.registerUser(dto);
+  return res.status(201).json(user);
+}`,
+      solutionExplanation: "Decoupling transport objects (req, res) from business services allows testing userService.registerUser in pure unit tests without HTTP mocks."
+    },
+    selfCheckQuestions: [
+      {
+        question: "Why should a Service layer method never accept an Express req or res object?",
+        answerExplanation: "Coupling services to HTTP framework objects makes them impossible to reuse in message queue workers, CLI scripts, or alternative protocols (like gRPC or WebSockets)."
+      }
+    ]
+  },
+  {
+    id: "restful-architecture-openapi",
+    number: 10,
+    title: "RESTful Architecture & OpenAPI Standards (Idempotency, Resource Design, API Contracts)",
+    phaseId: 2,
+    phaseName: "Core API Architecture & Request Lifecycle",
+    duration: "45 min",
+    youtubeId: "lsMQRaeKNDk",
+    youtubeChannelUrl: CHANNEL_URL,
+    shortSummary: "Resource modeling, RESTful URI design, OpenAPI 3.0 specification, contract-first development, and generating client SDKs.",
+    secondaryVideo: {
+      youtubeId: "PenvYHJ9Koc",
+      title: "Understand OpenAPI in 5 Minutes With Examples",
+      duration: "10 min",
+      description: "Quick walkthrough of OpenAPI 3.0 spec structure, schemas, and Swagger UI generation."
+    },
+    seniorInsight: {
+      quote: "Write your OpenAPI spec before writing a single line of backend code. An agreed contract prevents weeks of integration misalignment with frontend and mobile teams.",
+      productionLesson: "Contract-first design allows frontend teams to generate TypeScript clients and mock servers immediately, parallelizing feature development while backend engineers write the implementation.",
+      commonMistake: "Using action verbs in URLs like /api/deleteUser or /api/getUsersById instead of clean REST resources like DELETE /api/users/:id."
+    },
+    coreDeepDive: {
+      what: "REST is an architectural style based on stateless resource representations; OpenAPI is the industry-standard machine-readable specification for documenting APIs.",
+      why: "Provides automated interactive documentation (Swagger UI), automated client SDK generation, and contract validation testing.",
+      howItWorks: [
+        "1. Resources are nouns: /api/v1/orders, /api/v1/orders/{orderId}/items.",
+        "2. HTTP verbs specify operations: POST (create), GET (read), PUT (replace), PATCH (update), DELETE (remove).",
+        "3. OpenAPI YAML/JSON schema defines parameters, request bodies, and standardized response codes."
+      ],
+      blueprintTitle: "OpenAPI 3.0 Resource Specification",
+      blueprintCode: `openapi: 3.0.3
+info:
+  title: Order Processing Service
+  version: 1.0.0
+paths:
+  /api/v1/orders/{orderId}:
+    get:
+      summary: Retrieve an order by UUID
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Order details
+        '404':
+          description: Order not found`,
+      blueprintLanguage: "yaml"
+    },
+    recommendedBook: {
+      title: "RESTful Web APIs",
+      author: "Leonard Richardson & Mike Amundsen",
+      keyChapters: "Chapter 4: The Resource-Oriented Architecture",
+      whyReadThis: "The authoritative book on resource design, uniform interfaces, and stateless REST representations.",
+      readingUrl: "https://restfulapi.net/"
+    },
+    handsOnChallenge: {
+      ticketNumber: "TICKET-010",
+      title: "Design OpenAPI 3.0 Contract and Serve Swagger UI",
+      scenario: "Mobile engineers need an interactive contract for the payment checkout system before backend implementation begins.",
+      acceptanceCriteria: [
+        "Author openapi.yaml specifying POST /checkout with 201 Created and 400 Bad Request responses.",
+        "Serve Swagger UI or Scalar at /docs."
+      ],
+      terminalLab: `npx @scalar/cli validate openapi.yaml`,
+      hints: [
+        "Ensure all error responses reference application/problem+json schemas."
+      ],
+      solutionCode: `import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
+const spec = YAML.load('./openapi.yaml');
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(spec));`,
+      solutionExplanation: "Serving automated documentation ensures both human developers and automated SDK generators always work against the exact same API contract."
+    },
+    selfCheckQuestions: [
+      {
+        question: "Why should RESTful URIs use nouns (e.g. /orders) rather than verbs (e.g. /getOrders)?",
+        answerExplanation: "HTTP verbs (GET, POST, PUT, DELETE) already declare the action to be taken. Using verbs in the URI violates the uniform interface constraint and creates inconsistent routing."
+      }
+    ]
+  },
+  {
+    id: "crud-deep-dive-state-mutation",
+    number: 11,
+    title: "CRUD Deep Dive & State Mutation",
+    phaseId: 2,
+    phaseName: "Core API Architecture & Request Lifecycle",
+    duration: "3 hrs 09 min",
+    youtubeId: "rOpEN1JDaD0",
+    youtubeChannelUrl: CHANNEL_URL,
+    shortSummary: "Create, Read, Update, Delete in production: Soft deletes vs hard deletes, cursor vs offset pagination, and optimistic vs pessimistic locking.",
+    seniorInsight: {
+      quote: "Offset pagination (OFFSET 1000000 LIMIT 20) is a database killer. In production, always use keyset/cursor-based pagination.",
+      productionLesson: "With OFFSET 100000, PostgreSQL must scan 100,020 rows off disk, discard the first 100,000, and return 20, causing query time to explode. Keyset pagination (WHERE id < last_id ORDER BY id DESC LIMIT 20) uses the B-Tree index to fetch rows in 0.1ms.",
+      commonMistake: "Using hard deletes (DELETE FROM users) and accidentally breaking foreign key referential integrity across audit logs."
+    },
+    coreDeepDive: {
+      what: "CRUD operations form the fundamental state mutation primitives of database-backed applications.",
+      why: "Incorrect CRUD implementations lead to race conditions (lost updates), performance collapse on large datasets, and accidental data loss.",
+      howItWorks: [
+        "1. Keyset pagination passes an opaque cursor (e.g. base64-encoded created_at + id) for constant-time lookups.",
+        "2. Soft deletes set deleted_at = NOW() instead of dropping rows, preserving historical integrity.",
+        "3. Optimistic locking compares a version integer (UPDATE ... WHERE id = :id AND version = :v) to catch concurrent edits."
+      ],
+      blueprintTitle: "High-Performance Keyset (Cursor) Pagination",
+      blueprintCode: `-- Inefficient Offset Pagination (O(N) full index traverse)
+SELECT * FROM orders ORDER BY created_at DESC OFFSET 50000 LIMIT 20;
 
--- If rows affected == 0, someone else updated it first! Throw 409 Conflict.`,
+-- Efficient Keyset / Cursor Pagination (O(log N) direct B-Tree seek)
+SELECT * FROM orders 
+WHERE created_at < '2026-09-13T20:00:00Z'
+ORDER BY created_at DESC 
+LIMIT 20;`,
       blueprintLanguage: "sql"
     },
     recommendedBook: {
       title: "SQL Performance Explained",
       author: "Markus Winand",
       keyChapters: "Chapter 4: The Order By and Paging (Indexing for Pagination)",
-      whyReadThis: "Essential reading on why OFFSET pagination destroys database cache and how keyset pagination operates at constant time."
+      whyReadThis: "Explains why offset pagination destroys database performance and how index-backed pagination guarantees constant speed.",
+      readingUrl: "https://use-the-index-luke.com/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-205",
-      title: "Implement High-Performance Keyset (Cursor) Pagination",
-      scenario: "Your product listing page takes 4.2 seconds on page 500 using `OFFSET 10000`. Refactor the query to use cursor pagination based on `(created_at, id)`.",
+      ticketNumber: "TICKET-011",
+      title: "Implement Optimistic Concurrency Control to Prevent Lost Updates",
+      scenario: "Two administrators edit the same store inventory simultaneously, causing one admin's price edit to overwrite the other's stock change.",
       acceptanceCriteria: [
-        "Accept a base64 encoded cursor token containing last item's `created_at` and `id`.",
-        "Query uses an index on `(created_at, id)` with constant execution time.",
-        "Return `next_cursor` in the response metadata."
+        "Add a version column to the inventory table.",
+        "Reject updates where version does not match with 409 Conflict."
       ],
+      terminalLab: `psql -d testdb -c "UPDATE products SET stock = stock - 1, version = version + 1 WHERE id = 1 AND version = 5;"`,
       hints: [
-        "Encode the cursor as `Buffer.from(JSON.stringify({ createdAt, id })).toString('base64')`.",
-        "Use tuple comparison: `WHERE (created_at, id) < (:cursorDate, :cursorId)`."
+        "Check affected rows count: if 0 rows were updated, a concurrent modification occurred!"
       ],
-      solutionCode: `async function getProducts(cursor?: string, limit = 20) {
-  let query = "SELECT id, name, created_at FROM products ";
-  const params: any[] = [];
-
-  if (cursor) {
-    const { createdAt, id } = JSON.parse(Buffer.from(cursor, "base64").toString());
-    query += "WHERE (created_at, id) < ($1, $2) ";
-    params.push(createdAt, id);
-  }
-
-  query += "ORDER BY created_at DESC, id DESC LIMIT $" + (params.length + 1);
-  params.push(limit);
-
-  const results = await db.query(query, params);
-  const nextCursor = results.length === limit
-    ? Buffer.from(JSON.stringify({
-        createdAt: results[results.length - 1].created_at,
-        id: results[results.length - 1].id
-      })).toString("base64")
-    : null;
-
-  return { items: results, nextCursor };
+      solutionCode: `const updated = await db.query(
+  'UPDATE products SET stock = $1, version = version + 1 WHERE id = $2 AND version = $3 RETURNING *',
+  [newStock, productId, expectedVersion]
+);
+if (updated.rowCount === 0) {
+  throw new ConflictError('Concurrent edit detected. Please refresh and retry.');
 }`,
-      solutionExplanation: "Keyset pagination leverages B-Tree indexes directly, maintaining sub-millisecond query performance regardless of how deep the user paginates."
+      solutionExplanation: "Optimistic locking checks that no other transaction changed the version column during the user's edit window without requiring heavy row-level database locks."
     },
     selfCheckQuestions: [
-      "Why does `LIMIT 20 OFFSET 1000000` scan 1,000,020 rows in PostgreSQL?",
-      "How does optimistic locking prevent the Lost Update problem without locking the database table?",
-      "What index must you create on a table that uses soft deletes?"
-    ]
-  },
-  {
-    id: "restful-architecture",
-    number: 10,
-    title: "RESTful Architecture and Best Practices",
-    phaseId: 2,
-    phaseName: "Application Architecture & Request Lifecycle",
-    duration: "45 min",
-    youtubeId: "lsMQRaeKNDk",
-    youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Resource modeling, noun-based URLs, HTTP verb mapping, and API design standards.",
-    seniorInsight: {
-      quote: "Your API is a user interface for developers. Make it self-describing, consistent, and predictable.",
-      productionLesson: "Never mix actions into resource names (e.g. avoid `/api/cancelOrder`). Instead, model the action as a state transition on the resource (`PATCH /orders/{id} { status: 'cancelled' }`) or create a sub-resource (`POST /orders/{id}/cancellations`).",
-      commonMistake: "Deeply nesting resources more than 2 levels down (e.g. `/orgs/1/teams/2/projects/3/tasks/4/comments/5`)."
-    },
-    coreDeepDive: {
-      what: "Representational State Transfer (REST) is an architectural style utilizing standard HTTP semantics to manage resources.",
-      why: "Ensures uniform interfaces, stateless interactions, cacheability, and discoverability across distributed teams.",
-      howItWorks: [
-        "Plural nouns for collections: `/users`, `/articles`.",
-        "IDs for specific items: `/users/123`.",
-        "Sub-resources for tight ownership: `/users/123/orders`."
-      ],
-      blueprintTitle: "Standard REST Resource Mapping",
-      blueprintCode: `GET    /orders          -> List orders (filterable, paginated)
-POST   /orders          -> Create new order (returns 201 Created + Location)
-GET    /orders/:id      -> Get single order
-PUT    /orders/:id      -> Replace entire order (Idempotent)
-PATCH  /orders/:id      -> Partial update (e.g. update status)
-DELETE /orders/:id      -> Delete order (returns 204 No Content)`,
-      blueprintLanguage: "text"
-    },
-    recommendedBook: {
-      title: "RESTful Web APIs",
-      author: "Leonard Richardson & Mike Amundsen",
-      keyChapters: "Chapter 4: The Resource-Oriented Architecture",
-      whyReadThis: "Deeply clarifies Richardson's Maturity Model, Hypermedia controls, and proper resource scoping."
-    },
-    handsOnChallenge: {
-      ticketNumber: "TICKET-206",
-      title: "Refactor Non-RESTful RPC Endpoints into Clean REST",
-      scenario: "Legacy routes include `/getUserDetails`, `/createNewOrder`, `/deleteUserAccount`. Refactor these into canonical RESTful standards.",
-      acceptanceCriteria: [
-        "Design clean REST URI structures using appropriate HTTP verbs.",
-        "Ensure appropriate HTTP response codes (200, 201, 204, 404, 409).",
-        "Document query parameters for filtering and sorting."
-      ],
-      hints: [
-        "Map actions to HTTP verbs: POST to create, DELETE to remove.",
-        "Use query strings for filters: `/orders?status=shipped&sort=-created_at`."
-      ],
-      solutionCode: `// Canonical REST endpoints:
-GET    /api/v1/users/:id         // Returns 200 OK
-POST   /api/v1/orders            // Returns 201 Created with Location header
-DELETE /api/v1/users/:id         // Returns 204 No Content
-GET    /api/v1/orders?status=paid // Filtered list`,
-      solutionExplanation: "Conforming to standard REST semantics allows browsers, reverse proxies, and API clients to cache and handle errors predictably."
-    },
-    selfCheckQuestions: [
-      "Why should resource URIs be nouns rather than verbs?",
-      "When is a 204 No Content status code preferred over a 200 OK?",
-      "How should you model complex business actions in REST (e.g., 'approve an invoice')?"
-    ]
-  },
-  {
-    id: "business-logic-layer",
-    number: 11,
-    title: "Business Logic Layer (BLL) & Domain Invariants",
-    phaseId: 2,
-    phaseName: "Application Architecture & Request Lifecycle",
-    duration: "55 min",
-    youtubeId: "0bM2Q_4uMTo",
-    youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Domain-Driven Design basics, business invariants, domain events, and transaction boundaries.",
-    seniorInsight: {
-      quote: "An invariant is a business rule that must ALWAYS be true at all times (e.g. 'a bank account balance cannot drop below zero'). Defend your invariants with your life.",
-      productionLesson: "If multiple services or database updates need to stay consistent, encapsulate them inside a single ACID database transaction within your Business Logic Layer.",
-      commonMistake: "Anemic Domain Models: Treating domain classes as plain data holders and scattering business calculations across random helper files."
-    },
-    coreDeepDive: {
-      what: "The core engine of your software where business rules, calculations, and domain workflows reside, isolated from transport and database technologies.",
-      why: "Ensures the company's business rules remain correct and testable even if you switch web frameworks or database engines.",
-      howItWorks: [
-        "1. Entity maintains internal consistency and enforces invariants.",
-        "2. Service coordinates repositories and external services.",
-        "3. Domain Events notify other subsystems of state changes."
-      ],
-      blueprintTitle: "Enforcing Invariants in Domain Entity",
-      blueprintCode: `export class BankAccount {
-  constructor(public readonly id: string, private balance: number) {}
-
-  withdraw(amount: number): void {
-    if (amount <= 0) throw new Error("Withdrawal amount must be positive");
-    if (this.balance - amount < 0) {
-      throw new Error("Domain Invariant Violation: Insufficient balance");
-    }
-    this.balance -= amount;
-  }
-
-  getBalance(): number {
-    return this.balance;
-  }
-}`,
-      blueprintLanguage: "typescript"
-    },
-    recommendedBook: {
-      title: "Domain-Driven Design: Tackling Complexity in the Heart of Software",
-      author: "Eric Evans",
-      keyChapters: "Chapters 5 & 6 (Entities, Value Objects, and Aggregates)",
-      whyReadThis: "The seminal foundational book on structuring software around real-world business domains."
-    },
-    handsOnChallenge: {
-      ticketNumber: "TICKET-207",
-      title: "Implement Atomic Order Checkout with Stock Invariants",
-      scenario: "During flash sales, items are oversold because inventory checks and order creation are executed in separate uncoordinated queries. Enforce atomic inventory deduction.",
-      acceptanceCriteria: [
-        "Enforce invariant: Stock cannot drop below 0.",
-        "Wrap inventory reduction and order creation in a single database transaction.",
-        "Roll back the entire transaction if any item is out of stock."
-      ],
-      hints: [
-        "Use `BEGIN`, `COMMIT`, and `ROLLBACK` in your database client.",
-        "Check affected rows on `UPDATE products SET stock = stock - :qty WHERE id = :id AND stock >= :qty`."
-      ],
-      solutionCode: `export async function checkoutOrder(userId: string, items: CartItem[]) {
-  return await db.transaction(async (trx) => {
-    for (const item of items) {
-      const updated = await trx.query(
-        "UPDATE products SET stock = stock - $1 WHERE id = $2 AND stock >= $1 RETURNING id",
-        [item.quantity, item.productId]
-      );
-      if (updated.rowCount === 0) {
-        throw new Error(\`Insufficient stock for product \${item.productId}\`);
+      {
+        question: "Why does OFFSET pagination get slower the deeper the page number requested?",
+        answerExplanation: "The database engine must read all N offset records from disk and evaluate sort ordering before throwing them away. At page 10,000, it reads 200,000 rows just to display 20."
       }
-    }
-    const order = await trx.query(
-      "INSERT INTO orders (user_id, status) VALUES ($1, 'confirmed') RETURNING *",
-      [userId]
-    );
-    return order.rows[0];
-  });
-}`,
-      solutionExplanation: "Atomic database transactions guarantee that inventory is never decremented unless the order record is successfully committed."
-    },
-    selfCheckQuestions: [
-      "What is a domain invariant?",
-      "What is the difference between an Anemic Domain Model and a Rich Domain Model?",
-      "Why must database transaction boundaries be managed in the Business Logic Layer?"
     ]
   },
 
-  // Phase 3: Data Persistence & Performance
+  // ==========================================
+  // PHASE 3: Data Persistence & Storage
+  // ==========================================
   {
-    id: "database-postgresql-deep-dive",
+    id: "database-basics-postgresql",
     number: 12,
-    title: "Database Basics, Schema Design, Performance & PostgreSQL Deep Dive",
+    title: "Database Basics & PostgreSQL Deep Dive (ACID, MVCC, Connection Pools)",
     phaseId: 3,
-    phaseName: "Data Persistence & Performance",
-    duration: "75 min",
+    phaseName: "Data Persistence & Storage",
+    duration: "4 hrs 20 min",
     youtubeId: "qw--VYLpxG4",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "PostgreSQL internals, MVCC, B-Tree indexes, EXPLAIN ANALYZE, transactions, and connection pooling.",
+    shortSummary: "PostgreSQL relational architecture, ACID transactions, MVCC row versioning, transaction isolation levels, and PgBouncer connection pooling.",
     seniorInsight: {
-      quote: "Your backend code will rarely be the bottleneck. Your database queries and missing indexes will be responsible for 90% of your production outages.",
-      productionLesson: "Postgres spawns a separate OS process for every incoming connection. 300 backend instances with 10 connections each = 3,000 DB processes, which will crash your database RAM. Always place a connection pooler like PgBouncer in front of Postgres.",
-      commonMistake: "Using `SELECT *` in production, or creating an index on every single column without realizing indexes slow down INSERT and UPDATE performance."
+      quote: "PostgreSQL does not update rows in place. An UPDATE writes an entirely new row tuple and marks the old tuple dead. Vacuuming cleans it up.",
+      productionLesson: "PostgreSQL forks a dedicated OS process for every direct client connection (~10MB RAM per connection). Without an external connection pooler (like PgBouncer), spikes of 1,000 web connections will crash PostgreSQL with OOM or context-switching thrashing.",
+      commonMistake: "Assuming Read Committed isolation prevents all race conditions (it does not prevent lost updates or phantom reads)."
     },
     coreDeepDive: {
-      what: "Relational database schema design, ACID transaction isolation, and the internal storage mechanics of PostgreSQL.",
-      why: "The primary relational database is the single source of truth for business data; its schema dictates system scalability.",
+      what: "PostgreSQL is an advanced, enterprise-grade relational database powered by Multi-Version Concurrency Control (MVCC) and strict ACID compliance.",
+      why: "Guarantees financial-grade data durability and concurrent read/write isolation without table-locking overhead.",
       howItWorks: [
-        "MVCC (Multi-Version Concurrency Control): Writes do not block reads, and reads do not block writes. Dead tuples are reclaimed by VACUUM.",
-        "B-Tree Indexes: Self-balancing tree structure offering O(log N) lookup, range scans, and index-only scans.",
-        "EXPLAIN (ANALYZE, BUFFERS): Tells you whether a query used a Sequential Scan or Index Scan, and how many shared buffer memory pages were touched."
+        "1. Write-Ahead Logging (WAL): Mutations are sequentially flushed to append-only WAL before modifying data pages, guaranteeing crash recovery.",
+        "2. MVCC: Readers never block writers and writers never block readers because each transaction sees a consistent snapshot based on transaction IDs (xmin/xmax).",
+        "3. Vacuum: Background autovacuum daemon purges dead row versions and prevents transaction ID wraparound."
       ],
-      blueprintTitle: "Composite Indexing & EXPLAIN Execution",
-      blueprintCode: `-- Optimal index for WHERE user_id = 123 ORDER BY created_at DESC
-CREATE INDEX idx_orders_user_created 
-ON orders (user_id, created_at DESC);
-
--- Inspect query execution plan
-EXPLAIN (ANALYZE, BUFFERS)
-SELECT id, total_cents FROM orders 
-WHERE user_id = 'usr_42' 
-ORDER BY created_at DESC 
-LIMIT 10;`,
-      blueprintLanguage: "sql"
+      blueprintTitle: "PostgreSQL Connection Pooling Architecture",
+      blueprintCode: `[1,000 Web Client Workers]
+       │
+       ▼ (Lightweight client connections)
+[PgBouncer Pooler (Transaction Mode)]
+       │
+       ▼ (50 Persistent pooled server connections)
+[PostgreSQL Database Instance] (ACID Execution Engine)`,
+      blueprintLanguage: "text"
     },
     recommendedBook: {
       title: "The Art of PostgreSQL",
       author: "Dimitri Fontaine",
       keyChapters: "Chapters 4, 6 & 7 (Data Types, Concurrency, and Indexing Strategies)",
-      whyReadThis: "Written by a PostgreSQL major contributor, this book teaches how to leverage SQL as a true programming language."
+      whyReadThis: "Master-level exploration of SQL set-theory, concurrency control, and relational modeling in PostgreSQL.",
+      readingUrl: "https://theartofpostgresql.com/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-301",
-      title: "Optimize a 4-Second Slow Query with EXPLAIN ANALYZE",
-      scenario: "An endpoint running `SELECT * FROM audit_logs WHERE tenant_id = 't_1' AND action = 'LOGIN' ORDER BY timestamp DESC LIMIT 20` takes 4.2 seconds on a 5M row table.",
+      ticketNumber: "TICKET-012",
+      title: "Inspect MVCC Dead Tuples & Configure PgBouncer Pool",
+      scenario: "High-volume updates on the orders table are bloating disk storage and slowing sequential scans due to dead tuples.",
       acceptanceCriteria: [
-        "Run `EXPLAIN (ANALYZE, BUFFERS)` to observe the Seq Scan.",
-        "Create an optimal composite B-Tree index.",
-        "Verify the query transforms into an Index Scan with execution time < 2ms."
+        "Query pg_stat_user_tables to detect n_dead_tup counts.",
+        "Trigger VACUUM (VERBOSE, ANALYZE) to reclaim table space."
       ],
-      terminalLab: `docker run --name pg-lab -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:16
-# Seed mock data and experiment with EXPLAIN ANALYZE`,
+      terminalLab: `psql -d testdb -c "SELECT relname, n_live_tup, n_dead_tup, last_vacuum FROM pg_stat_user_tables;"`,
       hints: [
-        "Columns with equality filters (`tenant_id`, `action`) should precede sort columns (`timestamp DESC`) in composite indexes.",
-        "Avoid `SELECT *`; specify exact column names to allow potential Index Only Scans."
+        "Look for tables where n_dead_tup exceeds n_live_tup!"
       ],
-      solutionCode: `CREATE INDEX idx_audit_logs_tenant_action_ts 
-ON audit_logs (tenant_id, action, timestamp DESC);
-
--- Query:
-SELECT id, user_id, timestamp 
-FROM audit_logs 
-WHERE tenant_id = 't_1' AND action = 'LOGIN' 
-ORDER BY timestamp DESC 
-LIMIT 20;`,
-      solutionExplanation: "The composite index satisfies both the filtering criteria and the ordering constraint simultaneously, avoiding an expensive in-memory sort."
+      solutionCode: `VACUUM (VERBOSE, ANALYZE) orders;`,
+      solutionExplanation: "Vacuuming marks dead tuple space as reusable for future inserts, preventing table bloat and keeping index pages compact."
     },
     selfCheckQuestions: [
-      "How does MVCC allow readers to never block writers in PostgreSQL?",
-      "What is the difference between a Sequential Scan, an Index Scan, and an Index Only Scan?",
-      "Why is PgBouncer mandatory when scaling PostgreSQL across dozens of application containers?"
+      {
+        question: "How does MVCC allow readers and writers to operate concurrently without blocking each other?",
+        answerExplanation: "Writers insert new versions of rows with xmin set to their transaction ID rather than mutating rows in-place. Readers look at a snapshot of transaction IDs that were committed before their transaction started, ignoring uncommitted or newer row versions."
+      }
     ]
   },
   {
-    id: "caching",
+    id: "schema-design-relational-modeling",
     number: 13,
-    title: "Caching Strategies & Redis Deep Dive",
+    title: "Schema Design & Relational Modeling (Normalization vs Denormalization, Foreign Keys)",
     phaseId: 3,
-    phaseName: "Data Persistence & Performance",
-    duration: "60 min",
-    youtubeId: "dGAgxozNWFE",
+    phaseName: "Data Persistence & Storage",
+    duration: "5 hrs 55 min",
+    youtubeId: "26ls5lNiijk",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Cache-aside, write-through, cache stampede, penetration, avalanche, and Redis data structures.",
+    shortSummary: "Database normalization (1NF to 3NF), intentional denormalization, surrogate vs natural keys, UUIDv7, and foreign key referential integrity.",
     seniorInsight: {
-      quote: "There are only two hard things in Computer Science: cache invalidation and naming things. — Phil Karlton",
-      productionLesson: "If 10,000 requests hit your app for an uncached or just-expired key at the exact same millisecond, all 10,000 will hammer your PostgreSQL database at once (Cache Stampede). Use singleflight mutexes or probabilistic early expiration.",
-      commonMistake: "Caching data without a TTL (Time To Live), leading to permanent memory exhaustion (OOM) or stale data that never updates."
+      quote: "Normalize until it hurts, denormalize until it works. Premature denormalization causes data anomalies; premature normalization causes 12-table join deadlocks.",
+      productionLesson: "Avoid sequential integer IDs (1, 2, 3) in public APIs because competitors can scrape your daily order volume (German Tank Problem). Use UUIDv7, which combines a millisecond Unix timestamp with randomness for monotonic B-Tree insertion locality.",
+      commonMistake: "Omitting foreign key indexes, causing PostgreSQL to execute full table scans whenever parent rows are deleted or updated."
     },
     coreDeepDive: {
-      what: "Storing expensive database query results or computed data in fast in-memory stores like Redis to achieve sub-millisecond response times.",
-      why: "Reduces relational database load, increases throughput by orders of magnitude, and prevents traffic spikes from taking down backend services.",
+      what: "Relational modeling organizes domain entities into tables with strict mathematical relationships and constraints.",
+      why: "Prevents data anomalies, guarantees referential integrity, and provides a durable foundation for application growth.",
       howItWorks: [
-        "Cache-Aside (Lazy Loading): App reads cache -> miss -> reads DB -> writes to cache -> returns.",
-        "Write-Through: App writes to cache -> cache writes to DB.",
-        "TTL with Jitter: Adding random seconds (e.g. 300s + Math.random() * 30) prevents keys from expiring at the exact same instant (Cache Avalanche)."
+        "1. 1NF: Atomic values, no repeating groups.",
+        "2. 2NF: No partial dependencies on composite primary keys.",
+        "3. 3NF: No transitive dependencies (non-key columns depend only on the primary key).",
+        "4. Denormalization: Selectively duplicating aggregate columns (e.g. comment_count) when read volume exceeds write volume by 1000:1."
       ],
-      blueprintTitle: "Cache-Aside with Stampede Protection (Mutex)",
-      blueprintCode: `async function getCachedUserProfile(userId: string) {
-  const cacheKey = \`user:\${userId}\`;
+      blueprintTitle: "UUIDv7 Primary Key Definition",
+      blueprintCode: `-- PostgreSQL 17 / UUIDv7 Time-ordered UUID
+CREATE TABLE orders (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(), -- Time-ordered
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+  total_amount_cents BIGINT NOT NULL CHECK (total_amount_cents >= 0),
+  status VARCHAR(32) NOT NULL DEFAULT 'PENDING',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Crucial: Always create an explicit index on foreign keys!
+CREATE INDEX idx_orders_user_id ON orders(user_id);`,
+      blueprintLanguage: "sql"
+    },
+    recommendedBook: {
+      title: "Database Design for Mere Mortals",
+      author: "Michael J. Hernandez",
+      keyChapters: "Chapters 5 & 7 (Table Structures, Keys, and Normalization Rules)",
+      whyReadThis: "The most practical, step-by-step methodology for relational schema design and integrity enforcement.",
+      readingUrl: "https://www.geeksforgeeks.org/database-normalization-introduction/"
+    },
+    handsOnChallenge: {
+      ticketNumber: "TICKET-013",
+      title: "Model an E-Commerce Schema with Zero-Loss Inventory Invariants",
+      scenario: "Design normalized tables for Users, Orders, OrderItems, and Inventory with foreign key constraints preventing orphan records.",
+      acceptanceCriteria: [
+        "Enforce ON DELETE RESTRICT on users with active orders.",
+        "Use CHECK constraints to ensure inventory count never drops below zero.",
+        "Index all foreign key reference columns."
+      ],
+      terminalLab: `psql -d testdb -c "\d orders"`,
+      hints: [
+        "Foreign key constraints automatically enforce referential integrity but DO NOT create indexes automatically!"
+      ],
+      solutionCode: `CREATE TABLE inventory (
+  product_id UUID PRIMARY KEY,
+  stock_quantity INT NOT NULL CHECK (stock_quantity >= 0)
+);`,
+      solutionExplanation: "Database CHECK constraints enforce business invariants at the lowest storage layer, guaranteeing corrupted data cannot be inserted even if application code has bugs."
+    },
+    selfCheckQuestions: [
+      {
+        question: "Why does UUIDv4 cause B-Tree index fragmentation while UUIDv7 does not?",
+        answerExplanation: "UUIDv4 is completely random, inserting keys randomly across B-Tree pages and causing constant page splits and disk thrashing. UUIDv7 embeds a timestamp prefix, ensuring new keys append sequentially to the rightmost leaf page."
+      }
+    ]
+  },
+  {
+    id: "database-indexing-query-performance",
+    number: 14,
+    title: "Database Indexing & Query Performance (B-Trees, EXPLAIN ANALYZE, N+1 Problems)",
+    phaseId: 3,
+    phaseName: "Data Persistence & Storage",
+    duration: "43 min",
+    youtubeId: "pomxJOFVcQs",
+    youtubeChannelUrl: CHANNEL_URL,
+    shortSummary: "B-Tree internals, composite index leftmost prefix rules, reading EXPLAIN (ANALYZE, BUFFERS), and eliminating N+1 query patterns.",
+    seniorInsight: {
+      quote: "An index is not magic dust. Every index accelerates read queries but penalizes every single INSERT, UPDATE, and DELETE.",
+      productionLesson: "Always inspect EXPLAIN (ANALYZE, BUFFERS). If you see 'Seq Scan' on a table with millions of rows or 'Buffers: shared read=50000', your query is reading massive data blocks off disk instead of using RAM-cached B-Tree index pages.",
+      commonMistake: "Creating a composite index on (status, created_at) and expecting it to accelerate queries filtering only on created_at (violates Leftmost Prefix rule)."
+    },
+    coreDeepDive: {
+      what: "Indexes are auxiliary balanced tree (B-Tree) data structures that allow database engines to locate matching rows in O(log N) operations.",
+      why: "Transforms multi-second full table scans into sub-millisecond index seeks.",
+      howItWorks: [
+        "1. B-Trees maintain sorted balance across leaf nodes linked together for fast range scans.",
+        "2. Composite index (A, B) only works if column A is filtered in the WHERE clause.",
+        "3. Covering indexes (INCLUDE clause) store payload columns in leaf nodes, avoiding heap table fetches completely (Index-Only Scan)."
+      ],
+      blueprintTitle: "B-Tree Index vs Sequential Scan Analysis",
+      blueprintCode: `-- Unindexed Slow Query: Seq Scan (scans 1,000,000 rows off disk)
+EXPLAIN (ANALYZE, BUFFERS) 
+SELECT * FROM users WHERE email = 'alice@example.com';
+-- Result: Execution Time: 480.25 ms (Seq Scan on users)
+
+-- Add B-Tree Index
+CREATE UNIQUE INDEX idx_users_email ON users(email);
+
+-- Indexed Fast Query: Index Scan (seeks directly via 3 B-Tree hops)
+EXPLAIN (ANALYZE, BUFFERS) 
+SELECT * FROM users WHERE email = 'alice@example.com';
+-- Result: Execution Time: 0.12 ms (Index Scan using idx_users_email)`,
+      blueprintLanguage: "sql"
+    },
+    recommendedBook: {
+      title: "SQL Performance Explained",
+      author: "Markus Winand",
+      keyChapters: "Chapters 1 & 2 (Anatomy of an Index, The WHERE Clause)",
+      whyReadThis: "The undisputed industry guide for understanding B-Trees, composite indexing, and database query plan optimization.",
+      readingUrl: "https://use-the-index-luke.com/"
+    },
+    handsOnChallenge: {
+      ticketNumber: "TICKET-014",
+      title: "Diagnose and Eliminate an N+1 Query Cascade",
+      scenario: "An endpoint fetching 100 users executes 1 SQL query for users and 100 separate SQL queries for their addresses, taking 2.5 seconds.",
+      acceptanceCriteria: [
+        "Identify the N+1 query loop in logs.",
+        "Refactor into a single query using an INNER JOIN or WHERE id IN (...) eager load."
+      ],
+      terminalLab: `psql -d testdb -c "EXPLAIN ANALYZE SELECT * FROM orders WHERE user_id IN (SELECT id FROM users LIMIT 10);"`,
+      hints: [
+        "Instead of querying db.query('SELECT * FROM addresses WHERE user_id = ?') inside a for-loop, use one query with WHERE user_id = ANY($1)."
+      ],
+      solutionCode: `// Clean single-query eager fetch
+const users = await db.query('SELECT * FROM users LIMIT 100');
+const userIds = users.rows.map(u => u.id);
+const addresses = await db.query('SELECT * FROM addresses WHERE user_id = ANY($1)', [userIds]);`,
+      solutionExplanation: "Batching child IDs into a single query reduces 101 network round-trips down to exactly 2 round-trips, slashing response time by 95%."
+    },
+    selfCheckQuestions: [
+      {
+        question: "What is the Leftmost Prefix rule for composite indexes?",
+        answerExplanation: "A composite index on columns (A, B, C) can only be used by queries that filter on (A), (A, B), or (A, B, C). A query filtering only on (B) or (C) cannot traverse the tree because sorting is hierarchical starting with A."
+      }
+    ]
+  },
+  {
+    id: "business-logic-layer-domain-invariants",
+    number: 15,
+    title: "Business Logic Layer (BLL) & Domain Invariants (Transactions, Repository Pattern)",
+    phaseId: 3,
+    phaseName: "Data Persistence & Storage",
+    duration: "30 min",
+    youtubeId: "1Lcr2c3MVF4",
+    youtubeChannelUrl: CHANNEL_URL,
+    shortSummary: "Domain-Driven Design (DDD), maintaining business invariants across aggregate roots, and wrapping multi-table workflows in database transactions.",
+    seniorInsight: {
+      quote: "An invariant is a business rule that must ALWAYS be true at all times (e.g. account balance cannot be negative). Enforce invariants in the domain layer, not in UI forms.",
+      productionLesson: "Always wrap multi-table state mutations in an explicit ACID transaction (BEGIN ... COMMIT). If a transfer debits Account A and the server crashes before crediting Account B, money vanishes into thin air without transaction rollback.",
+      commonMistake: "Letting repository methods manage transactions internally, preventing multiple repository calls from sharing a single atomic Unit of Work."
+    },
+    coreDeepDive: {
+      what: "The Business Logic Layer encapsulates core domain rules, entity aggregates, and business workflows independently of UI or database technologies.",
+      why: "Ensures business rules remain cohesive, testable, and protected against invalid state transitions.",
+      howItWorks: [
+        "1. Entities encapsulate identity and business validation logic.",
+        "2. Aggregates act as consistency boundaries around related entities.",
+        "3. Unit of Work manages database transaction lifecycle across multiple repository updates."
+      ],
+      blueprintTitle: "Atomic Money Transfer Transaction",
+      blueprintCode: `async function transferFunds(fromId, toId, amountCents) {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    // Lock source row to prevent concurrent overdraft
+    const from = await client.query(
+      'SELECT balance FROM accounts WHERE id = $1 FOR UPDATE',
+      [fromId]
+    );
+    if (from.rows[0].balance < amountCents) {
+      throw new Error('Insufficient funds invariant violated');
+    }
+    await client.query('UPDATE accounts SET balance = balance - $1 WHERE id = $2', [amountCents, fromId]);
+    await client.query('UPDATE accounts SET balance = balance + $1 WHERE id = $2', [amountCents, toId]);
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}`,
+      blueprintLanguage: "javascript"
+    },
+    recommendedBook: {
+      title: "Domain-Driven Design: Tackling Complexity in the Heart of Software",
+      author: "Eric Evans",
+      keyChapters: "Chapters 5 & 6 (Entities, Value Objects, and Aggregates)",
+      whyReadThis: "The foundational bible for structuring complex enterprise software and modeling business invariants.",
+      readingUrl: "https://www.domainlanguage.com/ddd/reference/"
+    },
+    handsOnChallenge: {
+      ticketNumber: "TICKET-015",
+      title: "Implement Transactional Outbox Pattern for Order Invariants",
+      scenario: "Orders must be saved and an event emitted to RabbitMQ atomically. If the message broker is down, the order must still commit.",
+      acceptanceCriteria: [
+        "Write order and outbox event into PostgreSQL inside the SAME database transaction.",
+        "A separate background poller reads uncommitted outbox rows and publishes to RabbitMQ."
+      ],
+      terminalLab: `psql -d testdb -c "SELECT * FROM outbox_events WHERE processed = false;"`,
+      hints: [
+        "Because both writes share a single database transaction, either both succeed or both roll back!"
+      ],
+      solutionCode: `await client.query('BEGIN');
+await client.query('INSERT INTO orders (id, total) VALUES ($1, $2)', [orderId, total]);
+await client.query('INSERT INTO outbox_events (event_type, payload) VALUES ($1, $2)', ['ORDER_CREATED', JSON.stringify({ orderId })]);
+await client.query('COMMIT');`,
+      solutionExplanation: "The Transactional Outbox pattern guarantees 100% data consistency between database state mutations and asynchronous message broker publishing."
+    },
+    selfCheckQuestions: [
+      {
+        question: "Why does dual-writing to PostgreSQL and RabbitMQ without a Transactional Outbox guarantee eventual data loss?",
+        answerExplanation: "Network calls can fail midway. If the database commit succeeds but the RabbitMQ network connection drops before publishing, the message is lost forever and downstream services never learn of the event."
+      }
+    ]
+  },
+  {
+    id: "caching-strategies-redis",
+    number: 16,
+    title: "Caching Strategies (Redis, Cache-Aside, Write-Through, Cache Invalidation)",
+    phaseId: 3,
+    phaseName: "Data Persistence & Storage",
+    duration: "1 hr 27 min",
+    youtubeId: "XCsS_NVAa1g",
+    youtubeChannelUrl: CHANNEL_URL,
+    shortSummary: "In-memory caching with Redis: Cache-Aside, Write-Through, TTL strategies, Cache Stampede (Thundering Herd), and invalidation patterns.",
+    seniorInsight: {
+      quote: "There are only two hard things in Computer Science: cache invalidation and naming things. — Phil Karlton",
+      productionLesson: "Never cache data without an explicit TTL (Time-To-Live). A bug in your cache invalidation logic will serve stale, corrupted user data indefinitely unless protected by an automated expiration fallback.",
+      commonMistake: "Caching identical database queries with the exact same TTL, causing thousands of keys to expire at the same second and hammering PostgreSQL with a Thundering Herd spike."
+    },
+    coreDeepDive: {
+      what: "Caching stores computed database results in high-speed RAM (Redis/Memcached) to avoid repeated disk I/O and query execution.",
+      why: "Reduces database query load by 90%+ and drops API response latency from 50ms to under 2ms.",
+      howItWorks: [
+        "1. Cache-Aside: Application checks Redis for key. On cache hit, return immediately. On cache miss, read PostgreSQL, populate Redis with TTL, and return.",
+        "2. Cache Stampede Mitigation: Apply random jitter to TTLs (e.g. 300s + Math.random() * 30s) so keys expire smoothly.",
+        "3. Distributed Mutex: When cache expires, only one worker acquires a lock to recompute the data while other requests serve stale or wait."
+      ],
+      blueprintTitle: "Cache-Aside Pattern with Jittered TTL",
+      blueprintCode: `async function getProduct(productId) {
+  const cacheKey = 'product:' + productId;
   const cached = await redis.get(cacheKey);
   if (cached) return JSON.parse(cached);
 
-  // Lock key to prevent 10,000 concurrent DB queries
-  const lock = await redis.set(\`lock:\${cacheKey}\`, "1", "NX", "EX", 5);
-  if (!lock) {
-    // Another worker is fetching; wait 50ms and retry
-    await sleep(50);
-    return getCachedUserProfile(userId);
-  }
-
-  try {
-    const user = await db.findUser(userId);
-    const ttlSeconds = 3600 + Math.floor(Math.random() * 300); // with jitter
-    await redis.set(cacheKey, JSON.stringify(user), "EX", ttlSeconds);
-    return user;
-  } finally {
-    await redis.del(\`lock:\${cacheKey}\`);
-  }
+  // Cache Miss: Query Database
+  const product = await db.query('SELECT * FROM products WHERE id = $1', [productId]);
+  
+  // Apply random jitter to prevent cache stampede
+  const ttl = 300 + Math.floor(Math.random() * 30);
+  await redis.set(cacheKey, JSON.stringify(product.rows[0]), 'EX', ttl);
+  return product.rows[0];
 }`,
-      blueprintLanguage: "typescript"
+      blueprintLanguage: "javascript"
     },
     recommendedBook: {
       title: "Redis in Action",
       author: "Josiah L. Carlson",
-      keyChapters: "Chapters 1, 2 & 6 (Data structures, web application caching, and distributed locking)",
-      whyReadThis: "A hands-on guide exploring Redis Strings, Hashes, Sorted Sets, and transactional primitives."
+      keyChapters: "Chapters 1, 2 & 6 (Data Structures, Web Application Caching, and Distributed Locks)",
+      whyReadThis: "The canonical guide for mastering Redis data structures (Hashes, Sorted Sets, Bitmaps) and production caching.",
+      readingUrl: "https://redis.io/docs/latest/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-302",
-      title: "Implement Jittered Cache-Aside Pattern",
-      scenario: "During high-traffic announcements, the homepage product list key expires and causes a 100% database CPU spike. Implement Cache-Aside with TTL jitter.",
+      ticketNumber: "TICKET-016",
+      title: "Implement Distributed Rate Limiter using Redis Token Bucket",
+      scenario: "Prevent API abuse by limiting each API key to 100 requests per minute across 10 horizontal backend server instances.",
       acceptanceCriteria: [
-        "Check Redis before querying DB.",
-        "On cache miss, fetch from DB and write back to Redis.",
-        "Add a 10% random jitter to the TTL to prevent synchronized expiration."
+        "Use Redis INCR with EXPIRE or Redis Sorted Sets for atomic sliding window rate limiting.",
+        "Return 429 Too Many Requests with Retry-After header on limit breach."
       ],
+      terminalLab: `redis-cli -u redis://localhost:6379 ping`,
       hints: [
-        "Formula: `const ttl = baseTTL + Math.floor(Math.random() * jitterRange)`.",
-        "Use Redis pipeline or multi commands for batching."
+        "Single INCR operations in Redis are single-threaded and atomic, avoiding race conditions across servers!"
       ],
-      solutionCode: `async function getProducts() {
-  const cached = await redis.get("homepage:products");
-  if (cached) return JSON.parse(cached);
-
-  const products = await db.query("SELECT * FROM products WHERE active = true");
-  const jitter = Math.floor(Math.random() * 60); // 0-60s random jitter
-  await redis.set("homepage:products", JSON.stringify(products), "EX", 300 + jitter);
-  return products;
+      solutionCode: `async function rateLimiter(apiKey) {
+  const key = 'rate:' + apiKey + ':' + Math.floor(Date.now() / 60000);
+  const count = await redis.incr(key);
+  if (count === 1) await redis.expire(key, 60);
+  return count <= 100;
 }`,
-      solutionExplanation: "Adding random jitter smooths out eviction cycles, ensuring keys expire gradually over time rather than all at once."
+      solutionExplanation: "Keying by the current minute bucket and atomically incrementing guarantees consistent rate limits regardless of which server node handles the request."
     },
     selfCheckQuestions: [
-      "What is the difference between Cache Stampede, Cache Penetration, and Cache Avalanche?",
-      "Why is Redis faster than querying an in-memory table in PostgreSQL?",
-      "How do Redis Hashes (`HSET`/`HGET`) save memory compared to multiple String keys?"
-    ]
-  },
-  {
-    id: "full-text-search-elasticsearch",
-    number: 14,
-    title: "Full Text Search and Elasticsearch",
-    phaseId: 3,
-    phaseName: "Data Persistence & Performance",
-    duration: "55 min",
-    youtubeId: "C3q_sh3-mH4",
-    youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Inverted indexes, tokenization, BM25 relevance scoring, Postgres vs Elasticsearch, and CDC synchronization.",
-    seniorInsight: {
-      quote: "Don't install Elasticsearch on Day 1. PostgreSQL's built-in tsvector and GIN indexes handle 95% of early search requirements with zero extra infrastructure.",
-      productionLesson: "When you do adopt Elasticsearch, never do dual-writes from your API code (`db.save()` then `es.index()`). If the second call fails, your search index will permanently drift from your database. Use Change Data Capture (CDC) via Kafka or Debezium.",
-      commonMistake: "Using `LIKE '%keyword%'` in SQL, which triggers a full table scan and cannot leverage standard B-Tree indexes."
-    },
-    coreDeepDive: {
-      what: "Searching unstructured text quickly using inverted indexes that map words (tokens) to the documents that contain them.",
-      why: "Relational B-Trees cannot search substrings efficiently. Inverted indexes provide typo tolerance, stemming, relevance ranking, and facet filtering.",
-      howItWorks: [
-        "Analysis pipeline: Character filters -> Tokenizer (splits into words) -> Token filters (lowercasing, stemming, stop-word removal).",
-        "Relevance Scoring: BM25 (Best Matching 25) calculates term frequency and inverse document frequency.",
-        "Postgres FTS: `to_tsvector('english', body) @@ to_tsquery('english', 'search & query')`."
-      ],
-      blueprintTitle: "PostgreSQL Full-Text Search with GIN Index",
-      blueprintCode: `-- Add generated search vector column
-ALTER TABLE articles ADD COLUMN search_vector tsvector
-GENERATED ALWAYS AS (
-  to_tsvector('english', coalesce(title, '') || ' ' || coalesce(content, ''))
-) STORED;
-
--- Create GIN index for sub-millisecond search
-CREATE INDEX idx_articles_search ON articles USING GIN(search_vector);
-
--- Query with ranking
-SELECT id, title, ts_rank(search_vector, query) as rank
-FROM articles, to_tsquery('english', 'database & performance') query
-WHERE search_vector @@ query
-ORDER BY rank DESC LIMIT 10;`,
-      blueprintLanguage: "sql"
-    },
-    recommendedBook: {
-      title: "Relevant Search",
-      author: "Doug Turnbull & John Berryman",
-      keyChapters: "Chapters 2 & 3 (The Anatomy of a Search Engine, Inverted Indexes)",
-      whyReadThis: "Demystifies how Lucene-based search engines rank, tokenize, and calculate relevance scores."
-    },
-    handsOnChallenge: {
-      ticketNumber: "TICKET-303",
-      title: "Replace Slow SQL LIKE Queries with Postgres tsvector",
-      scenario: "Users complain that searching products with `WHERE description ILIKE '%shoes%'` takes 3.5 seconds. Convert this to PostgreSQL Full-Text Search.",
-      acceptanceCriteria: [
-        "Create a `tsvector` column and a GIN index on `products`.",
-        "Execute query using `@@ to_tsquery()`.",
-        "Achieve query latency under 5ms on a 500k row dataset."
-      ],
-      hints: [
-        "Use `plainto_tsquery` to safely convert arbitrary user input into valid tsquery tokens.",
-        "Verify the query uses a 'Bitmap Index Scan' on the GIN index using EXPLAIN."
-      ],
-      solutionCode: `CREATE INDEX idx_products_fts ON products USING GIN(to_tsvector('english', name || ' ' || description));
-
--- Query
-SELECT id, name 
-FROM products 
-WHERE to_tsvector('english', name || ' ' || description) @@ plainto_tsquery('english', 'running shoes')
-LIMIT 20;`,
-      solutionExplanation: "GIN indexes search inverted term arrays directly, eliminating expensive row-by-row string parsing."
-    },
-    selfCheckQuestions: [
-      "What is an inverted index and why is it superior to a B-Tree for full-text search?",
-      "Why does dual-writing to both Postgres and Elasticsearch lead to data inconsistency?",
-      "What does stemming mean in search tokenization (e.g. 'running' -> 'run')?"
-    ]
-  },
-  {
-    id: "object-storage-large-files",
-    number: 15,
-    title: "Object Storage and Large Files",
-    phaseId: 3,
-    phaseName: "Data Persistence & Performance",
-    duration: "45 min",
-    youtubeId: "v3D_pA44d_0",
-    youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "S3, presigned upload/download URLs, multipart chunking, and offloading heavy media from API servers.",
-    seniorInsight: {
-      quote: "Never stream 1GB video uploads through your application servers. Generate a presigned S3 URL and let the client upload directly to object storage.",
-      productionLesson: "Streaming large files through your Node.js or Python backend exhausts server memory, ties up worker threads, and burns your bandwidth bill. Always use direct-to-S3 uploads with presigned URLs.",
-      commonMistake: "Storing file binaries directly as BLOBs in PostgreSQL or storing user uploads on local application server disk."
-    },
-    coreDeepDive: {
-      what: "Storing unstructured data (images, videos, PDFs, backups) as immutable objects in distributed object storage services (AWS S3, Cloudflare R2, MinIO).",
-      why: "Object storage offers near-infinite scalability, 99.999999999% (11 9s) durability, and built-in CDN edge distribution.",
-      howItWorks: [
-        "1. Client requests upload authorization from backend API.",
-        "2. Backend validates permissions and returns a cryptographically signed Presigned PUT URL (valid for 15 mins).",
-        "3. Client uploads file directly to S3 via HTTP PUT.",
-        "4. S3 fires an event notification (SNS/SQS/Webhook) to notify backend that upload completed."
-      ],
-      blueprintTitle: "Direct-to-S3 Presigned URL Flow",
-      blueprintCode: `import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-
-const s3 = new S3Client({ region: "us-east-1" });
-
-export async function generateUploadUrl(userId: string, filename: string) {
-  const fileKey = \`uploads/\${userId}/\${crypto.randomUUID()}-\${filename}\`;
-  
-  const command = new PutObjectCommand({
-    Bucket: "my-app-uploads",
-    Key: fileKey,
-    ContentType: "image/jpeg",
-  });
-
-  // URL valid for 15 minutes
-  const uploadUrl = await getSignedUrl(s3, command, { expiresIn: 900 });
-  return { uploadUrl, fileKey };
-}`,
-      blueprintLanguage: "typescript"
-    },
-    recommendedBook: {
-      title: "Cloud Application Architectures",
-      author: "George Reese",
-      keyChapters: "Chapter 4: Designing for Infrastructure (Decoupled Storage & Asset Delivery)",
-      whyReadThis: "Foundational strategies for offloading state and large assets from web servers to cloud object storage."
-    },
-    handsOnChallenge: {
-      ticketNumber: "TICKET-304",
-      title: "Implement Secure Presigned S3 Uploads",
-      scenario: "Application servers are crashing with Out-of-Memory (OOM) errors because users are uploading 50MB video clips directly to `POST /api/upload`. Refactor to presigned URLs.",
-      acceptanceCriteria: [
-        "Endpoint `POST /api/media/presigned-url` returns a signed S3 upload URL.",
-        "Enforce Content-Type and maximum expiration time (10 minutes).",
-        "Frontend performs direct `PUT` to the returned URL."
-      ],
-      hints: [
-        "Never include AWS secret keys on the frontend.",
-        "Use AWS SDK `@aws-sdk/s3-request-presigner`."
-      ],
-      solutionCode: `export async function handlePresignedRequest(req, res) {
-  const { fileName, fileType } = req.body;
-  if (!["image/png", "image/jpeg", "video/mp4"].includes(fileType)) {
-    return res.status(400).json({ error: "Unsupported media type" });
-  }
-
-  const key = \`media/\${Date.now()}-\${fileName}\`;
-  const command = new PutObjectCommand({
-    Bucket: process.env.S3_BUCKET!,
-    Key: key,
-    ContentType: fileType,
-  });
-
-  const url = await getSignedUrl(s3Client, command, { expiresIn: 600 });
-  res.json({ uploadUrl: url, key });
-}`,
-      solutionExplanation: "Offloading file payload streams from the API layer frees up server memory and network interfaces to handle lightweight transactional requests."
-    },
-    selfCheckQuestions: [
-      "Why is storing uploaded files on an app server's local file system a fatal mistake in Dockerized environments?",
-      "How do presigned URLs authenticate client uploads without sharing AWS credentials?",
-      "What are Multipart Uploads in S3 and when should they be utilized?"
+      {
+        question: "What is a Cache Stampede (Thundering Herd) and how does TTL Jitter prevent it?",
+        answerExplanation: "When a popular key expires, thousands of concurrent requests all detect a cache miss at the exact same millisecond and simultaneously hit the database with identical queries. Adding random jitter (TTL +/- random delta) ensures keys expire at staggered times."
+      }
     ]
   },
 
-  // Phase 4: Security & Access Control
+  // ==========================================
+  // PHASE 4: Security & Access Control
+  // ==========================================
   {
-    id: "authentication-authorization",
-    number: 16,
-    title: "Authentication and Authorization",
+    id: "authentication-identity",
+    number: 17,
+    title: "Authentication & Identity (Sessions, JWTs, Refresh Token Rotation, Cookies)",
     phaseId: 4,
     phaseName: "Security & Access Control",
-    duration: "65 min",
+    duration: "37 min",
     youtubeId: "2PPSXonhIck",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Passkeys, Argon2id, JWT vs Sessions, Refresh Token Rotation, RBAC vs ABAC, and OAuth2.",
+    shortSummary: "Stateful session cookies (HttpOnly, Secure, SameSite) vs stateless JWTs, cryptographic signing (RS256), and refresh token rotation with reuse detection.",
     seniorInsight: {
-      quote: "Never store JWTs in localStorage. An XSS flaw anywhere in your frontend will allow attackers to silently steal all user sessions.",
-      productionLesson: "Store your authentication tokens in `HttpOnly, Secure, SameSite=Strict` cookies. If using JWTs, keep them short-lived (10 mins) and implement rotating Refresh Tokens backed by Redis or DB revocation lists.",
-      commonMistake: "Confusing Authentication ('Who are you?') with Authorization ('What are you allowed to do?'), leading to IDOR/BOLA security holes."
+      quote: "Never store JWTs in localStorage. Any third-party npm package or XSS vulnerability can read localStorage and exfiltrate credentials instantly.",
+      productionLesson: "Stateless JWTs cannot be revoked without maintaining a centralized revocation list, which defeats the purpose of being stateless. Use short-lived access tokens (15 minutes) paired with stateful refresh tokens stored in HttpOnly, SameSite=Strict cookies with automatic reuse detection.",
+      commonMistake: "Using symmetric HS256 with weak secrets instead of asymmetric RS256 / EdDSA key pairs."
     },
     coreDeepDive: {
-      what: "Authentication (AuthN) verifies user identity; Authorization (AuthZ) verifies permissions to access or mutate a specific resource.",
-      why: "A single flaw in identity management exposes customer data, causes catastrophic breaches, and destroys organizational reputation.",
+      what: "Authentication proves WHO a user is; Identity management issues cryptographically verifiable credentials and maintains active sessions.",
+      why: "Protects sensitive user data, prevents account takeover, and establishes accountability for operations.",
       howItWorks: [
-        "Password Hashing: Salted adaptive algorithms (Argon2id or bcrypt) consume CPU & RAM to defeat GPU brute-forcing.",
-        "Session-based: Server stores session state in Redis; client holds an opaque random cookie identifier.",
-        "Token-based (JWT): Cryptographically signed JSON payload containing claims (exp, sub, roles)."
+        "1. User submits credentials; backend verifies password using Argon2id or bcrypt (cost factor >= 12).",
+        "2. Server issues short-lived JWT access token and saves refresh token family UUID in Redis.",
+        "3. Refresh token is delivered in an HttpOnly, Secure, SameSite=Strict cookie.",
+        "4. If a refresh token is reused, all tokens in the family are instantly revoked (Breach Detection)."
       ],
-      blueprintTitle: "Refresh Token Rotation Flow",
-      blueprintCode: `Client                    API Server                  Redis / DB
-  │                           │                           │
-  ├─ POST /auth/refresh ─────►│                           │
-  │  (with old refresh token) │                           │
-  │                           ├─ Validate old token ─────►│ (Check revocation)
-  │                           │◄─ Valid, single-use OK ───┤
-  │                           ├─ Invalidate old token ───►│ (Revoke old ID)
-  │                           ├─ Issue NEW Refresh Token ─►│ (Store new ID)
-  │◄─ Set-Cookie: new_token ──┤                           │
-  │   (New Access Token)      │                           │`,
+      blueprintTitle: "Refresh Token Rotation & Reuse Detection",
+      blueprintCode: `[Client submits Refresh Token #1]
+       │
+       ▼
+[Server validates Token #1 in DB]
+    ├── If Valid:
+    │     ├── Delete Token #1
+    │     ├── Issue Token #2 + Access Token
+    │     └── Return to client
+    └── If Token #1 was ALREADY used:
+          ├── THEFT DETECTED!
+          ├── Invalidate ALL refresh tokens for this User
+          └── Force re-authentication`,
       blueprintLanguage: "text"
     },
     recommendedBook: {
       title: "Web Security for Developers",
       author: "Malcolm McDonald",
       keyChapters: "Chapters 5 & 6 (Authentication, Password Storage, and Session Management)",
-      whyReadThis: "Real-world breakdowns of how attackers crack password hashes, hijack sessions, and bypass tokens."
+      whyReadThis: "Clear real-world guide to password hashing, session vulnerabilities, CSRF defenses, and authentication architecture.",
+      readingUrl: "https://owasp.org/www-project-web-security-testing-guide/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-401",
-      title: "Implement Refresh Token Rotation with Reuse Detection",
-      scenario: "If an attacker steals a refresh token, they could maintain persistent access. Implement Refresh Token Rotation so that if an old token is reused, all tokens for that user are immediately revoked.",
+      ticketNumber: "TICKET-017",
+      title: "Implement Refresh Token Rotation with Token Family Revocation",
+      scenario: "If an attacker intercepts a refresh token and uses it, the legitimate user's subsequent attempt should trigger immediate invalidation of the entire token family.",
       acceptanceCriteria: [
-        "When a refresh token is exchanged, invalidate it and issue a new one.",
-        "If an already-invalidated token is submitted, flag as stolen and invalidate all active user sessions.",
-        "Store token family ID in Redis or database."
+        "Track token family ID and parent token ID in database.",
+        "On reuse attempt, wipe all tokens for that user ID and log security incident."
       ],
+      terminalLab: `curl -X POST http://localhost:3000/api/auth/refresh -b "refreshToken=stolen-token-uuid"`,
       hints: [
-        "Assign a `familyId` UUID to the initial login.",
-        "Track the latest active token ID in the family; if an earlier token is presented, trigger security lockdown."
+        "Store a 'used: boolean' flag on each refresh token record in the database."
       ],
-      solutionCode: `async function rotateToken(providedToken: string) {
-  const tokenRecord = await db.findToken(providedToken);
-  if (!tokenRecord) throw new Error("Invalid token");
-
-  if (tokenRecord.isRevoked) {
-    // REUSE DETECTED! Potential attacker breach.
-    await db.revokeAllUserTokens(tokenRecord.userId);
-    throw new Error("Compromised session detected. All sessions terminated.");
+      solutionCode: `async function rotateToken(tokenStr) {
+  const token = await db.findToken(tokenStr);
+  if (token.used) {
+    await db.revokeAllUserTokens(token.userId);
+    throw new SecurityBreachError('Token reuse detected. All sessions revoked.');
   }
-
-  // Invalidate current token and issue replacement
-  await db.revokeToken(tokenRecord.id);
-  const newToken = await db.createToken({
-    userId: tokenRecord.userId,
-    familyId: tokenRecord.familyId
-  });
-
-  return newToken;
+  await db.markUsed(token.id);
+  return db.createToken({ userId: token.userId, familyId: token.familyId });
 }`,
-      solutionExplanation: "Reuse detection ensures that even if a refresh token leaks, the race between client and attacker immediately locks down the account."
+      solutionExplanation: "Token family tracking instantly detects when two entities possess the same token, quarantining compromised accounts automatically."
     },
     selfCheckQuestions: [
-      "Why should JWTs never be stored in browser `localStorage`?",
-      "Why is Argon2id preferred over standard SHA-256 or MD5 for password storage?",
-      "What is the difference between Role-Based Access Control (RBAC) and Attribute-Based Access Control (ABAC)?"
+      {
+        question: "Why should access tokens have short lifetimes (e.g. 10-15 minutes)?",
+        answerExplanation: "Because JWTs are self-contained and verified without database lookups, they cannot be easily revoked. A short expiration window limits the damage if a token is intercepted."
+      }
     ]
   },
   {
-    id: "security",
-    number: 17,
-    title: "Security and OWASP Top 10 API Security",
+    id: "authorization-access-control",
+    number: 18,
+    title: "Authorization & Access Control (RBAC, ABAC, Principle of Least Privilege)",
     phaseId: 4,
     phaseName: "Security & Access Control",
-    duration: "60 min",
-    youtubeId: "X4XzsmLpIug",
+    duration: "35 min",
+    youtubeId: "SuycfXLdF8o",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "BOLA/IDOR, SQL Injection, CSRF, Rate Limiting, CORS misconfigurations, and Data Encryption.",
+    shortSummary: "Role-Based Access Control (RBAC), Attribute-Based Access Control (ABAC), policy enforcement points, and multi-tenant data isolation.",
     seniorInsight: {
-      quote: "BOLA (Broken Object Level Authorization) is the #1 vulnerability on the internet. Never query a resource by ID without checking that the requesting user actually owns it.",
-      productionLesson: "Querying `SELECT * FROM invoices WHERE id = :id` without `AND organization_id = :current_user_org_id` allows any authenticated user to read any other company's private invoices simply by changing the ID in the URL.",
-      commonMistake: "Setting CORS header `Access-Control-Allow-Origin: *` while allowing credentials, or relying on client IP addresses without verifying reverse proxy headers."
+      quote: "Authentication is knowing who the caller is. Authorization is verifying whether they have permission to modify THIS specific row in the database.",
+      productionLesson: "Broken Object Level Authorization (BOLA/IDOR) is the #1 API vulnerability in the world. Never write: UPDATE documents SET body = :body WHERE id = :id. Always scope by ownership: WHERE id = :id AND organization_id = :currentOrgId.",
+      commonMistake: "Checking roles in UI buttons while forgetting to check row-level permissions on backend endpoints."
     },
     coreDeepDive: {
-      what: "Proactively engineering defense mechanisms against the most common web and API attack vectors defined by the OWASP foundation.",
-      why: "Security cannot be added at the end; it must be built into database queries, middleware, and architecture from Day 1.",
+      what: "Authorization governs permissions and access policies determining what authenticated entities are allowed to execute.",
+      why: "Prevents vertical privilege escalation (users acting as admins) and horizontal privilege escalation (user A viewing user B's medical records).",
       howItWorks: [
-        "BOLA/IDOR: Enforce tenant boundaries in every single query.",
-        "SQL Injection: Strictly use parameterized queries / prepared statements (never string concatenation).",
-        "Rate Limiting: Token Bucket or Sliding Window algorithms based on IP or User ID."
+        "1. RBAC assigns permissions to roles (Admin, Member, Viewer) and roles to users.",
+        "2. ABAC evaluates dynamic attributes (user department, resource classification, current time, IP subnet).",
+        "3. Policy Enforcement Point (PEP) intercepts the request and verifies policies before running domain handlers."
       ],
-      blueprintTitle: "Defending Against BOLA / IDOR in Data Layer",
-      blueprintCode: `// VULNERABLE TO BOLA / IDOR:
-export async function getInvoice(invoiceId: string) {
-  return await db.query("SELECT * FROM invoices WHERE id = $1", [invoiceId]);
-}
+      blueprintTitle: "Multi-Tenant BOLA-Proof Query",
+      blueprintCode: `// VULNERABLE TO BOLA / IDOR (Attacker passes any documentId)
+SELECT * FROM documents WHERE id = $1;
 
-// SECURE - Enforces Ownership:
-export async function getInvoiceSecure(invoiceId: string, userOrgId: string) {
-  const result = await db.query(
-    "SELECT * FROM invoices WHERE id = $1 AND organization_id = $2",
-    [invoiceId, userOrgId]
-  );
-  if (result.rows.length === 0) {
-    throw new NotFoundError("Invoice not found or access denied");
-  }
-  return result.rows[0];
-}`,
-      blueprintLanguage: "typescript"
+// SECURE: Enforces Tenant Isolation at Database Query Boundary
+SELECT * FROM documents 
+WHERE id = $1 
+  AND organization_id = $2; -- Extracted authoritatively from verified JWT`,
+      blueprintLanguage: "sql"
     },
     recommendedBook: {
       title: "API Security in Action",
       author: "Neil Madden",
-      keyChapters: "Chapters 3, 4 & 8 (Access Control, Object-Level Security, Rate Limiting)",
-      whyReadThis: "Practical, code-heavy guide to locking down RESTful endpoints, token scopes, and microservice boundaries."
+      keyChapters: "Chapter 4: Microservice Authorization with Scopes and Capabilities",
+      whyReadThis: "In-depth guide to modern API access control, capability tokens, ABAC, and zero-trust authorization architectures.",
+      readingUrl: "https://owasp.org/API-Security/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-402",
-      title: "Fix BOLA/IDOR Vulnerability in Document API",
-      scenario: "Security audit discovered that user A can download user B's documents by changing `/api/documents/105` to `/api/documents/106`. Fix the vulnerability.",
+      ticketNumber: "TICKET-018",
+      title: "Prevent Broken Object Level Authorization (BOLA/IDOR) in Invoice API",
+      scenario: "Users can view competitor invoices by changing the URL from /invoices/100 to /invoices/101.",
       acceptanceCriteria: [
-        "Enforce user ownership in the repository query.",
-        "Return 404 Not Found (rather than 403) to prevent attackers from enumerating valid document IDs.",
-        "Add unit test verifying cross-tenant access is rejected."
+        "Extract current user's organizationId from the verified session context.",
+        "Ensure all SELECT, UPDATE, and DELETE queries filter by organization_id."
       ],
+      terminalLab: `curl -H "Authorization: Bearer user_token" http://localhost:3000/api/invoices/9999`,
       hints: [
-        "Returning 404 instead of 403 prevents attackers from probing whether resource IDs exist.",
-        "Extract authenticated `userId` from request context, never from body or params."
+        "Never trust an ID parameter from the URL without checking ownership!"
       ],
-      solutionCode: `export async function getDocument(req, res) {
-  const { id } = req.params;
-  const currentUserId = req.user.id; // From verified session/JWT
-
-  const doc = await db.query(
-    "SELECT * FROM documents WHERE id = $1 AND owner_id = $2",
-    [id, currentUserId]
+      solutionCode: `async function getInvoice(req, res) {
+  const { invoiceId } = req.params;
+  const { orgId } = req.user;
+  const invoice = await db.query(
+    'SELECT * FROM invoices WHERE id = $1 AND organization_id = $2',
+    [invoiceId, orgId]
   );
-
-  if (doc.rows.length === 0) {
-    // Return 404 to avoid confirming existence
-    return res.status(404).json({ error: "Document not found" });
-  }
-
-  res.json(doc.rows[0]);
+  if (!invoice.rows[0]) return res.status(404).json({ error: 'Invoice not found' });
+  return res.json(invoice.rows[0]);
 }`,
-      solutionExplanation: "Scoping database queries to the verified authenticated user ID guarantees authorization checks are executed at the data access tier."
+      solutionExplanation: "Returning 404 rather than 403 prevents attackers from enumerating valid invoice IDs across other tenants."
     },
     selfCheckQuestions: [
-      "What is BOLA / IDOR and why is it ranked #1 in the OWASP API Security Top 10?",
-      "Why is returning 404 Not Found often safer than returning 403 Forbidden when an IDOR probe occurs?",
-      "Why do prepared statements completely eliminate SQL injection vulnerabilities?"
+      {
+        question: "What is the difference between RBAC and ABAC?",
+        answerExplanation: "RBAC makes binary checks based on static roles (e.g. 'Is Admin?'). ABAC evaluates context attributes (e.g. 'Can edit document IF user is author AND document is in DRAFT status AND time is during business hours')."
+      }
+    ]
+  },
+  {
+    id: "backend-security-hardening",
+    number: 19,
+    title: "Backend Security & Hardening (OWASP Top 10, CORS, Rate Limiting, SQL Injection/XSS)",
+    phaseId: 4,
+    phaseName: "Security & Access Control",
+    duration: "1 hr 27 min",
+    youtubeId: "YYe0FdfdgDU",
+    youtubeChannelUrl: CHANNEL_URL,
+    shortSummary: "OWASP API Security Top 10, parameterized queries, CORS preflight mechanics, Content Security Policy, and rate limiting against DDoS.",
+    seniorInsight: {
+      quote: "String concatenation in SQL queries is professional malpractice. Always use parameterized queries or prepared statements without exception.",
+      productionLesson: "CORS is not a server security boundary—it is a browser security mechanism that restricts what other websites can read from your API. Command-line curl and automated bot scripts ignore CORS completely.",
+      commonMistake: "Setting Access-Control-Allow-Origin: * together with Access-Control-Allow-Credentials: true."
+    },
+    coreDeepDive: {
+      what: "Backend hardening applies defensive controls across network transport, application dependencies, database boundaries, and response headers.",
+      why: "Mitigates automated attacks, prevents data breach liabilities, and complies with security standards (SOC2, PCI-DSS, GDPR).",
+      howItWorks: [
+        "1. Parameterized Queries: Separates SQL query code from user data variables in database drivers, neutralizing SQL injection.",
+        "2. Security Headers: Helmet/HSTS enforces HTTPS, disables MIME-sniffing, and protects iframe embedding (X-Frame-Options).",
+        "3. Rate Limiting: Leaky bucket algorithms throttle brute force attempts at login and resource creation endpoints."
+      ],
+      blueprintTitle: "Parameterized Query vs SQL Injection",
+      blueprintCode: `-- VULNERABLE: String Concatenation allows ' OR '1'='1 SQL Injection
+db.query("SELECT * FROM users WHERE email = '" + req.body.email + "'");
+
+-- SECURE: Parameterized Query sends SQL plan and data in separate packets
+db.query("SELECT * FROM users WHERE email = $1", [req.body.email]);`,
+      blueprintLanguage: "javascript"
+    },
+    recommendedBook: {
+      title: "API Security in Action",
+      author: "Neil Madden",
+      keyChapters: "Chapters 3 & 8 (Object-Level Security, Rate Limiting, and DoS Prevention)",
+      whyReadThis: "Comprehensive coverage of OWASP API Top 10 vulnerabilities, input validation, and defensive API architectures.",
+      readingUrl: "https://owasp.org/API-Security/"
+    },
+    handsOnChallenge: {
+      ticketNumber: "TICKET-019",
+      title: "Harden API Headers and Configure Strict CORS Policy",
+      scenario: "Security auditors identified missing HSTS headers, permissive CORS (*), and information disclosure revealing X-Powered-By: Express.",
+      acceptanceCriteria: [
+        "Remove X-Powered-By header.",
+        "Enable HSTS with max-age=31536000; includeSubDomains.",
+        "Whitelist only trusted frontend domain origins in CORS."
+      ],
+      terminalLab: `curl -I http://localhost:3000/api/health`,
+      hints: [
+        "Use helmet() middleware in Express or equivalent security header injectors."
+      ],
+      solutionCode: `import helmet from 'helmet';
+import cors from 'cors';
+
+app.use(helmet());
+app.use(cors({
+  origin: ['https://app.example.com'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+}));`,
+      solutionExplanation: "Helmet automates standard security headers (HSTS, CSP, X-Content-Type-Options) and strips runtime fingerprinting headers."
+    },
+    selfCheckQuestions: [
+      {
+        question: "Why does parameterized querying eliminate SQL injection completely?",
+        answerExplanation: "The database compiles the SQL query structure first into a static execution tree before binding input parameters. Parameters are treated strictly as literal data values and cannot alter the SQL command syntax."
+      }
     ]
   },
 
-  // Phase 5: Asynchronous Workflows & Real-Time
+  // ==========================================
+  // PHASE 5: Asynchronous Systems & Integrations
+  // ==========================================
   {
     id: "task-queuing-scheduling",
-    number: 18,
-    title: "Task Queuing, Background Jobs, and Scheduling",
+    number: 20,
+    title: "Task Queuing & Scheduling (BullMQ, Redis Queues, Cron, Celery)",
     phaseId: 5,
-    phaseName: "Background Processing & Integrations",
-    duration: "60 min",
-    youtubeId: "oUFb4_u_gXw",
+    phaseName: "Asynchronous Systems & Integrations",
+    duration: "31 min",
+    youtubeId: "nFxjaVmFj5E",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Message brokers vs Task queues, BullMQ/RabbitMQ/Kafka, Transactional Outbox pattern, and retries with backoff.",
+    shortSummary: "Decoupling synchronous HTTP requests, message brokers (RabbitMQ/BullMQ), worker pools, dead letter queues (DLQ), and exponential retry backoff.",
     seniorInsight: {
-      quote: "Never send an email or call a third-party webhook inside an HTTP request handler. Put it in a background queue and respond to the user immediately.",
-      productionLesson: "If you save an order to the database and then publish an event to Kafka in two separate steps, your app could crash in between, resulting in lost events. Use the Transactional Outbox Pattern to guarantee at-least-once message delivery.",
-      commonMistake: "Writing background workers that are not idempotent, causing duplicate emails or duplicate charges when a job is retried."
+      quote: "Never do heavy compute, PDF generation, or third-party API calls inside the synchronous HTTP request-response cycle.",
+      productionLesson: "Always configure a Dead Letter Queue (DLQ) with exponential backoff. If an unhandled exception causes a job to crash on every retry, it will poison the queue and consume 100% of worker CPU without ever finishing.",
+      commonMistake: "Assuming message queues guarantee exactly-once processing (production queues guarantee at-least-once; your workers MUST be idempotent)."
     },
     coreDeepDive: {
-      what: "Offloading slow, CPU-intensive, or unreliable tasks (video transcoding, email delivery, report generation) to asynchronous worker processes.",
-      why: "Keeps HTTP response latency under 100ms and guarantees tasks are retried when external APIs fail.",
+      what: "Task queuing offloads asynchronous, long-running, or resource-heavy tasks to background worker processes.",
+      why: "Ensures sub-100ms HTTP response times, shields backends from traffic spikes, and provides automatic retries during third-party outages.",
       howItWorks: [
-        "Producer: Pushes job payload to queue (Redis, RabbitMQ, SQS).",
-        "Consumer / Worker: Pulls job, processes logic, acknowledges (ACK) on success.",
-        "Dead Letter Queue (DLQ): Where jobs go after exceeding max retries for manual debugging."
+        "1. API server accepts request, pushes job payload to Redis/RabbitMQ queue, and returns 202 Accepted immediately.",
+        "2. Worker daemon picks up job from queue and processes task in background.",
+        "3. On success, worker acknowledges message; on failure, job retries with backoff or moves to DLQ."
       ],
-      blueprintTitle: "The Transactional Outbox Pattern",
-      blueprintCode: `-- Inside the same atomic database transaction:
-BEGIN;
-
--- 1. Mutate business state
-INSERT INTO orders (id, user_id, total) VALUES ('ord_1', 'usr_99', 500);
-
--- 2. Insert message into outbox table
-INSERT INTO outbox_events (id, aggregate_type, payload, status)
-VALUES (gen_random_uuid(), 'ORDER_CREATED', '{"orderId":"ord_1"}', 'PENDING');
-
-COMMIT;
-
--- A background relay process polls outbox_events and publishes to Kafka/RabbitMQ!`,
-      blueprintLanguage: "sql"
+      blueprintTitle: "Asynchronous Worker Queue Topology",
+      blueprintCode: `[Client API Request]
+       │
+       ▼ (Submits Job: 202 Accepted in 15ms)
+[HTTP Controller] ──► [Redis / RabbitMQ Queue]
+                            │
+                            ▼ (Worker polls asynchronously)
+                     [Background Worker Pool]
+                            ├── [Success: ACK]
+                            └── [Failure: Retry -> Dead Letter Queue]`,
+      blueprintLanguage: "text"
     },
     recommendedBook: {
       title: "Enterprise Integration Patterns",
       author: "Gregor Hohpe & Bobby Woolf",
       keyChapters: "Chapters 3 & 4 (Messaging Systems & Message Routing)",
-      whyReadThis: "The timeless blueprint for queues, topics, publish-subscribe, idempotency, and message channels."
+      whyReadThis: "The seminal master architecture book covering point-to-point queues, publish-subscribe, and message routing patterns.",
+      readingUrl: "https://www.enterpriseintegrationpatterns.com/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-501",
-      title: "Implement Asynchronous PDF Generation with Retry & Backoff",
-      scenario: "PDF invoice generation takes 6 seconds and frequently times out during checkout. Move PDF generation to a background queue with exponential backoff.",
+      ticketNumber: "TICKET-020",
+      title: "Implement an Idempotent Background Job Worker with Dead Letter Queue",
+      scenario: "Video transcoding jobs occasionally fail due to corrupt user files, causing workers to crash endlessly in an infinite retry loop.",
       acceptanceCriteria: [
-        "Endpoint `POST /api/orders` enqueues job and returns `202 Accepted` immediately (<100ms).",
-        "Worker processes PDF generation with 3 retries using exponential backoff.",
-        "Failed jobs after 3 attempts are routed to a Dead Letter Queue."
+        "Limit retry attempts to 3 with exponential backoff.",
+        "Route failed jobs after 3 attempts to a dead_letter_queue.",
+        "Ensure jobs track a processed_ids set to avoid duplicate execution."
       ],
+      terminalLab: `npm run worker`,
       hints: [
-        "In BullMQ, configure `attempts: 3` and `backoff: { type: 'exponential', delay: 2000 }`.",
-        "Store the generated PDF URL in the order record upon completion."
+        "In BullMQ, configure { attempts: 3, backoff: { type: 'exponential', delay: 1000 } }."
       ],
-      solutionCode: `import { Queue, Worker } from "bullmq";
-
-export const invoiceQueue = new Queue("invoices", { connection: redisConnection });
-
-// Producer (HTTP Handler)
-export async function handleOrderCreation(req, res) {
-  const order = await db.createOrder(req.body);
-  await invoiceQueue.add("generate_pdf", { orderId: order.id }, {
-    attempts: 3,
-    backoff: { type: "exponential", delay: 1000 }
-  });
-  return res.status(202).json({ message: "Order placed. Invoice generating.", orderId: order.id });
-}
-
-// Consumer (Worker Process)
-const worker = new Worker("invoices", async (job) => {
-  await generateAndStorePdf(job.data.orderId);
-}, { connection: redisConnection });`,
-      solutionExplanation: "Decoupling slow file rendering from the request cycle protects HTTP latency and ensures transient failures are automatically retried."
+      solutionCode: `const queue = new Queue('transcode', { connection: redis });
+await queue.add('video', { fileId: '123' }, {
+  attempts: 3,
+  backoff: { type: 'exponential', delay: 2000 },
+  removeOnFail: false
+});`,
+      solutionExplanation: "Capping retries and redirecting persistent failures to DLQs prevents corrupted jobs from stalling queue throughput."
     },
     selfCheckQuestions: [
-      "Why is the Transactional Outbox pattern necessary when updating a database and publishing a message?",
-      "What is the role of a Dead Letter Queue (DLQ)?",
-      "Why must message consumers always be designed to be idempotent?"
+      {
+        question: "Why do production message queues provide at-least-once delivery rather than exactly-once delivery?",
+        answerExplanation: "Network acknowledgments can fail. If a worker completes a job but the network drops before it can send the ACK back to the broker, the broker will re-assign the message to another worker. Therefore workers must be idempotent."
+      }
     ]
   },
   {
-    id: "transactional-emails",
-    number: 19,
-    title: "Transactional Emails & Notification Pipelines",
+    id: "transactional-emails-event-triggers",
+    number: 21,
+    title: "Transactional Emails & Event Triggers (Idempotent mailers, Templates)",
     phaseId: 5,
-    phaseName: "Background Processing & Integrations",
-    duration: "40 min",
-    youtubeId: "y_s5fP1k0zI",
+    phaseName: "Asynchronous Systems & Integrations",
+    duration: "30 min",
+    youtubeId: "AcBhyCPJTEk",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "SMTP vs API providers (Postmark/SES/Resend), SPF/DKIM/DMARC, MJML templates, and bounce webhooks.",
+    shortSummary: "Asynchronous notification pipelines, SMTP vs API deliverability, DKIM/SPF/DMARC domain authentication, and idempotent notification triggers.",
     seniorInsight: {
-      quote: "Never run your own SMTP mail server in production. Your IP address will be instantly blacklisted by Gmail and Outlook. Use dedicated providers with verified reputations.",
-      productionLesson: "Always track email deliverability using inbound webhooks. If an email bounces or is marked as spam, flag the user's account to avoid destroying your sender domain reputation.",
-      commonMistake: "Embedding raw HTML strings inside backend code instead of using templating engines like MJML or React Email."
+      quote: "Sending an email directly inside an HTTP handler is a recipe for 504 Gateway Timeouts when your SMTP provider experiences latency spikes.",
+      productionLesson: "Always queue email jobs and assign an idempotency key to notification dispatches. During worker retries, the idempotency check prevents sending the same customer 5 duplicate password reset emails.",
+      commonMistake: "Failing to configure proper SPF, DKIM, and DMARC DNS records, causing your transactional emails to land directly in spam folders."
     },
     coreDeepDive: {
-      what: "Automated, programmatic emails triggered by user interactions (password resets, order receipts, security alerts).",
-      why: "Critical for user lifecycle and trust; requires high deliverability (arriving in the inbox within seconds, not spam folders).",
+      what: "Transactional email systems reliably deliver system-triggered communications (receipts, password resets, verification codes).",
+      why: "Ensures critical notifications reach users promptly without slowing down the primary application server.",
       howItWorks: [
-        "SPF (Sender Policy Framework): DNS record listing IP addresses authorized to send emails from your domain.",
-        "DKIM (DomainKeys Identified Mail): Cryptographic signature attached to email headers to verify authenticity.",
-        "DMARC: Tells receiving mail servers what to do (quarantine, reject) if SPF or DKIM checks fail."
+        "1. Domain event triggers email job creation.",
+        "2. Worker renders template with sanitized dynamic variables.",
+        "3. Worker dispatches payload over HTTPS API (SES, Postmark, SendGrid) with idempotency tokens.",
+        "4. Webhooks listen for bounce, delivery, and open events to maintain domain reputation."
       ],
-      blueprintTitle: "Email Dispatch via Background Queue",
-      blueprintCode: `// Clean notification service interface
-export interface NotificationService {
-  sendReceipt(to: string, receiptData: ReceiptDTO): Promise<void>;
-  sendPasswordReset(to: string, resetToken: string): Promise<void>;
-}
-
-// Worker executes Resend / Postmark API call
-export async function sendEmailJob(payload: { to: string; template: string; data: any }) {
-  await resend.emails.send({
-    from: "billing@yourdomain.com",
-    to: payload.to,
-    subject: "Your Order Receipt",
-    react: ReceiptEmailTemplate(payload.data),
-  });
-}`,
-      blueprintLanguage: "typescript"
+      blueprintTitle: "Asynchronous Notification Pipeline",
+      blueprintCode: `[User Registers] ──► [Save User to PostgreSQL]
+                           │
+                           ▼ (Push to Queue)
+                   [Email Worker]
+                           │ (HTTPS API + Idempotency-Key)
+                           ▼
+              [Email Provider: Postmark/SES] ──► [User Inbox]`,
+      blueprintLanguage: "text"
     },
     recommendedBook: {
       title: "Building Microservices (2nd Edition)",
       author: "Sam Newman",
       keyChapters: "Chapter 4: Communication Styles (Asynchronous & Event-Driven Notifications)",
-      whyReadThis: "Explains how to structure decoupled notification and email pipelines without blocking primary transactional workflows."
+      whyReadThis: "Comprehensive guide to decoupling services and orchestrating event-driven notifications across distributed systems.",
+      readingUrl: "https://martinfowler.com/articles/microservices.html"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-502",
-      title: "Implement Bounce Handling Webhook for Transactional Mail",
-      scenario: "If users sign up with invalid emails, repeated bounces will damage your domain's reputation on AWS SES or Postmark. Build a webhook handler to disable bounced email addresses.",
+      ticketNumber: "TICKET-021",
+      title: "Build an Idempotent Email Dispatcher with Rate Throttling",
+      scenario: "During a flash sale, password reset requests surged, threatening to exceed the email provider's 50 emails/second rate limit.",
       acceptanceCriteria: [
-        "Verify incoming webhook signature from email provider.",
-        "On 'Hard Bounce' event, update user record: `email_status = 'BOUNCED'`.",
-        "Prevent future outbound emails to any address marked as 'BOUNCED'."
+        "Implement rate-throttling on the worker queue (max 50 jobs/sec).",
+        "Record sent email hashes in Redis with 10-minute TTL to prevent duplicate dispatches."
       ],
+      terminalLab: `curl -X POST http://localhost:3000/api/auth/reset-password -d '{"email": "user@example.com"}'`,
       hints: [
-        "Check event type: differentiate soft bounces (mailbox full) from hard bounces (mailbox does not exist).",
-        "Respond with 200 OK immediately to the webhook provider."
+        "Use Redis SETNX to atomically claim the email dispatch token."
       ],
-      solutionCode: `export async function handleEmailWebhook(req, res) {
-  const { eventType, recipient } = req.body;
-
-  if (eventType === "HardBounce") {
-    await db.query(
-      "UPDATE users SET email_verified = false, email_status = 'BOUNCED' WHERE email = $1",
-      [recipient]
-    );
-    logger.warn(\`Hard bounce recorded for \${recipient}. Disabled outbound mail.\`);
-  }
-
-  res.status(200).json({ received: true });
+      solutionCode: `async function sendTransactionalEmail(to, templateId, data) {
+  const hash = crypto.createHash('sha256').update(to + ':' + templateId + ':' + JSON.stringify(data)).digest('hex');
+  const claimed = await redis.set('mail:' + hash, '1', 'NX', 'EX', 600);
+  if (!claimed) return console.log('Duplicate email suppressed');
+  await mailProvider.send({ to, templateId, data });
 }`,
-      solutionExplanation: "Automatically suppressing hard bounces protects your sender domain score, ensuring legitimate emails reach user inboxes."
+      solutionExplanation: "Hashing the email parameters and setting with NX atomically silences duplicate notifications during accidental double submissions."
     },
     selfCheckQuestions: [
-      "What do SPF, DKIM, and DMARC DNS records achieve?",
-      "Why should transactional emails never be dispatched over port 25 directly from an app server?",
-      "What is the difference between a Hard Bounce and a Soft Bounce?"
+      {
+        question: "What are SPF, DKIM, and DMARC, and why are they mandatory for backend email deliverability?",
+        answerExplanation: "SPF specifies which IP addresses are authorized to send email for your domain; DKIM cryptographically signs outgoing emails to prevent tampering; DMARC tells receiving mail servers what policy to enforce if SPF or DKIM fails."
+      }
     ]
   },
   {
-    id: "webhooks",
-    number: 20,
-    title: "Webhooks: Sending and Receiving",
+    id: "webhooks-event-driven-subscriptions",
+    number: 22,
+    title: "Webhooks & Event-Driven Subscriptions (HMAC Signatures, Delivery Retries)",
     phaseId: 5,
-    phaseName: "Background Processing & Integrations",
-    duration: "50 min",
-    youtubeId: "4A9c8v8HlP8",
+    phaseName: "Asynchronous Systems & Integrations",
+    duration: "2 hrs 29 min",
+    youtubeId: "41NOoEz3Tzc",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "HMAC-SHA256 signature verification, replay attack prevention, exponential backoff retries, and idempotency.",
+    shortSummary: "Sending and receiving webhooks, HMAC-SHA256 signature verification, exponential retry backoff, and preventing replay attacks with timestamps.",
     seniorInsight: {
-      quote: "When receiving a payment webhook (e.g. Stripe, Chapa), your only job is to verify the cryptographic signature, write the event to a queue, and return 200 OK within 200ms.",
-      productionLesson: "Webhook providers have strict 5-second timeouts. If you try to process orders, update stock, and send emails inside the webhook endpoint, it will timeout, causing the provider to retry and flood your server.",
-      commonMistake: "Validating webhook signatures against parsed JSON objects instead of the raw, unparsed request byte buffer."
+      quote: "Never process an incoming webhook without verifying its cryptographic HMAC signature against the raw, unparsed request byte buffer.",
+      productionLesson: "If your body parser converts JSON into an object and you re-stringify it to compute the HMAC hash, JSON key order or whitespace differences will break the signature. Always verify against req.rawBody.",
+      commonMistake: "Omitting a timestamp in the signature header, allowing attackers to intercept a valid webhook and replay it repeatedly."
     },
     coreDeepDive: {
-      what: "User-defined HTTP callbacks triggered by events in external systems (e.g. 'charge.succeeded', 'github.push').",
-      why: "Eliminates the need for polling; enables event-driven integration between third-party systems.",
+      what: "Webhooks provide automated, asynchronous HTTP callbacks between external SaaS platforms (e.g. Stripe, GitHub, Twilio) and your backend.",
+      why: "Enables real-time event-driven architectures without wasteful, continuous HTTP polling.",
       howItWorks: [
-        "1. Provider computes HMAC-SHA256(secret, timestamp + '.' + rawPayload).",
-        "2. Provider sends HTTP POST with signature header (`Stripe-Signature` or `X-Hub-Signature`).",
-        "3. Receiver recomputes HMAC over raw body and performs constant-time comparison to prevent timing attacks."
+        "1. Sender computes HMAC-SHA256 signature using a shared secret over payload + timestamp.",
+        "2. Sender passes signature in header (e.g. Stripe-Signature).",
+        "3. Receiver verifies HMAC signature and checks that timestamp is within 5 minutes (Replay Protection).",
+        "4. Receiver responds with 200 OK immediately and offloads processing to a background worker."
       ],
-      blueprintTitle: "Secure HMAC Signature Verification",
+      blueprintTitle: "Cryptographic HMAC-SHA256 Webhook Verification",
       blueprintCode: `import crypto from "crypto";
 
-export function verifyWebhookSignature(
-  rawBody: Buffer,
-  signatureHeader: string,
-  secret: string
-): boolean {
-  const [timestampPart, sigPart] = signatureHeader.split(",");
-  const timestamp = timestampPart.split("=")[1];
+export function verifyWebhook(rawBody, signatureHeader, secret) {
+  // Expected header format: t=1690000000,v1=signature_hash
+  const [tPart, sigPart] = signatureHeader.split(",");
+  const timestamp = tPart.split("=")[1];
   const signature = sigPart.split("=")[1];
 
-  // Prevent replay attacks: Reject requests older than 5 minutes
+  // Prevent Replay Attacks (Reject events older than 5 minutes)
   if (Math.abs(Date.now() / 1000 - Number(timestamp)) > 300) {
-    return false;
+    throw new Error("Webhook timestamp expired (replay attack defense)");
   }
 
-  const expectedSig = crypto
-    .createHmac("sha256", secret)
-    .update(\`\${timestamp}.\${rawBody}\`)
-    .digest("hex");
+  const payload = timestamp + '.' + rawBody;
+  const expected = crypto.createHmac("sha256", secret).update(payload).digest("hex");
 
-  // Constant-time comparison prevents timing attacks
-  return crypto.timingSafeEqual(
-    Buffer.from(signature, "hex"),
-    Buffer.from(expectedSig, "hex")
-  );
+  // Constant-time comparison prevents timing attacks!
+  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
 }`,
-      blueprintLanguage: "typescript"
+      blueprintLanguage: "javascript"
     },
     recommendedBook: {
       title: "Designing Data-Intensive Applications (DDIA)",
       author: "Martin Kleppmann",
       keyChapters: "Chapter 11: Stream Processing (Message Systems & Event-Driven Architectures)",
-      whyReadThis: "Essential for understanding event order, deduplication, and exactly-once processing guarantees."
+      whyReadThis: "Analyzes event-driven subscriptions, immutable event logs, stream processing, and idempotency.",
+      readingUrl: "https://dataintensive.net/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-503",
-      title: "Build High-Throughput Webhook Ingestion Engine",
-      scenario: "During flash sales, payment webhooks are timing out and failing. Refactor the ingestion endpoint to verify HMAC, write to queue, and respond in < 150ms.",
+      ticketNumber: "TICKET-022",
+      title: "Implement Secure Stripe Webhook Ingestion Endpoint",
+      scenario: "Build an endpoint that receives payment_intent.succeeded webhooks, verifies HMAC signatures, and handles duplicates safely.",
       acceptanceCriteria: [
-        "Extract raw body buffer without JSON corruption.",
-        "Verify HMAC-SHA256 signature.",
-        "Push event to Redis queue and respond `200 OK` immediately."
+        "Verify HMAC-SHA256 signature using raw request buffer.",
+        "Reject requests with invalid signatures with 400 Bad Request.",
+        "Store event ID in database with UNIQUE constraint to prevent duplicate processing."
       ],
+      terminalLab: `stripe listen --forward-to localhost:3000/api/webhooks/stripe`,
       hints: [
-        "In Next.js/Express, ensure body-parser does not mutate raw bytes.",
-        "Use `crypto.timingSafeEqual`."
+        "Use crypto.timingSafeEqual to protect against side-channel timing attacks."
       ],
-      solutionCode: `export async function handleStripeWebhook(req, res) {
-  const sig = req.headers["stripe-signature"];
-  let event;
-
+      solutionCode: `app.post('/api/webhooks', express.raw({ type: 'application/json' }), (req, res) => {
+  const sig = req.headers['stripe-signature'];
   try {
-    // req.rawBody is preserved as raw Buffer
-    event = stripe.webhooks.constructEvent(req.rawBody, sig, process.env.WEBHOOK_SECRET!);
-  } catch (err: any) {
-    return res.status(400).send(\`Webhook Error: \${err.message}\`);
+    const event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+    await jobQueue.add('process-payment', event);
+    res.status(200).json({ received: true });
+  } catch (err) {
+    res.status(400).send('Webhook Error: ' + err.message);
   }
-
-  // Enqueue for async worker processing
-  await webhookQueue.add(event.type, event);
-
-  // Acknowledge receipt immediately
-  res.status(200).json({ received: true });
-}`,
-      solutionExplanation: "Separating fast cryptographic ingestion from slower business fulfillment guarantees zero webhook timeouts."
+});`,
+      solutionExplanation: "Returning 200 OK immediately and queuing the event prevents external webhook providers from timing out while your backend executes logic."
     },
     selfCheckQuestions: [
-      "Why must webhook signature verification use `crypto.timingSafeEqual` instead of `===`?",
-      "Why does verifying a webhook signature against a parsed JSON object often fail?",
-      "How does including a timestamp in the signature protect against replay attacks?"
+      {
+        question: "Why must webhook signature comparisons always use timingSafeEqual rather than ===?",
+        answerExplanation: "The standard === operator returns false on the first mismatched byte, leaking execution timing. Attackers can measure response time variations down to nanoseconds to deduce valid signature bytes one by one (Timing Attack)."
+      }
     ]
   },
   {
     id: "real-time-backend-systems",
-    number: 21,
-    title: "Real-Time Backend Systems",
+    number: 23,
+    title: "Real-Time Backend Systems (WebSockets, SSE - Server-Sent Events)",
     phaseId: 5,
-    phaseName: "Background Processing & Integrations",
-    duration: "65 min",
-    youtubeId: "1BfCnjr_Vjg",
+    phaseName: "Asynchronous Systems & Integrations",
+    duration: "48 min",
+    youtubeId: "2Nt-ZrNP22A",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Polling vs Server-Sent Events (SSE) vs WebSockets vs gRPC Streaming, and Redis Pub/Sub backplanes.",
+    shortSummary: "Comparing HTTP Long Polling, Server-Sent Events (SSE), and WebSockets, connection state, heartbeats, and scaling with Redis Pub/Sub.",
     seniorInsight: {
-      quote: "Don't jump to WebSockets for simple live updates or AI token streaming. Server-Sent Events (SSE) run over standard HTTP/2, auto-reconnect, and require zero special firewall rules.",
-      productionLesson: "When you scale WebSocket servers across 10 machines, User A connected to Server 1 cannot talk to User B connected to Server 2. You must connect all instances to a shared message backplane like Redis Pub/Sub or NATS.",
-      commonMistake: "Holding thousands of idle WebSocket connections open on application servers without tuning OS file descriptor limits (`ulimit -n`)."
+      quote: "Do not use WebSockets when Server-Sent Events (SSE) will do. If your data flow is unidirectional (server-to-client like dashboards or stock tickers), SSE runs over plain HTTP/2 without firewall or proxy issues.",
+      productionLesson: "A single Node.js or Go server can easily hold 50,000 idle WebSocket connections, but holding state in memory breaks horizontal scaling. When User A connects to Server 1 and User B connects to Server 2, you must use a Redis Pub/Sub backplane to broadcast messages across all server nodes.",
+      commonMistake: "Failing to implement heartbeats (ping/pong), causing dead connections to sit open indefinitely when mobile devices lose cell reception."
     },
     coreDeepDive: {
-      what: "Architectures providing instantaneous bidirectional or server-push data streams to client interfaces.",
-      why: "Chat applications, live order tracking, financial dashboards, and LLM streaming require immediate data delivery.",
+      what: "Real-time communication protocols push data from server to client instantly without repeated client polling.",
+      why: "Enables interactive collaborative experiences (chat, live tracking, financial tickers) with sub-second latency.",
       howItWorks: [
-        "Polling: Client requests every 2s (high overhead, wasted bandwidth).",
-        "Server-Sent Events (SSE): Unidirectional text stream over persistent HTTP connection with automatic browser reconnect.",
-        "WebSockets: Full-duplex bidirectional TCP connection established via HTTP upgrade handshake.",
-        "Redis Pub/Sub: Bridges messages across horizontally scaled WebSocket nodes."
+        "1. Server-Sent Events (SSE): Standard HTTP GET with text/event-stream content type, keeping connection open for server pushes.",
+        "2. WebSockets: HTTP connection upgrades (101 Switching Protocols) to full-duplex, bi-directional TCP framing.",
+        "3. Redis Pub/Sub backplane synchronizes messages across horizontally scaled backend clusters."
       ],
-      blueprintTitle: "Multi-Node WebSocket Scaling via Redis Backplane",
-      blueprintCode: `[Client A]         [Client B]
-    │                  │
-    ▼                  ▼
-[WebSocket Node 1]   [WebSocket Node 2]
-    │                  ▲
-    ▼ (PUBLISH)        │ (SUBSCRIBE)
-    ─────────────────────
-         [Redis Pub/Sub]`,
+      blueprintTitle: "Multi-Server WebSocket Scale with Redis Pub/Sub",
+      blueprintCode: `[Client A] ──► [Server Node 1] ──┐
+                                     ├──► [Redis Pub/Sub Channel]
+[Client B] ──► [Server Node 2] ──┘         │
+                                           ▼ (Broadcasts to all nodes)
+                                  [All connected clients receive event]`,
       blueprintLanguage: "text"
     },
     recommendedBook: {
       title: "High Performance Browser Networking",
       author: "Ilya Grigorik",
       keyChapters: "Chapters 14 & 15 (Server-Sent Events and WebSockets)",
-      whyReadThis: "In-depth protocol analysis comparing packet overhead, framing headers, and connection lifetime across real-time transports."
+      whyReadThis: "The definitive technical comparison of transport overhead, connection negotiation, and scaling for real-time protocols.",
+      readingUrl: "https://hpbn.co/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-504",
-      title: "Build an LLM / Real-Time Data Streaming SSE Endpoint",
-      scenario: "Users want to see real-time updates streamed word-by-word rather than waiting 15 seconds for a complete response. Implement Server-Sent Events (SSE).",
+      ticketNumber: "TICKET-023",
+      title: "Build Horizontally Scaled WebSocket Broadcast with Redis Pub/Sub",
+      scenario: "Users connected to different backend instances cannot see messages sent by each other in chat rooms.",
       acceptanceCriteria: [
-        "Set headers: `Content-Type: text/event-stream`, `Cache-Control: no-cache`, `Connection: keep-alive`.",
-        "Format chunks as `data: {JSON}\\n\\n`.",
-        "Handle client disconnection cleanly by ending the stream generator."
+        "Subscribe each WebSocket server instance to a Redis pub/sub channel.",
+        "Publish new chat messages to Redis.",
+        "Broadcast received Redis messages to all locally connected client WebSockets."
       ],
+      terminalLab: `wscat -c ws://localhost:3000/ws`,
       hints: [
-        "Always flush headers immediately.",
-        "Listen for `req.on('close')` to stop producing events when the client navigates away."
+        "Keep Redis publisher and subscriber clients separate; a Redis client in subscriber mode cannot execute standard commands!"
       ],
-      solutionCode: `export async function handleSSE(req, res) {
-  res.setHeader("Content-Type", "text/event-stream");
-  res.setHeader("Cache-Control", "no-cache");
-  res.setHeader("Connection", "keep-alive");
-
-  const interval = setInterval(() => {
-    const data = JSON.stringify({ time: new Date().toISOString(), status: "active" });
-    res.write(\`data: \${data}\\n\\n\`);
-  }, 1000);
-
-  req.on("close", () => {
-    clearInterval(interval);
-    res.end();
+      solutionCode: `const sub = redis.duplicate();
+sub.subscribe('chat-events');
+sub.on('message', (channel, msg) => {
+  wss.clients.forEach(client => {
+    if (client.readyState === WebSocket.OPEN) client.send(msg);
   });
-}`,
-      solutionExplanation: "Server-Sent Events provide lightweight, one-way push notifications over standard HTTP without WebSocket protocol negotiation."
+});`,
+      solutionExplanation: "Using Redis as an external message bus decouples clients from specific application instances, allowing seamless horizontal scale across dozens of server nodes."
     },
     selfCheckQuestions: [
-      "When is Server-Sent Events (SSE) a better choice than WebSockets?",
-      "Why is a message broker (Redis Pub/Sub) necessary when scaling WebSockets across multiple servers?",
-      "What is the OS limitation that limits concurrent connections on a single Linux server by default?"
+      {
+        question: "When should you choose Server-Sent Events (SSE) over WebSockets?",
+        answerExplanation: "Choose SSE when data flows unidirectionally from server to client (e.g. notifications, status feeds, live sports scores). SSE operates over standard HTTP/2, supports automatic reconnection, and bypasses complex WebSocket proxy traversal issues."
+      }
+    ]
+  },
+  {
+    id: "object-storage-large-files",
+    number: 24,
+    title: "Object Storage & Large Files (S3 Pre-signed URLs, Multipart Uploads, CDN)",
+    phaseId: 5,
+    phaseName: "Asynchronous Systems & Integrations",
+    duration: "3 hrs 58 min",
+    youtubeId: "3hLmDS179YE",
+    youtubeChannelUrl: CHANNEL_URL,
+    shortSummary: "Storing BLOBs in cloud object storage (AWS S3/Cloudflare R2), S3 pre-signed upload URLs, multipart uploads for large files, and CDN distribution.",
+    seniorInsight: {
+      quote: "Never proxy file uploads through your backend application server. Let the client upload directly to S3 via pre-signed URLs.",
+      productionLesson: "Streaming a 500MB video file through your API server consumes memory, blocks worker event loops, and burns expensive egress bandwidth. Generate a temporary, cryptographically signed S3 PUT URL and have the browser upload directly to S3.",
+      commonMistake: "Storing file uploads on local server disk (e.g. /var/uploads) in a containerized environment where container restarts erase files."
+    },
+    coreDeepDive: {
+      what: "Object storage (S3, GCS, R2) provides virtually unlimited, durable, flat-namespace storage for unstructured binary data (images, videos, backups).",
+      why: "Decouples state from compute instances, scales infinitely, and delivers files globally through edge CDNs.",
+      howItWorks: [
+        "1. Client requests upload ticket from API server.",
+        "2. Server generates pre-signed URL with restrictive bucket key, expiration (15 mins), and content-type constraints.",
+        "3. Client streams file directly to S3 via HTTP PUT.",
+        "4. S3 fires an event notification (or client alerts API) to finalize processing."
+      ],
+      blueprintTitle: "Pre-signed URL Direct Upload Architecture",
+      blueprintCode: `[Client Browser]
+   │
+   ├── 1. Request Upload Ticket ──► [Backend API]
+   │                                   │ (Generates temporary S3 signed URL)
+   │◄── 2. Returns Signed S3 URL ──────┘
+   │
+   └── 3. PUT File Directly (Zero Backend Bandwidth!) ──► [AWS S3 Bucket]
+                                                              │
+                                                              ▼
+                                                     [CloudFront CDN]`,
+      blueprintLanguage: "text"
+    },
+    recommendedBook: {
+      title: "Cloud Application Architectures",
+      author: "George Reese",
+      keyChapters: "Chapter 4: Designing for Infrastructure (Decoupled Storage & Asset Delivery)",
+      whyReadThis: "Practical architecture patterns for leveraging cloud object stores, CDNs, and stateless compute infrastructure.",
+      readingUrl: "https://docs.aws.amazon.com/AmazonS3/latest/userguide/"
+    },
+    handsOnChallenge: {
+      ticketNumber: "TICKET-024",
+      title: "Generate Secure S3 Pre-signed Upload URL with Strict Constraints",
+      scenario: "Users upload 50MB avatars through the backend, freezing Node.js event loops and exhausting RAM.",
+      acceptanceCriteria: [
+        "Implement POST /api/uploads/presigned generating an S3 PUT URL.",
+        "Enforce 15-minute expiration and exact Content-Type constraint.",
+        "Validate user authentication before issuing the signed URL."
+      ],
+      terminalLab: `curl -X POST http://localhost:3000/api/uploads/presigned -H "Authorization: Bearer valid_token"`,
+      hints: [
+        "Use @aws-sdk/s3-request-presigner's getSignedUrl with PutObjectCommand."
+      ],
+      solutionCode: `import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+
+async function getUploadUrl(userId, fileType) {
+  const key = 'avatars/' + userId + '/' + crypto.randomUUID() + '.' + fileType;
+  const command = new PutObjectCommand({
+    Bucket: 'my-app-assets',
+    Key: key,
+    ContentType: 'image/' + fileType
+  });
+  return getSignedUrl(s3, command, { expiresIn: 900 });
+}`,
+      solutionExplanation: "Pre-signed URLs offload upload bandwidth to cloud object storage providers while strictly retaining backend control over storage keys and expiration."
+    },
+    selfCheckQuestions: [
+      {
+        question: "Why should file uploads never be saved to the local filesystem of a Docker container in production?",
+        answerExplanation: "Containers are ephemeral; restarting or rescheduling a container to another host immediately destroys local filesystem state. Furthermore, horizontal scaling across multiple container instances creates split state where files exist on some nodes but not others."
+      }
+    ]
+  },
+  {
+    id: "full-text-search-elasticsearch",
+    number: 25,
+    title: "Full Text Search & Elasticsearch (Inverted Indexes, Tokenizers, Fuzzy Matching)",
+    phaseId: 5,
+    phaseName: "Asynchronous Systems & Integrations",
+    duration: "4 hrs 59 min",
+    youtubeId: "a4HBKEda_F8",
+    youtubeChannelUrl: CHANNEL_URL,
+    shortSummary: "Inverted indexes, tokenization, stemming, BM25 scoring, fuzzy matching, and syncing search clusters with PostgreSQL via Change Data Capture (CDC).",
+    seniorInsight: {
+      quote: "Relational B-Trees fail catastrophically on text queries like WHERE bio LIKE '%developer%'. You cannot index a leading wildcard with B-Trees.",
+      productionLesson: "Never use Elasticsearch as your primary database of record. It is an auxiliary search index. Always store your source-of-truth in PostgreSQL, and stream updates asynchronously to Elasticsearch using CDC (Debezium) or application event triggers.",
+      commonMistake: "Allowing search index synchronization to run synchronously in user request handlers, slowing mutations."
+    },
+    coreDeepDive: {
+      what: "Full-text search engines (Elasticsearch, OpenSearch, Meilisearch) analyze unstructured text and rank matching documents by relevance.",
+      why: "Delivers sub-50ms search across millions of documents with typos, synonyms, and multi-field relevance scoring.",
+      howItWorks: [
+        "1. Inverted Index maps every unique word token to a list of document IDs containing that token.",
+        "2. Analyzer applies Tokenization (splitting words), Lowercasing, Stop-word removal, and Stemming (running -> run).",
+        "3. BM25 algorithm scores matches based on Term Frequency (TF) and Inverse Document Frequency (IDF)."
+      ],
+      blueprintTitle: "Inverted Index Data Structure",
+      blueprintCode: `Document 1: "PostgreSQL database indexing"
+Document 2: "Indexing full text in Elasticsearch"
+
+[Inverted Index Token Map]:
+"database"      ──► [Doc 1]
+"elasticsearch" ──► [Doc 2]
+"indexing"      ──► [Doc 1, Doc 2]  <-- Instant O(1) posting list seek!
+"postgresql"    ──► [Doc 1]`,
+      blueprintLanguage: "text"
+    },
+    recommendedBook: {
+      title: "Relevant Search",
+      author: "Doug Turnbull & John Berryman",
+      keyChapters: "Chapters 2 & 3 (The Anatomy of a Search Engine, Inverted Indexes)",
+      whyReadThis: "Master-level exploration of search engine internals, relevance tuning, BM25 scoring, and token analyzers.",
+      readingUrl: "https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html"
+    },
+    handsOnChallenge: {
+      ticketNumber: "TICKET-025",
+      title: "Configure Custom Analyzer with Fuzzy Search Matching",
+      scenario: "Users searching for 'posgresql' (typo) receive 0 results instead of matching 'PostgreSQL'.",
+      acceptanceCriteria: [
+        "Configure an Elasticsearch index mapping with an n-gram or fuzzy matching query.",
+        "Ensure search query matches terms with Levenshtein edit distance of up to 2."
+      ],
+      terminalLab: `curl -X GET "localhost:9200/products/_search?q=name:posgresql"`,
+      hints: [
+        "In Elasticsearch DSL, add { 'fuzziness': 'AUTO' } to the match query."
+      ],
+      solutionCode: `const result = await esClient.search({
+  index: 'products',
+  body: {
+    query: {
+      match: {
+        name: {
+          query: userInput,
+          fuzziness: 'AUTO'
+        }
+      }
+    }
+  }
+});`,
+      solutionExplanation: "Fuzzy matching calculates Damerau-Levenshtein distances, returning relevant documents even when users make typographical errors."
+    },
+    selfCheckQuestions: [
+      {
+        question: "Why can't a standard B-Tree index accelerate a SQL query like WHERE description LIKE '%apple%'?",
+        answerExplanation: "B-Tree indexes sort strings alphabetically from the first character. A leading wildcard (%apple) means the match could begin at any position in the string, forcing the database engine into an O(N) sequential full table scan."
+      }
     ]
   },
 
-  // Phase 6: Reliability, Observability & App Architecture
+  // ==========================================
+  // PHASE 6: Reliability, Resilience & Observability
+  // ==========================================
   {
-    id: "error-handling",
-    number: 22,
-    title: "Error Handling and Fault Tolerance",
+    id: "robust-error-handling",
+    number: 26,
+    title: "Robust Error Handling (RFC 7807/9457 Problem Details, Error Domains)",
     phaseId: 6,
-    phaseName: "Reliability & Observability",
-    duration: "45 min",
-    youtubeId: "J-g9ZJha8FE",
+    phaseName: "Reliability, Resilience & Observability",
+    duration: "32 min",
+    youtubeId: "ovnyeq-Xxrc",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Operational vs Programmer errors, RFC 9457 Problem Details, error wrapping, and fail-safe design.",
+    shortSummary: "Standardized RFC 9457 Problem Details, operational vs programmer errors, centralized error handling, and scrubbing sensitive stack traces.",
     seniorInsight: {
-      quote: "Stack traces belong in your private logging system, never in an HTTP response. Leaking database queries or file paths in error responses gives attackers a blueprint of your system.",
-      productionLesson: "Differentiate operational errors (network timeout, invalid credit card - handle gracefully) from programmer bugs (null pointer, syntax error - fail fast, alert on-call, and restart cleanly).",
-      commonMistake: "Catching errors with empty catch blocks (`catch (e) {}`), silently swallowing failures until data is hopelessly corrupted."
+      quote: "Never leak internal database errors or stack traces to clients in production. Return clean, standardized RFC 9457 Problem Details.",
+      productionLesson: "Differentiate between Operational Errors (expected failures like 404 Not Found, 422 Invalid Input) and Programmer Errors (unexpected null pointers, database crashes). Operational errors should be gracefully returned; programmer errors should be logged with stack traces and trigger alerting.",
+      commonMistake: "Returning 200 OK with { success: false, error: '...' } inside the body, which breaks HTTP proxy caching and client error listeners."
     },
     coreDeepDive: {
-      what: "Anticipating, categorizing, and handling failures gracefully to prevent cascading outages and provide actionable feedback.",
-      why: "Distributed networks are inherently unreliable; failures will happen every minute at scale.",
+      what: "Standardized error handling structures all error responses into predictable RFC 9457 application/problem+json payloads.",
+      why: "Allows API clients, mobile apps, and SDKs to parse errors deterministically without custom string parsing.",
       howItWorks: [
-        "1. Create custom Domain Error classes (`NotFoundError`, `UnauthorizedError`, `ConflictError`).",
-        "2. Central error middleware catches domain errors and maps them to appropriate HTTP codes.",
-        "3. Unknown errors log full stack traces internally and return sanitized RFC 9457 Problem Details."
+        "1. Domain errors throw structured AppError exceptions with HTTP status codes and machine-readable error codes.",
+        "2. Centralized error middleware catches unhandled exceptions.",
+        "3. In development, stack traces are displayed; in production, stack traces are scrubbed and replaced with a correlation ID."
       ],
-      blueprintTitle: "RFC 9457 Structured Error Response",
-      blueprintCode: `export class AppError extends Error {
-  constructor(
-    public readonly statusCode: number,
-    public readonly code: string,
-    message: string
-  ) {
-    super(message);
-    Object.setPrototypeOf(this, new.target.prototype);
-  }
-}
-
-export class ConflictError extends AppError {
-  constructor(message = "Resource already exists") {
-    super(409, "RESOURCE_CONFLICT", message);
-  }
+      blueprintTitle: "RFC 9457 Standardized Error Format",
+      blueprintCode: `// HTTP/1.1 409 Conflict
+// Content-Type: application/problem+json
+{
+  "type": "https://api.example.com/errors/email-already-registered",
+  "title": "Email Conflict",
+  "status": 409,
+  "detail": "The email user@example.com is already associated with an account.",
+  "instance": "/users/registration",
+  "code": "EMAIL_ALREADY_EXISTS"
 }`,
-      blueprintLanguage: "typescript"
+      blueprintLanguage: "json"
     },
     recommendedBook: {
       title: "Release It! (2nd Edition)",
       author: "Michael T. Nygard",
-      keyChapters: "Chapters 3, 4 & 5 (Stability Antipatterns: Integration Points, Cascading Failures, Blocked Threads)",
-      whyReadThis: "The definitive engineering manual on designing software that survives chaotic production environments."
+      keyChapters: "Chapters 3, 4 & 5 (Stability Antipatterns: Integration Points, Cascading Failures)",
+      whyReadThis: "The seminal engineering classic on building fault-tolerant software that survives production chaos.",
+      readingUrl: "https://learn.microsoft.com/en-us/azure/architecture/patterns/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-601",
-      title: "Standardize API Errors to RFC 9457 Problem Details",
-      scenario: "Mobile and web frontends complain that error responses are inconsistent (sometimes string, sometimes object with `err` or `message`). Standardize all errors.",
+      ticketNumber: "TICKET-026",
+      title: "Build Centralized Error Middleware with Stack Trace Scrubbing",
+      scenario: "A database error leaked raw SQL connection strings and table names to the frontend in production.",
       acceptanceCriteria: [
-        "Return `Content-Type: application/problem+json`.",
-        "Always include `type`, `title`, `status`, `detail`, and `instance`.",
-        "Include request trace ID for debugging."
+        "Catch all synchronous and asynchronous errors in a single error handler.",
+        "Scrub stack traces in production (NODE_ENV === 'production').",
+        "Format responses adhering strictly to RFC 9457 application/problem+json."
       ],
+      terminalLab: `curl -i http://localhost:3000/api/trigger-error`,
       hints: [
-        "Define an RFC 9457 response interface.",
-        "Map standard HTTP status codes to standardized error titles."
+        "Ensure the Content-Type response header is set to application/problem+json."
       ],
-      solutionCode: `export function formatProblemDetails(err: AppError, req: any) {
-  return {
-    type: \`https://api.myapp.com/errors/\${err.code.toLowerCase()}\`,
-    title: err.name || "Application Error",
-    status: err.statusCode || 500,
+      solutionCode: `app.use((err, req, res, next) => {
+  const isDev = process.env.NODE_ENV !== 'production';
+  const status = err.status || 500;
+  res.setHeader('Content-Type', 'application/problem+json');
+  res.status(status).json({
+    type: err.type || 'about:blank',
+    title: err.title || 'Internal Server Error',
+    status,
     detail: err.message,
     instance: req.originalUrl,
-    requestId: req.id,
-    timestamp: new Date().toISOString()
-  };
-}`,
-      solutionExplanation: "RFC-compliant error formatting allows automated client SDKs to parse error details and surface actionable user feedback."
+    code: err.code || 'INTERNAL_ERROR',
+    ...(isDev && { stack: err.stack })
+  });
+});`,
+      solutionExplanation: "Scrubbing internal stack traces from production responses prevents attackers from fingerprinting internal library versions or database topologies."
     },
     selfCheckQuestions: [
-      "What is the difference between an operational error and a programmer bug?",
-      "Why is swallowing exceptions with empty catch blocks considered dangerous in backend development?",
-      "What are the mandatory fields in an RFC 9457 Problem Details response?"
+      {
+        question: "Why should API errors never return HTTP 200 with an error flag inside the JSON body?",
+        answerExplanation: "Returning 200 with an error prevents HTTP reverse proxies, API gateways, and CDNs from understanding that the request failed, preventing automated retry policies and polluting uptime monitoring metrics."
+      }
     ]
   },
   {
-    id: "config-management",
-    number: 23,
-    title: "Configuration Management and Secrets",
+    id: "configuration-management",
+    number: 27,
+    title: "Configuration Management (12-Factor Env Vars, Fail-Fast Startup)",
     phaseId: 6,
-    phaseName: "Reliability & Observability",
-    duration: "40 min",
-    youtubeId: "1wZ0bE8yvG4",
+    phaseName: "Reliability, Resilience & Observability",
+    duration: "30 min",
+    youtubeId: "1OhmRmMsGdQ",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Environment variables, Twelve-Factor config, Secrets Managers (Vault/AWS Secrets), and fail-fast startup validation.",
+    shortSummary: "12-Factor App Factor III: Storing config in the environment, validating configuration schemas on startup (fail-fast), and secret management.",
     seniorInsight: {
-      quote: "Never commit a secret to Git. Not even for 5 minutes in a private repository. Automated bots scrape GitHub within milliseconds.",
-      productionLesson: "Validate your configuration at application boot. If `DATABASE_URL` or `JWT_SECRET` is missing or malformed, crash the server immediately with an explicit error before accepting any HTTP traffic (Fail-Fast Principle).",
-      commonMistake: "Accessing `process.env.MY_VAR` scattered randomly across 50 different source files instead of using a centralized, validated config module."
+      quote: "Fail fast. If your application is missing a mandatory environment variable like DATABASE_URL, crash immediately on startup. Never start up half-healthy.",
+      productionLesson: "Never commit .env files or API keys into git repositories. Store secrets in AWS Secrets Manager, HashiCorp Vault, or encrypted deployment pipelines, injecting them as runtime environment variables.",
+      commonMistake: "Accessing process.env.SOME_VARIABLE directly in deep service classes instead of through a centralized, validated configuration module."
     },
     coreDeepDive: {
-      what: "Strictly separating code from configuration, storing credentials and environment-specific settings outside source control.",
-      why: "Enables identical application build artifacts to be deployed safely across development, staging, and production environments.",
+      what: "Configuration management isolates environment-specific variables (database credentials, API keys, port numbers) from application source code.",
+      why: "Allows the identical application container image to deploy safely across Staging, UAT, and Production environments without recompilation.",
       howItWorks: [
-        "Precedence: Command line flags > Environment variables > Configuration files > Defaults.",
-        "Secrets Management: Cloud KMS, HashiCorp Vault, AWS Secrets Manager.",
-        "Fail-Fast: Validate schemas at startup using Zod or Envalid."
+        "1. Startup hook reads environment variables.",
+        "2. Schema validation (Zod, envalid) verifies types and mandatory presence.",
+        "3. If any required variable is missing, process exits with code 1 before accepting traffic.",
+        "4. Validated, typed configuration object is frozen and injected into services."
       ],
-      blueprintTitle: "Type-Safe Fail-Fast Config Module",
+      blueprintTitle: "Fail-Fast Configuration Guard",
       blueprintCode: `import { z } from "zod";
 
 const ConfigSchema = z.object({
-  NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+  NODE_ENV: z.enum(["development", "test", "production"]),
   PORT: z.coerce.number().default(3000),
   DATABASE_URL: z.string().url(),
   REDIS_URL: z.string().url(),
   JWT_SECRET: z.string().min(32),
 });
 
-// Throws immediately on application boot if any variable is missing or invalid!
-export const config = ConfigSchema.parse(process.env);
-export type Config = z.infer<typeof ConfigSchema>;`,
+// Crashes immediately on boot if missing variables!
+export const config = ConfigSchema.parse(process.env);`,
       blueprintLanguage: "typescript"
     },
     recommendedBook: {
       title: "The Twelve-Factor App",
       author: "Adam Wiggins",
       keyChapters: "Factor III: Config (Store config in the environment)",
-      whyReadThis: "Concise, fundamental methodology for designing modern cloud-native applications."
+      whyReadThis: "The foundational architectural manifesto for building modern, cloud-native backend applications.",
+      readingUrl: "https://12factor.net/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-602",
-      title: "Implement Boot-Time Config Validation with Zod",
-      scenario: "A deployment crashed in production 3 hours after launch because an optional payment variable was missing. Refactor the config system to fail fast at boot.",
+      ticketNumber: "TICKET-027",
+      title: "Implement Strict Fail-Fast Startup Schema Guard",
+      scenario: "A server started in production without JWT_SECRET defined, issuing insecure tokens with 'undefined' as the signature key.",
       acceptanceCriteria: [
-        "Define strict Zod schema for all environment variables.",
-        "If validation fails, print human-readable missing variable list and exit with `process.exit(1)`.",
-        "Export strongly typed config singleton."
+        "Validate all environment variables on boot using Zod.",
+        "If any mandatory variable is missing or invalid, print clear error and call process.exit(1)."
       ],
+      terminalLab: `NODE_ENV=production DATABASE_URL= node src/server.js`,
       hints: [
-        "Use `safeParse` to inspect all issues at once rather than failing on the first error.",
-        "Ensure secrets are masked if logging config values."
+        "Ensure validation runs synchronously before the HTTP server begins listening on any port!"
       ],
-      solutionCode: `const result = ConfigSchema.safeParse(process.env);
-
-if (!result.success) {
-  console.error("❌ CRITICAL: Configuration validation failed at startup:");
-  result.error.errors.forEach(e => {
-    console.error(\`   - \${e.path.join(".")}: \${e.message}\`);
-  });
+      solutionCode: `try {
+  ConfigSchema.parse(process.env);
+} catch (err) {
+  console.error('CRITICAL: Invalid environment configuration', err.errors);
   process.exit(1);
-}
-
-export const env = result.data;`,
-      solutionExplanation: "Failing fast during initial boot prevents corrupted deployments from serving faulty customer traffic."
+}`,
+      solutionExplanation: "Crashing the process on boot signals orchestration systems (Kubernetes/ECS) that the new deployment is unhealthy, preventing broken containers from receiving traffic."
     },
     selfCheckQuestions: [
-      "Why must code and configuration be strictly decoupled in cloud-native applications?",
-      "What is the Fail-Fast Principle and how does it prevent latent production failures?",
-      "Why should you never access `process.env` directly inside your business logic layer?"
+      {
+        question: "Why should an application container image contain zero secrets or configuration baked into its filesystem?",
+        answerExplanation: "Baking secrets into images exposes credentials to anyone with image registry access and requires rebuilding container images for every environment change. Injecting config at runtime allows one verified artifact to run everywhere."
+      }
     ]
   },
   {
     id: "logging-monitoring-observability",
-    number: 24,
-    title: "Logging, Monitoring, and Observability",
+    number: 28,
+    title: "Logging, Monitoring & Observability (Structured JSON Logs, OpenTelemetry, RED Metrics)",
     phaseId: 6,
-    phaseName: "Reliability & Observability",
-    duration: "65 min",
-    youtubeId: "9g_WkJ6pC_0",
+    phaseName: "Reliability, Resilience & Observability",
+    duration: "4 hrs 57 min",
+    youtubeId: "cYAE0ZhT43c",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "The Three Pillars (Logs, Metrics, Traces), OpenTelemetry, Prometheus RED method, and health checks.",
+    shortSummary: "Structured JSON logging, OpenTelemetry distributed tracing, the RED method (Rate, Errors, Duration), and Prometheus metrics.",
     seniorInsight: {
-      quote: "If it isn't monitored, it's already broken. You shouldn't have to wait for angry users on Twitter to tell you that your API is throwing 500 errors.",
-      productionLesson: "Never log plaintext strings like `console.log('User logged in: ' + id)`. Always output structured JSON with timestamps, log levels, user IDs, and trace IDs so centralized search engines (Datadog, Loki, OpenSearch) can index them.",
-      commonMistake: "Logging sensitive Personally Identifiable Information (PII) like credit card numbers, passwords, or session tokens."
+      quote: "Unstructured plain text logs (console.log('Error occurred!')) are useless in production. Output structured JSON logs with correlation IDs so log aggregators can index and filter them.",
+      productionLesson: "Master the RED method for all services: Rate (requests per second), Errors (number of failing requests), and Duration (time taken per request, especially p95 and p99 percentiles).",
+      commonMistake: "Relying on average (mean) latency instead of 95th and 99th percentiles (p99 exposes the real pain experienced by users)."
     },
     coreDeepDive: {
-      what: "Observability is the ability to understand the internal state of a system based entirely on its external telemetry outputs.",
-      why: "Allows rapid incident triage, root cause analysis, and capacity planning across complex distributed systems.",
+      what: "Observability provides visibility into internal system state through three complementary telemetry pillars: Metrics, Logs, and Traces.",
+      why: "Enables engineering teams to detect incidents, pinpoint root causes, and resolve production degradation before customers report outages.",
       howItWorks: [
-        "Structured Logs: Machine-parseable JSON event streams.",
-        "Metrics: Numeric measurements over time (Rate, Errors, Duration - RED method).",
-        "Distributed Traces: Tracing a single request across multiple microservice network boundaries using W3C `traceparent` headers."
+        "1. Logs: Structured JSON events capturing timestamp, severity, message, and trace IDs.",
+        "2. Metrics: Numeric aggregations over time (counters, gauges, histograms).",
+        "3. Traces: OpenTelemetry spans following a request's journey across microservices, databases, and message queues."
       ],
-      blueprintTitle: "Structured JSON Logger Output",
-      blueprintCode: `// Output to stdout as single-line JSON:
-{
-  "timestamp": "2026-09-13T10:15:30.120Z",
-  "level": "INFO",
-  "message": "Payment processed successfully",
-  "service": "payment-api",
+      blueprintTitle: "Structured JSON Log Event",
+      blueprintCode: `{
+  "timestamp": "2026-09-13T20:45:00.123Z",
+  "level": "error",
   "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
   "spanId": "00f067aa0ba902b7",
-  "userId": "usr_991",
-  "orderId": "ord_8812",
-  "amountCents": 4500,
-  "durationMs": 42.1
+  "service": "billing-service",
+  "message": "Payment provider timeout",
+  "errorCode": "PAYMENT_GATEWAY_TIMEOUT",
+  "latencyMs": 5002.4,
+  "http": {
+    "method": "POST",
+    "route": "/api/v1/checkout",
+    "status": 504
+  }
 }`,
       blueprintLanguage: "json"
     },
     recommendedBook: {
       title: "Site Reliability Engineering (Google SRE Book)",
-      author: "Betsy Beyer, Chris Jones, Jennifer Petoff & Niall Murphy",
-      keyChapters: "Chapters 6 & 10 (Monitoring Distributed Systems & Being On-Call)",
-      whyReadThis: "The seminal work defining Service Level Indicators (SLIs), Objectives (SLOs), and production incident management."
+      author: "Betsy Beyer, Chris Jones, Jennifer Petoff & Niall Richard Murphy",
+      keyChapters: "Chapters 6 & 10 (Monitoring Distributed Systems and Being On-Call)",
+      whyReadThis: "Google's landmark textbook defining production observability, SLIs, SLOs, and incident response.",
+      readingUrl: "https://sre.google/sre-book/table-of-contents/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-603",
-      title: "Implement Kubernetes Health Checks (/healthz/live and /healthz/ready)",
-      scenario: "During deployments, traffic is routed to new containers before database connections are established, causing 502 errors. Implement proper Liveness and Readiness probes.",
+      ticketNumber: "TICKET-028",
+      title: "Configure OpenTelemetry Tracing with Jaeger Exporter",
+      scenario: "An endpoint experiences intermittent 3-second latency spikes, but logs do not reveal which microservice or database query is responsible.",
       acceptanceCriteria: [
-        "`/healthz/live` returns 200 if the process event loop is alive.",
-        "`/healthz/ready` executes a lightweight DB probe (`SELECT 1`) and returns 200 only if DB & Redis connections are established.",
-        "Return 503 Service Unavailable if any required backing service is unreachable."
+        "Initialize OpenTelemetry SDK with HTTP and PostgreSQL auto-instrumentation.",
+        "Export traces to a local Jaeger collector.",
+        "Identify the slowest span in the trace hierarchy."
       ],
+      terminalLab: `docker run -d --name jaeger -p 16686:16686 -p 4318:4318 jaegertracing/all-in-one:latest`,
       hints: [
-        "Liveness check should be lightweight and avoid checking external databases.",
-        "Readiness check should verify that the application is ready to accept user traffic."
+        "Search in Jaeger UI (http://localhost:16686) for spans with duration > 1000ms."
       ],
-      solutionCode: `app.get("/healthz/live", (req, res) => {
-  res.status(200).json({ status: "alive" });
-});
+      solutionCode: `import { NodeSDK } from '@opentelemetry/sdk-node';
+import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 
-app.get("/healthz/ready", async (req, res) => {
-  try {
-    await db.query("SELECT 1");
-    await redis.ping();
-    res.status(200).json({ status: "ready" });
-  } catch (err) {
-    res.status(503).json({ status: "unhealthy", error: (err as any).message });
-  }
-});`,
-      solutionExplanation: "Separating liveness from readiness ensures orchestrators restart hung processes while preventing traffic routing until dependencies are fully initialized."
+const sdk = new NodeSDK({
+  traceExporter: new OTLPTraceExporter({ url: 'http://localhost:4318/v1/traces' }),
+  instrumentations: [getNodeAutoInstrumentations()]
+});
+sdk.start();`,
+      solutionExplanation: "Auto-instrumentation wraps HTTP and database calls in distributed spans, visualizing the exact waterfall breakdown of request latency."
     },
     selfCheckQuestions: [
-      "What is the difference between a Liveness probe and a Readiness probe in Kubernetes?",
-      "What does the RED method stand for in microservices monitoring?",
-      "How does distributed tracing track a request across five independent services?"
+      {
+        question: "Why is tracking p99 latency much more important than average latency?",
+        answerExplanation: "Average latency masks tail outliers. In an e-commerce platform where 99% of requests take 20ms and 1% take 5,000ms, the average looks healthy (~70ms), but your highest-spending power users are experiencing catastrophic 5-second delays."
+      }
     ]
   },
   {
-    id: "graceful-shutdown",
-    number: 25,
-    title: "Graceful Shutdown and Process Lifecycle",
+    id: "graceful-shutdown-fault-tolerance",
+    number: 29,
+    title: "Graceful Shutdown & Fault Tolerance (SIGTERM handling, Drain connections)",
     phaseId: 6,
-    phaseName: "Reliability & Observability",
-    duration: "45 min",
-    youtubeId: "uYqP_aK_uXQ",
+    phaseName: "Reliability, Resilience & Observability",
+    duration: "36 min",
+    youtubeId: "6rfBgphiCWM",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "SIGINT and SIGTERM handling, draining in-flight requests, closing database connection pools, and zero-downtime deploys.",
+    shortSummary: "Intercepting SIGTERM/SIGINT signals, stopping new connections, draining in-flight HTTP requests, and releasing database pools cleanly.",
     seniorInsight: {
-      quote: "When your cloud provider restarts a server or deploys a new container, it sends a SIGTERM signal. If you kill the process immediately, you will abort active user payments halfway through.",
-      productionLesson: "On receiving SIGTERM: 1) Stop accepting new connections, 2) Give active HTTP requests 15–30 seconds to finish, 3) Close database pools cleanly, 4) Exit with status code 0. That is how you achieve zero-downtime deployments.",
-      commonMistake: "Ignoring OS signals, causing orchestrators (Docker/Kubernetes) to forcefully kill the container with SIGKILL after 30 seconds."
+      quote: "When Kubernetes redeploys your app, it sends a SIGTERM. If your app doesn't handle it gracefully, users will see 502 Bad Gateway errors during every deployment.",
+      productionLesson: "Graceful shutdown requires three steps: 1) Stop listening for new incoming HTTP connections. 2) Allow active in-flight requests and background jobs to finish (up to a timeout budget, e.g. 15 seconds). 3) Close database pools and Redis connections cleanly before calling process.exit(0).",
+      commonMistake: "Immediately closing database connection pools upon receiving SIGTERM while in-flight HTTP requests are still actively executing queries."
     },
     coreDeepDive: {
-      what: "The sequence of actions executed by an application process when terminating, allowing in-progress operations to complete cleanly.",
-      why: "Prevents data corruption, broken transactions, socket hangs, and user-facing 502 Bad Gateway errors during rollouts.",
+      what: "Graceful shutdown ensures an application process terminates safely without dropping active network connections or corrupting state.",
+      why: "Eliminates 502 Bad Gateway errors during rolling updates and deployments in Kubernetes, ECS, or Docker Swarm.",
       howItWorks: [
-        "1. Process receives `SIGTERM` from Docker or Kubernetes.",
-        "2. Server calls `server.close()`, rejecting new inbound requests.",
-        "3. Wait for in-flight requests and background queue jobs to complete.",
-        "4. Close DB connection pools, Redis clients, and file handles.",
-        "5. Call `process.exit(0)`."
+        "1. Orchestrator sends SIGTERM signal to container process.",
+        "2. Server stops accepting new connections; health check begins returning 503.",
+        "3. In-flight HTTP requests are granted a grace period (e.g. 10-20 seconds) to complete.",
+        "4. Database connection pools, queue consumers, and file handles are closed.",
+        "5. Process terminates with exit code 0."
       ],
-      blueprintTitle: "Production Graceful Shutdown Handler",
-      blueprintCode: `function setupGracefulShutdown(server, dbPool, redisClient) {
-  const shutdown = async (signal: string) => {
-    console.log(\`Received \${signal}. Starting graceful shutdown...\`);
-    
-    // Stop accepting new HTTP connections
-    server.close(async () => {
-      console.log("HTTP server closed to new connections.");
-      try {
-        // Close database and cache pools
-        await dbPool.end();
-        await redisClient.quit();
-        console.log("Database connections closed cleanly.");
-        process.exit(0);
-      } catch (err) {
-        console.error("Error during graceful shutdown:", err);
-        process.exit(1);
-      }
-    });
-
-    // Force shutdown after 15 seconds if requests hang
-    setTimeout(() => {
-      console.error("Forcefully shutting down after timeout.");
-      process.exit(1);
-    }, 15000);
-  };
-
-  process.on("SIGTERM", () => shutdown("SIGTERM"));
-  process.on("SIGINT", () => shutdown("SIGINT"));
-}`,
-      blueprintLanguage: "typescript"
+      blueprintTitle: "Production Graceful Shutdown Lifecycle",
+      blueprintCode: `[SIGTERM Received]
+       │
+       ▼
+1. Stop accepting NEW connections (server.close())
+       │
+       ▼
+2. Drain in-flight HTTP requests (Wait up to 15s)
+       │
+       ▼
+3. Finish or pause background queue jobs
+       │
+       ▼
+4. Close Database Pools & Redis Connections
+       │
+       ▼
+5. Terminate cleanly: process.exit(0)`,
+      blueprintLanguage: "text"
     },
     recommendedBook: {
       title: "The Linux Programming Interface",
       author: "Michael Kerrisk",
       keyChapters: "Chapters 20 & 21 (Signals: Fundamental Concepts & Handlers)",
-      whyReadThis: "The ultimate guide to OS process lifecycles, signal propagation, and POSIX standards."
+      whyReadThis: "The definitive encyclopedia on UNIX signals, process lifecycles, and OS termination mechanics.",
+      readingUrl: "https://man7.org/tlpi/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-604",
-      title: "Implement Graceful Connection Draining in Next.js / Express Server",
-      scenario: "Kubernetes rolling deploys cause intermittent 502 errors because old pods terminate instantly while requests are still in-flight. Implement connection draining.",
+      ticketNumber: "TICKET-029",
+      title: "Implement Zero-Downtime Graceful Shutdown Handler",
+      scenario: "Deployments in production trigger intermittent 502 Bad Gateway errors for active users completing checkouts.",
       acceptanceCriteria: [
-        "Intercept `SIGTERM` and `SIGINT` signals.",
-        "Close HTTP server and wait for in-flight requests to conclude.",
-        "Close database connections cleanly before exiting."
+        "Listen to process.on('SIGTERM') and process.on('SIGINT').",
+        "Stop server from accepting new traffic while allowing existing requests to finish.",
+        "Force exit with code 1 after 20-second timeout if requests do not finish."
       ],
+      terminalLab: `kill -SIGTERM $(pgrep -f "node src/server.js")`,
       hints: [
-        "Use `server.close()` to stop accepting new requests while existing sockets finish.",
-        "Set a hard deadline timeout using `setTimeout()`."
+        "server.close() stops accepting new requests while allowing current requests to complete."
       ],
-      solutionCode: `const server = app.listen(PORT);
-
-process.on("SIGTERM", async () => {
-  console.log("SIGTERM received. Draining connections...");
-  server.close(async () => {
-    await db.close();
-    process.exit(0);
-  });
-  
-  setTimeout(() => {
-    console.error("Forced exit due to timeout");
-    process.exit(1);
-  }, 10000);
-});`,
-      solutionExplanation: "Graceful draining ensures rolling deployments and pod restarts happen with zero dropped customer requests."
+      solutionCode: `function setupGracefulShutdown(server, dbPool) {
+  const shutdown = async (signal) => {
+    console.log('Received ' + signal + '. Shutting down gracefully...');
+    server.close(async () => {
+      console.log('HTTP connections drained.');
+      await dbPool.end();
+      console.log('Database connections closed.');
+      process.exit(0);
+    });
+    setTimeout(() => {
+      console.error('Forcefully terminating: shutdown timeout exceeded');
+      process.exit(1);
+    }, 20000);
+  };
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
+  process.on('SIGINT', () => shutdown('SIGINT'));
+}`,
+      solutionExplanation: "Coordinating server connection closure with database pool termination guarantees zero dropped requests during rolling deployments."
     },
     selfCheckQuestions: [
-      "What is the difference between SIGTERM and SIGKILL?",
-      "Why must an application stop accepting new connections before closing its database pools?",
-      "How does a graceful shutdown handler enable zero-downtime deployments in Kubernetes?"
-    ]
-  },
-  {
-    id: "twelve-factor-app",
-    number: 26,
-    title: "The 12-Factor App Methodology",
-    phaseId: 6,
-    phaseName: "Reliability & Observability",
-    duration: "45 min",
-    youtubeId: "1OpgLkJjS_0",
-    youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Modern cloud-native architectural principles for scalable, maintainable software systems.",
-    seniorInsight: {
-      quote: "Treat your servers like cattle, not like pets. If a server dies, a new one should spin up in 2 seconds and take over without manual intervention.",
-      productionLesson: "Make your application processes completely stateless. Never store user sessions, uploaded files, or cache in process memory if you want to scale to multiple instances.",
-      commonMistake: "Writing log files to local disk instead of treating logs as event streams piped to stdout."
-    },
-    coreDeepDive: {
-      what: "A methodology for building modern, scalable, maintainable software-as-a-service applications.",
-      why: "Minimizes divergence between development and production, enables elastic cloud scaling, and maximizes portability.",
-      howItWorks: [
-        "1. Codebase: One codebase tracked in Git, many deploys.",
-        "2. Dependencies: Explicitly declare and isolate dependencies.",
-        "3. Config: Store config in the environment.",
-        "4. Backing Services: Treat databases and caches as attached resources.",
-        "5. Stateless Processes: Execute the app as stateless, share-nothing processes.",
-        "6. Concurrency: Scale out via the process model (horizontal scaling)."
-      ],
-      blueprintTitle: "12-Factor Stateless Architecture",
-      blueprintCode: `[Load Balancer]
-      ├── [App Container 1 (Stateless)] ──┐
-      ├── [App Container 2 (Stateless)] ──┼──► [Postgres (Attached DB)]
-      └── [App Container 3 (Stateless)] ──┼──► [Redis (Attached Cache)]
-                                          └──► [S3 (Attached Storage)]`,
-      blueprintLanguage: "text"
-    },
-    recommendedBook: {
-      title: "Cloud Native Patterns",
-      author: "Cornelia Davis",
-      keyChapters: "Chapters 1 & 3 (You Keep Using That Word: Cloud Native, Stateless Services)",
-      whyReadThis: "Explores modern distributed design patterns built upon the foundations of the Twelve-Factor App."
-    },
-    handsOnChallenge: {
-      ticketNumber: "TICKET-605",
-      title: "Audit and Refactor an App for 12-Factor Compliance",
-      scenario: "An application stores uploaded files in a local `/public/uploads` directory and stores user sessions in memory. Audit and refactor it for stateless horizontal scaling.",
-      acceptanceCriteria: [
-        "Refactor file storage to S3 / Object Storage.",
-        "Refactor session store to Redis.",
-        "Pipe all application logs to standard output (stdout)."
-      ],
-      hints: [
-        "Any local disk write is lost when a container restarts.",
-        "Use Redis session stores (`connect-redis`)."
-      ],
-      solutionCode: `// Stateless Session Configuration
-import session from "express-session";
-import RedisStore from "connect-redis";
-
-app.use(session({
-  store: new RedisStore({ client: redisClient }),
-  secret: process.env.SESSION_SECRET!,
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: true, httpOnly: true, maxAge: 86400000 }
-}));`,
-      solutionExplanation: "Externalizing state to attached resources allows application instances to be scaled up or down instantaneously without user session loss."
-    },
-    selfCheckQuestions: [
-      "Why must cloud-native applications execute as stateless processes?",
-      "What does 'Treat logs as event streams' mean in practice?",
-      "How does Dev/Prod parity prevent unexpected production bugs?"
+      {
+        question: "What is the difference between SIGTERM and SIGKILL?",
+        answerExplanation: "SIGTERM is a polite termination request sent by the OS that application code can catch to perform cleanup. SIGKILL cannot be caught or ignored—the OS kernel immediately terminates the process without cleaning up memory or files."
+      }
     ]
   },
 
-  // Phase 7: Scale, Concurrency & Modern Engineering
+  // ==========================================
+  // PHASE 7: Advanced Engineering, Scale & Operations
+  // ==========================================
   {
-    id: "concurrency-parallelism",
-    number: 27,
-    title: "Concurrency and Parallelism",
+    id: "concurrency-parallelism-race-conditions",
+    number: 30,
+    title: "Concurrency & Parallelism (Race Conditions, Locks, Mutexes, Goroutines/Worker Threads)",
     phaseId: 7,
-    phaseName: "Advanced Engineering & Scale",
-    duration: "60 min",
+    phaseName: "Advanced Engineering, Scale & Operations",
+    duration: "31 min",
     youtubeId: "oV9rvDllKEg",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Event loops vs Threads vs Goroutines, Race Conditions, Deadlocks, Mutexes, and atomic operations.",
+    shortSummary: "Concurrency vs parallelism, race conditions, mutual exclusion (Mutex), distributed locks (Redlock), and deadlock avoidance.",
     seniorInsight: {
-      quote: "Concurrency is about dealing with lots of things at once. Parallelism is about doing lots of things at once. — Rob Pike",
-      productionLesson: "A single unhandled Race Condition in a payment or ticket booking system can cost millions in minutes. Always use atomic database operations (`UPDATE ... WHERE balance >= amount`) or distributed locks.",
-      commonMistake: "Assuming that single-threaded runtimes like Node.js are immune to race conditions. Asynchronous `await` points allow interleaved execution!"
+      quote: "Concurrency is not parallelism. Concurrency is about dealing with lots of things at once; parallelism is about doing lots of things at once. — Rob Pike",
+      productionLesson: "Node.js is single-threaded for JavaScript execution, but it is NOT immune to race conditions. Two asynchronous requests can execute await db.get() simultaneously, see the same balance, and both execute await db.set(), causing lost updates. Use database row locks (FOR UPDATE) or distributed Redis locks.",
+      commonMistake: "Acquiring multiple locks in different orders across functions, creating unresolvable Deadlocks."
     },
     coreDeepDive: {
-      what: "Managing multiple execution tasks simultaneously (concurrency) and running multiple computations simultaneously across CPU cores (parallelism).",
-      why: "Maximizes hardware utilization and prevents slow I/O operations from blocking overall system throughput.",
+      what: "Concurrency manages multiple tasks making progress over shared resources; parallelism utilizes multiple CPU cores simultaneously.",
+      why: "Prevents data corruption, state collisions, and throughput collapse in multi-user environments.",
       howItWorks: [
-        "Event Loop (Node.js, Python asyncio): Non-blocking I/O multiplexed on a single thread.",
-        "Thread Pools (Java, C#, Go): Pre-allocated operating system threads mapped to physical CPU cores.",
-        "Hazards: Race conditions (uncoordinated state mutation), Deadlocks (Thread A holds Lock 1 waiting for Lock 2 while Thread B holds Lock 2 waiting for Lock 1)."
+        "1. Critical sections are protected by Mutexes (Mutual Exclusion).",
+        "2. Database row-level locks (SELECT ... FOR UPDATE) prevent concurrent read-modify-write collisions.",
+        "3. Distributed locks (Redlock) coordinate synchronization across multiple independent server instances."
       ],
-      blueprintTitle: "Race Condition Demonstration & Atomic Fix",
-      blueprintCode: `// VULNERABLE TO RACE CONDITIONS:
-const balance = await getBalance(userId); // Read
-if (balance >= 100) {
-  await sleep(10); // Context switch allows another request in!
-  await setBalance(userId, balance - 100); // Write - Overwrites concurrent updates!
-}
+      blueprintTitle: "Race Condition vs Atomic Row Locking",
+      blueprintCode: `-- VULNERABLE TO RACE CONDITION (Lost Update)
+-- User A and User B both read balance = 100 at the same millisecond:
+SELECT balance FROM accounts WHERE id = 1; 
+-- Both compute 100 - 50 = 50 and overwrite:
+UPDATE accounts SET balance = 50 WHERE id = 1; -- 50 ETB lost!
 
-// SAFE - Atomic Database Mutation:
-UPDATE accounts 
-SET balance = balance - 100 
-WHERE user_id = 'usr_1' AND balance >= 100;
--- Single atomic step evaluated inside the database engine`,
+-- PROTECTED: Pessimistic Row Lock (SELECT ... FOR UPDATE)
+BEGIN;
+SELECT balance FROM accounts WHERE id = 1 FOR UPDATE; -- Blocks User B
+UPDATE accounts SET balance = balance - 50 WHERE id = 1;
+COMMIT; -- User B unblocks and sees correct balance of 50`,
       blueprintLanguage: "sql"
     },
     recommendedBook: {
       title: "Designing Data-Intensive Applications (DDIA)",
       author: "Martin Kleppmann",
       keyChapters: "Chapter 7: Transactions (Race Conditions, Serializability, 2PL, SSI)",
-      whyReadThis: "The most brilliant explanation in computer science literature of dirty writes, phantom reads, and snapshot isolation."
+      whyReadThis: "The undisputed master breakdown of concurrency anomalies: Dirty Reads, Non-repeatable Reads, Phantom Reads, and Lost Updates.",
+      readingUrl: "https://dataintensive.net/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-701",
-      title: "Simulate and Fix a High-Concurrency Race Condition",
-      scenario: "A promotional voucher with 10 available uses was claimed 18 times during a flash sale. Write a script that reproduces the race condition, then fix it.",
+      ticketNumber: "TICKET-030",
+      title: "Reproduce and Fix an E-Commerce Inventory Race Condition",
+      scenario: "When the last item of an iPhone is in stock, two simultaneous checkouts both succeed, overselling inventory to -1.",
       acceptanceCriteria: [
-        "Write an atomic SQL update that decrements voucher count safely.",
-        "Verify with 50 concurrent requests that exactly 10 claims succeed and 40 fail.",
-        "Return clean 409 Conflict responses for failed claims."
+        "Write a script firing 10 concurrent requests to buy 1 item.",
+        "Use SELECT FOR UPDATE or atomic UPDATE ... WHERE stock > 0 to guarantee exactly 1 order succeeds."
       ],
+      terminalLab: `node -e 'Promise.all([...Array(10)].map(() => fetch("http://localhost:3000/api/buy")))'`,
       hints: [
-        "Use `UPDATE vouchers SET remaining = remaining - 1 WHERE id = :id AND remaining > 0`.",
-        "Inspect the database row count affected."
+        "Execute UPDATE inventory SET stock = stock - 1 WHERE id = $1 AND stock >= 1;"
       ],
-      solutionCode: `export async function claimVoucher(voucherId: string, userId: string) {
-  const result = await db.query(
-    "UPDATE vouchers SET remaining = remaining - 1 WHERE id = $1 AND remaining > 0 RETURNING id",
-    [voucherId]
-  );
-
-  if (result.rowCount === 0) {
-    throw new ConflictError("Vouchers exhausted");
-  }
-
-  await db.query("INSERT INTO voucher_claims (voucher_id, user_id) VALUES ($1, $2)", [voucherId, userId]);
-  return { success: true };
+      solutionCode: `const res = await db.query(
+  'UPDATE inventory SET stock = stock - 1 WHERE id = $1 AND stock >= 1 RETURNING *',
+  [productId]
+);
+if (res.rowCount === 0) {
+  throw new SoldOutError('Product is sold out.');
 }`,
-      solutionExplanation: "Relying on database-level atomic predicate locking eliminates race conditions without requiring slow application-level mutex locks."
+      solutionExplanation: "Atomic single-statement conditional updates leverage PostgreSQL's internal row locks, ensuring that only one concurrent transaction decrements the final stock."
     },
     selfCheckQuestions: [
-      "Why can race conditions still happen in Node.js despite it having a single-threaded event loop?",
-      "What are the four necessary conditions for a Deadlock to occur (Coffman conditions)?",
-      "What is the difference between Pessimistic Locking (`SELECT FOR UPDATE`) and Optimistic Locking?"
+      {
+        question: "Why can race conditions still occur in single-threaded runtimes like Node.js?",
+        answerExplanation: "Because Node.js yields execution during asynchronous I/O operations (await). If two requests await a database check concurrently, both inspect the same initial state before either writes its update."
+      }
     ]
   },
   {
-    id: "scaling-performance",
-    number: 28,
-    title: "Scaling and High Availability",
-    phaseId: 7,
-    phaseName: "Advanced Engineering & Scale",
-    duration: "70 min",
-    youtubeId: "yps9bM_C8XQ",
-    youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Horizontal vs Vertical scaling, Load Balancers, Read Replicas, Database Sharding, and Circuit Breakers.",
-    seniorInsight: {
-      quote: "Premature optimization is the root of all evil, but premature architectural lock-in is worse. Design for 10x your current load, not 1000x.",
-      productionLesson: "Before you shard your database, do these three things: 1) Add proper indexes, 2) Set up a Redis cache, 3) Add a read replica. Those three steps will take you to millions of users with 1% of the complexity of sharding.",
-      commonMistake: "Building complex microservices before finding product-market fit, spending 80% of engineering time managing distributed network latency."
-    },
-    coreDeepDive: {
-      what: "Designing systems that maintain throughput and low latency as data volume, traffic, and geographic distribution grow exponentially.",
-      why: "Ensures applications stay online and performant during massive traffic surges and hardware failures.",
-      howItWorks: [
-        "Read Replicas: Primary database handles writes; asynchronous read replicas handle read queries.",
-        "Circuit Breaker: Automatically stops sending traffic to a failing downstream service to prevent cascading collapse.",
-        "Rate Limiting: Token bucket algorithm protects endpoints from DDoS and resource exhaustion."
-      ],
-      blueprintTitle: "Circuit Breaker State Machine",
-      blueprintCode: `        [CLOSED] (Normal operation, requests flow)
-           │
-           │ (Error threshold exceeded, e.g. 50% failures)
-           ▼
-         [OPEN]   (Fail fast immediately, no calls sent)
-           │
-           │ (Cooldown period expires, e.g. 30s)
-           ▼
-       [HALF-OPEN] (Test canary request)
-         ├── If success ──► [CLOSED]
-         └── If failure ──► [OPEN]`,
-      blueprintLanguage: "text"
-    },
-    recommendedBook: {
-      title: "System Design Interview – An Insider's Guide",
-      author: "Alex Xu",
-      keyChapters: "Chapters 1 & 4 (Scale From Zero to Millions of Users, Rate Limiter Design)",
-      whyReadThis: "Clear visual architectures detailing CDNs, load balancers, caching tiers, and database scaling."
-    },
-    handsOnChallenge: {
-      ticketNumber: "TICKET-702",
-      title: "Implement a Redis Sliding Window Rate Limiter",
-      scenario: "Malicious actors are spamming the login endpoint. Implement a rate limiter allowing at most 5 attempts per minute per IP address.",
-      acceptanceCriteria: [
-        "Track attempts using a Redis sorted set (ZSET).",
-        "Prune timestamps older than 60 seconds.",
-        "Return `429 Too Many Requests` with a `Retry-After` header when limit is exceeded."
-      ],
-      hints: [
-        "Use `ZREMRANGEBYSCORE` to remove expired timestamps.",
-        "Use `ZCARD` to count attempts in the current window."
-      ],
-      solutionCode: `export async function rateLimit(ip: string, limit = 5, windowSec = 60) {
-  const now = Date.now();
-  const clearBefore = now - windowSec * 1000;
-  const key = \`ratelimit:\${ip}\`;
-
-  const pipeline = redis.pipeline();
-  pipeline.zremrangebyscore(key, 0, clearBefore);
-  pipeline.zadd(key, now, now.toString());
-  pipeline.zcard(key);
-  pipeline.expire(key, windowSec);
-
-  const results = await pipeline.exec();
-  const requestCount = results![2][1] as number;
-
-  if (requestCount > limit) {
-    return { allowed: false, retryAfter: windowSec };
-  }
-  return { allowed: true };
-}`,
-      solutionExplanation: "The Redis sliding window counter provides smooth, non-bursty rate limiting with sub-millisecond overhead."
-    },
-    selfCheckQuestions: [
-      "What is the difference between Read Replicas and Database Sharding?",
-      "How does a Circuit Breaker prevent cascading failures in distributed systems?",
-      "What are the trade-offs between Token Bucket and Sliding Window rate limiting algorithms?"
-    ]
-  },
-  {
-    id: "testing-code-quality",
-    number: 29,
-    title: "Testing and Code Quality",
-    phaseId: 7,
-    phaseName: "Advanced Engineering & Scale",
-    duration: "50 min",
-    youtubeId: "r9HdJ8P6GQI",
-    youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Test Pyramid, Testcontainers for real database tests, mocking vs fakes, and CI automation.",
-    seniorInsight: {
-      quote: "Mocking your database in integration tests only tests that you know how to mock things. Test your repositories against a real PostgreSQL container.",
-      productionLesson: "Use Testcontainers to spin up ephemeral, real Docker containers for PostgreSQL and Redis during your automated CI tests. This catches real SQL syntax errors and transaction bugs before code ever reaches staging.",
-      commonMistake: "Writing 1,000 brittle unit tests that verify implementation details rather than business behavior."
-    },
-    coreDeepDive: {
-      what: "Automated verification methodologies ensuring software remains correct, regression-free, and maintainable over time.",
-      why: "Enables engineering teams to deploy to production multiple times a day with high confidence.",
-      howItWorks: [
-        "Unit Tests: Fast, isolated tests for pure business logic functions.",
-        "Integration Tests: Test repositories and API endpoints against real databases using Testcontainers.",
-        "E2E Tests: Black-box automated user flows."
-      ],
-      blueprintTitle: "Integration Test with Testcontainers",
-      blueprintCode: `import { PostgreSqlContainer } from "@testcontainers/postgresql";
-import { Client } from "pg";
-
-describe("UserRepository Integration Test", () => {
-  let container: any;
-  let client: Client;
-
-  beforeAll(async () => {
-    container = await new PostgreSqlContainer().start();
-    client = new Client({ connectionString: container.getConnectionString() });
-    await client.connect();
-    await runMigrations(client);
-  }, 30000);
-
-  afterAll(async () => {
-    await client.end();
-    await container.stop();
-  });
-
-  it("should enforce unique email constraint", async () => {
-    // Tests real PostgreSQL unique constraint violation!
-  });
-});`,
-      blueprintLanguage: "typescript"
-    },
-    recommendedBook: {
-      title: "Unit Testing: Principles, Practices, and Patterns",
-      author: "Vladimir Khorikov",
-      keyChapters: "Chapters 1, 4 & 8 (The Goal of Testing, The Four Pillars of a Good Unit Test, Why Mocking Leads to Brittle Tests)",
-      whyReadThis: "The most practical, authoritative book written on building high-value, low-maintenance automated test suites."
-    },
-    handsOnChallenge: {
-      ticketNumber: "TICKET-703",
-      title: "Write an Integration Test for Database Constraints",
-      scenario: "A regression allowed duplicate emails to be inserted because the unit test used a mock repository that didn't enforce database uniqueness. Write an integration test using a real DB.",
-      acceptanceCriteria: [
-        "Execute test against real PostgreSQL database.",
-        "Verify that inserting duplicate emails throws a unique violation error (code 23505).",
-        "Clean up test data after execution."
-      ],
-      hints: [
-        "PostgreSQL unique constraint violation error code is `23505`.",
-        "Wrap test in a transaction and roll back at the end for clean isolation."
-      ],
-      solutionCode: `it("fails when inserting duplicate user email", async () => {
-  await userRepository.create({ email: "test@example.com", name: "User 1" });
-  
-  await expect(
-    userRepository.create({ email: "test@example.com", name: "User 2" })
-  ).rejects.toThrow(/duplicate key value violates unique constraint/);
-});`,
-      solutionExplanation: "Testing against real database instances validates constraints, triggers, and foreign keys that in-memory mocks fail to emulate."
-    },
-    selfCheckQuestions: [
-      "Why do unit tests with heavy mocking often give false confidence?",
-      "What is Testcontainers and why has it revolutionized backend integration testing?",
-      "What are the four pillars of a good automated test according to Vladimir Khorikov?"
-    ]
-  },
-  {
-    id: "openapi-standards-tools",
-    number: 30,
-    title: "OpenAPI Standards and Contract-First Design",
-    phaseId: 7,
-    phaseName: "Advanced Engineering & Scale",
-    duration: "45 min",
-    youtubeId: "pRS9LRBgjBo",
-    youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "OpenAPI 3.1, Swagger UI, Spec-First vs Code-First, generating client SDKs, and mock servers.",
-    seniorInsight: {
-      quote: "The API specification is the contract between teams. Design the OpenAPI spec first, get frontend approval, and both teams can build simultaneously.",
-      productionLesson: "With Contract-First development, you can generate mock servers (using Prism) in 5 minutes so frontend engineers can develop against realistic APIs before backend code is even written.",
-      commonMistake: "Writing API documentation manually in Confluence or Google Docs where it instantly becomes out of date."
-    },
-    coreDeepDive: {
-      what: "A vendor-neutral, machine-readable specification standard (YAML/JSON) for describing RESTful APIs.",
-      why: "Enables interactive documentation (Swagger/Redoc), automated client SDK generation, and contract validation testing.",
-      howItWorks: [
-        "Paths: Define URL endpoints and HTTP methods.",
-        "Parameters & RequestBody: Define required headers, params, and JSON schemas.",
-        "Responses: Define schema contracts for 200, 400, 500 status codes."
-      ],
-      blueprintTitle: "OpenAPI 3.1 Spec Snippet",
-      blueprintCode: `openapi: 3.1.0
-info:
-  title: Payments API
-  version: 1.0.0
-paths:
-  /transfers:
-    post:
-      summary: Initiate money transfer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TransferRequest'
-      responses:
-        '201':
-          description: Transfer initiated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransferResponse'`,
-      blueprintLanguage: "yaml"
-    },
-    recommendedBook: {
-      title: "Designing Web APIs",
-      author: "Brenda Jin, Saurabh Sahni & Amir Shevat",
-      keyChapters: "Chapter 7: Documenting Your API",
-      whyReadThis: "Covers the developer experience of publishing, documenting, and maintaining public and internal API specifications."
-    },
-    handsOnChallenge: {
-      ticketNumber: "TICKET-704",
-      title: "Generate TypeScript API Client from OpenAPI Spec",
-      scenario: "Frontend and backend teams are constantly debugging type mismatches. Automate client generation using an OpenAPI specification.",
-      acceptanceCriteria: [
-        "Generate OpenAPI 3.0 spec from your route definitions.",
-        "Use `openapi-typescript` or `orval` to generate typed API fetch functions.",
-        "Verify compile-time type safety on the client."
-      ],
-      terminalLab: `npx openapi-typescript ./openapi.yaml -o ./src/types/api.ts
-# Inspect the generated strongly-typed endpoint contracts`,
-      hints: [
-        "Use tools like `tsoa`, `@fastify/swagger`, or `zod-to-openapi` to automatically derive specs.",
-        "Inspect the generated TypeScript models."
-      ],
-      solutionCode: `// Generated TypeScript contract ensures zero frontend/backend drift
-import { paths } from "./types/api";
-
-type TransferInput = paths["/transfers"]["post"]["requestBody"]["content"]["application/json"];
-type TransferOutput = paths["/transfers"]["post"]["responses"]["201"]["content"]["application/json"];
-
-export async function createTransfer(data: TransferInput): Promise<TransferOutput> {
-  const res = await fetch("/transfers", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  });
-  return res.json();
-}`,
-      solutionExplanation: "Deriving client SDKs directly from OpenAPI contracts completely eliminates type mismatches between frontend and backend teams."
-    },
-    selfCheckQuestions: [
-      "What is the difference between Spec-First and Code-First API development?",
-      "How does Prism use OpenAPI specs to mock backend APIs for frontend teams?",
-      "What is the advantage of OpenAPI 3.1 aligning with JSON Schema Draft 2020-12?"
-    ]
-  },
-  {
-    id: "devops-for-backend-engineers",
+    id: "scaling-testing-devops",
     number: 31,
-    title: "DevOps, Containers, and CI/CD for Backend Engineers",
+    title: "Scaling, Testing & DevOps (Testcontainers, Docker Containers, CI/CD, Load Balancing)",
     phaseId: 7,
-    phaseName: "Advanced Engineering & Scale",
-    duration: "75 min",
+    phaseName: "Advanced Engineering, Scale & Operations",
+    duration: "2 hrs 10 min",
     youtubeId: "fqMOX6JJhGo",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Docker multi-stage builds, Distroless/Alpine, Kubernetes fundamentals, GitHub Actions CI/CD pipelines, and Infrastructure as Code.",
+    shortSummary: "Horizontal scaling, load balancing, Testcontainers integration testing, multi-stage Docker builds, and automated CI/CD quality gates.",
+    secondaryVideo: {
+      youtubeId: "PX3R1fXjJ2M",
+      title: "Globally Distributed Databases with Read Replicas",
+      duration: "25 min",
+      description: "How to scale read-heavy applications using PostgreSQL read replicas and read/write splitting."
+    },
     seniorInsight: {
-      quote: "If you don't know how your code is packaged, deployed, and run on Linux servers, you are only doing half of the backend engineering job.",
-      productionLesson: "Never run your Docker containers as the root user. If an attacker exploits a remote code execution vulnerability in your app, running as root gives them full control over the host node. Always add `USER node` or `USER nonroot`.",
-      commonMistake: "Building 1.5GB Docker images containing build tools, TypeScript compilers, and devDependencies instead of using multi-stage builds."
+      quote: "Mocking your database in integration tests is lying to yourself. Use Testcontainers to spin up real, ephemeral PostgreSQL and Redis Docker containers during test suites.",
+      productionLesson: "In-memory database mocks (like sqlite or mock-redis) do not test real PostgreSQL indexing, locking, or query plans. Testcontainers launches a real PostgreSQL instance inside Docker in 1 second, providing 100% fidelity to production.",
+      commonMistake: "Running Docker containers in production as the root user instead of declaring a restricted non-root user (USER node)."
     },
     coreDeepDive: {
-      what: "The tools, practices, and automated pipelines that package, test, deploy, and operate backend software reliably in cloud infrastructure.",
-      why: "Eliminates the 'It works on my machine' syndrome and enables rapid, automated software delivery.",
+      what: "Modern backend DevOps encompasses automated testing with real infrastructure dependencies, container packaging, and automated CI/CD delivery.",
+      why: "Ensures code can be deployed to production 10 times a day with zero regressions and seamless horizontal scalability.",
       howItWorks: [
-        "Multi-stage Docker: Compiles code in build stage, copies only runtime artifacts to a minimal base image.",
-        "CI/CD: Automatically runs linters, type checks, and tests on pull request; deploys to staging and production on merge.",
-        "Kubernetes: Manages container replication, health probes, service discovery, and rolling zero-downtime updates."
+        "1. Testcontainers spins up real ephemeral Docker dependencies (Postgres, Redis) for integration tests.",
+        "2. Multi-stage Docker builds separate build dependencies from minimal production runtime images.",
+        "3. CI/CD pipeline runs lints, tests, builds image, and performs canary deployment."
       ],
       blueprintTitle: "Hardened Production Multi-Stage Dockerfile",
-      blueprintCode: `# Stage 1: Build & Prune
+      blueprintCode: `# Build Stage
 FROM node:20-alpine AS builder
 WORKDIR /app
-COPY package*.json tsconfig.json ./
+COPY package*.json ./
 RUN npm ci
-COPY src/ ./src
+COPY . .
 RUN npm run build
-RUN npm prune --production
 
-# Stage 2: Minimal Hardened Production Runtime
+# Production Runtime Stage (Small, secure, non-root)
 FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
-
-# Security: Run as non-root user
+# Security: Never run containers as root!
 USER node
-
-COPY --chown=node:node --from=builder /app/node_modules ./node_modules
-COPY --chown=node:node --from=builder /app/dist ./dist
-COPY --chown=node:node --from=builder /app/package.json ./package.json
-
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
 EXPOSE 3000
-CMD ["node", "dist/index.js"]`,
+CMD ["node", "dist/server.js"]`,
       blueprintLanguage: "dockerfile"
     },
     recommendedBook: {
       title: "The DevOps Handbook (2nd Edition)",
       author: "Gene Kim, Jez Humble, Patrick Debois & John Willis",
       keyChapters: "Chapters 5 & 6 (The Technical Practices of Flow, Telemetry, and Continuous Delivery)",
-      whyReadThis: "Essential reading on automating deployment pipelines, reducing lead time, and building resilient engineering cultures."
+      whyReadThis: "The seminal guide for implementing automated testing, continuous integration, and high-trust deployment pipelines.",
+      readingUrl: "https://continuousdelivery.com/"
     },
     handsOnChallenge: {
-      ticketNumber: "TICKET-705",
-      title: "Build a Hardened GitHub Actions CI/CD Pipeline",
-      scenario: "Deployments are currently done by manually SSHing into servers and pulling git branches. Create an automated GitHub Actions pipeline.",
+      ticketNumber: "TICKET-031",
+      title: "Build an Integration Test Suite using Real PostgreSQL in Testcontainers",
+      scenario: "Unit tests with SQLite in-memory passed, but production crashed due to PostgreSQL-specific JSONB and UUID syntax errors.",
       acceptanceCriteria: [
-        "Trigger on push to `main` branch and pull requests.",
-        "Run linter, type-check, and automated tests.",
-        "Build and scan Docker image with Trivy for vulnerabilities.",
-        "Deploy to cloud provider (Vercel or AWS ECS) automatically."
+        "Spin up real PostgreSQL container using Testcontainers.",
+        "Run database migrations against ephemeral container.",
+        "Verify ACID transaction rollbacks pass with 100% production fidelity."
       ],
+      terminalLab: `npm test -- test/integration/order-flow.test.js`,
       hints: [
-        "Use GitHub Actions caching for `node_modules` to speed up CI runs.",
-        "Store deployment credentials in GitHub Repository Secrets."
+        "Use @testcontainers/postgresql to spin up the container in Jest beforeAll()."
       ],
-      solutionCode: `name: Production CI/CD
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+      solutionCode: `import { PostgreSqlContainer } from '@testcontainers/postgresql';
 
-jobs:
-  test-and-build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "npm"
-      - run: npm ci
-      - run: npm run lint
-      - run: npm test
-      - name: Build Docker Image
-        run: docker build -t my-app:\${{ github.sha }} .`,
-      solutionExplanation: "Automated CI/CD pipelines enforce automated quality gates, ensuring broken code or vulnerable packages never reach production."
+let container;
+beforeAll(async () => {
+  container = await new PostgreSqlContainer('postgres:16-alpine').start();
+  process.env.DATABASE_URL = container.getConnectionUri();
+  await runMigrations();
+});
+afterAll(async () => {
+  await container.stop();
+});`,
+      solutionExplanation: "Testing against real PostgreSQL instances inside ephemeral containers uncovers real-world database syntax, constraint, and locking errors before code ever deploys."
     },
     selfCheckQuestions: [
-      "Why should you never run Docker containers as the `root` user in production?",
-      "How do Docker multi-stage builds reduce final image size and attack surface?",
-      "What is the difference between Continuous Integration, Continuous Delivery, and Continuous Deployment?"
+      {
+        question: "Why are multi-stage Docker builds essential for production backend security and performance?",
+        answerExplanation: "Multi-stage builds leave compilers, development dependencies (npm devDependencies), and source code behind in the build stage, creating tiny runtime container images with a minimal attack surface that boot in seconds."
+      }
     ]
   }
 ];
@@ -2515,44 +2350,44 @@ jobs:
 export const ROADMAP_PHASES: RoadmapPhase[] = [
   {
     id: 1,
-    name: "Web Protocols & Foundations",
-    description: "Master how data moves across the internet: HTTP/1.1 to HTTP/3, Radix routing, and binary vs text serialization.",
+    name: "Foundations & Web Protocols",
+    description: "Master the fundamental principles of backend architecture, networking, HTTP protocols, routing radix trees, and binary/text serialization.",
     topics: ROADMAP_TOPICS.filter((t) => t.phaseId === 1),
   },
   {
     id: 2,
-    name: "Application Architecture & Request Lifecycle",
-    description: "Build clean, maintainable backend systems: Handlers, Controllers, Middlewares, Contexts, and Domain-Driven Design.",
+    name: "Core API Architecture & Request Lifecycle",
+    description: "Architect clean, modular backend applications: Middlewares, request contexts, input validation, layered architecture, RESTful standards, and state mutations.",
     topics: ROADMAP_TOPICS.filter((t) => t.phaseId === 2),
   },
   {
     id: 3,
-    name: "Data Persistence & Performance",
-    description: "Become a master of storage: PostgreSQL deep dive, indexing, MVCC, Redis caching, Full-Text Search, and Object Storage.",
+    name: "Data Persistence & Storage",
+    description: "Master relational and in-memory persistence: PostgreSQL internals, ACID transactions, relational modeling, indexing performance, domain invariants, and caching architectures.",
     topics: ROADMAP_TOPICS.filter((t) => t.phaseId === 3),
   },
   {
     id: 4,
     name: "Security & Access Control",
-    description: "Protect systems against catastrophic breaches: Modern AuthN/AuthZ, Refresh Token Rotation, BOLA/IDOR, and OWASP API security.",
+    description: "Secure APIs and backend systems: Authentication, cryptographic tokens, role and attribute-based authorization, and OWASP API Top 10 hardening.",
     topics: ROADMAP_TOPICS.filter((t) => t.phaseId === 4),
   },
   {
     id: 5,
-    name: "Background Processing & Integrations",
-    description: "Design fault-tolerant asynchronous workflows: Task queues, Transactional Outbox, Webhooks, and Real-Time SSE/WebSockets.",
+    name: "Asynchronous Systems & Integrations",
+    description: "Decouple synchronous HTTP flows: Task queuing, background workers, transactional email, webhooks with HMAC, real-time websockets/SSE, object storage, and full-text search.",
     topics: ROADMAP_TOPICS.filter((t) => t.phaseId === 5),
   },
   {
     id: 6,
-    name: "Reliability & Observability",
-    description: "Survive real-world chaos: RFC 9457 error handling, fail-fast config, OpenTelemetry, graceful shutdown, and 12-Factor principles.",
+    name: "Reliability, Resilience & Observability",
+    description: "Build production-resilient systems: RFC 7807/9457 Problem Details, 12-factor configuration, OpenTelemetry logging/metrics, and graceful shutdown signal handling.",
     topics: ROADMAP_TOPICS.filter((t) => t.phaseId === 6),
   },
   {
     id: 7,
-    name: "Advanced Engineering & Scale",
-    description: "Operate at high scale: Concurrency & race conditions, high availability, Testcontainers, OpenAPI contracts, and Docker/DevOps.",
+    name: "Advanced Engineering, Scale & Operations",
+    description: "Operate at high volume: Concurrency, race conditions, distributed locks, database scaling, read replicas, Testcontainers, and containerized CI/CD pipelines.",
     topics: ROADMAP_TOPICS.filter((t) => t.phaseId === 7),
   },
 ];

@@ -15,6 +15,9 @@ import {
   ArrowRight,
   Code2,
   HelpCircle,
+  BookOpen,
+  BookmarkCheck,
+  ExternalLink,
 } from "lucide-react";
 
 interface TopicViewerProps {
@@ -214,15 +217,110 @@ export function TopicViewer({
       />
 
       {/* 4. Self-Assessment Checklist (Immediate evaluation after reading) */}
-      <div className="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-3">
-        <div className="flex items-center gap-2">
-          <HelpCircle className="h-4 w-4 text-zinc-900 dark:text-white" />
-          <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white">
-            Self-Assessment: Understanding Check (Can you answer these aloud?)
-          </h4>
+      <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-5">
+        <div className="flex items-center justify-between flex-wrap gap-2 border-b border-zinc-100 pb-3 dark:border-zinc-900">
+          <div className="flex items-center gap-2">
+            <HelpCircle className="h-4 w-4 text-zinc-900 dark:text-white" />
+            <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white">
+              Self-Assessment: Understanding Check (Can you answer these aloud?)
+            </h4>
+          </div>
+          <span className="text-xs font-mono text-zinc-400">
+            {topic.selfCheckQuestions.length} Questions
+          </span>
         </div>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">
-          After reviewing the lecture and reading the canonical book chapters, you should be able to clearly explain:
+
+        {/* Prerequisite Reading Gate Banner */}
+        <div
+          className={`rounded-lg border p-4 transition-all ${
+            isBookRead
+              ? "border-emerald-200 bg-emerald-50/40 dark:border-emerald-900/40 dark:bg-emerald-950/20"
+              : "border-amber-200 bg-amber-50/40 dark:border-amber-900/40 dark:bg-amber-950/20"
+          }`}
+        >
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-start gap-3">
+              <div
+                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${
+                  isBookRead
+                    ? "border-emerald-300 bg-emerald-100 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300"
+                    : "border-amber-300 bg-amber-100 text-amber-800 dark:border-amber-800 dark:bg-amber-900/50 dark:text-amber-300"
+                }`}
+              >
+                {isBookRead ? (
+                  <BookmarkCheck className="h-5 w-5" />
+                ) : (
+                  <BookOpen className="h-5 w-5" />
+                )}
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                    Required Prerequisite Reading
+                  </span>
+                  {isBookRead && (
+                    <span className="inline-flex items-center gap-1 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 font-mono">
+                      ✓ Completed
+                    </span>
+                  )}
+                </div>
+                <h5 className="text-xs font-bold text-zinc-900 dark:text-white mt-0.5">
+                  {topic.recommendedBook.title}{" "}
+                  <span className="font-normal text-zinc-500 dark:text-zinc-400">
+                    by {topic.recommendedBook.author}
+                  </span>
+                </h5>
+                <p className="text-[11.5px] text-zinc-600 dark:text-zinc-300 mt-0.5">
+                  <span className="font-semibold text-zinc-900 dark:text-zinc-100">
+                    Assigned Chapter:{" "}
+                  </span>
+                  {topic.recommendedBook.keyChapters}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0 flex-wrap sm:flex-nowrap">
+              {topic.recommendedBook.readingUrl && (
+                <a
+                  href={topic.recommendedBook.readingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-900 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800 transition-colors shadow-xs"
+                >
+                  <span>Read Chapter Online</span>
+                  <ExternalLink className="h-3.5 w-3.5" />
+                </a>
+              )}
+              <button
+                onClick={onToggleBookRead}
+                className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors shrink-0 ${
+                  isBookRead
+                    ? "border border-emerald-300 bg-emerald-600 text-white hover:bg-emerald-700 dark:border-emerald-700 dark:bg-emerald-600 dark:text-white"
+                    : "border border-zinc-900 bg-black text-white hover:bg-zinc-800 dark:border-white dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+                }`}
+              >
+                {isBookRead ? (
+                  <>
+                    <Check className="h-3.5 w-3.5" />
+                    <span>Reading Completed</span>
+                  </>
+                ) : (
+                  <>
+                    <BookmarkCheck className="h-3.5 w-3.5" />
+                    <span>Mark Chapter as Read</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+
+          <p className="mt-2.5 text-[11px] text-zinc-500 dark:text-zinc-400 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-2 leading-relaxed">
+            ⚠️ Make sure you have studied the assigned reading above before attempting the self-assessment questions below.
+          </p>
+        </div>
+
+        <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+          After reviewing the lecture and completing the required chapter reading, test your staff-level grasp by answering each of the following:
         </p>
         <ul className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
           {topic.selfCheckQuestions.map((qItem, idx) => {
