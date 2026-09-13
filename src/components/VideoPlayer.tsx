@@ -1,16 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  ExternalLink,
-  Youtube,
-  Clock,
-  Maximize2,
-  Minimize2,
-  Expand,
-  X,
-} from "lucide-react";
-import { CHANNEL_URL, CHANNEL_NAME } from "../data/roadmap";
+import { Youtube, Clock } from "lucide-react";
 import { VideoTimestamp } from "../types/roadmap";
 
 interface VideoPlayerProps {
@@ -27,41 +18,19 @@ export function VideoPlayer({
   timestamps,
 }: VideoPlayerProps) {
   const [startSeconds, setStartSeconds] = useState<number | null>(null);
-  const [isTheater, setIsTheater] = useState(false);
 
   const handleSeek = (seconds: number) => {
     setStartSeconds(seconds);
-  };
-
-  const handleFullscreen = () => {
-    const iframe = document.getElementById(`iframe-${youtubeId}`);
-    if (iframe) {
-      if (iframe.requestFullscreen) {
-        iframe.requestFullscreen();
-      } else if ((iframe as any).webkitRequestFullscreen) {
-        (iframe as any).webkitRequestFullscreen();
-      }
-    }
   };
 
   const embedUrl = startSeconds !== null
     ? `https://www.youtube-nocookie.com/embed/${youtubeId}?start=${startSeconds}&autoplay=1&rel=0&modestbranding=1`
     : `https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0&modestbranding=1`;
 
-  const watchUrl = startSeconds !== null
-    ? `https://www.youtube.com/watch?v=${youtubeId}&t=${startSeconds}s`
-    : `https://www.youtube.com/watch?v=${youtubeId}`;
-
   return (
-    <div
-      className={`transition-all duration-300 ${
-        isTheater
-          ? "fixed inset-0 z-50 flex flex-col justify-center bg-black/95 p-4 sm:p-8 backdrop-blur-md"
-          : "rounded-xl border border-zinc-200 bg-zinc-50/50 p-4 dark:border-zinc-800 dark:bg-zinc-950/50 shadow-sm"
-      }`}
-    >
+    <div className="rounded-xl border border-zinc-200 bg-zinc-50/50 p-4 dark:border-zinc-800 dark:bg-zinc-950/50 shadow-sm">
       {/* Player Header Bar */}
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+      <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Youtube className="h-4 w-4 text-zinc-900 dark:text-white" />
           <span className="text-xs font-mono font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
@@ -72,79 +41,11 @@ export function VideoPlayer({
             {duration}
           </span>
         </div>
-
-        {/* Action Controls Bar */}
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Maximize / Minimize Theater Mode Toggle */}
-          <button
-            onClick={() => setIsTheater(!isTheater)}
-            className="inline-flex items-center gap-1.5 rounded-md border border-zinc-300 bg-white px-2.5 py-1 text-xs font-medium text-zinc-800 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 transition-colors"
-            title={isTheater ? "Minimize (Return to normal view)" : "Maximize (Theater expanded view)"}
-          >
-            {isTheater ? (
-              <>
-                <Minimize2 className="h-3.5 w-3.5" />
-                <span>Minimize</span>
-              </>
-            ) : (
-              <>
-                <Maximize2 className="h-3.5 w-3.5" />
-                <span>Maximize</span>
-              </>
-            )}
-          </button>
-
-          {/* Fullscreen Button */}
-          <button
-            onClick={handleFullscreen}
-            className="inline-flex items-center gap-1 rounded-md border border-zinc-300 bg-white px-2.5 py-1 text-xs font-medium text-zinc-800 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 transition-colors"
-            title="Fullscreen"
-          >
-            <Expand className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Fullscreen</span>
-          </button>
-
-          {/* Channel Link */}
-          <a
-            href={CHANNEL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-md border border-zinc-300 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
-          >
-            <span>{CHANNEL_NAME}</span>
-            <ExternalLink className="h-3 w-3" />
-          </a>
-
-          {/* Watch on YouTube Link */}
-          <a
-            href={watchUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-md bg-black px-2.5 py-1 text-xs font-medium text-white hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200 transition-colors"
-          >
-            <span>Open in YouTube</span>
-            <ExternalLink className="h-3 w-3" />
-          </a>
-
-          {isTheater && (
-            <button
-              onClick={() => setIsTheater(false)}
-              className="ml-2 rounded-full p-1 text-white hover:bg-zinc-800"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          )}
-        </div>
       </div>
 
       {/* 16:9 Aspect Ratio Container */}
-      <div
-        className={`relative w-full overflow-hidden rounded-lg border border-zinc-200 bg-black dark:border-zinc-800 shadow-sm ${
-          isTheater ? "max-h-[75vh] max-w-5xl mx-auto aspect-video" : "aspect-video"
-        }`}
-      >
+      <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-zinc-200 bg-black dark:border-zinc-800 shadow-sm">
         <iframe
-          id={`iframe-${youtubeId}`}
           key={`${youtubeId}-${startSeconds}`}
           src={embedUrl}
           title={title}
