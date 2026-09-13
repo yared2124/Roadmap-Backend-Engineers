@@ -14,6 +14,12 @@ export const ROADMAP_TOPICS: RoadmapTopic[] = [
     duration: "31 min",
     youtubeId: "0Rwb4Xmlcwc",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "3qFjZbFRSAU",
+      title: "Walk the Path of a True Backend Engineer: Story, Implementation & Scale",
+      duration: "4 min",
+      description: "Essential Mindset (Phase 1–3): The learning methodology required to become a true backend systems engineer—from philosophy to Node.js/Golang implementation to zero-to-million scale."
+    },
     shortSummary: "Foundational roadmap to Backend Engineering from First Principles: Moving beyond CRUD APIs and framework syntax to master reliable, scalable, and maintainable distributed systems.",
     timestamps: [],
     seniorInsight: {

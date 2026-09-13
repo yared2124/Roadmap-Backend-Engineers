@@ -60,6 +60,12 @@ export interface RoadmapTopic {
   selfCheckQuestions: string[];
   timestamps?: VideoTimestamp[];
   additionalReferences?: AdditionalReference[];
+  secondaryVideo?: {
+    youtubeId: string;
+    title: string;
+    duration: string;
+    description: string;
+  };
 }
 
 export interface RoadmapPhase {

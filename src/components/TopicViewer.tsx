@@ -121,12 +121,33 @@ export function TopicViewer({
         </div>
       </div>
 
-      {/* 1. Video Lecture Section */}
+      {/* 1. Primary Video Lecture */}
       <VideoPlayer
         youtubeId={topic.youtubeId}
         title={topic.title}
         duration={topic.duration}
       />
+
+      {/* 1.1 Optional Secondary / Follow-up Lecture */}
+      {topic.secondaryVideo && (
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 px-1">
+            <span className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100">
+              Part 2 / Essential Mindset: {topic.secondaryVideo.title}
+            </span>
+            <span className="text-zinc-400">•</span>
+            <span className="text-xs font-mono text-zinc-500">{topic.secondaryVideo.duration}</span>
+          </div>
+          <p className="text-xs text-zinc-600 dark:text-zinc-400 px-1">
+            {topic.secondaryVideo.description}
+          </p>
+          <VideoPlayer
+            youtubeId={topic.secondaryVideo.youtubeId}
+            title={topic.secondaryVideo.title}
+            duration={topic.secondaryVideo.duration}
+          />
+        </div>
+      )}
 
       {/* 2. Deep Architectural Breakdown */}
       <section className="space-y-4 rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm">
