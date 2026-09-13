@@ -213,16 +213,16 @@ export function TopicViewer({
         onToggleRead={onToggleBookRead}
       />
 
-      {/* 4. Self-Assessment Checklist ("ምን ተረዳችሁ?" - Immediate evaluation after reading) */}
+      {/* 4. Self-Assessment Checklist (Immediate evaluation after reading) */}
       <div className="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-3">
         <div className="flex items-center gap-2">
           <HelpCircle className="h-4 w-4 text-zinc-900 dark:text-white" />
           <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white">
-            Self-Assessment: ምን ተረዳችሁ? (Can you answer these aloud?)
+            Self-Assessment: Understanding Check (Can you answer these aloud?)
           </h4>
         </div>
         <p className="text-xs text-zinc-500 dark:text-zinc-400">
-          ቪዲዮውን ካዩ እና መጽሐፉን ካነበቡ በኋላ የሚከተሉትን ዋና ፅንሰ-ሃሳቦች በግልጽ መመለስ እና ማስረዳት መቻል አለብዎት፦
+          After reviewing the lecture and reading the canonical book chapters, you should be able to clearly explain:
         </p>
         <ul className="space-y-2 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
           {topic.selfCheckQuestions.map((q, idx) => (
