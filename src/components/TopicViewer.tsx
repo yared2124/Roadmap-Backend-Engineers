@@ -257,7 +257,7 @@ export function TopicViewer({
       </div>
 
       {/* 5. Production Engineering Challenge & Solution (Applied Hands-on Practice) */}
-      {topic.number !== 1 && topic.handsOnChallenge && (
+      {topic.handsOnChallenge && (
         <ChallengeSection challenge={topic.handsOnChallenge} />
       )}
 
@@ -296,14 +296,12 @@ export function TopicViewer({
         </div>
       )}
 
-      {/* 7. Student Personal Notes Scratchpad (Omitted for Module 1 overview) */}
-      {topic.number !== 1 && (
-        <NotesDrawer
-          topicId={topic.id}
-          initialNote={note}
-          onSaveNote={onSaveNote}
-        />
-      )}
+      {/* 7. Student Personal Notes Scratchpad */}
+      <NotesDrawer
+        topicId={topic.id}
+        initialNote={note}
+        onSaveNote={onSaveNote}
+      />
 
       {/* Bottom Prev / Next Navigation */}
       <div className="flex items-center justify-between border-t border-zinc-200 pt-6 dark:border-zinc-800">

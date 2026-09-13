@@ -6,226 +6,147 @@ export const CHANNEL_NAME = "@sriniously";
 export const ROADMAP_TOPICS: RoadmapTopic[] = [
   // Phase 1: Foundations & Web Protocols
   {
-    id: "backend-from-first-principles",
+    id: "backend-frontend-high-level",
     number: 1,
-    title: "Backend from First Principles: Architecture & Systems Roadmap",
+    title: "High-Level Understanding of Backend and Frontend",
     phaseId: 1,
     phaseName: "Web Protocols & Foundations",
-    duration: "31 min",
-    youtubeId: "0Rwb4Xmlcwc",
+    duration: "40 min",
+    youtubeId: "4r6WdaY3SOA",
     youtubeChannelUrl: CHANNEL_URL,
-    secondaryVideo: {
-      youtubeId: "3qFjZbFRSAU",
-      title: "Walk the Path of a True Backend Engineer: Story, Implementation & Scale",
-      duration: "4 min",
-      description: "Essential Mindset (Phase 1–3): The learning methodology required to become a true backend systems engineer—from philosophy to Node.js/Golang implementation to zero-to-million scale."
-    },
-    shortSummary: "Foundational roadmap to Backend Engineering from First Principles: Moving beyond CRUD APIs and framework syntax to master reliable, scalable, and maintainable distributed systems.",
-    timestamps: [],
+    shortSummary: "Client-server architecture, separation of concerns, network boundaries, and how requests travel across the internet.",
     seniorInsight: {
-      quote: "Backend engineering is not about writing frameworks; it is about managing state, latency, and failure across network boundaries.",
-      productionLesson: "When you reason from first principles, you stop asking 'Which framework is trending?' and start asking 'What are my disk I/O constraints, network latencies, memory footprints, and fault boundaries?'",
-      commonMistake: "Learning by superficial analogy—copy-pasting tutorials without understanding the underlying transport protocol, operating system processes, or database storage engines."
+      quote: "Never trust the client. The frontend is an untrusted remote environment that can be modified by anyone with DevTools.",
+      productionLesson: "In production, client-side validation is solely for UI responsiveness. Every single invariant, business rule, and permission must be strictly re-validated on the backend server.",
+      commonMistake: "Relying on frontend checks to calculate pricing or assuming data sent from mobile apps or web forms has not been tampered with."
     },
     coreDeepDive: {
-      what: "First Principles Thinking applied to backend systems: Deconstructing software into fundamental engineering truths (CPU cycles, sockets, bytes on wire, ACID guarantees, fault boundaries) rather than framework-specific abstractions.",
-      why: "Frameworks and languages shift constantly, but first-principles (networking, data integrity, caching, asynchronous queuing, and fault tolerance) remain durable throughout your entire career.",
+      what: "The separation between the presentation tier (browsers, mobile apps) and the data & business logic tier (backend servers, databases, microservices).",
+      why: "Allows independent scaling, multi-client support (one API for iOS, Android, and Web), and centralized security enforcement.",
       howItWorks: [
-        "1. Foundations & Networking: High-level system architecture, HTTP semantics, routing algorithms, and byte serialization/deserialization.",
-        "2. Core API Development: Perimeter authentication/authorization, schema validation, interceptor middlewares, and request context deadlines.",
-        "3. Data & Business Logic: Database integrity, service layers, caching hierarchies, transactional emails, and decoupled task queues.",
-        "4. System Reliability & Operations: Structured logging, observability (metrics & tracing), config isolation, graceful shutdown, and continuous testing."
+        "1. Client initiates DNS resolution to translate hostname into an IP address.",
+        "2. TCP three-way handshake (SYN, SYN-ACK, ACK) and TLS 1.3 cryptographic negotiation establish a secure channel.",
+        "3. Reverse proxy / Load Balancer terminates TLS and forwards the HTTP request to private application subnets.",
+        "4. Application server processes logic, interacts with persistence layers (DB/Cache), and returns a formatted response."
       ],
-      blueprintTitle: "First-Principles System Architecture Hierarchy",
-      blueprintCode: `[Untrusted Public Internet]
+      blueprintTitle: "Reverse Proxy Architecture Flow",
+      blueprintCode: `[Public Internet]
        │
-       ▼ (HTTPS :443 / TLS 1.3)
-[Edge & Reverse Proxy]     <-- SSL termination, DDoS protection, Rate Limiting
+       ▼ (HTTPS :443)
+[Nginx / Cloudflare Edge]  <-- SSL Termination, DDoS mitigation, Static Caching
        │
-       ▼ (Private VPC Network)
-[Application Service]      <-- Stateless execution, Request Context, Validation
-       │
-       ├──► [PostgreSQL]    <-- ACID persistence, MVCC, B-Trees, Connection Pool
-       ├──► [Redis]         <-- In-memory cache-aside, locks, transient sessions
-       └──► [Task Queue]    <-- Asynchronous background workers, Outbox relay`,
+       ▼ (Private VPC :8080)
+[Backend App Instance]     <-- Stateless business logic
+   ├── [PostgreSQL]        <-- ACID persistence
+   └── [Redis]             <-- In-memory session / cache`,
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "Designing Data-Intensive Applications (DDIA)",
-      author: "Martin Kleppmann",
-      keyChapters: "Chapter 1: Reliable, Scalable, and Maintainable Applications",
-      whyReadThis: "The definitive first-principles text for backend engineers. Kleppmann establishes how to rigorously analyze hardware faults, network unreliability, and traffic scaling without framework bias."
+      title: "High Performance Browser Networking",
+      author: "Ilya Grigorik",
+      keyChapters: "Chapters 1 & 2 (Latency: The Defining Constraint, TCP Fundamentals)",
+      whyReadThis: "Explains how the physical reality of light through fiber optic cables and packet handshakes dictates backend latency."
     },
-    additionalReferences: [
-      {
-        title: "The Twelve-Factor App Methodology",
-        url: "https://12factor.net",
-        description: "Canonical rules for designing modern, scalable, maintainable cloud-native applications."
-      },
-      {
-        title: "End-to-End Arguments in System Design (MIT Paper)",
-        url: "https://web.mit.edu/Saltzer/www/publications/endtoend/endtoend.pdf",
-        description: "The foundational MIT research paper that established how intelligence and reliability must be placed in network endpoints."
-      },
-      {
-        title: "Google SRE Book - Reliability Principles",
-        url: "https://sre.google/sre-book/introduction/",
-        description: "Google's definitive engineering manual on error budgets, SLOs, and systems resilience."
-      },
-      {
-        title: "Martin Fowler: Patterns of Enterprise Architecture",
-        url: "https://martinfowler.com/architecture/",
-        description: "Foundational architectural patterns for enterprise software and domain boundaries."
-      }
-    ],
+    handsOnChallenge: {
+      ticketNumber: "TICKET-101",
+      title: "Trace Request Latency & Security Boundaries",
+      scenario: "Your team noticed high latency for users connecting from different continents. You must identify where the time is spent (DNS, TCP, TLS, TTFB).",
+      acceptanceCriteria: [
+        "Use curl with write-out variables to measure DNS lookup, TCP connect, and TTFB times.",
+        "Simulate an untrusted request attempting to pass an unauthorized user_id in the body."
+      ],
+      terminalLab: `curl -w "@curl-format.txt" -o /dev/null -s https://api.github.com
+# format file contains: time_namelookup, time_connect, time_appconnect, time_starttransfer, time_total`,
+      hints: [
+        "Time To First Byte (TTFB) includes backend processing time plus network latency.",
+        "Check curl's -w flag documentation for connection timing metrics."
+      ],
+      solutionCode: `curl -w "DNS: %{time_namelookup}s\\nTCP: %{time_connect}s\\nTLS: %{time_appconnect}s\\nTTFB: %{time_starttransfer}s\\nTotal: %{time_total}s\\n" -o /dev/null -s https://httpbin.org/get`,
+      solutionExplanation: "By isolating TLS and connect times, you can determine whether latency is caused by backend query execution or network round-trips."
+    },
     selfCheckQuestions: [
-      {
-        question: "What is First Principles thinking and how does it differentiate a senior systems engineer from a framework user?",
-        answerExplanation: "Framework users reason by superficial analogy (e.g. 'Express uses app.use(), Next.js uses server actions'). First-principles engineers reason from physics and computer architecture: CPU cycles, memory allocations, TCP socket state, disk I/O bottlenecks, and network latency boundaries. This makes them instantly adaptable to any tech stack without syntax fatigue."
-      },
-      {
-        question: "What are the Three Pillars of software systems defined in Chapter 1 of DDIA?",
-        answerExplanation: "1. Reliability: Continuing to function correctly despite hardware faults, software bugs, and human error. 2. Scalability: Having viable strategies to handle increased load (data volume, traffic velocity, complexity). 3. Maintainability: Enabling new engineers to productively understand, refactor, and operate the system over years."
-      },
-      {
-        question: "How much downtime does a 99.9% SLA allow per month, and why is 100% uptime physically impossible?",
-        answerExplanation: "A 99.9% SLA allows ~43.8 minutes of downtime per month. 100% uptime is physically impossible due to the FLP Impossibility Result, CAP Theorem constraints, hardware degradation, fiber cuts, kernel panic bugs, and cloud provider availability zone maintenance."
-      }
+      "Why must business logic never reside purely in the client?",
+      "What is the difference between a forward proxy and a reverse proxy?",
+      "What does Time To First Byte (TTFB) measure?"
     ]
   },
   {
-    id: "what-is-a-backend",
+    id: "http-protocol",
     number: 2,
-    title: "What is a Backend, How They Work & Why We Need Them",
+    title: "HTTP Protocol Deep Dive",
     phaseId: 1,
     phaseName: "Web Protocols & Foundations",
-    duration: "20 min",
-    youtubeId: "6Ss4dJD9Kzg",
+    duration: "55 min",
+    youtubeId: "iYM2zFP3Zn0",
     youtubeChannelUrl: CHANNEL_URL,
-    shortSummary: "Deconstructing the anatomy of a backend: Request traversal from browser through DNS, Firewalls, and Nginx reverse proxies to state management, centralized computing, and security isolation.",
+    shortSummary: "HTTP/1.1 vs HTTP/2 vs HTTP/3, status codes, headers, and idempotent vs safe methods.",
     seniorInsight: {
-      quote: "The client device is an untrusted, ephemeral execution environment. The backend exists as the single source of truth for business invariants, data integrity, and secret management.",
-      productionLesson: "Never trust the frontend. Everything running in a browser—input values, cookies, local storage, network requests—can be modified in DevTools. The backend must enforce absolute validation and authorization on every byte received.",
-      commonMistake: "Exposing database credentials or third-party secret API keys on the frontend, or expecting browsers to perform database connection pooling safely."
+      quote: "Understanding idempotency is what separates engineers who build billing bugs from engineers who build fault-tolerant payment systems.",
+      productionLesson: "Network packets fail, retry, and duplicate. If your POST or payment endpoint is not idempotent, network retries will charge the customer multiple times.",
+      commonMistake: "Using GET requests for operations that mutate state, or using 200 OK for every response including errors."
     },
     coreDeepDive: {
-      what: "A backend is a centralized server system that listens on network ports for incoming protocol streams (HTTP, WebSocket, gRPC), processes domain logic, safely interacts with storage engines, and strictly coordinates system state.",
-      why: "Client browsers have severe security and architectural boundaries: they cannot safely hold secret environment keys, cannot pool TCP database connections without exhaustion, suffer from CORS restrictions, and vary unpredictably in hardware compute power.",
+      what: "Hypertext Transfer Protocol (HTTP) is the application-layer foundation of web data exchange.",
+      why: "Proper HTTP usage leverages web proxies, CDN caching, browser prefetching, and standardized error parsing.",
       howItWorks: [
-        "1. DNS Resolution (Browser to IP): The browser queries recursive DNS nameservers to resolve domains into routable IPv4/IPv6 addresses.",
-        "2. Perimeter Firewall & Edge Security: Cloud/VPC firewalls filter malicious packets, enforce DDoS throttling, and terminate TLS certificates.",
-        "3. Reverse Proxy (Nginx/Envoy): Receives traffic on public ports 80/443, handles SSL termination, and proxies raw TCP/HTTP to application ports (e.g. Node.js on 127.0.0.1:3000).",
-        "4. Centralized State & Compute: The backend coordinates ACID transactions against PostgreSQL/Redis and delegates heavy compute tasks safely away from resource-constrained user devices."
+        "Safe Methods: GET, HEAD, OPTIONS (do not alter server state).",
+        "Idempotent Methods: PUT, DELETE, GET (repeating the same request N times produces the exact same server state as 1 request).",
+        "HTTP/2 Multiplexing: Multiple bi-directional streams interleaved over a single TCP connection, eliminating head-of-line blocking."
       ],
-      blueprintTitle: "Production Request Traversal Lifecycle",
-      blueprintCode: `[Client Browser (Untrusted)]
-          │
-          ▼ 1. Query Recursive DNS Resolver (A / AAAA Record)
-[DNS Name Server: 1.1.1.1] ──► Returns Server IP
-          │
-          ▼ 2. TCP Handshake + TLS 1.3 Negotiation
-[Cloud Perimeter Firewall / WAF]
-          │
-          ▼ 3. Port 443 (HTTPS)
-[Nginx Reverse Proxy]
-          │   ├── Terminates SSL
-          │   ├── Enforces Rate Limiting
-          │   └── Upstream Proxy Pass: http://127.0.0.1:3000
-          ▼
-[Backend Application Service (Node.js / Go)]
-          │
-          ├──► Connection Pool ──► [PostgreSQL] (ACID State)
-          └──► In-memory Cache ──► [Redis] (Key-Value State)`,
-      blueprintLanguage: "text"
+      blueprintTitle: "Standardized RFC 7807 Error Response",
+      blueprintCode: `// Return Content-Type: application/problem+json
+{
+  "type": "https://api.example.com/errors/insufficient-funds",
+  "title": "Insufficient Funds",
+  "status": 422,
+  "detail": "Your wallet balance is 40.00 ETB, but transfer requires 100.00 ETB.",
+  "instance": "/transfers/tx_9921",
+  "code": "WALLET_BALANCE_TOO_LOW"
+}`,
+      blueprintLanguage: "json"
     },
     recommendedBook: {
-      title: "Designing Data-Intensive Applications",
-      author: "Martin Kleppmann",
-      keyChapters: "Chapter 1: Reliability, Scalability & Maintainability & Chapter 3: Storage and Retrieval",
-      whyReadThis: "Essential for understanding why persistent servers and centralized state engines are necessary, how transactions preserve integrity, and why client devices cannot replace robust backend architectures."
+      title: "HTTP: The Definitive Guide",
+      author: "David Gourley & Brian Totty",
+      keyChapters: "Chapters 3, 7 & 11 (HTTP Messages, Caching, and Content Negotiation)",
+      whyReadThis: "The undisputed reference for headers, caching directives (ETag, Cache-Control), and proxy traversal."
     },
-    additionalReferences: [
-      {
-        title: "Cloudflare: How Does the Internet Work? (DNS & IP Routing)",
-        url: "https://www.cloudflare.com/learning/network-layer/how-does-the-internet-work/",
-        description: "Comprehensive breakdown of how DNS resolvers, BGP routing, and IP packet exchange function."
-      },
-      {
-        title: "Nginx Official Architecture Guide: Inside NGINX",
-        url: "https://www.nginx.com/blog/inside-nginx-how-we-designed-for-performance-scale/",
-        description: "Official whitepaper explaining event-driven non-blocking reverse proxy architecture."
-      },
-      {
-        title: "OWASP Top 10 API Security Risks",
-        url: "https://owasp.org/www-project-api-security/",
-        description: "Standard architectural security guidance for securing backend servers against client manipulation."
-      }
-    ],
     handsOnChallenge: {
       ticketNumber: "TICKET-102",
-      title: "Inspect Request Traversal & Reverse Proxy Headers",
-      scenario: "Your application is deployed behind an Nginx reverse proxy. A security incident requires you to identify the real client IP and ensure sensitive environment secrets are never leaked to client responses.",
+      title: "Implement Idempotency Key Handling in HTTP",
+      scenario: "Users on unstable mobile networks double-tap 'Pay Now', causing double charges. Implement an Idempotency-Key header check.",
       acceptanceCriteria: [
-        "Configure your server to correctly read 'x-forwarded-for' and 'x-real-ip' headers instead of the immediate socket remote address.",
-        "Implement a health check endpoint at /healthz returning server uptime, process memory RSS, and active timestamp.",
-        "Ensure no process environment variables (e.g. DB_PASS, API_SECRET) are serialized in any error handler payload."
+        "Extract 'Idempotency-Key' from request headers.",
+        "If key exists in cache, return cached response immediately without re-executing payment.",
+        "If new, acquire lock, process, cache response with TTL, and return 201 Created."
       ],
       hints: [
-        "In Node.js/Express, enable 'app.set(\"trust proxy\", 1)' to accurately parse X-Forwarded-For headers from Nginx.",
-        "Never return 'process.env' or raw database error dumps to client responses."
+        "Use an in-memory Map or Redis SETNX (SET with NX and EX) to store the idempotency key.",
+        "Return the identical status code and payload as the original execution."
       ],
-      solutionCode: `import express from "express";
+      solutionCode: `// Express / Next.js API route middleware example
+const idempotencyStore = new Map();
 
-const app = express();
-// 1. Trust first reverse proxy (Nginx)
-app.set("trust proxy", 1);
+export async function handlePayment(req, res) {
+  const key = req.headers['idempotency-key'];
+  if (!key) return res.status(400).json({ error: "Missing Idempotency-Key" });
 
-app.use(express.json());
+  if (idempotencyStore.has(key)) {
+    const cached = idempotencyStore.get(key);
+    return res.status(cached.status).json(cached.body);
+  }
 
-// 2. Health check endpoint reporting infrastructure telemetry
-app.get("/healthz", (req, res) => {
-  const memoryUsage = process.memoryUsage();
-  res.status(200).json({
-    status: "healthy",
-    uptimeSeconds: Math.floor(process.uptime()),
-    memoryMb: Math.round(memoryUsage.rss / 1024 / 1024),
-    clientIp: req.ip, // Correctly resolved via X-Forwarded-For
-    timestamp: new Date().toISOString()
-  });
-});
-
-// 3. Centralized error boundary preventing secret leakage
-app.use((err, req, res, next) => {
-  console.error("[INTERNAL_ERROR]", err);
-  // Safe client response - internal traces hidden
-  res.status(500).json({
-    error: "Internal Server Error",
-    requestId: req.headers["x-request-id"] || "req_gen_001"
-  });
-});
-
-app.listen(3000, "127.0.0.1", () => {
-  console.log("Backend listening on internal port 3000 behind reverse proxy");
-});`,
-      solutionExplanation: "When running behind reverse proxies like Nginx or AWS ALB, the socket remote IP is always 127.0.0.1. Reading X-Forwarded-For headers with trust proxy enabled ensures correct client tracking, while centralized error guards prevent environment secret exposure."
+  // Process transaction
+  const result = await chargeCustomer(req.body);
+  idempotencyStore.set(key, { status: 201, body: result });
+  return res.status(201).json(result);
+}`,
+      solutionExplanation: "Storing completed responses against unique client-provided UUIDs guarantees duplicate network packets never trigger multiple state mutations."
     },
     selfCheckQuestions: [
-      {
-        question: "Why can't frontend browser applications connect directly to a PostgreSQL database safely?",
-        answerExplanation: "1. Security: Browsers execute in an untrusted client sandbox; exposing database credentials in client-side code gives attackers full control over the database. 2. Connection Exhaustion: Browsers cannot pool long-lived stateful TCP connections safely without exhausting PostgreSQL's max_connections limit (causing denial of service). 3. Business Invariants: The backend must enforce validation, row-level access control, and transaction boundaries."
-      },
-      {
-        question: "Trace the path of an HTTP request from typing an address in Chrome to the application handler in Node.js/Go.",
-        answerExplanation: "1. Browser checks local cache, then queries recursive DNS (A/AAAA record) to resolve IP. 2. Initiates TCP 3-way handshake + TLS 1.3 cryptographic negotiation on port 443. 3. Traverses cloud border firewalls/WAF. 4. Nginx Reverse Proxy terminates TLS, applies rate-limits, and proxies HTTP request to localhost:3000. 5. Node.js/Go HTTP parser extracts method/headers/body and dispatches to the route handler."
-      },
-      {
-        question: "What is the role of an Nginx reverse proxy in front of an application server, and what is SSL termination?",
-        answerExplanation: "Nginx acts as an event-driven edge gateway: it offloads CPU-heavy SSL/TLS cryptographic decryption (SSL termination) so internal application servers only handle raw HTTP, enforces DDoS rate-limiting, buffers slow client network connections, serves static files at zero-copy kernel speed, and load-balances across multiple application instances."
-      },
-      {
-        question: "Why do CORS (Cross-Origin Resource Sharing) restrictions only exist in web browsers and not between two backend servers?",
-        answerExplanation: "CORS is a browser-enforced security mechanism (Same-Origin Policy) designed to protect end-users from malicious websites making unauthorized authenticated requests (using stored cookies/credentials) to a third-party bank or API. Server-to-server communication has no ambient browser credential store, so CORS does not apply to backend HTTP clients like curl, Axios, or gRPC."
-      }
+      "Why is PUT idempotent while PATCH is typically not guaranteed to be idempotent?",
+      "What is the exact purpose of an ETag header and 304 Not Modified?",
+      "How does HTTP/2 multiplexing eliminate HTTP/1.1 head-of-line blocking?"
     ]
   },
   {
