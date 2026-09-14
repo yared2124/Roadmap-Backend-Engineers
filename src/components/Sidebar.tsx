@@ -98,7 +98,7 @@ export function Sidebar({
               </p>
               <button
                 onClick={onOpenGuide}
-                className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg bg-zinc-950 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-zinc-800 dark:bg-white dark:text-gray-950 dark:hover:bg-zinc-200 active:scale-[0.98] transition-all"
+                className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg bg-zinc-950 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-zinc-800 dark:bg-gray-800 dark:text-gray-100 dark:border dark:border-gray-700 dark:hover:bg-gray-700 active:scale-[0.98] transition-all"
               >
                 <Compass className="h-3.5 w-3.5" />
                 <span>Open Guide</span>
@@ -123,7 +123,7 @@ export function Sidebar({
                   {/* Phase Header */}
                   <button
                     onClick={() => togglePhase(phase.id)}
-                    className="flex w-full items-center justify-between rounded-lg p-2 text-left hover:bg-zinc-200/50 dark:hover:bg-gray-750 transition-colors"
+                    className="flex w-full items-center justify-between rounded-lg p-2 text-left hover:bg-zinc-100 dark:hover:bg-gray-800/80 transition-colors"
                   >
                     <div className="flex-1 pr-2">
                       <div className="flex items-center justify-between gap-2 mb-1.5">
@@ -160,8 +160,8 @@ export function Sidebar({
                             key={topic.id}
                             className={`group flex items-center justify-between rounded-lg px-2.5 py-2 transition-all ${
                               isActive
-                                ? "bg-zinc-950 text-white dark:bg-gray-100 dark:text-gray-950 font-bold shadow-xs"
-                                : "text-zinc-800 hover:bg-zinc-200/70 dark:text-gray-200 dark:hover:bg-gray-750 font-medium"
+                                ? "bg-zinc-900 text-white border border-zinc-800 dark:bg-gray-800 dark:text-white dark:border-gray-600 font-bold shadow-xs"
+                                : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-950 dark:text-gray-300 dark:hover:bg-gray-800/70 dark:hover:text-white border border-transparent font-medium"
                             }`}
                           >
                             {/* Topic Title Click */}
@@ -175,8 +175,8 @@ export function Sidebar({
                               <span
                                 className={`font-mono text-xs font-bold shrink-0 ${
                                   isActive
-                                    ? "text-zinc-300 dark:text-zinc-600"
-                                    : "text-zinc-400 dark:text-gray-500"
+                                    ? "text-zinc-300 dark:text-gray-300"
+                                    : "text-zinc-400 dark:text-gray-500 group-hover:text-zinc-600 dark:group-hover:text-gray-300"
                                 }`}
                               >
                                 {String(topic.number).padStart(2, "0")}
@@ -189,7 +189,7 @@ export function Sidebar({
                                   title="Has personal notes"
                                   className={`shrink-0 ${
                                     isActive
-                                      ? "text-amber-300 dark:text-amber-600"
+                                      ? "text-amber-300 dark:text-amber-400"
                                       : "text-amber-500 dark:text-amber-400"
                                   }`}
                                 >
@@ -199,8 +199,8 @@ export function Sidebar({
                               <span
                                 className={`font-mono text-[10px] font-bold shrink-0 ml-1 px-1.5 py-0.5 rounded-md ${
                                   isActive
-                                    ? "text-zinc-100 dark:text-gray-900 bg-white/25 dark:bg-[#111827]/40"
-                                    : "text-zinc-600 dark:text-gray-400 bg-zinc-200/80 dark:bg-gray-700"
+                                    ? "text-zinc-200 dark:text-gray-200 bg-zinc-800 dark:bg-gray-700"
+                                    : "text-zinc-600 dark:text-gray-400 bg-zinc-200/80 dark:bg-gray-800"
                                 }`}
                               >
                                 {topic.timeEstimates?.total || topic.duration}
@@ -215,12 +215,10 @@ export function Sidebar({
                               }}
                               className={`ml-2 flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-md border transition-colors ${
                                 completed
-                                  ? isActive
-                                    ? "border-white bg-white text-black dark:border-[#111827] dark:bg-[#111827] dark:text-white"
-                                    : "border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-gray-100 dark:text-black"
+                                  ? "border-emerald-600 bg-emerald-600 text-white dark:border-emerald-500 dark:bg-emerald-500 dark:text-white"
                                   : isActive
-                                  ? "border-zinc-400 hover:border-white"
-                                  : "border-zinc-300 hover:border-zinc-600 dark:border-gray-600 dark:hover:border-zinc-400"
+                                  ? "border-zinc-500 hover:border-zinc-300 dark:border-gray-500 dark:hover:border-gray-300"
+                                  : "border-zinc-300 hover:border-zinc-500 dark:border-gray-600 dark:hover:border-gray-400"
                               }`}
                               title={completed ? "Mark as incomplete" : "Mark as complete"}
                             >
@@ -238,7 +236,7 @@ export function Sidebar({
                               ? "border-amber-500/80 bg-amber-500/15 text-amber-950 dark:text-amber-200 font-bold shadow-xs"
                               : isCapstoneCompleted?.(phase.id)
                               ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-900 dark:border-emerald-900 dark:text-emerald-200 font-semibold"
-                              : "border-dashed border-zinc-300 bg-zinc-100/60 text-zinc-800 hover:border-zinc-400 hover:bg-zinc-200/60 dark:border-gray-700 dark:bg-gray-900/80 dark:text-gray-200 dark:hover:bg-gray-750 font-semibold"
+                              : "border-dashed border-zinc-300 bg-zinc-100/60 text-zinc-800 hover:border-zinc-400 hover:bg-zinc-200/60 dark:border-gray-700 dark:bg-gray-900/80 dark:text-gray-200 dark:hover:bg-gray-800 font-semibold"
                           }`}
                         >
                           <button
