@@ -51,11 +51,11 @@ export const ROADMAP_TOPICS: RoadmapTopic[] = [
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "High Performance Browser Networking",
-      author: "Ilya Grigorik",
-      keyChapters: "Chapters 1 & 2 (Primer on Latency, TCP Fundamentals)",
-      whyReadThis: "Explains how the physical speed of light in fiber optics and packet handshakes govern all backend latencies.",
-      readingUrl: "https://hpbn.co/"
+      title: "Patterns of Enterprise Application Architecture",
+      author: "Martin Fowler",
+      keyChapters: "Chapters 1 & 2: Layering and Organizing Domain Logic (Presentation, Service, Data Source)",
+      whyReadThis: "The seminal master architecture treatise defining three-tier layering (Controller, Service, Repository), stateless service boundaries, and techniques to prevent architectural drift.",
+      readingUrl: "https://martinfowler.com/eaaCatalog/"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-001",
@@ -225,11 +225,11 @@ networks:
       blueprintLanguage: "json"
     },
     recommendedBook: {
-      title: "HTTP: The Definitive Guide",
-      author: "David Gourley & Brian Totty",
-      keyChapters: "Chapters 3, 7 & 11 (HTTP Messages, Caching Directives, and Proxies)",
-      whyReadThis: "The timeless canonical guide to web protocols, caching headers (ETag, Cache-Control), and proxy negotiation.",
-      readingUrl: "https://developer.mozilla.org/en-US/docs/Web/HTTP"
+      title: "High Performance Browser Networking",
+      author: "Ilya Grigorik",
+      keyChapters: "Chapters 9, 11 & 13: HTTP 1.X, HTTP/2 Binary Framing & Multiplexing, and HTTP/3 QUIC over UDP",
+      whyReadThis: "The definitive master guide explaining the packet mechanics of TCP Head-of-Line blocking, HTTP/2 binary framing streams, 0-RTT QUIC handshakes, and transport idempotency.",
+      readingUrl: "https://hpbn.co/"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-003",
@@ -961,11 +961,11 @@ LIMIT 20;`,
       blueprintLanguage: "sql"
     },
     recommendedBook: {
-      title: "SQL Performance Explained",
-      author: "Markus Winand",
-      keyChapters: "Chapter 4: The Order By and Paging (Indexing for Pagination)",
-      whyReadThis: "Explains why offset pagination destroys database performance and how index-backed pagination guarantees constant speed.",
-      readingUrl: "https://use-the-index-luke.com/"
+      title: "Designing Web APIs",
+      author: "Brenda Jin, Saurabh Sahni & Amir Shevat",
+      keyChapters: "Chapter 4: Working with HTTP Methods & State Mutations (PUT vs PATCH, Soft Deletes, and Partial Updates)",
+      whyReadThis: "The industry standard guide for resource state mutation, idempotent replacement (PUT) vs delta updates (PATCH / RFC 7396), and soft deletion design patterns using PostgreSQL partial indexes.",
+      readingUrl: "https://www.postgresql.org/docs/current/indexes-partial.html"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-011",
@@ -1134,11 +1134,11 @@ CREATE INDEX idx_orders_user_id ON orders(user_id);`,
       blueprintLanguage: "sql"
     },
     recommendedBook: {
-      title: "Database Design for Mere Mortals",
-      author: "Michael J. Hernandez",
-      keyChapters: "Chapters 5 & 7 (Table Structures, Keys, and Normalization Rules)",
-      whyReadThis: "The most practical, step-by-step methodology for relational schema design and integrity enforcement.",
-      readingUrl: "https://www.geeksforgeeks.org/database-normalization-introduction/"
+      title: "SQL Antipatterns: Avoiding the Pitfalls of Database Programming",
+      author: "Bill Karwin",
+      keyChapters: "Chapter 2: Naive Trees (Hierarchical Data & Closure Tables) and Chapter 4: Keyless Entry (Foreign Keys)",
+      whyReadThis: "The classic engineering guide breaking down the exact architectural trade-offs between Normalization, Foreign Key locks in distributed clusters, and how to model tree structures like comment threads with Closure Tables.",
+      readingUrl: "https://pragprog.com/titles/bksqla/sql-antipatterns/"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-013",
@@ -1854,11 +1854,11 @@ await queue.add('video', { fileId: '123' }, {
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "Building Microservices (2nd Edition)",
-      author: "Sam Newman",
-      keyChapters: "Chapter 4: Communication Styles (Asynchronous & Event-Driven Notifications)",
-      whyReadThis: "Comprehensive guide to decoupling services and orchestrating event-driven notifications across distributed systems.",
-      readingUrl: "https://martinfowler.com/articles/microservices.html"
+      title: "Microservices Patterns: With examples in Java",
+      author: "Chris Richardson",
+      keyChapters: "Chapter 3: Interprocess Communication (Publishing Events Using the Transactional Outbox Pattern)",
+      whyReadThis: "The canonical guide by the creator of microservices.io solving the Dual-Write Problem, detailing how to atomically update local database tables and publish reliable asynchronous event triggers.",
+      readingUrl: "https://microservices.io/patterns/data/transactional-outbox.html"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-021",
@@ -1951,11 +1951,11 @@ export function verifyWebhook(rawBody, signatureHeader, secret) {
       blueprintLanguage: "javascript"
     },
     recommendedBook: {
-      title: "Designing Data-Intensive Applications (DDIA)",
-      author: "Martin Kleppmann",
-      keyChapters: "Chapter 11: Stream Processing (Message Systems & Event-Driven Architectures)",
-      whyReadThis: "Analyzes event-driven subscriptions, immutable event logs, stream processing, and idempotency.",
-      readingUrl: "https://dataintensive.net/"
+      title: "Designing Web APIs",
+      author: "Brenda Jin, Saurabh Sahni & Amir Shevat",
+      keyChapters: "Chapter 7: Webhooks and Push Subscriptions (HMAC Signatures, Delivery Retries & Security)",
+      whyReadThis: "Practical senior-level guide explaining how platforms like Stripe and GitHub compute HMAC-SHA256 signatures, how to mitigate timing discrepancy attacks, and how to buffer webhook ingestion pipelines.",
+      readingUrl: "https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#constant-time-comparison"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-022",
