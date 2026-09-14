@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Moon, Sun, CheckCircle2, Search, Menu, X, Keyboard, Command } from "lucide-react";
+import { Moon, Sun, CheckCircle2, Search, Menu, X, Keyboard, Command, Compass } from "lucide-react";
 
 interface HeaderProps {
   completedCount: number;
@@ -13,6 +13,7 @@ interface HeaderProps {
   onSearchChange: (query: string) => void;
   onOpenCommandPalette: () => void;
   onOpenShortcuts: () => void;
+  onOpenGuide: () => void;
   onToggleSidebar: () => void;
   isSidebarOpen: boolean;
 }
@@ -27,6 +28,7 @@ export function Header({
   onSearchChange,
   onOpenCommandPalette,
   onOpenShortcuts,
+  onOpenGuide,
   onToggleSidebar,
   isSidebarOpen,
 }: HeaderProps) {
@@ -97,6 +99,17 @@ export function Header({
             title="Search (Ctrl + K)"
           >
             <Search className="h-4 w-4" />
+          </button>
+
+          {/* Student Orientation & Strategy Guide Button */}
+          <button
+            onClick={onOpenGuide}
+            className="flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-50/80 px-2.5 sm:px-3 py-1.5 text-xs font-bold text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-950/40 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition-all shadow-2xs group"
+            title="Roadmap Orientation & Strategy Guide (መመሪያ)"
+          >
+            <Compass className="h-4 w-4 text-emerald-600 dark:text-emerald-400 transition-transform group-hover:rotate-45" />
+            <span className="hidden sm:inline">Guide / መመሪያ</span>
+            <span className="sm:hidden">Guide</span>
           </button>
 
           {/* Progress Pill */}

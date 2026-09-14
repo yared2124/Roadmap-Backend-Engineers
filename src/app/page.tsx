@@ -11,6 +11,7 @@ import { TopicViewer } from "../components/TopicViewer";
 import { CapstoneViewer } from "../components/CapstoneViewer";
 import { CommandPalette } from "../components/CommandPalette";
 import { ShortcutsModal } from "../components/ShortcutsModal";
+import { RoadmapGuideModal } from "../components/RoadmapGuideModal";
 
 export default function Home() {
   const [activeTopic, setActiveTopic] = useState<RoadmapTopic>(ROADMAP_TOPICS[0]);
@@ -20,6 +21,7 @@ export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
 
   const {
     completedCount,
@@ -51,6 +53,17 @@ export default function Home() {
     } else {
       document.documentElement.classList.remove("dark");
     }
+  }, []);
+
+  // Check if first-time visitor to automatically show orientation guide
+  useEffect(() => {
+    try {
+      const hasSeen = localStorage.getItem("has_seen_roadmap_guide_v1");
+      if (!hasSeen) {
+        setIsGuideOpen(true);
+        localStorage.setItem("has_seen_roadmap_guide_v1", "true");
+      }
+    } catch {}
   }, []);
 
   const handleToggleTheme = useCallback(() => {
@@ -107,6 +120,14 @@ export default function Home() {
     }, 100);
   }, []);
 
+  // Launch Course at Module 01 or current topic
+  const handleStartCourse = useCallback(() => {
+    setActiveCapstonePhaseId(null);
+    setActiveTopic(ROADMAP_TOPICS[0]);
+    setIsGuideOpen(false);
+    scrollToTop();
+  }, []);
+
   // Global Keyboard Shortcuts Listener
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
@@ -119,6 +140,10 @@ export default function Home() {
 
       // 2. Escape key closes open modals
       if (e.key === "Escape") {
+        if (isGuideOpen) {
+          setIsGuideOpen(false);
+          return;
+        }
         if (isCommandPaletteOpen) {
           setIsCommandPaletteOpen(false);
           return;
@@ -187,6 +212,7 @@ export default function Home() {
     window.addEventListener("keydown", handleGlobalKeyDown);
     return () => window.removeEventListener("keydown", handleGlobalKeyDown);
   }, [
+    isGuideOpen,
     isCommandPaletteOpen,
     isShortcutsOpen,
     handleSelectNext,
@@ -256,6 +282,7 @@ export default function Home() {
         onSearchChange={setSearchQuery}
         onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         onOpenShortcuts={() => setIsShortcutsOpen(true)}
+        onOpenGuide={() => setIsGuideOpen(true)}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         isSidebarOpen={isSidebarOpen}
       />
@@ -283,6 +310,7 @@ export default function Home() {
           notes={notes}
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
+          onOpenGuide={() => setIsGuideOpen(true)}
         />
 
         {/* Center/Right Content Canvas - Only this scrolls when reading */}
@@ -320,6 +348,7 @@ export default function Home() {
               onSelectNext={handleSelectNext}
               hasPrev={hasPrev}
               hasNext={hasNext}
+              onOpenGuide={() => setIsGuideOpen(true)}
             />
           )}
         </main>
@@ -340,6 +369,7 @@ export default function Home() {
         }}
         onToggleTheme={handleToggleTheme}
         onOpenShortcuts={() => setIsShortcutsOpen(true)}
+        onOpenGuide={() => setIsGuideOpen(true)}
         onExportAllNotes={handleExportAllNotes}
         onSelectNext={handleSelectNext}
         onSelectPrev={handleSelectPrev}
@@ -352,6 +382,20 @@ export default function Home() {
       <ShortcutsModal
         isOpen={isShortcutsOpen}
         onClose={() => setIsShortcutsOpen(false)}
+      />
+
+      {/* Student Orientation & Strategy Guide Modal */}
+      <RoadmapGuideModal
+        isOpen={isGuideOpen}
+        onClose={() => setIsGuideOpen(false)}
+        onStartCourse={handleStartCourse}
+        onExploreCapstones={() => {
+          setActiveCapstonePhaseId(1);
+          setIsGuideOpen(false);
+          scrollToTop();
+        }}
+        currentTopicTitle={activeTopic.title}
+        currentTopicNumber={activeTopic.number}
       />
     </div>
   );

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { ROADMAP_PHASES } from "../data/roadmap";
 import { RoadmapTopic } from "../types/roadmap";
-import { Check, ChevronDown, ChevronRight, PlayCircle, BookOpen, Trophy, FileText } from "lucide-react";
+import { Check, ChevronDown, ChevronRight, PlayCircle, BookOpen, Trophy, FileText, Compass, Sparkles } from "lucide-react";
 
 interface SidebarProps {
   activeTopicId: string;
@@ -18,6 +18,7 @@ interface SidebarProps {
   notes?: Record<string, string>;
   isOpen: boolean;
   onClose: () => void;
+  onOpenGuide?: () => void;
 }
 
 export function Sidebar({
@@ -33,6 +34,7 @@ export function Sidebar({
   notes = {},
   isOpen,
   onClose,
+  onOpenGuide,
 }: SidebarProps) {
   // Keep all phases expanded by default
   const [expandedPhases, setExpandedPhases] = useState<Record<number, boolean>>({
@@ -81,6 +83,28 @@ export function Sidebar({
               Syllabus & Modules (31)
             </h2>
           </div>
+
+          {/* Start Here: Roadmap Strategy & Orientation Card */}
+          {onOpenGuide && (
+            <div className="mb-4 rounded-xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-transparent p-3 dark:border-emerald-500/20 dark:bg-emerald-950/20">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="inline-flex items-center gap-1 rounded-md bg-emerald-500/20 px-2 py-0.5 text-[10px] font-extrabold text-emerald-700 dark:text-emerald-300 uppercase tracking-wider">
+                  <Sparkles className="h-3 w-3" />
+                  Start Here • መመሪያ
+                </span>
+              </div>
+              <p className="text-[11.5px] text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed">
+                ሮድማፑን እንዴት እንደምትጠቀም፣ ምን እንደምትሰራ እና በኢንተርቪው ምን እንደምትናገር እወቅ።
+              </p>
+              <button
+                onClick={onOpenGuide}
+                className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-emerald-500 active:scale-[0.98] transition-all"
+              >
+                <Compass className="h-3.5 w-3.5" />
+                <span>መመሪያውን ክፈት (Open Guide)</span>
+              </button>
+            </div>
+          )}
 
           {/* Phases List */}
           <div className="space-y-4">

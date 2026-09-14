@@ -43,6 +43,7 @@ interface TopicViewerProps {
   onSelectNext: () => void;
   hasPrev: boolean;
   hasNext: boolean;
+  onOpenGuide?: () => void;
 }
 
 export function TopicViewer({
@@ -59,6 +60,7 @@ export function TopicViewer({
   onSelectNext,
   hasPrev,
   hasNext,
+  onOpenGuide,
 }: TopicViewerProps) {
   const [preferredLang, setPreferredLang] = useState<SupportedLanguage>("go");
   const [copiedCode, setCopiedCode] = useState(false);
@@ -105,6 +107,28 @@ export function TopicViewer({
   };
   return (
     <div className="mx-auto max-w-4xl space-y-8 pb-20">
+      {/* Student Guide & Strategy Callout Banner */}
+      {onOpenGuide && (
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent p-3.5 sm:px-4 sm:py-3 dark:border-emerald-500/20 dark:bg-emerald-950/20 shadow-2xs">
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-600 text-white font-bold text-xs shadow-xs">
+              🎓
+            </span>
+            <div className="text-xs text-zinc-700 dark:text-zinc-300">
+              <span className="font-bold text-zinc-950 dark:text-zinc-50">የትምህርት መመሪያ (Student Strategy Guide)፦</span>{" "}
+              ሮድማፑን እንዴት እንደምትጠቀም፣ ምን እንደምትሰራ እና በኢንተርቪው ምን እንደምትናገር ለማወቅ መመሪያውን ተመልከት።
+            </div>
+          </div>
+          <button
+            onClick={onOpenGuide}
+            className="shrink-0 flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-emerald-500 active:scale-[0.98] transition-all"
+          >
+            <span>መመሪያውን ክፈት (Open Guide)</span>
+            <ArrowRight className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      )}
+
       {/* Top Meta Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-200 pb-5 dark:border-zinc-800">
         <div>

@@ -43,6 +43,7 @@ interface CommandPaletteProps {
   onSelectCapstone: (phaseId: number) => void;
   onToggleTheme: () => void;
   onOpenShortcuts: () => void;
+  onOpenGuide: () => void;
   onExportAllNotes: () => void;
   onSelectNext: () => void;
   onSelectPrev: () => void;
@@ -58,6 +59,7 @@ export function CommandPalette({
   onSelectCapstone,
   onToggleTheme,
   onOpenShortcuts,
+  onOpenGuide,
   onExportAllNotes,
   onSelectNext,
   onSelectPrev,
@@ -85,6 +87,19 @@ export function CommandPalette({
     const results: PaletteResult[] = [];
 
     // 1. Quick Commands
+    results.push({
+      id: "cmd-open-guide",
+      type: "command",
+      title: "Open Student Orientation & Action Guide (መመሪያ)",
+      subtitle: "How this roadmap works, 5-step daily routine, oral interview tips & 7 capstones",
+      badge: "Guide",
+      badgeColor: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300",
+      onSelect: () => {
+        onClose();
+        setTimeout(onOpenGuide, 50);
+      },
+    });
+
     results.push({
       id: "cmd-theme",
       type: "command",
