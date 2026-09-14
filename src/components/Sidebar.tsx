@@ -84,28 +84,6 @@ export function Sidebar({
             </h2>
           </div>
 
-          {/* Start Here: Roadmap Strategy & Orientation Card */}
-          {onOpenGuide && (
-            <div className="mb-4 rounded-xl border border-zinc-200 bg-zinc-50/70 p-3 dark:border-gray-700 dark:bg-gray-800/60">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="inline-flex items-center gap-1 rounded-md bg-zinc-200/80 dark:bg-gray-700 px-2 py-0.5 text-[10px] font-extrabold text-zinc-800 dark:text-gray-200 uppercase tracking-wider font-mono">
-                  <Compass className="h-3 w-3 text-zinc-600 dark:text-gray-400" />
-                  Orientation Guide
-                </span>
-              </div>
-              <p className="text-[11.5px] text-zinc-600 dark:text-gray-400 font-medium leading-relaxed">
-                Understand the 5-stage study routine, portfolio capstones, and oral whiteboard interview frameworks.
-              </p>
-              <button
-                onClick={onOpenGuide}
-                className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg bg-zinc-950 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-zinc-800 dark:bg-gray-800 dark:text-gray-100 dark:border dark:border-gray-700 dark:hover:bg-gray-700 active:scale-[0.98] transition-all"
-              >
-                <Compass className="h-3.5 w-3.5" />
-                <span>Open Guide</span>
-              </button>
-            </div>
-          )}
-
           {/* Phases List */}
           <div className="space-y-4">
             {ROADMAP_PHASES.map((phase) => {
