@@ -124,7 +124,7 @@ export function PortfolioHome({
       {/* 2. Hero Section */}
       <section className="relative overflow-hidden border-b border-zinc-200/80 dark:border-zinc-800/80 bg-gradient-to-b from-zinc-50/50 via-white to-white dark:from-zinc-950/50 dark:via-black dark:to-black py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl space-y-6">
+          <div className="mx-auto max-w-4xl text-center flex flex-col items-center space-y-6">
             {/* Top Badge */}
             <div className="inline-flex items-center gap-2 rounded-full border border-zinc-300 bg-zinc-100/80 px-3.5 py-1 text-xs font-semibold text-zinc-800 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200">
               <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -132,17 +132,17 @@ export function PortfolioHome({
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-zinc-950 dark:text-zinc-50 leading-[1.1]">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-zinc-950 dark:text-zinc-50 leading-[1.1] max-w-4xl">
               Backend Engineering Roadmap & Architecture Mastery
             </h1>
 
             {/* Subtitle / Description */}
-            <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 font-normal leading-relaxed">
+            <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 font-normal leading-relaxed max-w-2xl mx-auto">
               A comprehensive, production-grade learning system designed to bridge the gap between building toy APIs and architecting resilient, high-throughput distributed systems.
             </p>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3.5 pt-2">
+            <div className="flex flex-wrap items-center justify-center gap-3.5 pt-2">
               <button
                 onClick={() => onEnterRoadmap()}
                 className="group flex items-center gap-2.5 rounded-xl bg-zinc-950 px-6 py-3.5 text-sm sm:text-base font-bold text-white shadow-md hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 transition-all active:scale-[0.98]"
@@ -176,8 +176,8 @@ export function PortfolioHome({
           </div>
 
           {/* Key Metric Stats Grid */}
-          <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4 border-t border-zinc-200/80 pt-8 dark:border-zinc-800/80">
-            <div className="space-y-1">
+          <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-6 border-t border-zinc-200/80 pt-10 dark:border-zinc-800/80 text-center">
+            <div className="space-y-1 text-center">
               <span className="block font-mono text-3xl sm:text-4xl font-black text-zinc-950 dark:text-zinc-50">
                 07
               </span>
@@ -185,7 +185,7 @@ export function PortfolioHome({
                 Architectural Phases
               </span>
             </div>
-            <div className="space-y-1">
+            <div className="space-y-1 text-center">
               <span className="block font-mono text-3xl sm:text-4xl font-black text-zinc-950 dark:text-zinc-50">
                 31
               </span>
@@ -193,7 +193,7 @@ export function PortfolioHome({
                 Production Deep Dives
               </span>
             </div>
-            <div className="space-y-1">
+            <div className="space-y-1 text-center">
               <span className="block font-mono text-3xl sm:text-4xl font-black text-zinc-950 dark:text-zinc-50">
                 93
               </span>
@@ -201,7 +201,7 @@ export function PortfolioHome({
                 Whiteboard Oral Questions
               </span>
             </div>
-            <div className="space-y-1">
+            <div className="space-y-1 text-center">
               <span className="block font-mono text-3xl sm:text-4xl font-black text-zinc-950 dark:text-zinc-50">
                 07
               </span>
