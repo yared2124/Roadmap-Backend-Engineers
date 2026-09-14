@@ -33,6 +33,7 @@ interface TopicViewerProps {
   onToggleBookRead: () => void;
   note: string;
   onSaveNote: (topicId: string, note: string) => void;
+  onExportAllNotes?: () => void;
   onOpenPhaseCapstone?: (phaseId: number) => void;
   onSelectPrev: () => void;
   onSelectNext: () => void;
@@ -48,6 +49,7 @@ export function TopicViewer({
   onToggleBookRead,
   note,
   onSaveNote,
+  onExportAllNotes,
   onOpenPhaseCapstone,
   onSelectPrev,
   onSelectNext,
@@ -508,8 +510,10 @@ export function TopicViewer({
       {/* 7. Student Personal Notes Scratchpad */}
       <NotesDrawer
         topicId={topic.id}
+        topicTitle={topic.title}
         initialNote={note}
         onSaveNote={onSaveNote}
+        onExportAllNotes={onExportAllNotes}
       />
 
       {/* Phase Capstone Milestone Callout */}

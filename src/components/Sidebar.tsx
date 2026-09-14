@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { ROADMAP_PHASES } from "../data/roadmap";
 import { RoadmapTopic } from "../types/roadmap";
-import { Check, ChevronDown, ChevronRight, PlayCircle, BookOpen, Trophy } from "lucide-react";
+import { Check, ChevronDown, ChevronRight, PlayCircle, BookOpen, Trophy, FileText } from "lucide-react";
 
 interface SidebarProps {
   activeTopicId: string;
@@ -15,6 +15,7 @@ interface SidebarProps {
   onToggleTopic: (id: string) => void;
   getPhaseProgress: (phaseId: number) => { total: number; completed: number; percentage: number };
   searchQuery: string;
+  notes?: Record<string, string>;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -29,6 +30,7 @@ export function Sidebar({
   onToggleTopic,
   getPhaseProgress,
   searchQuery,
+  notes = {},
   isOpen,
   onClose,
 }: SidebarProps) {
@@ -127,6 +129,7 @@ export function Sidebar({
                       {filteredTopics.map((topic) => {
                         const isActive = topic.id === activeTopicId;
                         const completed = isTopicCompleted(topic.id);
+                        const hasNote = Boolean(notes[topic.id]?.trim());
 
                         return (
                           <div
@@ -157,8 +160,20 @@ export function Sidebar({
                               <span className="line-clamp-1 flex-1">
                                 {topic.title}
                               </span>
+                              {hasNote && (
+                                <span
+                                  title="Has personal notes"
+                                  className={`shrink-0 ${
+                                    isActive
+                                      ? "text-amber-300 dark:text-amber-600"
+                                      : "text-amber-500 dark:text-amber-400"
+                                  }`}
+                                >
+                                  <FileText className="h-3 w-3" />
+                                </span>
+                              )}
                               <span
-                                className={`font-mono text-[9.5px] shrink-0 ml-1.5 px-1.5 py-0.5 rounded ${
+                                className={`font-mono text-[9.5px] shrink-0 ml-1 px-1.5 py-0.5 rounded ${
                                   isActive
                                     ? "text-zinc-200 dark:text-zinc-700 bg-white/20 dark:bg-black/20 font-bold"
                                     : "text-zinc-400 dark:text-zinc-500 bg-zinc-200/60 dark:bg-zinc-800/60"

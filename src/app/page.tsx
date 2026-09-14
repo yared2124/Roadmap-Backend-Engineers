@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { ROADMAP_TOPICS } from "../data/roadmap";
 import { CAPSTONE_PROJECTS } from "../data/capstones";
 import { RoadmapTopic } from "../types/roadmap";
@@ -9,6 +9,8 @@ import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
 import { TopicViewer } from "../components/TopicViewer";
 import { CapstoneViewer } from "../components/CapstoneViewer";
+import { CommandPalette } from "../components/CommandPalette";
+import { ShortcutsModal } from "../components/ShortcutsModal";
 
 export default function Home() {
   const [activeTopic, setActiveTopic] = useState<RoadmapTopic>(ROADMAP_TOPICS[0]);
@@ -16,6 +18,8 @@ export default function Home() {
   const [isDark, setIsDark] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
 
   const {
     completedCount,
@@ -31,6 +35,7 @@ export default function Home() {
     saveCapstoneSubmission,
     getNote,
     saveNote,
+    notes,
     getPhaseProgress,
   } = useProgress();
 
@@ -48,7 +53,7 @@ export default function Home() {
     }
   }, []);
 
-  const handleToggleTheme = () => {
+  const handleToggleTheme = useCallback(() => {
     setIsDark((prev) => {
       const next = !prev;
       if (next) {
@@ -60,7 +65,7 @@ export default function Home() {
       }
       return next;
     });
-  };
+  }, []);
 
   // Next / Prev topic navigation
   const currentIndex = ROADMAP_TOPICS.findIndex((t) => t.id === activeTopic.id);
@@ -74,19 +79,169 @@ export default function Home() {
     }
   };
 
-  const handleSelectPrev = () => {
+  const handleSelectPrev = useCallback(() => {
     if (hasPrev) {
+      setActiveCapstonePhaseId(null);
       setActiveTopic(ROADMAP_TOPICS[currentIndex - 1]);
       scrollToTop();
     }
-  };
+  }, [hasPrev, currentIndex]);
 
-  const handleSelectNext = () => {
+  const handleSelectNext = useCallback(() => {
     if (hasNext) {
+      setActiveCapstonePhaseId(null);
       setActiveTopic(ROADMAP_TOPICS[currentIndex + 1]);
       scrollToTop();
     }
-  };
+  }, [hasNext, currentIndex]);
+
+  // Jump to and focus Notes Studio
+  const handleFocusNotes = useCallback(() => {
+    setActiveCapstonePhaseId(null);
+    setTimeout(() => {
+      const textarea = document.getElementById("topic-notes-textarea");
+      if (textarea) {
+        textarea.scrollIntoView({ behavior: "smooth", block: "center" });
+        textarea.focus();
+      }
+    }, 100);
+  }, []);
+
+  // Global Keyboard Shortcuts Listener
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      // 1. Command Palette shortcut (Cmd+K / Ctrl+K)
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setIsCommandPaletteOpen((prev) => !prev);
+        return;
+      }
+
+      // 2. Escape key closes open modals
+      if (e.key === "Escape") {
+        if (isCommandPaletteOpen) {
+          setIsCommandPaletteOpen(false);
+          return;
+        }
+        if (isShortcutsOpen) {
+          setIsShortcutsOpen(false);
+          return;
+        }
+      }
+
+      // 3. Do not trigger single-key shortcuts while typing in inputs or textareas
+      const activeEl = document.activeElement;
+      const isInputActive =
+        activeEl &&
+        (activeEl.tagName === "INPUT" ||
+          activeEl.tagName === "TEXTAREA" ||
+          (activeEl as HTMLElement).isContentEditable);
+
+      if (isInputActive || isCommandPaletteOpen) {
+        return;
+      }
+
+      // Navigation & Action single-key shortcuts
+      switch (e.key) {
+        case "j":
+        case "J":
+        case "ArrowRight":
+          e.preventDefault();
+          handleSelectNext();
+          break;
+        case "k":
+        case "K":
+        case "ArrowLeft":
+          e.preventDefault();
+          handleSelectPrev();
+          break;
+        case "m":
+        case "M":
+          e.preventDefault();
+          toggleTopic(activeTopic.id);
+          break;
+        case "b":
+        case "B":
+          e.preventDefault();
+          toggleBook(activeTopic.id);
+          break;
+        case "t":
+        case "T":
+          e.preventDefault();
+          handleToggleTheme();
+          break;
+        case "n":
+        case "N":
+          e.preventDefault();
+          handleFocusNotes();
+          break;
+        case "?":
+          e.preventDefault();
+          setIsShortcutsOpen((prev) => !prev);
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
+  }, [
+    isCommandPaletteOpen,
+    isShortcutsOpen,
+    handleSelectNext,
+    handleSelectPrev,
+    activeTopic.id,
+    toggleTopic,
+    toggleBook,
+    handleToggleTheme,
+    handleFocusNotes,
+  ]);
+
+  // Export all 31 topic notes as a single Markdown document
+  const handleExportAllNotes = useCallback(() => {
+    let markdown = `# Backend Engineer Roadmap — Master Study Notes\n`;
+    markdown += `Generated on: ${new Date().toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })}\n`;
+    markdown += `Total Curriculum Modules: ${ROADMAP_TOPICS.length}\n\n`;
+
+    markdown += `## Table of Contents\n`;
+    ROADMAP_TOPICS.forEach((topic) => {
+      const hasContent = Boolean(notes[topic.id]?.trim());
+      markdown += `- [${topic.number < 10 ? `0${topic.number}` : topic.number}. ${topic.title}](#topic-${topic.id}) ${hasContent ? "(📝 Notes included)" : ""}\n`;
+    });
+    markdown += `\n---\n\n`;
+
+    ROADMAP_TOPICS.forEach((topic) => {
+      const topicNote = notes[topic.id]?.trim();
+      markdown += `<a id="topic-${topic.id}"></a>\n`;
+      markdown += `## ${topic.number < 10 ? `0${topic.number}` : topic.number}. ${topic.title}\n`;
+      markdown += `**Phase**: ${topic.phaseName}\n`;
+      markdown += `**Summary**: ${topic.shortSummary}\n`;
+      markdown += `**Recommended Reading**: *${topic.recommendedBook.title}* by ${topic.recommendedBook.author} (${topic.recommendedBook.keyChapters})\n\n`;
+
+      if (topicNote) {
+        markdown += `### Personal Study Notes\n\n`;
+        markdown += `${topicNote}\n\n`;
+      } else {
+        markdown += `*No notes recorded for this module yet.*\n\n`;
+      }
+      markdown += `---\n\n`;
+    });
+
+    const blob = new Blob([markdown], { type: "text/markdown;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `backend-roadmap-all-notes.md`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }, [notes]);
 
   return (
     <div className="h-screen w-screen overflow-hidden bg-white text-zinc-900 dark:bg-black dark:text-zinc-100 flex flex-col font-sans transition-colors duration-200">
@@ -99,6 +254,8 @@ export default function Home() {
         onToggleTheme={handleToggleTheme}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
+        onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
+        onOpenShortcuts={() => setIsShortcutsOpen(true)}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         isSidebarOpen={isSidebarOpen}
       />
@@ -123,6 +280,7 @@ export default function Home() {
           onToggleTopic={toggleTopic}
           getPhaseProgress={getPhaseProgress}
           searchQuery={searchQuery}
+          notes={notes}
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
         />
@@ -153,6 +311,7 @@ export default function Home() {
               onToggleBookRead={() => toggleBook(activeTopic.id)}
               note={getNote(activeTopic.id)}
               onSaveNote={saveNote}
+              onExportAllNotes={handleExportAllNotes}
               onOpenPhaseCapstone={(phaseId) => {
                 setActiveCapstonePhaseId(phaseId);
                 scrollToTop();
@@ -165,6 +324,35 @@ export default function Home() {
           )}
         </main>
       </div>
+
+      {/* Global Command Palette (Cmd+K / Ctrl+K) */}
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+        onSelectTopic={(topic) => {
+          setActiveCapstonePhaseId(null);
+          setActiveTopic(topic);
+          scrollToTop();
+        }}
+        onSelectCapstone={(phaseId) => {
+          setActiveCapstonePhaseId(phaseId);
+          scrollToTop();
+        }}
+        onToggleTheme={handleToggleTheme}
+        onOpenShortcuts={() => setIsShortcutsOpen(true)}
+        onExportAllNotes={handleExportAllNotes}
+        onSelectNext={handleSelectNext}
+        onSelectPrev={handleSelectPrev}
+        isDark={isDark}
+        isTopicCompleted={isTopicCompleted}
+        isCapstoneCompleted={isCapstoneCompleted}
+      />
+
+      {/* Keyboard Shortcuts Cheat-sheet Modal (?) */}
+      <ShortcutsModal
+        isOpen={isShortcutsOpen}
+        onClose={() => setIsShortcutsOpen(false)}
+      />
     </div>
   );
 }
