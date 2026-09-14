@@ -109,41 +109,10 @@ export function TopicViewer({
   };
   return (
     <div className="mx-auto max-w-4xl space-y-8 pb-20">
-      {/* Student Guide & Strategy Callout Banner */}
-      {onOpenGuide && (
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-2xl border border-zinc-200 bg-zinc-50/70 p-3.5 sm:px-4 sm:py-3 dark:border-gray-700 dark:bg-gray-800/60 shadow-2xs">
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-zinc-950 text-white dark:bg-white dark:text-gray-950 font-bold text-xs shadow-xs">
-              <Compass className="h-4 w-4" />
-            </span>
-            <div className="text-xs text-zinc-700 dark:text-gray-300">
-              <span className="font-bold text-zinc-950 dark:text-white">Curriculum Strategy Guide:</span>{" "}
-              Review the 5-stage daily routine, 7 portfolio capstones, and oral whiteboard interview frameworks.
-            </div>
-          </div>
-          <button
-            onClick={onOpenGuide}
-            className="shrink-0 flex items-center gap-1.5 rounded-lg bg-zinc-950 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-zinc-800 dark:bg-white dark:text-gray-950 dark:hover:bg-zinc-200 active:scale-[0.98] transition-all"
-          >
-            <span>Open Guide</span>
-            <ArrowRight className="h-3.5 w-3.5" />
-          </button>
-        </div>
-      )}
-
       {/* Top Meta Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-200 pb-5 dark:border-gray-700">
         <div>
-          <div className="inline-flex items-center gap-2.5 rounded-lg border border-zinc-300 bg-zinc-100 px-3.5 py-1.5 dark:border-gray-600 dark:bg-gray-800 mb-2.5 shadow-2xs">
-            <span className="font-mono text-xs font-black tracking-widest text-zinc-950 dark:text-white uppercase">
-              PHASE 0{topic.phaseId}
-            </span>
-            <span className="text-zinc-300 dark:text-zinc-700 font-bold">•</span>
-            <span className="text-xs font-black uppercase tracking-wider text-zinc-900 dark:text-gray-100">
-              {topic.phaseName}
-            </span>
-          </div>
-          <h1 className="mt-1 text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-zinc-950 dark:text-white leading-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-zinc-950 dark:text-white leading-tight">
             <span className="font-mono font-bold text-zinc-400 dark:text-zinc-600 mr-2.5">
               #{String(topic.number).padStart(2, "0")}
             </span>
