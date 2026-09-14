@@ -133,15 +133,15 @@ export function CapstoneViewer({
       </div>
 
       {/* Section 1: Key Deliverables Checklist */}
-      <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-4">
+      <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-7 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-4">
         <div className="flex items-center gap-2.5 border-b border-zinc-100 dark:border-zinc-900 pb-3">
-          <Layers className="h-5 w-5 text-zinc-900 dark:text-white" />
-          <h2 className="text-base font-bold text-zinc-900 dark:text-white">
+          <Layers className="h-5 w-5 text-zinc-950 dark:text-zinc-50" />
+          <h2 className="text-base sm:text-lg font-extrabold text-zinc-950 dark:text-zinc-50">
             Core Engineering Deliverables
           </h2>
         </div>
 
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+        <p className="text-xs sm:text-[13.5px] font-medium text-zinc-600 dark:text-zinc-300">
           Your project repository must satisfy each of the following architectural specifications:
         </p>
 
@@ -149,7 +149,7 @@ export function CapstoneViewer({
           {capstone.keyDeliverables.map((item, idx) => (
             <li
               key={idx}
-              className="flex items-start gap-3 rounded-lg border border-zinc-200/70 bg-zinc-50/50 p-3.5 dark:border-zinc-900 dark:bg-zinc-900/30 text-xs sm:text-sm leading-relaxed text-zinc-800 dark:text-zinc-200"
+              className="flex items-start gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-4 dark:border-zinc-900 dark:bg-zinc-900/40 text-xs sm:text-[14px] leading-relaxed font-semibold text-zinc-900 dark:text-zinc-100 shadow-xs"
             >
               <span className="font-mono font-bold text-zinc-400 shrink-0 mt-0.5">
                 0{idx + 1}.
@@ -162,104 +162,104 @@ export function CapstoneViewer({
 
       {/* Section 2: Architecture Diagram */}
       {capstone.architectureDiagram && (
-        <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-4">
+        <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-7 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-4">
           <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-900 pb-3">
             <div className="flex items-center gap-2.5">
-              <Terminal className="h-5 w-5 text-zinc-900 dark:text-white" />
-              <h2 className="text-base font-bold text-zinc-900 dark:text-white">
+              <Terminal className="h-5 w-5 text-zinc-950 dark:text-zinc-50" />
+              <h2 className="text-base sm:text-lg font-extrabold text-zinc-950 dark:text-zinc-50">
                 System Architecture & Data Flow
               </h2>
             </div>
             <button
               onClick={handleCopyDiagram}
-              className="inline-flex items-center gap-1 text-xs font-mono text-zinc-500 hover:text-black dark:hover:text-white transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
             >
               {copiedDiagram ? (
                 <>
-                  <Check className="h-3.5 w-3.5 text-emerald-500" />
+                  <Check className="h-4 w-4 text-emerald-500" />
                   <span className="text-emerald-500">Copied</span>
                 </>
               ) : (
                 <>
-                  <Copy className="h-3.5 w-3.5" />
+                  <Copy className="h-4 w-4" />
                   <span>Copy Diagram</span>
                 </>
               )}
             </button>
           </div>
 
-          <pre className="overflow-x-auto rounded-lg bg-zinc-950 p-4 font-mono text-[11px] leading-relaxed text-zinc-200 dark:border dark:border-zinc-800 shadow-inner">
+          <pre className="overflow-x-auto rounded-xl bg-zinc-950 p-5 font-mono text-xs sm:text-[12.5px] leading-relaxed text-zinc-200 dark:border dark:border-zinc-800 shadow-inner">
             <code>{capstone.architectureDiagram}</code>
           </pre>
         </div>
       )}
 
       {/* Section 3: Acceptance & Review Criteria */}
-      <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-4">
+      <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-7 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-4">
         <div className="flex items-center gap-2.5 border-b border-zinc-100 dark:border-zinc-900 pb-3">
           <ShieldCheck className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-          <h2 className="text-base font-bold text-zinc-900 dark:text-white">
+          <h2 className="text-base sm:text-lg font-extrabold text-zinc-950 dark:text-zinc-50">
             Acceptance Criteria & Verification Test Suite
           </h2>
         </div>
 
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+        <p className="text-xs sm:text-[13.5px] font-medium text-zinc-600 dark:text-zinc-300">
           Senior staff criteria used to evaluate whether your repository is production-ready:
         </p>
 
-        <div className="space-y-2.5">
+        <div className="space-y-3">
           {capstone.acceptanceCriteria.map((crit, idx) => (
             <div
               key={idx}
-              className="flex items-start gap-2.5 rounded-md border border-emerald-500/20 bg-emerald-50/40 p-3 text-xs dark:border-emerald-950 dark:bg-emerald-950/20 text-emerald-950 dark:text-emerald-200"
+              className="flex items-start gap-3 rounded-xl border border-emerald-500/25 bg-emerald-50/50 p-4 text-xs sm:text-[13.5px] dark:border-emerald-950 dark:bg-emerald-950/25 text-emerald-950 dark:text-emerald-100 shadow-2xs"
             >
               <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-              <span className="leading-relaxed font-mono">{crit}</span>
+              <span className="leading-relaxed font-mono font-medium">{crit}</span>
             </div>
           ))}
         </div>
       </div>
 
       {/* Section 4: GitHub Repository Submission & Portfolio Guide */}
-      <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-6">
+      <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-7 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-6">
         <div className="flex items-center gap-2.5 border-b border-zinc-100 dark:border-zinc-900 pb-3">
-          <FolderGit2 className="h-5 w-5 text-zinc-900 dark:text-white" />
-          <h2 className="text-base font-bold text-zinc-900 dark:text-white">
+          <FolderGit2 className="h-5 w-5 text-zinc-950 dark:text-zinc-50" />
+          <h2 className="text-base sm:text-lg font-extrabold text-zinc-950 dark:text-zinc-50">
             GitHub Submission & Portfolio Guide
           </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-3">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            <h3 className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
               Recommended Repository Structure
             </h3>
-            <pre className="overflow-x-auto rounded-lg bg-zinc-950 p-3.5 font-mono text-[11px] text-zinc-300 dark:border dark:border-zinc-800">
+            <pre className="overflow-x-auto rounded-xl bg-zinc-950 p-4 font-mono text-xs text-zinc-200 dark:border dark:border-zinc-800 shadow-inner">
               <code>{capstone.githubSubmissionGuide.folderStructure}</code>
             </pre>
           </div>
 
           <div className="space-y-3">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            <h3 className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
               README.md Portfolio Checklist
             </h3>
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               {capstone.githubSubmissionGuide.readmeChecklist.map((checkItem, idx) => (
                 <div
                   key={idx}
-                  className="flex items-start gap-2 text-xs text-zinc-600 dark:text-zinc-300"
+                  className="flex items-start gap-2.5 text-xs sm:text-sm font-medium text-zinc-800 dark:text-zinc-200"
                 >
-                  <span className="text-zinc-400">✓</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-bold">✓</span>
                   <span>{checkItem}</span>
                 </div>
               ))}
             </div>
 
             <div className="pt-3 border-t border-zinc-100 dark:border-zinc-900">
-              <span className="text-[11px] text-zinc-400 block font-mono">
+              <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-mono font-medium">
                 Recommended Repository Name:
               </span>
-              <code className="text-xs font-bold text-zinc-900 dark:text-white font-mono bg-zinc-100 dark:bg-zinc-900 px-2 py-0.5 rounded">
+              <code className="text-xs sm:text-sm font-bold text-zinc-950 dark:text-zinc-50 font-mono bg-zinc-100 dark:bg-zinc-900 px-2.5 py-1 rounded-md inline-block mt-1">
                 {capstone.githubSubmissionGuide.recommendedRepoName}
               </code>
             </div>

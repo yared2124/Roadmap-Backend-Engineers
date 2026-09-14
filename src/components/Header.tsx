@@ -52,16 +52,16 @@ export function Header({
           </button>
 
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-black text-white font-mono font-bold text-sm dark:bg-white dark:text-black">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-zinc-950 text-white font-mono font-bold text-base dark:bg-white dark:text-zinc-950 shadow-xs">
               B
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-semibold tracking-tight text-zinc-900 dark:text-white text-base">
+                <span className="font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 text-base sm:text-lg">
                   Backend Engineer Hub
                 </span>
               </div>
-              <p className="hidden md:block text-[11px] text-zinc-500 dark:text-zinc-400">
+              <p className="hidden md:block text-xs font-semibold text-zinc-500 dark:text-zinc-400">
                 Principal Engineer Roadmap • Curated Books • Real Practice
               </p>
             </div>
@@ -73,14 +73,14 @@ export function Header({
           <button
             onClick={onOpenCommandPalette}
             type="button"
-            className="group flex w-full items-center justify-between rounded-lg border border-zinc-200 bg-zinc-50/70 px-3.5 py-1.5 text-xs text-zinc-500 hover:border-zinc-400 hover:bg-white dark:border-zinc-800 dark:bg-zinc-900/50 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:bg-zinc-900 transition-colors shadow-2xs"
+            className="group flex w-full items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/80 px-4 py-2 text-xs sm:text-[13px] font-medium text-zinc-600 hover:border-zinc-400 hover:bg-white dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:bg-zinc-900 transition-all shadow-2xs"
           >
-            <div className="flex items-center gap-2">
-              <Search className="h-3.5 w-3.5 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors" />
+            <div className="flex items-center gap-2.5">
+              <Search className="h-4 w-4 text-zinc-400 group-hover:text-zinc-700 dark:group-hover:text-zinc-200 transition-colors" />
               <span>Quick search topics, capstones, books...</span>
             </div>
             <div className="flex items-center gap-1">
-              <kbd className="inline-flex items-center rounded border border-zinc-200 bg-zinc-100 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-zinc-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+              <kbd className="inline-flex items-center rounded-md border border-zinc-200 bg-zinc-100 px-2 py-0.5 font-mono text-[10.5px] font-bold text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                 {isMac ? "⌘K" : "Ctrl K"}
               </kbd>
             </div>
@@ -92,7 +92,7 @@ export function Header({
           {/* Mobile search trigger */}
           <button
             onClick={onOpenCommandPalette}
-            className="flex h-9 w-9 items-center justify-center rounded-md border border-zinc-200 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-900 transition-colors md:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-zinc-200 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-900 transition-colors md:hidden"
             aria-label="Open Command Palette"
             title="Search (Ctrl + K)"
           >
@@ -100,13 +100,13 @@ export function Header({
           </button>
 
           {/* Progress Pill */}
-          <div className="flex items-center gap-2 rounded-md border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs dark:border-zinc-800 dark:bg-zinc-900">
-            <CheckCircle2 className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
-            <span className="font-mono font-medium text-zinc-900 dark:text-white">
+          <div className="flex items-center gap-2 rounded-lg border border-zinc-200 bg-zinc-50/90 px-3.5 py-1.5 text-xs sm:text-sm font-semibold dark:border-zinc-800 dark:bg-zinc-900/80 shadow-2xs">
+            <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            <span className="font-mono font-bold text-zinc-950 dark:text-zinc-50">
               {completedCount}/{totalTopics}
             </span>
-            <span className="text-zinc-400 dark:text-zinc-600">•</span>
-            <span className="font-mono font-bold text-zinc-900 dark:text-white">
+            <span className="text-zinc-400 dark:text-zinc-600 font-bold">•</span>
+            <span className="font-mono font-extrabold text-zinc-950 dark:text-zinc-50">
               {overallPercentage}%
             </span>
           </div>

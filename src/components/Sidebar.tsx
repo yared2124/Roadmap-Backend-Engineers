@@ -77,7 +77,7 @@ export function Sidebar({
       >
         <div className="p-4">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xs font-mono font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
               Syllabus & Modules (31)
             </h2>
           </div>
@@ -94,23 +94,23 @@ export function Sidebar({
               return (
                 <div
                   key={phase.id}
-                  className="rounded-lg border border-zinc-200/80 bg-zinc-50/40 p-1.5 dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                  className="rounded-xl border border-zinc-200/90 bg-zinc-50/50 p-2 dark:border-zinc-800 dark:bg-zinc-950/60"
                 >
                   {/* Phase Header */}
                   <button
                     onClick={() => togglePhase(phase.id)}
-                    className="flex w-full items-center justify-between rounded-md p-2 text-left hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
+                    className="flex w-full items-center justify-between rounded-lg p-2 text-left hover:bg-zinc-200/50 dark:hover:bg-zinc-900 transition-colors"
                   >
                     <div className="flex-1 pr-2">
-                      <div className="flex items-center justify-between gap-2 mb-1">
-                        <span className="font-mono text-xs font-black tracking-wider text-zinc-900 dark:text-white uppercase bg-zinc-200/80 dark:bg-zinc-800 px-2 py-0.5 rounded">
+                      <div className="flex items-center justify-between gap-2 mb-1.5">
+                        <span className="font-mono text-xs font-black tracking-wider text-zinc-950 dark:text-zinc-50 uppercase bg-zinc-200/90 dark:bg-zinc-800 px-2 py-0.5 rounded-md">
                           PHASE 0{phase.id}
                         </span>
-                        <span className="font-mono text-xs font-bold text-zinc-600 dark:text-zinc-300">
+                        <span className="font-mono text-xs font-extrabold text-zinc-700 dark:text-zinc-300">
                           {progress.completed}/{progress.total}
                         </span>
                       </div>
-                      <h3 className="text-sm font-black tracking-tight text-zinc-950 dark:text-white leading-snug">
+                      <h3 className="text-[13.5px] font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 leading-snug">
                         {phase.name}
                       </h3>
                     </div>
@@ -125,7 +125,7 @@ export function Sidebar({
 
                   {/* Phase Topics */}
                   {isExpanded && (
-                    <div className="mt-1 space-y-0.5 pt-1">
+                    <div className="mt-1 space-y-1 pt-1">
                       {filteredTopics.map((topic) => {
                         const isActive = topic.id === activeTopicId;
                         const completed = isTopicCompleted(topic.id);
@@ -134,10 +134,10 @@ export function Sidebar({
                         return (
                           <div
                             key={topic.id}
-                            className={`group flex items-center justify-between rounded-md px-2 py-1.5 transition-colors ${
+                            className={`group flex items-center justify-between rounded-lg px-2.5 py-2 transition-all ${
                               isActive
-                                ? "bg-black text-white dark:bg-white dark:text-black font-medium"
-                                : "text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-900"
+                                ? "bg-zinc-950 text-white dark:bg-zinc-100 dark:text-zinc-950 font-bold shadow-xs"
+                                : "text-zinc-800 hover:bg-zinc-200/70 dark:text-zinc-200 dark:hover:bg-zinc-900 font-medium"
                             }`}
                           >
                             {/* Topic Title Click */}
@@ -146,10 +146,10 @@ export function Sidebar({
                                 onSelectTopic(topic);
                                 onClose();
                               }}
-                              className="flex flex-1 items-center gap-2 text-left text-xs"
+                              className="flex flex-1 items-center gap-2.5 text-left text-[13px] sm:text-[13.5px] leading-snug"
                             >
                               <span
-                                className={`font-mono text-[10px] ${
+                                className={`font-mono text-xs font-bold shrink-0 ${
                                   isActive
                                     ? "text-zinc-300 dark:text-zinc-600"
                                     : "text-zinc-400 dark:text-zinc-500"
@@ -157,7 +157,7 @@ export function Sidebar({
                               >
                                 {String(topic.number).padStart(2, "0")}
                               </span>
-                              <span className="line-clamp-1 flex-1">
+                              <span className="line-clamp-1 flex-1 font-semibold tracking-tight">
                                 {topic.title}
                               </span>
                               {hasNote && (
@@ -169,14 +169,14 @@ export function Sidebar({
                                       : "text-amber-500 dark:text-amber-400"
                                   }`}
                                 >
-                                  <FileText className="h-3 w-3" />
+                                  <FileText className="h-3.5 w-3.5" />
                                 </span>
                               )}
                               <span
-                                className={`font-mono text-[9.5px] shrink-0 ml-1 px-1.5 py-0.5 rounded ${
+                                className={`font-mono text-[10px] font-bold shrink-0 ml-1 px-1.5 py-0.5 rounded-md ${
                                   isActive
-                                    ? "text-zinc-200 dark:text-zinc-700 bg-white/20 dark:bg-black/20 font-bold"
-                                    : "text-zinc-400 dark:text-zinc-500 bg-zinc-200/60 dark:bg-zinc-800/60"
+                                    ? "text-zinc-100 dark:text-zinc-900 bg-white/25 dark:bg-black/20"
+                                    : "text-zinc-600 dark:text-zinc-400 bg-zinc-200/80 dark:bg-zinc-800"
                                 }`}
                               >
                                 {topic.timeEstimates?.total || topic.duration}
@@ -189,7 +189,7 @@ export function Sidebar({
                                 e.stopPropagation();
                                 onToggleTopic(topic.id);
                               }}
-                              className={`ml-2 flex h-4 w-4 shrink-0 items-center justify-center rounded border transition-colors ${
+                              className={`ml-2 flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-md border transition-colors ${
                                 completed
                                   ? isActive
                                     ? "border-white bg-white text-black dark:border-black dark:bg-black dark:text-white"
@@ -200,7 +200,7 @@ export function Sidebar({
                               }`}
                               title={completed ? "Mark as incomplete" : "Mark as complete"}
                             >
-                              {completed && <Check className="h-3 w-3 stroke-[3]" />}
+                              {completed && <Check className="h-3.5 w-3.5 stroke-[3.5]" />}
                             </button>
                           </div>
                         );
@@ -209,12 +209,12 @@ export function Sidebar({
                       {/* Phase Capstone Project Milestone */}
                       {phase.capstoneProject && onSelectCapstone && (!searchQuery || phase.capstoneProject.title.toLowerCase().includes(searchQuery.toLowerCase())) && (
                         <div
-                          className={`group mt-2 flex items-center justify-between rounded-md border px-2 py-1.5 transition-colors ${
+                          className={`group mt-2.5 flex items-center justify-between rounded-lg border px-2.5 py-2 transition-all ${
                             activeCapstonePhaseId === phase.id
-                              ? "border-amber-500/60 bg-amber-500/10 text-amber-900 dark:text-amber-200 font-semibold"
+                              ? "border-amber-500/80 bg-amber-500/15 text-amber-950 dark:text-amber-200 font-bold shadow-xs"
                               : isCapstoneCompleted?.(phase.id)
-                              ? "border-emerald-500/30 bg-emerald-50/40 text-emerald-800 dark:border-emerald-950 dark:bg-emerald-950/20 dark:text-emerald-300"
-                              : "border-dashed border-zinc-300 bg-zinc-100/50 text-zinc-700 hover:border-zinc-400 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900/40 dark:text-zinc-300 dark:hover:bg-zinc-900"
+                              ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-900 dark:border-emerald-900 dark:text-emerald-200 font-semibold"
+                              : "border-dashed border-zinc-300 bg-zinc-100/60 text-zinc-800 hover:border-zinc-400 hover:bg-zinc-200/60 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-200 dark:hover:bg-zinc-850 font-semibold"
                           }`}
                         >
                           <button
@@ -222,18 +222,18 @@ export function Sidebar({
                               onSelectCapstone(phase.id);
                               onClose();
                             }}
-                            className="flex flex-1 items-center gap-1.5 text-left text-xs"
+                            className="flex flex-1 items-center gap-2 text-left text-xs sm:text-[13px]"
                           >
-                            <Trophy className="h-3.5 w-3.5 text-amber-500 shrink-0" />
-                            <span className="line-clamp-1 font-mono text-[11px]">
+                            <Trophy className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                            <span className="line-clamp-1 flex-1 font-bold">
                               Capstone: {phase.capstoneProject.title}
                             </span>
+                            {isCapstoneCompleted?.(phase.id) && (
+                              <span className="shrink-0 font-mono text-[10px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-1.5 py-0.5 rounded">
+                                ✓ Done
+                              </span>
+                            )}
                           </button>
-                          {isCapstoneCompleted?.(phase.id) && (
-                            <span className="font-mono text-[10px] font-bold text-emerald-600 dark:text-emerald-400 shrink-0 ml-1">
-                              ✓ Done
-                            </span>
-                          )}
                         </div>
                       )}
                     </div>

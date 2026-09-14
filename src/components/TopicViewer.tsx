@@ -88,8 +88,8 @@ export function TopicViewer({
       {/* Top Meta Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-200 pb-5 dark:border-zinc-800">
         <div>
-          <div className="inline-flex items-center gap-2.5 rounded-md border border-zinc-300 bg-zinc-100/90 px-3 py-1 dark:border-zinc-700 dark:bg-zinc-900 mb-2 shadow-xs">
-            <span className="font-mono text-xs font-black tracking-widest text-black dark:text-white uppercase">
+          <div className="inline-flex items-center gap-2.5 rounded-lg border border-zinc-300 bg-zinc-100 px-3.5 py-1.5 dark:border-zinc-700 dark:bg-zinc-900 mb-2.5 shadow-2xs">
+            <span className="font-mono text-xs font-black tracking-widest text-zinc-950 dark:text-zinc-50 uppercase">
               PHASE 0{topic.phaseId}
             </span>
             <span className="text-zinc-300 dark:text-zinc-700 font-bold">•</span>
@@ -97,33 +97,33 @@ export function TopicViewer({
               {topic.phaseName}
             </span>
           </div>
-          <h1 className="mt-1 text-2xl font-black tracking-tight text-zinc-900 dark:text-white sm:text-3xl">
-            <span className="font-mono font-normal text-zinc-400 dark:text-zinc-600 mr-2">
+          <h1 className="mt-1 text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-zinc-950 dark:text-zinc-50 leading-tight">
+            <span className="font-mono font-bold text-zinc-400 dark:text-zinc-600 mr-2.5">
               #{String(topic.number).padStart(2, "0")}
             </span>
             {topic.title}
           </h1>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+          <p className="mt-3 text-base sm:text-[17px] text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal max-w-4xl">
             {topic.shortSummary}
           </p>
 
           {/* Study Plan & Time Commitment */}
           {topic.timeEstimates && (
-            <div className="mt-3.5 flex flex-wrap items-center gap-2 pt-1 font-mono text-xs">
-              <span className="inline-flex items-center gap-1.5 rounded-md bg-zinc-900 px-2.5 py-1 text-[11px] font-bold text-white dark:bg-zinc-100 dark:text-black shadow-xs">
-                <Clock className="h-3.5 w-3.5" />
+            <div className="mt-4 flex flex-wrap items-center gap-2.5 pt-1 font-mono">
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-950 px-3.5 py-1.5 text-xs font-bold text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-xs">
+                <Clock className="h-4 w-4" />
                 <span>Est. Total: {topic.timeEstimates.total}</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-md border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-[11px] text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-300">
-                <PlayCircle className="h-3.5 w-3.5 text-red-500" />
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-semibold text-zinc-800 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
+                <PlayCircle className="h-4 w-4 text-red-500" />
                 <span>Video: {topic.timeEstimates.video}</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-md border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-[11px] text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-300">
-                <BookOpen className="h-3.5 w-3.5 text-blue-500" />
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-semibold text-zinc-800 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
+                <BookOpen className="h-4 w-4 text-blue-500" />
                 <span>Reading: {topic.timeEstimates.reading}</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-md border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-[11px] text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-300">
-                <Code2 className="h-3.5 w-3.5 text-emerald-500" />
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-semibold text-zinc-800 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
+                <Code2 className="h-4 w-4 text-emerald-500" />
                 <span>Lab & Practice: {topic.timeEstimates.lab}</span>
               </span>
             </div>
@@ -133,49 +133,49 @@ export function TopicViewer({
         {/* Complete Toggle Button */}
         <button
           onClick={onToggleComplete}
-          className={`flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-semibold transition-all ${
+          className={`flex items-center gap-2 rounded-xl border px-5 py-2.5 text-sm font-bold transition-all shadow-xs shrink-0 ${
             isCompleted
-              ? "border-zinc-900 bg-zinc-900 text-white dark:border-white dark:bg-white dark:text-black shadow-sm"
-              : "border-zinc-300 bg-white text-zinc-800 hover:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-zinc-400"
+              ? "border-zinc-950 bg-zinc-950 text-white dark:border-white dark:bg-white dark:text-black"
+              : "border-zinc-300 bg-white text-zinc-900 hover:border-zinc-500 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-zinc-400"
           }`}
         >
-          <CheckCircle2 className="h-4 w-4" />
+          <CheckCircle2 className="h-4 w-4 stroke-[2.5]" />
           <span>{isCompleted ? "Topic Completed" : "Mark as Completed"}</span>
         </button>
       </div>
 
       {/* Architectural Insights Card */}
-      <div className="rounded-xl border border-zinc-200 bg-gradient-to-br from-zinc-50 to-white p-5 dark:border-zinc-800 dark:from-zinc-950 dark:to-zinc-900/40 shadow-sm space-y-3">
-        <div className="flex items-center gap-2">
-          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-black text-white dark:bg-white dark:text-black text-xs font-mono font-bold">
+      <div className="rounded-2xl border border-zinc-200 bg-linear-to-br from-zinc-50 via-white to-zinc-50/50 p-6 dark:border-zinc-800 dark:from-zinc-950 dark:via-zinc-900/50 dark:to-zinc-950 shadow-sm space-y-4">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-950 text-white dark:bg-white dark:text-black text-xs font-mono font-bold shadow-2xs">
             💡
           </div>
-          <span className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white">
+          <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-950 dark:text-zinc-50">
             Architectural Insights & Best Practices
           </span>
         </div>
 
-        <blockquote className="border-l-2 border-black pl-3 text-xs italic font-medium text-zinc-800 dark:border-white dark:text-zinc-200">
+        <blockquote className="border-l-4 border-amber-500 pl-4 py-1 text-sm sm:text-base italic font-semibold text-zinc-900 dark:text-zinc-100 leading-relaxed">
           &ldquo;{topic.seniorInsight.quote}&rdquo;
         </blockquote>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1 text-xs">
-          <div className="rounded-md border border-zinc-200/80 bg-white p-3 dark:border-zinc-800/80 dark:bg-zinc-900/60">
-            <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5 mb-1">
-              <Lightbulb className="h-3.5 w-3.5 text-zinc-700 dark:text-zinc-300" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+          <div className="rounded-xl border border-zinc-200/90 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900/80 shadow-2xs">
+            <span className="font-mono text-xs font-bold text-zinc-950 dark:text-zinc-50 flex items-center gap-1.5 mb-1.5 uppercase tracking-wide">
+              <Lightbulb className="h-4 w-4 text-amber-500" />
               Production Reality
             </span>
-            <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            <p className="text-sm leading-relaxed text-zinc-800 dark:text-zinc-200 font-normal">
               {topic.seniorInsight.productionLesson}
             </p>
           </div>
 
-          <div className="rounded-md border border-zinc-200/80 bg-white p-3 dark:border-zinc-800/80 dark:bg-zinc-900/60">
-            <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5 mb-1">
-              <AlertTriangle className="h-3.5 w-3.5 text-zinc-700 dark:text-zinc-300" />
+          <div className="rounded-xl border border-zinc-200/90 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900/80 shadow-2xs">
+            <span className="font-mono text-xs font-bold text-zinc-950 dark:text-zinc-50 flex items-center gap-1.5 mb-1.5 uppercase tracking-wide">
+              <AlertTriangle className="h-4 w-4 text-red-500" />
               Common Junior Pitfall
             </span>
-            <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            <p className="text-sm leading-relaxed text-zinc-800 dark:text-zinc-200 font-normal">
               {topic.seniorInsight.commonMistake}
             </p>
           </div>
@@ -211,37 +211,44 @@ export function TopicViewer({
       )}
 
       {/* 2. Deep Architectural Breakdown */}
-      <section className="space-y-4 rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm">
-        <div className="flex items-center gap-2 border-b border-zinc-100 pb-3 dark:border-zinc-900">
-          <Code2 className="h-4 w-4 text-zinc-900 dark:text-white" />
-          <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white">
+      <section className="space-y-5 rounded-2xl border border-zinc-200 bg-white p-6 sm:p-8 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm">
+        <div className="flex items-center gap-2.5 border-b border-zinc-100 pb-3.5 dark:border-zinc-800/80">
+          <Code2 className="h-5 w-5 text-zinc-950 dark:text-zinc-50" />
+          <h3 className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-950 dark:text-zinc-50">
             Architectural Deep Dive & Mental Models
           </h3>
         </div>
 
-        <div className="space-y-3 text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
+        <div className="space-y-4 text-sm sm:text-[15px] leading-relaxed text-zinc-800 dark:text-zinc-200">
           <div>
-            <h4 className="font-mono font-bold text-zinc-900 dark:text-white mb-1">
+            <h4 className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-950 dark:text-zinc-50 mb-1.5 flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-blue-500 inline-block" />
               What is it?
             </h4>
-            <p>{topic.coreDeepDive.what}</p>
+            <p className="leading-relaxed pl-4 border-l-2 border-zinc-200 dark:border-zinc-800 font-normal">
+              {topic.coreDeepDive.what}
+            </p>
           </div>
 
           <div>
-            <h4 className="font-mono font-bold text-zinc-900 dark:text-white mb-1">
+            <h4 className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-950 dark:text-zinc-50 mb-1.5 flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-amber-500 inline-block" />
               Why do we need it?
             </h4>
-            <p>{topic.coreDeepDive.why}</p>
+            <p className="leading-relaxed pl-4 border-l-2 border-zinc-200 dark:border-zinc-800 font-normal">
+              {topic.coreDeepDive.why}
+            </p>
           </div>
 
           <div>
-            <h4 className="font-mono font-bold text-zinc-900 dark:text-white mb-1.5">
+            <h4 className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-950 dark:text-zinc-50 mb-2 flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 inline-block" />
               How it works under the hood:
             </h4>
-            <ul className="space-y-1 pl-1">
+            <ul className="space-y-2 pl-4 border-l-2 border-zinc-200 dark:border-zinc-800">
               {topic.coreDeepDive.howItWorks.map((step, idx) => (
-                <li key={idx} className="flex items-start gap-2">
-                  <span className="text-zinc-400 font-mono">•</span>
+                <li key={idx} className="flex items-start gap-2.5 font-normal">
+                  <span className="text-zinc-400 dark:text-zinc-500 font-mono font-bold">•</span>
                   <span>{step}</span>
                 </li>
               ))}
@@ -250,21 +257,21 @@ export function TopicViewer({
         </div>
 
         {/* Multi-Language Blueprint Code Engine */}
-        <div className="pt-3 border-t border-zinc-100 dark:border-zinc-900 space-y-2">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="font-mono text-xs font-bold text-zinc-800 dark:text-zinc-200">
+        <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800/80 space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <span className="font-mono text-xs sm:text-sm font-bold text-zinc-950 dark:text-zinc-50">
               {topic.coreDeepDive.blueprintTitle}
             </span>
 
             {/* Language Selector Tabs */}
-            <div className="flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-100/80 p-1 dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-100/90 p-1 dark:border-zinc-800 dark:bg-zinc-900">
               {(["go", "typescript", "python"] as const).map((lang) => (
                 <button
                   key={lang}
                   onClick={() => handleSelectLanguage(lang)}
-                  className={`rounded px-2.5 py-1 font-mono text-[11px] font-bold transition-all ${
+                  className={`rounded-md px-3 py-1.5 font-mono text-xs font-bold transition-all ${
                     preferredLang === lang
-                      ? "bg-black text-white dark:bg-white dark:text-black shadow-xs"
+                      ? "bg-zinc-950 text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-xs"
                       : "text-zinc-600 hover:text-black dark:text-zinc-400 dark:hover:text-white"
                   }`}
                 >
@@ -278,30 +285,30 @@ export function TopicViewer({
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-lg border border-zinc-800 bg-zinc-950 p-3.5 font-mono text-xs text-zinc-100 dark:bg-black shadow-inner">
-            <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-2">
-              <span className="font-mono text-[10px] uppercase text-zinc-400 font-semibold px-2 py-0.5 rounded bg-zinc-800/80">
+          <div className="relative overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950 p-4 font-mono text-xs sm:text-sm text-zinc-100 dark:bg-black shadow-inner">
+            <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
+              <span className="font-mono text-[10px] uppercase text-zinc-400 font-bold px-2 py-0.5 rounded bg-zinc-800/90">
                 {preferredLang === "go" ? "golang" : preferredLang === "typescript" ? "typescript" : "python"}
               </span>
               <button
                 onClick={handleCopyCode}
-                className="inline-flex items-center gap-1 rounded border border-zinc-700 bg-zinc-900/90 px-2 py-1 text-[11px] font-mono text-zinc-300 hover:border-zinc-500 hover:text-white transition-colors"
+                className="inline-flex items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-900 px-2.5 py-1 text-xs font-mono font-medium text-zinc-200 hover:border-zinc-500 hover:text-white transition-colors"
                 title="Copy Code"
               >
                 {copiedCode ? (
                   <>
-                    <Check className="h-3 w-3 text-emerald-400" />
-                    <span className="text-emerald-400">Copied!</span>
+                    <Check className="h-3.5 w-3.5 text-emerald-400" />
+                    <span className="text-emerald-400 font-semibold">Copied!</span>
                   </>
                 ) : (
                   <>
-                    <Copy className="h-3 w-3" />
+                    <Copy className="h-3.5 w-3.5" />
                     <span>Copy</span>
                   </>
                 )}
               </button>
             </div>
-            <pre className="overflow-x-auto pt-6">
+            <pre className="overflow-x-auto pt-7 leading-relaxed">
               <code>{activeCode}</code>
             </pre>
           </div>
@@ -319,28 +326,28 @@ export function TopicViewer({
       <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-5">
         <div className="flex items-center justify-between flex-wrap gap-2 border-b border-zinc-100 pb-3 dark:border-zinc-900">
           <div className="flex items-center gap-2">
-            <HelpCircle className="h-4 w-4 text-zinc-900 dark:text-white" />
-            <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white">
+            <HelpCircle className="h-5 w-5 text-zinc-950 dark:text-zinc-50" />
+            <h4 className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-950 dark:text-zinc-50">
               Self-Assessment: Understanding Check (Can you answer these aloud?)
             </h4>
           </div>
-          <span className="text-xs font-mono text-zinc-400">
+          <span className="text-xs font-mono font-bold text-zinc-500 dark:text-zinc-400">
             {topic.selfCheckQuestions.length} Questions
           </span>
         </div>
 
         {/* Prerequisite Reading Gate Banner */}
         <div
-          className={`rounded-lg border p-4 transition-all ${
+          className={`rounded-xl border p-4 sm:p-5 transition-all ${
             isBookRead
-              ? "border-emerald-200 bg-emerald-50/40 dark:border-emerald-900/40 dark:bg-emerald-950/20"
-              : "border-amber-200 bg-amber-50/40 dark:border-amber-900/40 dark:bg-amber-950/20"
+              ? "border-emerald-200 bg-emerald-50/50 dark:border-emerald-900/50 dark:bg-emerald-950/25"
+              : "border-amber-200 bg-amber-50/50 dark:border-amber-900/50 dark:bg-amber-950/25"
           }`}
         >
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-start gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-start gap-3.5">
               <div
-                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${
                   isBookRead
                     ? "border-emerald-300 bg-emerald-100 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300"
                     : "border-amber-300 bg-amber-100 text-amber-800 dark:border-amber-800 dark:bg-amber-900/50 dark:text-amber-300"
@@ -354,23 +361,23 @@ export function TopicViewer({
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                  <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
                     Required Prerequisite Reading
                   </span>
                   {isBookRead && (
-                    <span className="inline-flex items-center gap-1 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 font-mono">
+                    <span className="inline-flex items-center gap-1 rounded bg-emerald-100 px-2 py-0.5 text-[10.5px] font-extrabold text-emerald-900 dark:bg-emerald-900/70 dark:text-emerald-200 font-mono">
                       ✓ Completed
                     </span>
                   )}
                 </div>
-                <h5 className="text-xs font-bold text-zinc-900 dark:text-white mt-0.5">
+                <h5 className="text-sm sm:text-base font-bold text-zinc-950 dark:text-zinc-50 mt-1">
                   {topic.recommendedBook.title}{" "}
-                  <span className="font-normal text-zinc-500 dark:text-zinc-400">
+                  <span className="font-medium text-zinc-600 dark:text-zinc-400">
                     by {topic.recommendedBook.author}
                   </span>
                 </h5>
-                <p className="text-[11.5px] text-zinc-600 dark:text-zinc-300 mt-0.5">
-                  <span className="font-semibold text-zinc-900 dark:text-zinc-100">
+                <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-200 mt-1">
+                  <span className="font-bold text-zinc-950 dark:text-zinc-100">
                     Assigned Chapter:{" "}
                   </span>
                   {topic.recommendedBook.keyChapters}
@@ -378,13 +385,13 @@ export function TopicViewer({
               </div>
             </div>
 
-            <div className="flex items-center gap-2 shrink-0 flex-wrap sm:flex-nowrap">
+            <div className="flex items-center gap-2.5 shrink-0 flex-wrap sm:flex-nowrap">
               {topic.recommendedBook.readingUrl && (
                 <a
                   href={topic.recommendedBook.readingUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-900 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800 transition-colors shadow-xs"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-2 text-xs sm:text-sm font-semibold text-zinc-900 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800 transition-colors shadow-xs"
                 >
                   <span>Read Chapter Online</span>
                   <ExternalLink className="h-3.5 w-3.5" />
@@ -392,20 +399,20 @@ export function TopicViewer({
               )}
               <button
                 onClick={onToggleBookRead}
-                className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors shrink-0 ${
+                className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs sm:text-sm font-semibold transition-colors shrink-0 ${
                   isBookRead
-                    ? "border border-emerald-300 bg-emerald-600 text-white hover:bg-emerald-700 dark:border-emerald-700 dark:bg-emerald-600 dark:text-white"
-                    : "border border-zinc-900 bg-black text-white hover:bg-zinc-800 dark:border-white dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+                    ? "border border-emerald-400 bg-emerald-600 text-white hover:bg-emerald-700 dark:border-emerald-700 dark:bg-emerald-600 dark:text-white shadow-xs"
+                    : "border border-zinc-950 bg-zinc-950 text-white hover:bg-zinc-800 dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white shadow-xs"
                 }`}
               >
                 {isBookRead ? (
                   <>
-                    <Check className="h-3.5 w-3.5" />
+                    <Check className="h-4 w-4" />
                     <span>Reading Completed</span>
                   </>
                 ) : (
                   <>
-                    <BookmarkCheck className="h-3.5 w-3.5" />
+                    <BookmarkCheck className="h-4 w-4" />
                     <span>Mark Chapter as Read</span>
                   </>
                 )}
@@ -413,15 +420,15 @@ export function TopicViewer({
             </div>
           </div>
 
-          <p className="mt-2.5 text-[11px] text-zinc-500 dark:text-zinc-400 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-2 leading-relaxed">
+          <p className="mt-3 text-xs font-medium text-zinc-600 dark:text-zinc-400 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-2.5 leading-relaxed">
             ⚠️ Make sure you have studied the assigned reading above before attempting the self-assessment questions below.
           </p>
         </div>
 
-        <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+        <p className="text-xs sm:text-[14px] text-zinc-700 dark:text-zinc-300 font-medium leading-relaxed">
           After reviewing the lecture and completing the required chapter reading, test your staff-level grasp by answering each of the following:
         </p>
-        <ul className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
+        <ul className="space-y-3 pt-1">
           {topic.selfCheckQuestions.map((qItem, idx) => {
             const isObj = typeof qItem === "object" && qItem !== null;
             const questionText = isObj ? qItem.question : qItem;
@@ -431,34 +438,41 @@ export function TopicViewer({
             return (
               <li
                 key={idx}
-                className="rounded-md border border-zinc-200/80 bg-zinc-50/60 p-3 dark:border-zinc-900 dark:bg-zinc-900/40 space-y-2"
+                className="rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-4 sm:p-4.5 dark:border-zinc-800 dark:bg-zinc-900/50 space-y-2.5 transition-all"
               >
-                <div className="flex items-start gap-2.5">
-                  <span className="font-mono font-bold text-zinc-400">0{idx + 1}.</span>
+                <div className="flex items-start gap-3">
+                  <span className="font-mono text-sm font-bold text-zinc-500 dark:text-zinc-400 pt-0.5">
+                    0{idx + 1}.
+                  </span>
                   {category && (
                     <span
-                      className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold font-mono tracking-wide uppercase shrink-0 ${
+                      className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-extrabold font-mono tracking-wide uppercase shrink-0 mt-0.5 ${
                         category === "WHAT"
-                          ? "bg-blue-100 text-blue-800 dark:bg-blue-950/70 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
+                          ? "bg-blue-100 text-blue-900 dark:bg-blue-950/80 dark:text-blue-200 border border-blue-200 dark:border-blue-800"
                           : category === "WHY"
-                          ? "bg-amber-100 text-amber-800 dark:bg-amber-950/70 dark:text-amber-300 border border-amber-200 dark:border-amber-800"
-                          : "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
+                          ? "bg-amber-100 text-amber-900 dark:bg-amber-950/80 dark:text-amber-200 border border-amber-200 dark:border-amber-800"
+                          : "bg-emerald-100 text-emerald-900 dark:bg-emerald-950/80 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800"
                       }`}
                     >
                       {category}
                     </span>
                   )}
-                  <span className="leading-relaxed font-medium text-zinc-900 dark:text-zinc-100">{questionText}</span>
+                  <span className="text-sm sm:text-[15px] leading-relaxed font-bold text-zinc-950 dark:text-zinc-50">
+                    {questionText}
+                  </span>
                 </div>
                 {answerText && (
-                  <details className="pl-6 group">
-                    <summary className="cursor-pointer font-mono text-[11px] font-semibold text-zinc-500 hover:text-black dark:hover:text-white transition-colors list-none flex items-center gap-1.5">
-                      <span className="text-[10px] text-zinc-400 group-open:rotate-90 transition-transform">▶</span>
+                  <details className="pl-7 group">
+                    <summary className="cursor-pointer font-mono text-xs font-bold text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors list-none flex items-center gap-2 select-none py-1">
+                      <span className="text-[11px] text-zinc-400 group-open:rotate-90 transition-transform">▶</span>
                       Reveal Engineering Answer & Takeaway
                     </summary>
-                    <p className="mt-2 rounded border border-zinc-200/80 bg-white p-2.5 text-[11.5px] leading-relaxed text-zinc-600 dark:border-zinc-800 dark:bg-black dark:text-zinc-400">
+                    <div className="mt-2.5 rounded-xl border border-zinc-200 bg-white p-4 text-sm sm:text-[14.5px] leading-relaxed text-zinc-800 dark:border-zinc-800 dark:bg-black dark:text-zinc-200 font-normal shadow-xs">
+                      <div className="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1.5 flex items-center gap-1.5">
+                        ✓ Engineering Deep Dive & Key Takeaway
+                      </div>
                       {answerText}
-                    </p>
+                    </div>
                   </details>
                 )}
               </li>
@@ -474,30 +488,30 @@ export function TopicViewer({
 
       {/* 6. Additional Authoritative References (RFCs, Papers, Official Specs) */}
       {topic.additionalReferences && topic.additionalReferences.length > 0 && (
-        <div className="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-3">
+        <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-4">
           <div className="flex items-center gap-2">
-            <Code2 className="h-4 w-4 text-zinc-900 dark:text-white" />
-            <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white">
+            <Code2 className="h-5 w-5 text-zinc-950 dark:text-zinc-50" />
+            <h4 className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-950 dark:text-zinc-50">
               Primary Sources & Canonical Specifications
             </h4>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
             {topic.additionalReferences.map((ref, idx) => (
               <a
                 key={idx}
                 href={ref.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col justify-between rounded-lg border border-zinc-200/80 bg-zinc-50/50 p-3 hover:border-zinc-400 hover:bg-zinc-100 dark:border-zinc-800/80 dark:bg-zinc-900/40 dark:hover:border-zinc-600 dark:hover:bg-zinc-900 transition-colors"
+                className="group flex flex-col justify-between rounded-xl border border-zinc-200/80 bg-zinc-50/60 p-4 hover:border-zinc-400 hover:bg-zinc-100 dark:border-zinc-800/80 dark:bg-zinc-900/40 dark:hover:border-zinc-600 dark:hover:bg-zinc-900 transition-colors"
               >
                 <div>
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-xs text-zinc-900 dark:text-white group-hover:underline">
+                    <span className="font-bold text-sm sm:text-[14.5px] text-zinc-950 dark:text-zinc-50 group-hover:text-blue-600 dark:group-hover:text-blue-400">
                       {ref.title}
                     </span>
-                    <span className="font-mono text-[10px] text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white">↗</span>
+                    <span className="font-mono text-xs text-zinc-400 group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">↗</span>
                   </div>
-                  <p className="mt-1 text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                  <p className="mt-1.5 text-xs sm:text-[13px] text-zinc-600 dark:text-zinc-300 leading-relaxed font-medium">
                     {ref.description}
                   </p>
                 </div>
@@ -518,24 +532,24 @@ export function TopicViewer({
 
       {/* Phase Capstone Milestone Callout */}
       {onOpenPhaseCapstone && (
-        <div className="rounded-xl border border-amber-500/30 bg-linear-to-r from-amber-500/10 via-amber-500/5 to-transparent p-5 dark:border-amber-500/25 shadow-xs">
+        <div className="rounded-xl border border-amber-500/30 bg-linear-to-r from-amber-500/10 via-amber-500/5 to-transparent p-6 dark:border-amber-500/25 shadow-xs">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="space-y-1">
-              <div className="flex items-center gap-1.5">
-                <Trophy className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-                <span className="font-mono text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <Trophy className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-900 dark:text-amber-300">
                   Phase 0{topic.phaseId} Capstone Project
                 </span>
               </div>
-              <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-200 leading-relaxed font-medium">
                 Complete all topics in this phase, then build the production-grade portfolio project to prove your hands-on mastery.
               </p>
             </div>
             <button
               onClick={() => onOpenPhaseCapstone(topic.phaseId)}
-              className="inline-flex items-center gap-2 rounded-lg bg-amber-600 hover:bg-amber-700 px-4 py-2.5 text-xs font-bold text-white transition-colors shadow-xs shrink-0 font-mono"
+              className="inline-flex items-center gap-2 rounded-xl bg-amber-600 hover:bg-amber-700 px-5 py-2.5 text-xs sm:text-sm font-bold text-white transition-colors shadow-xs shrink-0 font-mono"
             >
-              <Trophy className="h-3.5 w-3.5" />
+              <Trophy className="h-4 w-4" />
               <span>View Phase Capstone</span>
             </button>
           </div>
@@ -547,19 +561,19 @@ export function TopicViewer({
         <button
           onClick={onSelectPrev}
           disabled={!hasPrev}
-          className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-2 text-xs font-medium text-zinc-700 hover:bg-zinc-100 disabled:opacity-30 disabled:pointer-events-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
+          className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 bg-white px-5 py-2.5 text-xs sm:text-sm font-bold text-zinc-800 hover:bg-zinc-100 disabled:opacity-30 disabled:pointer-events-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 transition-colors shadow-xs"
         >
-          <ArrowLeft className="h-3.5 w-3.5" />
+          <ArrowLeft className="h-4 w-4" />
           <span>Previous Module</span>
         </button>
 
         <button
           onClick={onSelectNext}
           disabled={!hasNext}
-          className="inline-flex items-center gap-2 rounded-lg bg-black px-4 py-2 text-xs font-medium text-white hover:bg-zinc-800 disabled:opacity-30 disabled:pointer-events-none dark:bg-white dark:text-black dark:hover:bg-zinc-200 transition-colors"
+          className="inline-flex items-center gap-2 rounded-xl bg-zinc-950 px-5 py-2.5 text-xs sm:text-sm font-bold text-white hover:bg-zinc-800 disabled:opacity-30 disabled:pointer-events-none dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white transition-colors shadow-xs"
         >
           <span>Next Module</span>
-          <ArrowRight className="h-3.5 w-3.5" />
+          <ArrowRight className="h-4 w-4" />
         </button>
       </div>
     </div>

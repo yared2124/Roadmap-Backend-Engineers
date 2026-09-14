@@ -167,26 +167,26 @@ export function NotesDrawer({
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100">
+              <h3 className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-zinc-950 dark:text-zinc-50">
                 In-App Topic Notes Studio
               </h3>
               {/* Live Save Status */}
-              <span className="flex items-center gap-1 font-mono text-[10px] text-zinc-400 dark:text-zinc-500">
+              <span className="flex items-center gap-1.5 font-mono text-[11px] font-semibold text-zinc-500 dark:text-zinc-400">
                 {saveStatus === "saving" ? (
                   <>
-                    <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
+                    <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
                     <span>Saving...</span>
                   </>
                 ) : (
                   <>
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    <span className="h-2 w-2 rounded-full bg-emerald-500" />
                     <span>Saved to browser</span>
                   </>
                 )}
               </span>
             </div>
-            <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-              Personal markdown notes & architecture insights for {topicTitle}
+            <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400 mt-0.5">
+              Personal markdown notes & architecture insights for <span className="font-semibold text-zinc-900 dark:text-zinc-100">{topicTitle}</span>
             </p>
           </div>
         </div>
@@ -197,24 +197,24 @@ export function NotesDrawer({
           <div className="inline-flex rounded-lg border border-zinc-200 bg-zinc-100/80 p-0.5 dark:border-zinc-800 dark:bg-zinc-900">
             <button
               onClick={() => setActiveTab("edit")}
-              className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+              className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs sm:text-sm font-semibold transition-colors ${
                 activeTab === "edit"
-                  ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-800 dark:text-white"
+                  ? "bg-white text-zinc-950 shadow-xs dark:bg-zinc-800 dark:text-white"
                   : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
               }`}
             >
-              <Edit3 className="h-3 w-3" />
+              <Edit3 className="h-3.5 w-3.5" />
               <span>Write</span>
             </button>
             <button
               onClick={() => setActiveTab("preview")}
-              className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+              className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs sm:text-sm font-semibold transition-colors ${
                 activeTab === "preview"
-                  ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-800 dark:text-white"
+                  ? "bg-white text-zinc-950 shadow-xs dark:bg-zinc-800 dark:text-white"
                   : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
               }`}
             >
-              <Eye className="h-3 w-3" />
+              <Eye className="h-3.5 w-3.5" />
               <span>Preview</span>
             </button>
           </div>
@@ -222,7 +222,7 @@ export function NotesDrawer({
           <button
             onClick={handleManualSave}
             title="Save note to localStorage"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3 py-1.5 text-xs sm:text-sm font-semibold text-zinc-800 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 transition-colors shadow-2xs"
           >
             <Save className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Save</span>
@@ -258,7 +258,7 @@ export function NotesDrawer({
             <button
               onClick={() => insertFormatting("```go\n", "\n```", "// code here")}
               title="Fenced code block"
-              className="px-1.5 py-1 rounded text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-colors font-mono text-[10px] font-bold"
+              className="px-2 py-1 rounded text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-colors font-mono text-[11px] font-bold"
             >
               {"{ }"}
             </button>
@@ -295,10 +295,10 @@ export function NotesDrawer({
 
           <button
             onClick={handleInsertTemplate}
-            className="inline-flex items-center gap-1 rounded-md bg-amber-50 px-2 py-1 text-[11px] font-medium text-amber-800 hover:bg-amber-100 dark:bg-amber-950/40 dark:text-amber-300 dark:hover:bg-amber-950/70 transition-colors shrink-0 font-mono"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-amber-100/70 px-2.5 py-1 text-xs font-bold text-amber-900 hover:bg-amber-100 dark:bg-amber-950/60 dark:text-amber-200 dark:hover:bg-amber-950/90 transition-colors shrink-0 font-mono"
             title="Inject structured architecture note template"
           >
-            <Sparkles className="h-3 w-3 text-amber-500" />
+            <Sparkles className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
             <span>Insert Senior Template</span>
           </button>
         </div>
@@ -314,17 +314,17 @@ export function NotesDrawer({
             value={note}
             onChange={handleChange}
             placeholder="Document key architecture trade-offs, gotchas, personal mental models, or paste your GitHub repo link (persisted automatically in localStorage)..."
-            className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 p-4 font-mono text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-900/50 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:border-zinc-600 transition-colors leading-relaxed resize-y min-h-[220px]"
+            className="w-full rounded-xl border border-zinc-200 bg-zinc-50/60 p-4 sm:p-5 font-mono text-[13px] sm:text-[13.5px] text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:border-zinc-500 transition-colors leading-relaxed resize-y min-h-[220px]"
           />
         ) : (
-          <div className="w-full min-h-[220px] max-h-[480px] overflow-y-auto rounded-xl border border-zinc-200 bg-zinc-50/40 p-5 dark:border-zinc-800 dark:bg-zinc-900/40 leading-relaxed text-xs">
+          <div className="w-full min-h-[220px] max-h-[480px] overflow-y-auto rounded-xl border border-zinc-200 bg-zinc-50/50 p-6 dark:border-zinc-800 dark:bg-zinc-900/50 leading-relaxed text-sm sm:text-[14.5px]">
             {note.trim() ? (
               <SimpleMarkdownRenderer content={note} />
             ) : (
               <div className="flex flex-col items-center justify-center py-12 text-zinc-400">
                 <FileText className="h-8 w-8 mb-2 opacity-50" />
-                <p className="font-medium text-xs">No notes written yet</p>
-                <p className="text-[11px]">
+                <p className="font-semibold text-sm text-zinc-600 dark:text-zinc-300">No notes written yet</p>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
                   Switch to the Write tab to draft insights or click "Insert Senior Template".
                 </p>
               </div>

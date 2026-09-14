@@ -26,42 +26,44 @@ export function ChallengeSection({ challenge }: ChallengeSectionProps) {
   };
 
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-5">
+    <div className="rounded-2xl border border-zinc-200 bg-white p-6 sm:p-8 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-6">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-100 pb-3 dark:border-zinc-900">
-        <div className="flex items-center gap-2">
-          <Terminal className="h-4 w-4 text-zinc-900 dark:text-white" />
-          <span className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-100 pb-4 dark:border-zinc-800/80">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-950 text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-2xs">
+            <Terminal className="h-4 w-4" />
+          </div>
+          <span className="font-mono text-xs sm:text-sm font-black uppercase tracking-wider text-zinc-950 dark:text-zinc-50">
             Production Engineering Challenge
           </span>
-          <span className="rounded bg-zinc-100 px-2 py-0.5 font-mono text-[10px] font-semibold text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+          <span className="rounded-md bg-zinc-100 px-2.5 py-0.5 font-mono text-xs font-bold text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700">
             {challenge.ticketNumber}
           </span>
         </div>
-        <span className="text-xs text-zinc-500 dark:text-zinc-400">
-          Hands-on Practice & Verification
+        <span className="text-xs font-mono font-bold text-zinc-500 dark:text-zinc-400">
+          Hands-on Verification
         </span>
       </div>
 
       {/* Ticket Details */}
-      <div>
-        <h4 className="text-base font-bold text-zinc-900 dark:text-white">
+      <div className="space-y-2">
+        <h4 className="text-lg sm:text-xl font-black text-zinc-950 dark:text-zinc-50 tracking-tight">
           {challenge.title}
         </h4>
-        <p className="mt-1 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm sm:text-[15px] leading-relaxed text-zinc-800 dark:text-zinc-200 font-normal">
           {challenge.scenario}
         </p>
       </div>
 
       {/* Acceptance Criteria */}
-      <div className="rounded-lg border border-zinc-200/80 bg-zinc-50/50 p-4 dark:border-zinc-800/80 dark:bg-zinc-900/40">
-        <h5 className="mb-2 text-xs font-mono font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+      <div className="rounded-xl border border-zinc-200/90 bg-zinc-50/70 p-5 dark:border-zinc-800 dark:bg-zinc-900/50 space-y-3">
+        <h5 className="text-xs font-mono font-black uppercase tracking-wider text-zinc-950 dark:text-zinc-50">
           Acceptance Criteria
         </h5>
-        <ul className="space-y-1.5 text-xs text-zinc-600 dark:text-zinc-400">
+        <ul className="space-y-2 text-sm text-zinc-800 dark:text-zinc-200 font-medium">
           {challenge.acceptanceCriteria.map((criterion, idx) => (
-            <li key={idx} className="flex items-start gap-2">
-              <span className="font-mono font-bold text-zinc-400">[{idx + 1}]</span>
+            <li key={idx} className="flex items-start gap-2.5">
+              <span className="font-mono font-bold text-zinc-400 dark:text-zinc-500 shrink-0">[{idx + 1}]</span>
               <span>{criterion}</span>
             </li>
           ))}
@@ -70,29 +72,29 @@ export function ChallengeSection({ challenge }: ChallengeSectionProps) {
 
       {/* Terminal Lab (if provided) */}
       {challenge.terminalLab && (
-        <div>
-          <div className="mb-1.5 flex items-center justify-between">
-            <span className="text-xs font-mono font-semibold text-zinc-700 dark:text-zinc-300">
-              Terminal Quick-Lab
+        <div className="space-y-2">
+          <div className="flex items-center justify-between px-1">
+            <span className="text-xs font-mono font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wide">
+              Terminal Quick-Lab Command
             </span>
             <button
               onClick={() => copyToClipboard(challenge.terminalLab!, true)}
-              className="inline-flex items-center gap-1 text-[11px] font-mono text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+              className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-zinc-600 hover:text-black dark:text-zinc-400 dark:hover:text-white transition-colors"
             >
               {copiedTerminal ? (
                 <>
-                  <Check className="h-3 w-3" />
-                  <span>Copied!</span>
+                  <Check className="h-3.5 w-3.5 text-emerald-500" />
+                  <span className="text-emerald-500">Copied!</span>
                 </>
               ) : (
                 <>
-                  <Copy className="h-3 w-3" />
+                  <Copy className="h-3.5 w-3.5" />
                   <span>Copy</span>
                 </>
               )}
             </button>
           </div>
-          <div className="overflow-x-auto rounded-lg border border-zinc-800 bg-zinc-900 p-3 font-mono text-xs text-zinc-100 dark:bg-black">
+          <div className="overflow-x-auto rounded-xl border border-zinc-800 bg-zinc-950 p-4 font-mono text-xs sm:text-sm text-zinc-100 dark:bg-black shadow-inner">
             <pre>
               <code>{challenge.terminalLab}</code>
             </pre>
@@ -106,11 +108,11 @@ export function ChallengeSection({ challenge }: ChallengeSectionProps) {
         {challenge.hints.length > 0 && (
           <button
             onClick={() => setShowHints(!showHints)}
-            className="inline-flex items-center gap-1.5 rounded-md border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-2 text-xs font-bold text-zinc-800 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 transition-colors shadow-2xs"
           >
-            <Lightbulb className="h-3.5 w-3.5 text-amber-500" />
-            <span>{showHints ? "Hide Hints" : "Need a Hint?"}</span>
-            {showHints ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+            <Lightbulb className="h-4 w-4 text-amber-500" />
+            <span>{showHints ? "Hide Hints" : `View Hints (${challenge.hints.length})`}</span>
+            {showHints ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
           </button>
         )}
 
@@ -118,66 +120,71 @@ export function ChallengeSection({ challenge }: ChallengeSectionProps) {
         {challenge.solutionCode && (
           <button
             onClick={() => setShowSolution(!showSolution)}
-            className="inline-flex items-center gap-1.5 rounded-md border border-zinc-900 bg-black px-3 py-1.5 text-xs font-medium text-white hover:bg-zinc-800 dark:border-white dark:bg-white dark:text-black dark:hover:bg-zinc-200 transition-colors"
+            className="inline-flex items-center gap-2 rounded-xl bg-zinc-950 px-4 py-2 text-xs font-bold text-white hover:bg-black dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white transition-colors shadow-2xs"
           >
-            <Code2 className="h-3.5 w-3.5" />
-            <span>{showSolution ? "Hide Solution" : "View Complete Solution & Explanation"}</span>
-            {showSolution ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+            <Code2 className="h-4 w-4" />
+            <span>{showSolution ? "Hide Model Solution" : "Reveal Model Solution"}</span>
+            {showSolution ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
           </button>
         )}
       </div>
 
-      {/* Hints Accordion */}
+      {/* Hints Container */}
       {showHints && challenge.hints.length > 0 && (
-        <div className="rounded-lg border border-amber-200 bg-amber-50/50 p-4 dark:border-amber-900/50 dark:bg-amber-950/20 text-xs">
-          <div className="flex items-center gap-2 mb-2 text-amber-800 dark:text-amber-300 font-semibold">
-            <Lightbulb className="h-4 w-4" />
-            <span>Architectural Clues</span>
-          </div>
-          <ul className="space-y-1 text-zinc-700 dark:text-zinc-300 list-disc list-inside">
-            {challenge.hints.map((hint, i) => (
-              <li key={i}>{hint}</li>
+        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 dark:border-amber-500/25 space-y-2">
+          <span className="font-mono text-xs font-bold text-amber-900 dark:text-amber-200 flex items-center gap-1.5 uppercase tracking-wide">
+            <Lightbulb className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+            Architectural Hints
+          </span>
+          <ul className="space-y-1.5 text-sm text-zinc-800 dark:text-zinc-200 font-medium pl-2">
+            {challenge.hints.map((hint, idx) => (
+              <li key={idx} className="flex items-start gap-2">
+                <span className="text-amber-500 font-mono font-bold">•</span>
+                <span>{hint}</span>
+              </li>
             ))}
           </ul>
         </div>
       )}
 
-      {/* Solution Accordion */}
+      {/* Solution Container */}
       {showSolution && challenge.solutionCode && (
-        <div className="space-y-3 rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900/60">
+        <div className="rounded-xl border border-zinc-200 bg-zinc-50/50 p-5 dark:border-zinc-800 dark:bg-zinc-900/40 space-y-4">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono font-bold text-zinc-900 dark:text-white">
-              Production Solution & Implementation
+            <span className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-950 dark:text-zinc-50">
+              Senior Implementation Solution
             </span>
             <button
               onClick={() => copyToClipboard(challenge.solutionCode!, false)}
-              className="inline-flex items-center gap-1 text-[11px] font-mono text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+              className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-zinc-600 hover:text-black dark:text-zinc-400 dark:hover:text-white"
             >
               {copiedSolution ? (
                 <>
-                  <Check className="h-3 w-3" />
-                  <span>Copied!</span>
+                  <Check className="h-3.5 w-3.5 text-emerald-500" />
+                  <span className="text-emerald-500">Copied!</span>
                 </>
               ) : (
                 <>
-                  <Copy className="h-3 w-3" />
+                  <Copy className="h-3.5 w-3.5" />
                   <span>Copy Solution</span>
                 </>
               )}
             </button>
           </div>
 
-          <div className="overflow-x-auto rounded-md border border-zinc-800 bg-zinc-900 p-3 font-mono text-xs text-zinc-100 dark:bg-black">
+          <div className="overflow-x-auto rounded-xl border border-zinc-800 bg-zinc-950 p-4 font-mono text-xs sm:text-sm text-zinc-100 dark:bg-black shadow-inner">
             <pre>
               <code>{challenge.solutionCode}</code>
             </pre>
           </div>
 
           {challenge.solutionExplanation && (
-            <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              <span className="font-semibold text-zinc-900 dark:text-zinc-200">Why this works: </span>
-              {challenge.solutionExplanation}
-            </p>
+            <div className="rounded-lg border border-zinc-200/80 bg-white p-3.5 dark:border-zinc-800 dark:bg-black/50 text-sm leading-relaxed text-zinc-800 dark:text-zinc-200 font-normal">
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-950 dark:text-zinc-50 block mb-1">
+                Rationale & Production Context:
+              </span>
+              <p>{challenge.solutionExplanation}</p>
+            </div>
           )}
         </div>
       )}
