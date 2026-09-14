@@ -1192,6 +1192,12 @@ CREATE INDEX idx_orders_user_id ON orders(user_id);`,
     },
     youtubeId: "pomxJOFVcQs",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "clrtT_4WBAw",
+      title: "Database Indexing Explained with PostgreSQL & EXPLAIN ANALYZE",
+      duration: "38 min",
+      description: "Hussein Nasser's deep dive into how PostgreSQL reads B-Tree indexes, builds query execution plans, and how to debug slow queries with EXPLAIN ANALYZE."
+    },
     shortSummary: "B-Tree internals, composite index leftmost prefix rules, reading EXPLAIN (ANALYZE, BUFFERS), and eliminating N+1 query patterns.",
     seniorInsight: {
       quote: "An index is not magic dust. Every index accelerates read queries but penalizes every single INSERT, UPDATE, and DELETE.",
@@ -1376,6 +1382,12 @@ await client.query('COMMIT');`,
     },
     youtubeId: "XCsS_NVAa1g",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "5TRFpFBccQM",
+      title: "System Design: Why is Single-Threaded Redis So Fast?",
+      duration: "12 min",
+      description: "ByteByteGo breaks down I/O multiplexing, in-memory skip lists, and how Redis handles millions of operations without multi-threading lock overhead."
+    },
     shortSummary: "In-memory caching with Redis: Cache-Aside, Write-Through, TTL strategies, Cache Stampede (Thundering Herd), and invalidation patterns.",
     seniorInsight: {
       quote: "There are only two hard things in Computer Science: cache invalidation and naming things. — Phil Karlton",
@@ -1470,6 +1482,12 @@ await client.query('COMMIT');`,
     },
     youtubeId: "2PPSXonhIck",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "a0H3N4D3Vps",
+      title: "Session Vs JWT: The Scalability & Security Trade-Offs",
+      duration: "16 min",
+      description: "ByteByteGo explains stateful cookie sessions vs stateless JWT tokens, token revocation challenges, and why hybrid refresh architectures win in production."
+    },
     shortSummary: "Stateful session cookies (HttpOnly, Secure, SameSite) vs stateless JWTs, cryptographic signing (RS256), and refresh token rotation with reuse detection.",
     seniorInsight: {
       quote: "Never store JWTs in localStorage. Any third-party npm package or XSS vulnerability can read localStorage and exfiltrate credentials instantly.",
@@ -1563,6 +1581,12 @@ await client.query('COMMIT');`,
     },
     youtubeId: "SuycfXLdF8o",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "6GRaRY4OKa8",
+      title: "RBAC vs ABAC Explained with Real-World Production Examples",
+      duration: "18 min",
+      description: "How Role-Based and Attribute-Based Access Control differ in practice, resolving role explosion and enforcing fine-grained user permissions."
+    },
     shortSummary: "Role-Based Access Control (RBAC), Attribute-Based Access Control (ABAC), policy enforcement points, and multi-tenant data isolation.",
     seniorInsight: {
       quote: "Authentication is knowing who the caller is. Authorization is verifying whether they have permission to modify THIS specific row in the database.",
@@ -1741,6 +1765,12 @@ app.use(cors({
     },
     youtubeId: "nFxjaVmFj5E",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "Cie5v59mrTg",
+      title: "RabbitMQ & Message Queues Crash Course",
+      duration: "40 min",
+      description: "Hussein Nasser covers AMQP architecture, message durability, consumer acknowledgments, worker pools, and dead-letter exchanges."
+    },
     shortSummary: "Decoupling synchronous HTTP requests, message brokers (RabbitMQ/BullMQ), worker pools, dead letter queues (DLQ), and exponential retry backoff.",
     seniorInsight: {
       quote: "Never do heavy compute, PDF generation, or third-party API calls inside the synchronous HTTP request-response cycle.",
@@ -2683,6 +2713,12 @@ sdk.start();`,
     },
     youtubeId: "oV9rvDllKEg",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "DKScGZb3j6E",
+      title: "Distributed Locking Strategies (Redlock, ZooKeeper, etcd)",
+      duration: "15 min",
+      description: "ByteByteGo's system design breakdown of preventing double-booking race conditions across multi-instance clusters using Redis distributed locks and fencing tokens."
+    },
     shortSummary: "Concurrency vs parallelism, race conditions, mutual exclusion (Mutex), distributed locks (Redlock), and deadlock avoidance.",
     seniorInsight: {
       quote: "Concurrency is not parallelism. Concurrency is about dealing with lots of things at once; parallelism is about doing lots of things at once. — Rob Pike",
