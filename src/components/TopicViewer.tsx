@@ -3,10 +3,13 @@
 import React, { useState, useEffect } from "react";
 import { RoadmapTopic } from "../types/roadmap";
 import { TOPIC_CODE_SNIPPETS, SupportedLanguage } from "../data/multiLangCode";
+import { TOPIC_ARCHITECTURE_FLOWS } from "../data/architectureFlows";
 import { VideoPlayer } from "./VideoPlayer";
 import { BookCard } from "./BookCard";
 import { ChallengeSection } from "./ChallengeSection";
 import { NotesDrawer } from "./NotesDrawer";
+import { VisualFlowchart } from "./VisualFlowchart";
+import { MockInterviewModal } from "./MockInterviewModal";
 import {
   Check,
   CheckCircle2,
@@ -23,6 +26,7 @@ import {
   Clock,
   PlayCircle,
   Copy,
+  Mic,
 } from "lucide-react";
 
 interface TopicViewerProps {
@@ -58,6 +62,22 @@ export function TopicViewer({
 }: TopicViewerProps) {
   const [preferredLang, setPreferredLang] = useState<SupportedLanguage>("go");
   const [copiedCode, setCopiedCode] = useState(false);
+  const [isMockInterviewOpen, setIsMockInterviewOpen] = useState(false);
+  const [interviewScore, setInterviewScore] = useState<number | null>(null);
+
+  // Load saved mock interview score for current topic
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(`interview_score_${topic.id}`);
+      if (saved) {
+        setInterviewScore(parseInt(saved, 10));
+      } else {
+        setInterviewScore(null);
+      }
+    } catch {
+      setInterviewScore(null);
+    }
+  }, [topic.id]);
 
   useEffect(() => {
     try {
@@ -298,6 +318,11 @@ export function TopicViewer({
         </div>
       </section>
 
+      {/* 2.5 Visual System Architecture Flowchart (Data Flow Lifecycle) */}
+      {(topic.architectureFlow || TOPIC_ARCHITECTURE_FLOWS[topic.id]) && (
+        <VisualFlowchart flow={topic.architectureFlow || TOPIC_ARCHITECTURE_FLOWS[topic.id]} />
+      )}
+
       {/* 3. Curated Book Recommendation */}
       <BookCard
         book={topic.recommendedBook}
@@ -307,16 +332,31 @@ export function TopicViewer({
 
       {/* 4. Self-Assessment Checklist (Immediate evaluation after reading) */}
       <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-5">
-        <div className="flex items-center justify-between flex-wrap gap-2 border-b border-zinc-100 pb-3 dark:border-zinc-900">
+        <div className="flex items-center justify-between flex-wrap gap-3 border-b border-zinc-100 pb-3.5 dark:border-zinc-900">
           <div className="flex items-center gap-2">
             <HelpCircle className="h-5 w-5 text-zinc-950 dark:text-zinc-50" />
             <h4 className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-950 dark:text-zinc-50">
               Self-Assessment: Understanding Check (Can you answer these aloud?)
             </h4>
           </div>
-          <span className="text-xs font-mono font-bold text-zinc-500 dark:text-zinc-400">
-            {topic.selfCheckQuestions.length} Questions
-          </span>
+
+          <div className="flex items-center gap-2.5 flex-wrap">
+            {interviewScore !== null && (
+              <span className="inline-flex items-center gap-1 rounded-lg bg-emerald-100 px-2.5 py-1 text-xs font-mono font-bold text-emerald-900 dark:bg-emerald-950/80 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 shadow-2xs">
+                Score: {interviewScore}%
+              </span>
+            )}
+            <button
+              onClick={() => setIsMockInterviewOpen(true)}
+              className="inline-flex items-center gap-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 px-3.5 py-1.5 text-xs font-bold text-white transition-colors shadow-xs active:scale-95"
+            >
+              <Mic className="h-3.5 w-3.5" />
+              <span>Start Mock Interview</span>
+            </button>
+            <span className="text-xs font-mono font-bold text-zinc-500 dark:text-zinc-400">
+              {topic.selfCheckQuestions.length} Questions
+            </span>
+          </div>
         </div>
 
         {/* Prerequisite Reading Gate Banner */}
@@ -559,6 +599,16 @@ export function TopicViewer({
           <ArrowRight className="h-4 w-4" />
         </button>
       </div>
+
+      {/* 8. Interactive Oral Mock Technical Interview Simulator Modal */}
+      <MockInterviewModal
+        isOpen={isMockInterviewOpen}
+        onClose={() => setIsMockInterviewOpen(false)}
+        topicId={topic.id}
+        topicTitle={topic.title}
+        questions={topic.selfCheckQuestions}
+        onSaveScore={(tId, score) => setInterviewScore(score)}
+      />
     </div>
   );
 }

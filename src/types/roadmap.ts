@@ -57,6 +57,30 @@ export interface TimeEstimates {
   total: string;
 }
 
+export interface ArchitectureFlowNode {
+  id: string;
+  label: string;
+  role: string;
+  type: "client" | "gateway" | "service" | "cache" | "database" | "queue" | "auth" | "storage";
+}
+
+export interface ArchitectureFlowStep {
+  stepNumber: number;
+  from: string;
+  to: string;
+  action: string;
+  detail: string;
+  latency?: string;
+  isFallback?: boolean;
+}
+
+export interface ArchitectureDiagramFlow {
+  title: string;
+  summary: string;
+  nodes: ArchitectureFlowNode[];
+  steps: ArchitectureFlowStep[];
+}
+
 export interface RoadmapTopic {
   id: string;
   number: number;
@@ -81,6 +105,7 @@ export interface RoadmapTopic {
     duration: string;
     description: string;
   };
+  architectureFlow?: ArchitectureDiagramFlow;
 }
 
 export interface CapstoneProject {
