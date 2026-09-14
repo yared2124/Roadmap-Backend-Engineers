@@ -350,10 +350,10 @@ export function MockInterviewModal({
               </div>
               <div className="font-mono text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mt-1">
                 {finalScore >= 80
-                  ? "Staff / Principal Level Ready 🏆"
+                  ? "Staff / Principal Level Ready"
                   : finalScore >= 50
-                  ? "Senior Level (Solid Foundation) ⚡"
-                  : "Needs Further Review & Reading ⚠️"}
+                  ? "Senior Level (Solid Foundation)"
+                  : "Needs Further Review & Reading"}
               </div>
             </div>
 

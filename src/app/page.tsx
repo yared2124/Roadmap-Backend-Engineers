@@ -12,8 +12,10 @@ import { CapstoneViewer } from "../components/CapstoneViewer";
 import { CommandPalette } from "../components/CommandPalette";
 import { ShortcutsModal } from "../components/ShortcutsModal";
 import { RoadmapGuideModal } from "../components/RoadmapGuideModal";
+import { PortfolioHome } from "../components/PortfolioHome";
 
 export default function Home() {
+  const [viewMode, setViewMode] = useState<"portfolio" | "roadmap">("portfolio");
   const [activeTopic, setActiveTopic] = useState<RoadmapTopic>(ROADMAP_TOPICS[0]);
   const [activeCapstonePhaseId, setActiveCapstonePhaseId] = useState<number | null>(null);
   const [isDark, setIsDark] = useState<boolean>(true);
@@ -55,13 +57,13 @@ export default function Home() {
     }
   }, []);
 
-  // Check if first-time visitor to automatically show orientation guide
+  // Check URL hash or view mode preference
   useEffect(() => {
     try {
-      const hasSeen = localStorage.getItem("has_seen_roadmap_guide_v1");
-      if (!hasSeen) {
-        setIsGuideOpen(true);
-        localStorage.setItem("has_seen_roadmap_guide_v1", "true");
+      const hash = window.location.hash;
+      const stored = localStorage.getItem("backend_roadmap_view_mode");
+      if (hash === "#roadmap" || stored === "roadmap") {
+        setViewMode("roadmap");
       }
     } catch {}
   }, []);
@@ -120,8 +122,36 @@ export default function Home() {
     }, 100);
   }, []);
 
+  // Enter Roadmap Workspace
+  const handleEnterRoadmap = useCallback((topic?: RoadmapTopic) => {
+    setViewMode("roadmap");
+    localStorage.setItem("backend_roadmap_view_mode", "roadmap");
+    if (topic) {
+      setActiveCapstonePhaseId(null);
+      setActiveTopic(topic);
+    }
+    scrollToTop();
+  }, []);
+
+  // Return to Portfolio Homepage
+  const handleBackToPortfolio = useCallback(() => {
+    setViewMode("portfolio");
+    localStorage.setItem("backend_roadmap_view_mode", "portfolio");
+    scrollToTop();
+  }, []);
+
+  // Explore Phase Capstone
+  const handleExploreCapstones = useCallback((phaseId?: number) => {
+    setViewMode("roadmap");
+    localStorage.setItem("backend_roadmap_view_mode", "roadmap");
+    setActiveCapstonePhaseId(phaseId || 1);
+    scrollToTop();
+  }, []);
+
   // Launch Course at Module 01 or current topic
   const handleStartCourse = useCallback(() => {
+    setViewMode("roadmap");
+    localStorage.setItem("backend_roadmap_view_mode", "roadmap");
     setActiveCapstonePhaseId(null);
     setActiveTopic(ROADMAP_TOPICS[0]);
     setIsGuideOpen(false);
@@ -237,7 +267,7 @@ export default function Home() {
     markdown += `## Table of Contents\n`;
     ROADMAP_TOPICS.forEach((topic) => {
       const hasContent = Boolean(notes[topic.id]?.trim());
-      markdown += `- [${topic.number < 10 ? `0${topic.number}` : topic.number}. ${topic.title}](#topic-${topic.id}) ${hasContent ? "(📝 Notes included)" : ""}\n`;
+      markdown += `- [${topic.number < 10 ? `0${topic.number}` : topic.number}. ${topic.title}](#topic-${topic.id}) ${hasContent ? "(Notes included)" : ""}\n`;
     });
     markdown += `\n---\n\n`;
 
@@ -269,6 +299,19 @@ export default function Home() {
     URL.revokeObjectURL(url);
   }, [notes]);
 
+  if (viewMode === "portfolio") {
+    return (
+      <PortfolioHome
+        onEnterRoadmap={handleEnterRoadmap}
+        onExploreCapstones={handleExploreCapstones}
+        isDark={isDark}
+        onToggleTheme={handleToggleTheme}
+        completedCount={completedCount}
+        totalTopics={totalTopics}
+      />
+    );
+  }
+
   return (
     <div className="h-screen w-screen overflow-hidden bg-white text-zinc-900 dark:bg-black dark:text-zinc-100 flex flex-col font-sans transition-colors duration-200">
       {/* Top Navbar - Locked at top */}
@@ -283,6 +326,7 @@ export default function Home() {
         onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         onOpenShortcuts={() => setIsShortcutsOpen(true)}
         onOpenGuide={() => setIsGuideOpen(true)}
+        onBackToPortfolio={handleBackToPortfolio}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         isSidebarOpen={isSidebarOpen}
       />
@@ -370,6 +414,7 @@ export default function Home() {
         onToggleTheme={handleToggleTheme}
         onOpenShortcuts={() => setIsShortcutsOpen(true)}
         onOpenGuide={() => setIsGuideOpen(true)}
+        onBackToPortfolio={handleBackToPortfolio}
         onExportAllNotes={handleExportAllNotes}
         onSelectNext={handleSelectNext}
         onSelectPrev={handleSelectPrev}

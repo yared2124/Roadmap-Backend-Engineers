@@ -86,22 +86,22 @@ export function Sidebar({
 
           {/* Start Here: Roadmap Strategy & Orientation Card */}
           {onOpenGuide && (
-            <div className="mb-4 rounded-xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-transparent p-3 dark:border-emerald-500/20 dark:bg-emerald-950/20">
+            <div className="mb-4 rounded-xl border border-zinc-200 bg-zinc-50/70 p-3 dark:border-zinc-800 dark:bg-zinc-900/50">
               <div className="flex items-center justify-between mb-1.5">
-                <span className="inline-flex items-center gap-1 rounded-md bg-emerald-500/20 px-2 py-0.5 text-[10px] font-extrabold text-emerald-700 dark:text-emerald-300 uppercase tracking-wider">
-                  <Sparkles className="h-3 w-3" />
-                  Start Here • መመሪያ
+                <span className="inline-flex items-center gap-1 rounded-md bg-zinc-200/80 dark:bg-zinc-800 px-2 py-0.5 text-[10px] font-extrabold text-zinc-800 dark:text-zinc-200 uppercase tracking-wider font-mono">
+                  <Compass className="h-3 w-3 text-zinc-600 dark:text-zinc-400" />
+                  Orientation Guide
                 </span>
               </div>
               <p className="text-[11.5px] text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed">
-                ሮድማፑን እንዴት እንደምትጠቀም፣ ምን እንደምትሰራ እና በኢንተርቪው ምን እንደምትናገር እወቅ።
+                Understand the 5-stage study routine, portfolio capstones, and oral whiteboard interview frameworks.
               </p>
               <button
                 onClick={onOpenGuide}
-                className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-emerald-500 active:scale-[0.98] transition-all"
+                className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg bg-zinc-950 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 active:scale-[0.98] transition-all"
               >
                 <Compass className="h-3.5 w-3.5" />
-                <span>መመሪያውን ክፈት (Open Guide)</span>
+                <span>Open Guide</span>
               </button>
             </div>
           )}

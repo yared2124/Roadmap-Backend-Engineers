@@ -44,6 +44,7 @@ interface CommandPaletteProps {
   onToggleTheme: () => void;
   onOpenShortcuts: () => void;
   onOpenGuide: () => void;
+  onBackToPortfolio?: () => void;
   onExportAllNotes: () => void;
   onSelectNext: () => void;
   onSelectPrev: () => void;
@@ -60,6 +61,7 @@ export function CommandPalette({
   onToggleTheme,
   onOpenShortcuts,
   onOpenGuide,
+  onBackToPortfolio,
   onExportAllNotes,
   onSelectNext,
   onSelectPrev,
@@ -87,13 +89,28 @@ export function CommandPalette({
     const results: PaletteResult[] = [];
 
     // 1. Quick Commands
+    if (onBackToPortfolio) {
+      results.push({
+        id: "cmd-portfolio",
+        type: "command",
+        title: "Return to Portfolio Homepage",
+        subtitle: "View curriculum overview, systems philosophy, and executive summary",
+        badge: "Home",
+        badgeColor: "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300",
+        onSelect: () => {
+          onClose();
+          setTimeout(onBackToPortfolio, 50);
+        },
+      });
+    }
+
     results.push({
       id: "cmd-open-guide",
       type: "command",
-      title: "Open Student Orientation & Action Guide (መመሪያ)",
+      title: "Open Student Orientation & Strategy Guide",
       subtitle: "How this roadmap works, 5-step daily routine, oral interview tips & 7 capstones",
       badge: "Guide",
-      badgeColor: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300",
+      badgeColor: "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300",
       onSelect: () => {
         onClose();
         setTimeout(onOpenGuide, 50);

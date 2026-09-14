@@ -27,6 +27,8 @@ import {
   PlayCircle,
   Copy,
   Mic,
+  Compass,
+  ChevronRight,
 } from "lucide-react";
 
 interface TopicViewerProps {
@@ -109,21 +111,21 @@ export function TopicViewer({
     <div className="mx-auto max-w-4xl space-y-8 pb-20">
       {/* Student Guide & Strategy Callout Banner */}
       {onOpenGuide && (
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent p-3.5 sm:px-4 sm:py-3 dark:border-emerald-500/20 dark:bg-emerald-950/20 shadow-2xs">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-2xl border border-zinc-200 bg-zinc-50/70 p-3.5 sm:px-4 sm:py-3 dark:border-zinc-800 dark:bg-zinc-900/50 shadow-2xs">
           <div className="flex items-center gap-2.5">
-            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-600 text-white font-bold text-xs shadow-xs">
-              🎓
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 font-bold text-xs shadow-xs">
+              <Compass className="h-4 w-4" />
             </span>
             <div className="text-xs text-zinc-700 dark:text-zinc-300">
-              <span className="font-bold text-zinc-950 dark:text-zinc-50">የትምህርት መመሪያ (Student Strategy Guide)፦</span>{" "}
-              ሮድማፑን እንዴት እንደምትጠቀም፣ ምን እንደምትሰራ እና በኢንተርቪው ምን እንደምትናገር ለማወቅ መመሪያውን ተመልከት።
+              <span className="font-bold text-zinc-950 dark:text-zinc-50">Curriculum Strategy Guide:</span>{" "}
+              Review the 5-stage daily routine, 7 portfolio capstones, and oral whiteboard interview frameworks.
             </div>
           </div>
           <button
             onClick={onOpenGuide}
-            className="shrink-0 flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-emerald-500 active:scale-[0.98] transition-all"
+            className="shrink-0 flex items-center gap-1.5 rounded-lg bg-zinc-950 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 active:scale-[0.98] transition-all"
           >
-            <span>መመሪያውን ክፈት (Open Guide)</span>
+            <span>Open Guide</span>
             <ArrowRight className="h-3.5 w-3.5" />
           </button>
         </div>
@@ -192,7 +194,7 @@ export function TopicViewer({
       <div className="rounded-2xl border border-zinc-200 bg-linear-to-br from-zinc-50 via-white to-zinc-50/50 p-6 dark:border-zinc-800 dark:from-zinc-950 dark:via-zinc-900/50 dark:to-zinc-950 shadow-sm space-y-4">
         <div className="flex items-center gap-2.5">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-950 text-white dark:bg-white dark:text-black text-xs font-mono font-bold shadow-2xs">
-            💡
+            <Lightbulb className="h-4 w-4" />
           </div>
           <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-950 dark:text-zinc-50">
             Architectural Insights & Best Practices
@@ -467,8 +469,9 @@ export function TopicViewer({
             </div>
           </div>
 
-          <p className="mt-3 text-xs font-medium text-zinc-600 dark:text-zinc-400 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-2.5 leading-relaxed">
-            ⚠️ Make sure you have studied the assigned reading above before attempting the self-assessment questions below.
+          <p className="mt-3 text-xs font-medium text-zinc-600 dark:text-zinc-400 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-2.5 leading-relaxed flex items-center gap-1.5">
+            <AlertTriangle className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+            <span>Make sure you have studied the assigned reading above before attempting the self-assessment questions below.</span>
           </p>
         </div>
 
@@ -511,12 +514,13 @@ export function TopicViewer({
                 {answerText && (
                   <details className="pl-7 group">
                     <summary className="cursor-pointer font-mono text-xs font-bold text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors list-none flex items-center gap-2 select-none py-1">
-                      <span className="text-[11px] text-zinc-400 group-open:rotate-90 transition-transform">▶</span>
-                      Reveal Engineering Answer & Takeaway
+                      <ChevronRight className="h-3.5 w-3.5 text-zinc-400 group-open:rotate-90 transition-transform" />
+                      <span>Reveal Engineering Answer & Takeaway</span>
                     </summary>
                     <div className="mt-2.5 rounded-xl border border-zinc-200 bg-white p-4 text-sm sm:text-[14.5px] leading-relaxed text-zinc-800 dark:border-zinc-800 dark:bg-black dark:text-zinc-200 font-normal shadow-xs">
                       <div className="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1.5 flex items-center gap-1.5">
-                        ✓ Engineering Deep Dive & Key Takeaway
+                        <Check className="h-3.5 w-3.5" />
+                        <span>Engineering Deep Dive & Key Takeaway</span>
                       </div>
                       {answerText}
                     </div>

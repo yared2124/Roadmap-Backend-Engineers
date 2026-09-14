@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Moon, Sun, CheckCircle2, Search, Menu, X, Keyboard, Command, Compass } from "lucide-react";
+import { Moon, Sun, CheckCircle2, Search, Menu, X, Keyboard, Command, Compass, ArrowLeft } from "lucide-react";
 
 interface HeaderProps {
   completedCount: number;
@@ -14,6 +14,7 @@ interface HeaderProps {
   onOpenCommandPalette: () => void;
   onOpenShortcuts: () => void;
   onOpenGuide: () => void;
+  onBackToPortfolio?: () => void;
   onToggleSidebar: () => void;
   isSidebarOpen: boolean;
 }
@@ -29,6 +30,7 @@ export function Header({
   onOpenCommandPalette,
   onOpenShortcuts,
   onOpenGuide,
+  onBackToPortfolio,
   onToggleSidebar,
   isSidebarOpen,
 }: HeaderProps) {
@@ -62,6 +64,16 @@ export function Header({
                 <span className="font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 text-base sm:text-lg">
                   Backend Engineer Hub
                 </span>
+                {onBackToPortfolio && (
+                  <button
+                    onClick={onBackToPortfolio}
+                    className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-100/80 px-2.5 py-1 text-xs font-bold text-zinc-700 hover:bg-zinc-200 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors shadow-2xs"
+                    title="Return to Portfolio Homepage"
+                  >
+                    <ArrowLeft className="h-3.5 w-3.5" />
+                    <span>Overview</span>
+                  </button>
+                )}
               </div>
               <p className="hidden md:block text-xs font-semibold text-zinc-500 dark:text-zinc-400">
                 Principal Engineer Roadmap • Curated Books • Real Practice
@@ -104,12 +116,11 @@ export function Header({
           {/* Student Orientation & Strategy Guide Button */}
           <button
             onClick={onOpenGuide}
-            className="flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-50/80 px-2.5 sm:px-3 py-1.5 text-xs font-bold text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-950/40 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition-all shadow-2xs group"
-            title="Roadmap Orientation & Strategy Guide (መመሪያ)"
+            className="flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-50/80 px-2.5 sm:px-3 py-1.5 text-xs font-bold text-zinc-800 dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all shadow-2xs group"
+            title="Roadmap Orientation & Strategy Guide"
           >
-            <Compass className="h-4 w-4 text-emerald-600 dark:text-emerald-400 transition-transform group-hover:rotate-45" />
-            <span className="hidden sm:inline">Guide / መመሪያ</span>
-            <span className="sm:hidden">Guide</span>
+            <Compass className="h-4 w-4 text-zinc-600 dark:text-zinc-400 transition-transform group-hover:rotate-45" />
+            <span className="hidden sm:inline">Guide</span>
           </button>
 
           {/* Progress Pill */}
