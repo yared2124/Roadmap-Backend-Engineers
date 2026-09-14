@@ -125,12 +125,6 @@ export function PortfolioHome({
       <section className="relative overflow-hidden border-b border-zinc-200/80 dark:border-gray-800 bg-gradient-to-b from-zinc-50/50 via-white to-white dark:from-[#111827] dark:via-[#111827] dark:to-[#0f172a] py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center flex flex-col items-center space-y-6">
-            {/* Top Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-zinc-300 bg-zinc-100/80 px-3.5 py-1 text-xs font-semibold text-zinc-800 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
-              <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Staff & Principal Engineer Level Curriculum</span>
-            </div>
-
             {/* Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-zinc-950 dark:text-white leading-[1.1] max-w-4xl">
               Backend Engineering Roadmap & Architecture Mastery
