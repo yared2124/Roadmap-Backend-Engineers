@@ -8,12 +8,16 @@ const STORAGE_KEY = "backend_roadmap_progress_v1";
 interface ProgressData {
   completedTopics: string[];
   completedBooks: string[];
+  completedCapstones?: number[];
+  capstoneSubmissions?: Record<number, string>;
   notes: Record<string, string>;
 }
 
 const defaultData: ProgressData = {
   completedTopics: [],
   completedBooks: [],
+  completedCapstones: [],
+  capstoneSubmissions: {},
   notes: {},
 };
 
@@ -98,6 +102,43 @@ export function useProgress() {
     []
   );
 
+  const toggleCapstone = useCallback(
+    (phaseId: number) => {
+      setData((prev) => {
+        const completedCapstones = prev.completedCapstones || [];
+        const exists = completedCapstones.includes(phaseId);
+        const updated = exists
+          ? completedCapstones.filter((id) => id !== phaseId)
+          : [...completedCapstones, phaseId];
+        const next = { ...prev, completedCapstones: updated };
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        } catch {}
+        return next;
+      });
+    },
+    []
+  );
+
+  const saveCapstoneSubmission = useCallback(
+    (phaseId: number, repoUrl: string) => {
+      setData((prev) => {
+        const next = {
+          ...prev,
+          capstoneSubmissions: {
+            ...(prev.capstoneSubmissions || {}),
+            [phaseId]: repoUrl,
+          },
+        };
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        } catch {}
+        return next;
+      });
+    },
+    []
+  );
+
   const resetProgress = useCallback(() => {
     save(defaultData);
   }, [save]);
@@ -123,12 +164,18 @@ export function useProgress() {
     isLoaded,
     completedTopics: data.completedTopics,
     completedBooks: data.completedBooks,
+    completedCapstones: data.completedCapstones || [],
+    capstoneSubmissions: data.capstoneSubmissions || {},
     notes: data.notes,
     isTopicCompleted: (id: string) => data.completedTopics.includes(id),
     isBookCompleted: (id: string) => data.completedBooks.includes(id),
+    isCapstoneCompleted: (phaseId: number) => (data.completedCapstones || []).includes(phaseId),
+    getCapstoneSubmission: (phaseId: number) => (data.capstoneSubmissions || {})[phaseId] || "",
     getNote: (id: string) => data.notes[id] || "",
     toggleTopic,
     toggleBook,
+    toggleCapstone,
+    saveCapstoneSubmission,
     saveNote,
     resetProgress,
     totalTopics,

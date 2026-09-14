@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { RoadmapTopic } from "../types/roadmap";
+import { TOPIC_CODE_SNIPPETS, SupportedLanguage } from "../data/multiLangCode";
 import { VideoPlayer } from "./VideoPlayer";
 import { BookCard } from "./BookCard";
 import { ChallengeSection } from "./ChallengeSection";
@@ -18,6 +19,10 @@ import {
   BookOpen,
   BookmarkCheck,
   ExternalLink,
+  Trophy,
+  Clock,
+  PlayCircle,
+  Copy,
 } from "lucide-react";
 
 interface TopicViewerProps {
@@ -28,6 +33,7 @@ interface TopicViewerProps {
   onToggleBookRead: () => void;
   note: string;
   onSaveNote: (topicId: string, note: string) => void;
+  onOpenPhaseCapstone?: (phaseId: number) => void;
   onSelectPrev: () => void;
   onSelectNext: () => void;
   hasPrev: boolean;
@@ -42,11 +48,39 @@ export function TopicViewer({
   onToggleBookRead,
   note,
   onSaveNote,
+  onOpenPhaseCapstone,
   onSelectPrev,
   onSelectNext,
   hasPrev,
   hasNext,
 }: TopicViewerProps) {
+  const [preferredLang, setPreferredLang] = useState<SupportedLanguage>("go");
+  const [copiedCode, setCopiedCode] = useState(false);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("backend_roadmap_preferred_lang") as SupportedLanguage;
+      if (saved && ["go", "typescript", "python"].includes(saved)) {
+        setPreferredLang(saved);
+      }
+    } catch {}
+  }, []);
+
+  const handleSelectLanguage = (lang: SupportedLanguage) => {
+    setPreferredLang(lang);
+    try {
+      localStorage.setItem("backend_roadmap_preferred_lang", lang);
+    } catch {}
+  };
+
+  const topicSnippets = TOPIC_CODE_SNIPPETS[topic.id];
+  const activeCode = topicSnippets ? topicSnippets[preferredLang] : topic.coreDeepDive.blueprintCode;
+
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(activeCode);
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2000);
+  };
   return (
     <div className="mx-auto max-w-4xl space-y-8 pb-20">
       {/* Top Meta Bar */}
@@ -70,6 +104,28 @@ export function TopicViewer({
           <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
             {topic.shortSummary}
           </p>
+
+          {/* Study Plan & Time Commitment */}
+          {topic.timeEstimates && (
+            <div className="mt-3.5 flex flex-wrap items-center gap-2 pt-1 font-mono text-xs">
+              <span className="inline-flex items-center gap-1.5 rounded-md bg-zinc-900 px-2.5 py-1 text-[11px] font-bold text-white dark:bg-zinc-100 dark:text-black shadow-xs">
+                <Clock className="h-3.5 w-3.5" />
+                <span>Est. Total: {topic.timeEstimates.total}</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-md border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-[11px] text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-300">
+                <PlayCircle className="h-3.5 w-3.5 text-red-500" />
+                <span>Video: {topic.timeEstimates.video}</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-md border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-[11px] text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-300">
+                <BookOpen className="h-3.5 w-3.5 text-blue-500" />
+                <span>Reading: {topic.timeEstimates.reading}</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-md border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-[11px] text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-300">
+                <Code2 className="h-3.5 w-3.5 text-emerald-500" />
+                <span>Lab & Practice: {topic.timeEstimates.lab}</span>
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Complete Toggle Button */}
@@ -191,19 +247,60 @@ export function TopicViewer({
           </div>
         </div>
 
-        {/* Blueprint Code / Diagram */}
-        <div className="pt-2">
-          <div className="mb-1.5 flex items-center justify-between">
+        {/* Multi-Language Blueprint Code Engine */}
+        <div className="pt-3 border-t border-zinc-100 dark:border-zinc-900 space-y-2">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <span className="font-mono text-xs font-bold text-zinc-800 dark:text-zinc-200">
               {topic.coreDeepDive.blueprintTitle}
             </span>
-            <span className="font-mono text-[10px] uppercase text-zinc-400">
-              {topic.coreDeepDive.blueprintLanguage}
-            </span>
+
+            {/* Language Selector Tabs */}
+            <div className="flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-100/80 p-1 dark:border-zinc-800 dark:bg-zinc-900">
+              {(["go", "typescript", "python"] as const).map((lang) => (
+                <button
+                  key={lang}
+                  onClick={() => handleSelectLanguage(lang)}
+                  className={`rounded px-2.5 py-1 font-mono text-[11px] font-bold transition-all ${
+                    preferredLang === lang
+                      ? "bg-black text-white dark:bg-white dark:text-black shadow-xs"
+                      : "text-zinc-600 hover:text-black dark:text-zinc-400 dark:hover:text-white"
+                  }`}
+                >
+                  {lang === "go"
+                    ? "Go"
+                    : lang === "typescript"
+                    ? "TypeScript / Node"
+                    : "Python"}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="overflow-x-auto rounded-lg border border-zinc-800 bg-zinc-900 p-3.5 font-mono text-xs text-zinc-100 dark:bg-black">
-            <pre>
-              <code>{topic.coreDeepDive.blueprintCode}</code>
+
+          <div className="relative overflow-hidden rounded-lg border border-zinc-800 bg-zinc-950 p-3.5 font-mono text-xs text-zinc-100 dark:bg-black shadow-inner">
+            <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-2">
+              <span className="font-mono text-[10px] uppercase text-zinc-400 font-semibold px-2 py-0.5 rounded bg-zinc-800/80">
+                {preferredLang === "go" ? "golang" : preferredLang === "typescript" ? "typescript" : "python"}
+              </span>
+              <button
+                onClick={handleCopyCode}
+                className="inline-flex items-center gap-1 rounded border border-zinc-700 bg-zinc-900/90 px-2 py-1 text-[11px] font-mono text-zinc-300 hover:border-zinc-500 hover:text-white transition-colors"
+                title="Copy Code"
+              >
+                {copiedCode ? (
+                  <>
+                    <Check className="h-3 w-3 text-emerald-400" />
+                    <span className="text-emerald-400">Copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-3 w-3" />
+                    <span>Copy</span>
+                  </>
+                )}
+              </button>
+            </div>
+            <pre className="overflow-x-auto pt-6">
+              <code>{activeCode}</code>
             </pre>
           </div>
         </div>
@@ -327,6 +424,7 @@ export function TopicViewer({
             const isObj = typeof qItem === "object" && qItem !== null;
             const questionText = isObj ? qItem.question : qItem;
             const answerText = isObj ? qItem.answerExplanation : null;
+            const category = isObj ? qItem.category : null;
 
             return (
               <li
@@ -335,6 +433,19 @@ export function TopicViewer({
               >
                 <div className="flex items-start gap-2.5">
                   <span className="font-mono font-bold text-zinc-400">0{idx + 1}.</span>
+                  {category && (
+                    <span
+                      className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold font-mono tracking-wide uppercase shrink-0 ${
+                        category === "WHAT"
+                          ? "bg-blue-100 text-blue-800 dark:bg-blue-950/70 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
+                          : category === "WHY"
+                          ? "bg-amber-100 text-amber-800 dark:bg-amber-950/70 dark:text-amber-300 border border-amber-200 dark:border-amber-800"
+                          : "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
+                      }`}
+                    >
+                      {category}
+                    </span>
+                  )}
                   <span className="leading-relaxed font-medium text-zinc-900 dark:text-zinc-100">{questionText}</span>
                 </div>
                 {answerText && (
@@ -400,6 +511,32 @@ export function TopicViewer({
         initialNote={note}
         onSaveNote={onSaveNote}
       />
+
+      {/* Phase Capstone Milestone Callout */}
+      {onOpenPhaseCapstone && (
+        <div className="rounded-xl border border-amber-500/30 bg-linear-to-r from-amber-500/10 via-amber-500/5 to-transparent p-5 dark:border-amber-500/25 shadow-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-1.5">
+                <Trophy className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                <span className="font-mono text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
+                  Phase 0{topic.phaseId} Capstone Project
+                </span>
+              </div>
+              <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                Complete all topics in this phase, then build the production-grade portfolio project to prove your hands-on mastery.
+              </p>
+            </div>
+            <button
+              onClick={() => onOpenPhaseCapstone(topic.phaseId)}
+              className="inline-flex items-center gap-2 rounded-lg bg-amber-600 hover:bg-amber-700 px-4 py-2.5 text-xs font-bold text-white transition-colors shadow-xs shrink-0 font-mono"
+            >
+              <Trophy className="h-3.5 w-3.5" />
+              <span>View Phase Capstone</span>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Bottom Prev / Next Navigation */}
       <div className="flex items-center justify-between border-t border-zinc-200 pt-6 dark:border-zinc-800">

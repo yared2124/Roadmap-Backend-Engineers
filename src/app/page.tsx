@@ -2,14 +2,17 @@
 
 import React, { useState, useEffect } from "react";
 import { ROADMAP_TOPICS } from "../data/roadmap";
+import { CAPSTONE_PROJECTS } from "../data/capstones";
 import { RoadmapTopic } from "../types/roadmap";
 import { useProgress } from "../hooks/useProgress";
 import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
 import { TopicViewer } from "../components/TopicViewer";
+import { CapstoneViewer } from "../components/CapstoneViewer";
 
 export default function Home() {
   const [activeTopic, setActiveTopic] = useState<RoadmapTopic>(ROADMAP_TOPICS[0]);
+  const [activeCapstonePhaseId, setActiveCapstonePhaseId] = useState<number | null>(null);
   const [isDark, setIsDark] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -20,9 +23,13 @@ export default function Home() {
     overallPercentage,
     isTopicCompleted,
     isBookCompleted,
-    getNote,
+    isCapstoneCompleted,
+    getCapstoneSubmission,
     toggleTopic,
     toggleBook,
+    toggleCapstone,
+    saveCapstoneSubmission,
+    getNote,
     saveNote,
     getPhaseProgress,
   } = useProgress();
@@ -101,11 +108,18 @@ export default function Home() {
         {/* Left Syllabus Navigation - Independent scroll */}
         <Sidebar
           activeTopicId={activeTopic.id}
+          activeCapstonePhaseId={activeCapstonePhaseId}
           onSelectTopic={(t) => {
+            setActiveCapstonePhaseId(null);
             setActiveTopic(t);
             scrollToTop();
           }}
+          onSelectCapstone={(phaseId) => {
+            setActiveCapstonePhaseId(phaseId);
+            scrollToTop();
+          }}
           isTopicCompleted={isTopicCompleted}
+          isCapstoneCompleted={isCapstoneCompleted}
           onToggleTopic={toggleTopic}
           getPhaseProgress={getPhaseProgress}
           searchQuery={searchQuery}
@@ -118,19 +132,37 @@ export default function Home() {
           id="main-content-scroll"
           className="flex-1 overflow-y-auto px-4 py-8 sm:px-6 lg:px-12"
         >
-          <TopicViewer
-            topic={activeTopic}
-            isCompleted={isTopicCompleted(activeTopic.id)}
-            onToggleComplete={() => toggleTopic(activeTopic.id)}
-            isBookRead={isBookCompleted(activeTopic.id)}
-            onToggleBookRead={() => toggleBook(activeTopic.id)}
-            note={getNote(activeTopic.id)}
-            onSaveNote={saveNote}
-            onSelectPrev={handleSelectPrev}
-            onSelectNext={handleSelectNext}
-            hasPrev={hasPrev}
-            hasNext={hasNext}
-          />
+          {activeCapstonePhaseId && CAPSTONE_PROJECTS[activeCapstonePhaseId] ? (
+            <CapstoneViewer
+              capstone={CAPSTONE_PROJECTS[activeCapstonePhaseId]}
+              isCompleted={isCapstoneCompleted(activeCapstonePhaseId)}
+              onToggleComplete={() => toggleCapstone(activeCapstonePhaseId)}
+              submissionUrl={getCapstoneSubmission(activeCapstonePhaseId)}
+              onSaveSubmissionUrl={(url) => saveCapstoneSubmission(activeCapstonePhaseId, url)}
+              onBackToTopic={() => {
+                setActiveCapstonePhaseId(null);
+                scrollToTop();
+              }}
+            />
+          ) : (
+            <TopicViewer
+              topic={activeTopic}
+              isCompleted={isTopicCompleted(activeTopic.id)}
+              onToggleComplete={() => toggleTopic(activeTopic.id)}
+              isBookRead={isBookCompleted(activeTopic.id)}
+              onToggleBookRead={() => toggleBook(activeTopic.id)}
+              note={getNote(activeTopic.id)}
+              onSaveNote={saveNote}
+              onOpenPhaseCapstone={(phaseId) => {
+                setActiveCapstonePhaseId(phaseId);
+                scrollToTop();
+              }}
+              onSelectPrev={handleSelectPrev}
+              onSelectNext={handleSelectNext}
+              hasPrev={hasPrev}
+              hasNext={hasNext}
+            />
+          )}
         </main>
       </div>
     </div>

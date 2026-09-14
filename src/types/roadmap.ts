@@ -45,8 +45,16 @@ export interface AdditionalReference {
 }
 
 export interface SelfCheckQuestion {
+  category?: "WHAT" | "WHY" | "HOW";
   question: string;
   answerExplanation: string;
+}
+
+export interface TimeEstimates {
+  video: string;
+  reading: string;
+  lab: string;
+  total: string;
 }
 
 export interface RoadmapTopic {
@@ -56,6 +64,7 @@ export interface RoadmapTopic {
   phaseId: number;
   phaseName: string;
   duration: string;
+  timeEstimates?: TimeEstimates;
   youtubeId: string;
   youtubeChannelUrl?: string;
   shortSummary: string;
@@ -74,9 +83,30 @@ export interface RoadmapTopic {
   };
 }
 
+export interface CapstoneProject {
+  id: string;
+  phaseId: number;
+  phaseName: string;
+  title: string;
+  difficulty: "Intermediate" | "Advanced" | "Senior" | "Staff";
+  estimatedHours: string;
+  scenario: string;
+  keyDeliverables: string[];
+  techStack: string[];
+  architectureDiagram?: string;
+  acceptanceCriteria: string[];
+  githubSubmissionGuide: {
+    recommendedRepoName: string;
+    folderStructure: string;
+    readmeChecklist: string[];
+  };
+}
+
 export interface RoadmapPhase {
   id: number;
   name: string;
   description: string;
   topics: RoadmapTopic[];
+  capstoneProject?: CapstoneProject;
 }
+

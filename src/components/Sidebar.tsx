@@ -3,12 +3,15 @@
 import React, { useState } from "react";
 import { ROADMAP_PHASES } from "../data/roadmap";
 import { RoadmapTopic } from "../types/roadmap";
-import { Check, ChevronDown, ChevronRight, PlayCircle, BookOpen } from "lucide-react";
+import { Check, ChevronDown, ChevronRight, PlayCircle, BookOpen, Trophy } from "lucide-react";
 
 interface SidebarProps {
   activeTopicId: string;
+  activeCapstonePhaseId?: number | null;
   onSelectTopic: (topic: RoadmapTopic) => void;
+  onSelectCapstone?: (phaseId: number) => void;
   isTopicCompleted: (id: string) => boolean;
+  isCapstoneCompleted?: (phaseId: number) => boolean;
   onToggleTopic: (id: string) => void;
   getPhaseProgress: (phaseId: number) => { total: number; completed: number; percentage: number };
   searchQuery: string;
@@ -18,8 +21,11 @@ interface SidebarProps {
 
 export function Sidebar({
   activeTopicId,
+  activeCapstonePhaseId,
   onSelectTopic,
+  onSelectCapstone,
   isTopicCompleted,
+  isCapstoneCompleted,
   onToggleTopic,
   getPhaseProgress,
   searchQuery,
@@ -151,6 +157,15 @@ export function Sidebar({
                               <span className="line-clamp-1 flex-1">
                                 {topic.title}
                               </span>
+                              <span
+                                className={`font-mono text-[9.5px] shrink-0 ml-1.5 px-1.5 py-0.5 rounded ${
+                                  isActive
+                                    ? "text-zinc-200 dark:text-zinc-700 bg-white/20 dark:bg-black/20 font-bold"
+                                    : "text-zinc-400 dark:text-zinc-500 bg-zinc-200/60 dark:bg-zinc-800/60"
+                                }`}
+                              >
+                                {topic.timeEstimates?.total || topic.duration}
+                              </span>
                             </button>
 
                             {/* Checkbox */}
@@ -175,6 +190,37 @@ export function Sidebar({
                           </div>
                         );
                       })}
+
+                      {/* Phase Capstone Project Milestone */}
+                      {phase.capstoneProject && onSelectCapstone && (!searchQuery || phase.capstoneProject.title.toLowerCase().includes(searchQuery.toLowerCase())) && (
+                        <div
+                          className={`group mt-2 flex items-center justify-between rounded-md border px-2 py-1.5 transition-colors ${
+                            activeCapstonePhaseId === phase.id
+                              ? "border-amber-500/60 bg-amber-500/10 text-amber-900 dark:text-amber-200 font-semibold"
+                              : isCapstoneCompleted?.(phase.id)
+                              ? "border-emerald-500/30 bg-emerald-50/40 text-emerald-800 dark:border-emerald-950 dark:bg-emerald-950/20 dark:text-emerald-300"
+                              : "border-dashed border-zinc-300 bg-zinc-100/50 text-zinc-700 hover:border-zinc-400 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900/40 dark:text-zinc-300 dark:hover:bg-zinc-900"
+                          }`}
+                        >
+                          <button
+                            onClick={() => {
+                              onSelectCapstone(phase.id);
+                              onClose();
+                            }}
+                            className="flex flex-1 items-center gap-1.5 text-left text-xs"
+                          >
+                            <Trophy className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+                            <span className="line-clamp-1 font-mono text-[11px]">
+                              Capstone: {phase.capstoneProject.title}
+                            </span>
+                          </button>
+                          {isCapstoneCompleted?.(phase.id) && (
+                            <span className="font-mono text-[10px] font-bold text-emerald-600 dark:text-emerald-400 shrink-0 ml-1">
+                              ✓ Done
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

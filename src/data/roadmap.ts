@@ -1,4 +1,5 @@
 import { RoadmapTopic, RoadmapPhase } from "../types/roadmap";
+import { CAPSTONE_PROJECTS } from "./capstones";
 
 export const CHANNEL_URL = "https://www.youtube.com";
 export const CHANNEL_NAME = "YouTube";
@@ -14,6 +15,12 @@ export const ROADMAP_TOPICS: RoadmapTopic[] = [
     phaseId: 1,
     phaseName: "Foundations & Web Protocols",
     duration: "31 min",
+    timeEstimates: {
+      video: "31 min",
+      reading: "30 min",
+      lab: "45 min",
+      total: "1 hr 45 min"
+    },
     youtubeId: "0Rwb4Xmlcwc",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Foundations of backend systems: CPU, memory, OS processes, network sockets, disk I/O, and distributed computing mental models.",
@@ -70,12 +77,19 @@ curl -w "DNS: %{time_namelookup}s | Connect: %{time_connect}s | TLS: %{time_appc
     },
     selfCheckQuestions: [
       {
-        question: "Why is network latency fundamentally bounded by physics (speed of light in fiber optic cables)?",
-        answerExplanation: "Light travels through silica glass at roughly 200,000 km/s (~67% speed of light in vacuum). Round trips across continents require dozens of milliseconds regardless of how fast your CPU is."
+        category: "WHAT",
+        question: "What distinguishes a distributed stateless backend service from a stateful monolith at the networking and storage layers?",
+        answerExplanation: "A stateless service stores zero client session state in local memory between HTTP requests; any server instance can handle any incoming packet by querying centralized, durable stores (e.g., PostgreSQL, Redis). In contrast, stateful monoliths maintain in-memory sessions, WebSocket connection maps, or local disk state, necessitating sticky load balancing, complex failover protocols, and making horizontal scaling much harder."
       },
       {
-        question: "What is the difference between CPU-bound and I/O-bound bottlenecks?",
-        answerExplanation: "CPU-bound tasks peg compute cores (e.g. video encoding, cryptographic hashing, JSON parsing), whereas I/O-bound tasks wait for external bytes across networks or storage disks."
+        category: "WHY",
+        question: "Why is the Separation of Concerns strictly enforced across the Controller, Service, and Repository layers in backend architecture?",
+        answerExplanation: "Separation of Concerns prevents coupling business rules with HTTP transport protocols or database dialect drivers. If you migrate from REST to gRPC or from PostgreSQL to CockroachDB, only the transport or persistence adapter changes, while core business domain invariants in the Service layer remain pure, unit-testable, and untouched."
+      },
+      {
+        category: "HOW",
+        question: "How do you detect and prevent architectural drift (e.g., Controllers directly executing SQL or bypassing Services) in production codebases?",
+        answerExplanation: "Use automated static analysis and architecture linting tools (such as ArchUnit in Java/Kotlin, dependency-cruiser in TypeScript/Node, or internal package boundary rules in Go). In CI pipelines, enforce boundaries that fail builds if transport controllers import database ORM models or database drivers directly."
       }
     ]
   },
@@ -86,6 +100,12 @@ curl -w "DNS: %{time_namelookup}s | Connect: %{time_connect}s | TLS: %{time_appc
     phaseId: 1,
     phaseName: "Foundations & Web Protocols",
     duration: "2 hrs 26 min",
+    timeEstimates: {
+      video: "2 hrs 26 min",
+      reading: "45 min",
+      lab: "45 min",
+      total: "4 hrs"
+    },
     youtubeId: "KOutPbKc9UM",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Client-server architecture, reverse proxies, edge gateways, application runtimes, and distributed state boundaries.",
@@ -145,8 +165,19 @@ networks:
     },
     selfCheckQuestions: [
       {
-        question: "Why should databases never be exposed directly to the public internet?",
-        answerExplanation: "Exposing database ports (e.g. 5432 or 6379) invites brute-force attacks, connection exhaustion DoS, zero-day exploit vulnerabilities, and lacks application-level RBAC auditing."
+        category: "WHAT",
+        question: "What happens under the hood across the OSI model when a client sends an HTTP GET request to a backend API server?",
+        answerExplanation: "The client resolves the domain via DNS (UDP 53/DoH), initiates a TCP 3-way handshake (SYN, SYN-ACK, ACK) at Layer 4, negotiates a TLS 1.3 cryptographic session (Cipher suites, Diffie-Hellman keys), transmits the Layer 7 HTTP request frame, which traverses reverse proxies and load balancers before the backend runtime's socket accepts the file descriptor, parses headers, and dispatches to application routing."
+      },
+      {
+        category: "WHY",
+        question: "Why do high-throughput backend applications decouple compute (stateless workers) from state (relational databases and object stores)?",
+        answerExplanation: "Decoupling compute from state allows independent scaling dynamics. Compute nodes (CPU/RAM-bound) can scale from 2 to 200 instances in seconds during traffic spikes via Kubernetes HPA without risking database split-brain, replication lag, or data corruption, while stateful databases scale vertically or via dedicated read replicas and sharding."
+      },
+      {
+        category: "HOW",
+        question: "How does a backend server prevent resource starvation when incoming client requests exceed thread pool or socket capacity?",
+        answerExplanation: "Implement proactive backpressure, reverse proxy rate limiting, and finite TCP connection queues (listen(somaxconn)). When worker pools exhaust, immediately return HTTP 429 Too Many Requests or HTTP 503 Service Unavailable with a Retry-After header rather than queueing indefinitely, which leads to memory exhaustion, CPU thrashing, and cascading system failure."
       }
     ]
   },
@@ -157,6 +188,12 @@ networks:
     phaseId: 1,
     phaseName: "Foundations & Web Protocols",
     duration: "39 min",
+    timeEstimates: {
+      video: "39 min",
+      reading: "45 min",
+      lab: "45 min",
+      total: "2 hrs 10 min"
+    },
     youtubeId: "iYM2zFP3Zn0",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "HTTP/1.1 pipelining, HTTP/2 binary framing & multiplexing, HTTP/3 QUIC over UDP, idempotency, and standardized status codes.",
@@ -222,12 +259,19 @@ curl -X POST https://httpbin.org/post -H "Idempotency-Key: 9b1deb4d-3b7d-4bad-9b
     },
     selfCheckQuestions: [
       {
-        question: "Why is PUT idempotent while PATCH is not guaranteed to be idempotent?",
-        answerExplanation: "PUT replaces the entire resource with the provided payload (repeating it produces the same entity). PATCH applies a delta (e.g. 'increment count by 1'), which changes state on every repeat."
+        category: "WHAT",
+        question: "What is Head-of-Line (HoL) blocking, and how does HTTP/3 (QUIC) solve it differently than HTTP/2?",
+        answerExplanation: "In HTTP/1.1, HoL blocking occurs when a slow request blocks subsequent requests on a TCP connection. HTTP/2 multiplexes streams over a single TCP connection, but if one TCP packet drops, the entire TCP window stalls while retransmitting, blocking all streams. HTTP/3 runs over QUIC (UDP), implementing independent packet recovery per stream so packet loss on stream A never halts packets on stream B."
       },
       {
-        question: "What problem does HTTP/3 QUIC solve that HTTP/2 could not?",
-        answerExplanation: "HTTP/2 multiplexes streams over a single TCP connection; when one packet is dropped, TCP stalls all streams (TCP head-of-line blocking). HTTP/3 uses QUIC over UDP where packet loss only impacts the single affected stream."
+        category: "WHY",
+        question: "Why is idempotency critical for HTTP methods (PUT, DELETE) and how does unsafe non-idempotency in POST lead to double charges in billing systems?",
+        answerExplanation: "Idempotence guarantees that making identical requests multiple times produces the exact same server state. Because network glitches often drop responses while the server successfully processed the request, the client must safely retry. If a non-idempotent POST /charges is retried blindly, the payment gateway executes duplicate debit transactions."
+      },
+      {
+        category: "HOW",
+        question: "How do you implement atomic distributed idempotency keys for payment endpoints using Redis and PostgreSQL?",
+        answerExplanation: "The client generates a unique UUID Idempotency-Key header. The backend executes an atomic SET key status:PENDING NX EX 120 in Redis. If the key exists, it returns 409 Conflict or waits for the cached final response. The business operation executes in a DB transaction where the key and processed output are stored; upon completion, Redis updates with the final HTTP status and payload to instantly replay on retries."
       }
     ]
   },
@@ -238,6 +282,12 @@ curl -X POST https://httpbin.org/post -H "Idempotency-Key: 9b1deb4d-3b7d-4bad-9b
     phaseId: 1,
     phaseName: "Foundations & Web Protocols",
     duration: "3 hrs 07 min",
+    timeEstimates: {
+      video: "3 hrs 07 min",
+      reading: "30 min",
+      lab: "60 min",
+      total: "4 hrs 35 min"
+    },
     youtubeId: "WXsD0ZgxjRw",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "URL dispatching, Trie and Radix tree data structures, path parameters, route grouping, and API versioning strategies.",
@@ -296,8 +346,19 @@ curl -i -X POST https://api.github.com/zen`,
     },
     selfCheckQuestions: [
       {
-        question: "Why is a Radix Tree more efficient than an array of regular expressions for routing?",
-        answerExplanation: "A regex array requires testing routes sequentially in O(N) time. A Radix Tree splits paths by common prefixes, matching in O(K) time where K is path length, regardless of how many thousands of routes exist."
+        category: "WHAT",
+        question: "What is a Radix Tree (Compact Prefix Tree), and why is it superior to linear regex matching for HTTP routers?",
+        answerExplanation: "A Radix tree is an edge-optimized trie where nodes with single children are merged. Lookup complexity is O(k) where k is the URL path length, independent of the total number of registered routes (N). Linear regex arrays run in O(N * M) time and allocate heap memory per request, creating severe CPU overhead and GC latency under high throughput."
+      },
+      {
+        category: "WHY",
+        question: "Why should API versioning be implemented via URL paths (/v1/users) or custom MIME headers rather than query params or breaking payload changes?",
+        answerExplanation: "URL path and header versioning provide unambiguous routing boundaries for API gateways, caching layers (Vary headers), and Web Application Firewalls (WAF). They allow deprecated endpoints and newer versions to coexist safely in parallel with distinct schemas, metrics, and security policies without breaking legacy mobile or enterprise consumers."
+      },
+      {
+        category: "HOW",
+        question: "How do you design a route dispatcher that handles dynamic parameterized routes (/users/:id) alongside catch-all static wildcards (/users/*filepath) without routing ambiguity?",
+        answerExplanation: "Store routes in priority-ordered radix branches where static exact matches have the highest precedence, followed by named parameter child nodes, and finally wildcard/catch-all nodes. The router traverses the exact prefix first; if evaluation fails or returns 404, it backtracks to evaluate parameter and wildcard edges."
       }
     ]
   },
@@ -308,6 +369,12 @@ curl -i -X POST https://api.github.com/zen`,
     phaseId: 1,
     phaseName: "Foundations & Web Protocols",
     duration: "36 min",
+    timeEstimates: {
+      video: "36 min",
+      reading: "30 min",
+      lab: "45 min",
+      total: "1 hr 50 min"
+    },
     youtubeId: "46O73On0gyI",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "JSON parsing overhead, Protocol Buffers binary framing, gRPC, and the JavaScript 64-bit integer precision bug.",
@@ -361,8 +428,19 @@ BigInt.prototype.toJSON = function() {
     },
     selfCheckQuestions: [
       {
-        question: "Why does JavaScript corrupt 64-bit integers like 9007199254740993 in JSON payloads?",
-        answerExplanation: "The JavaScript Number primitive is an IEEE 754 double-precision float with only 53 bits for the mantissa. Values exceeding 2^53 - 1 lose precision and round to the nearest even number."
+        category: "WHAT",
+        question: "What causes 64-bit integer precision loss when serializing large numeric IDs to JSON, and how does Protobuf handle it?",
+        answerExplanation: "JavaScript and standard JSON parsers adhere to IEEE 754 double-precision floats, which only safely represent integers up to 2^53 - 1 (Number.MAX_SAFE_INTEGER = 9,007,199,254,740,991). 64-bit integers (e.g., Snowflake IDs, Twitter tweet IDs) truncate lower bits unless serialized as strings in JSON. Protocol Buffers natively encodes 64-bit integers as int64/uint64 using binary varints, preserving exact bit precision without string overhead."
+      },
+      {
+        category: "WHY",
+        question: "Why is Protobuf significantly faster and more bandwidth-efficient than JSON for internal microservice communication?",
+        answerExplanation: "Protobuf uses compact binary encoding with field tags (numbers) instead of repeating verbose string keys like JSON ('user_id'). Numeric fields use variable-length zig-zag encoding, avoiding expensive ASCII-to-binary string parsing and minimizing memory allocations, leading to up to 5-10x throughput increases and 60-80% payload size reductions."
+      },
+      {
+        category: "HOW",
+        question: "How do you protect a backend service against JSON deserialization Denial of Service (DoS) attacks involving deep object nesting or huge payloads?",
+        answerExplanation: "Enforce strict payload body limits at the reverse proxy/gateway layer (e.g., client_max_body_size 1m; in Nginx), configure the parser with maximum JSON nesting depth limits (e.g., max depth 32), and reject payloads with unescaped control characters or duplicate keys before allocating memory."
       }
     ]
   },
@@ -377,6 +455,12 @@ BigInt.prototype.toJSON = function() {
     phaseId: 2,
     phaseName: "Core API Architecture & Request Lifecycle",
     duration: "1 hr 46 min",
+    timeEstimates: {
+      video: "1 hr 46 min",
+      reading: "35 min",
+      lab: "45 min",
+      total: "3 hrs"
+    },
     youtubeId: "CnH3kAXSrmU",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "The Onion architecture: Inbound interceptors, auth guards, rate limiters, logging, short-circuiting, and error-handling middleware.",
@@ -448,8 +532,19 @@ BigInt.prototype.toJSON = function() {
     },
     selfCheckQuestions: [
       {
-        question: "What happens if a middleware encounters an uncaught asynchronous exception without calling next(err)?",
-        answerExplanation: "The request hangs until the client or reverse proxy hits a timeout (e.g. 504 Gateway Timeout), consuming server socket resources and connection pool capacity."
+        category: "WHAT",
+        question: "What is the Onion (Russian Doll) Middleware Pattern, and how does the execution order differ between request entry and response exit?",
+        answerExplanation: "Middlewares wrap the core handler in layers like an onion. Requests execute middleware logic in top-down registration order before reaching the terminal handler. Once the handler returns a response, execution unwinds in reverse (bottom-up) order, allowing outer middlewares (e.g., response compression, audit loggers, timer metrics) to inspect, transform, or calculate duration of the outbound response."
+      },
+      {
+        category: "WHY",
+        question: "Why should error handling and panic recovery always be placed as the outermost (first) middleware in the chain?",
+        answerExplanation: "Placing recovery at the outermost boundary ensures that unhandled runtime exceptions, panics, or null-pointer errors thrown anywhere in subsequent middlewares or downstream business logic are caught. It prevents the entire server process from crashing and guarantees that a structured HTTP 500 JSON response is returned to the client with an incident reference ID."
+      },
+      {
+        category: "HOW",
+        question: "How do you build a middleware that attaches a unique Correlation ID / Request ID and propagates it across async boundaries and outgoing HTTP requests?",
+        answerExplanation: "The middleware checks for an incoming X-Correlation-ID header; if missing, it generates a cryptographically secure UUIDv4. It sets the ID in the request context/AsyncLocalStorage and response headers. When the service makes downstream HTTP calls or publishes message broker events, it injects this correlation ID into outgoing headers, establishing an end-to-end distributed trace."
       }
     ]
   },
@@ -460,6 +555,12 @@ BigInt.prototype.toJSON = function() {
     phaseId: 2,
     phaseName: "Core API Architecture & Request Lifecycle",
     duration: "33 min",
+    timeEstimates: {
+      video: "33 min",
+      reading: "30 min",
+      lab: "45 min",
+      total: "1 hr 50 min"
+    },
     youtubeId: "LSzR0VEraWw",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Context propagation, cancellation signals, deadline timeouts, and preventing zombie database queries when clients disconnect.",
@@ -521,8 +622,19 @@ curl -m 1 http://localhost:3000/api/heavy-query`,
     },
     selfCheckQuestions: [
       {
-        question: "What is a 'zombie query' and why is it dangerous to backend database clusters?",
-        answerExplanation: "A zombie query is a database query that continues executing after the requesting client has disconnected. It holds row locks, consumes CPU, and starves connection pools with zero benefit."
+        category: "WHAT",
+        question: "What is a Request Context, and what are the only two types of data that should be stored inside it?",
+        answerExplanation: "A Request Context is an immutable scoped container that travels across function boundaries throughout a single request's lifecycle. It should strictly carry: (1) Cancellation signals and deadlines/timeouts, and (2) Request-scoped metadata required across layers (such as authenticated User ID, Tenant ID, and Correlation/Trace IDs). It must NEVER be used to pass optional parameters or database connection pools."
+      },
+      {
+        category: "WHY",
+        question: "Why is downstream cancellation propagation essential when an upstream HTTP client closes its connection or aborts a request?",
+        answerExplanation: "If a client closes their browser or times out after 2 seconds, continuing to run an expensive 10-second database query or external API call is a waste of server CPU, memory, and database connection pool slots. Propagating context cancellation aborts DB transactions and socket operations immediately, protecting the backend from cascading resource exhaustion."
+      },
+      {
+        category: "HOW",
+        question: "How do you correctly configure timeout deadlines for database drivers and external HTTP clients using Context in Go or Node.js?",
+        answerExplanation: "Derive a child context with context.WithTimeout(parentCtx, 3*time.Second) or create an AbortController in Node with AbortSignal.timeout(3000). Pass this context/signal to db.QueryContext() and http.NewRequestWithContext(). If the deadline expires, the driver cancels the pending socket I/O and returns context.DeadlineExceeded, allowing you to immediately return HTTP 504 Gateway Timeout."
       }
     ]
   },
@@ -533,6 +645,12 @@ curl -m 1 http://localhost:3000/api/heavy-query`,
     phaseId: 2,
     phaseName: "Core API Architecture & Request Lifecycle",
     duration: "37 min",
+    timeEstimates: {
+      video: "37 min",
+      reading: "30 min",
+      lab: "45 min",
+      total: "1 hr 50 min"
+    },
     youtubeId: "Dgym6yLNUbM",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Data Transfer Objects (DTOs), schema guards (Zod/class-validator), type coercion, stripping mass-assignment fields, and domain primitives.",
@@ -597,8 +715,19 @@ function validate(req, res, next) {
     },
     selfCheckQuestions: [
       {
-        question: "What is a Mass Assignment vulnerability and how do DTOs prevent it?",
-        answerExplanation: "Mass Assignment occurs when client inputs are blindly bound to database models, allowing attackers to modify protected columns (e.g. role, balance, verified). DTO whitelisting ensures only permitted fields reach database queries."
+        category: "WHAT",
+        question: "What is the difference between a Data Transfer Object (DTO) and a Database Domain Entity?",
+        answerExplanation: "A DTO is a transport-layer schema that models only the data crossing network boundaries (inbound payloads or outbound responses), optimized for validation, serialization, and hiding internal secrets. A Database Domain Entity models internal state, business invariants, and persistence table structures (including sensitive fields like password hashes and internal tenant IDs) that must never be exposed directly to the outside world."
+      },
+      {
+        category: "WHY",
+        question: "Why is Mass Assignment vulnerability a critical risk when ORM entities are bound directly to HTTP request bodies?",
+        answerExplanation: "If an API binds incoming JSON directly to a database entity, an attacker can inject undeclared fields into the JSON payload (e.g., {'role': 'admin', 'is_verified': true}). The ORM blindly updates these database columns, leading to full privilege escalation and unauthorized data corruption."
+      },
+      {
+        category: "HOW",
+        question: "How do you design a schema guard that sanitizes incoming inputs, strips unexpected keys, and returns RFC 7807 compliant validation errors?",
+        answerExplanation: "Use strict schema libraries (Zod, Joi, class-validator) configured with .strict() or stripUnknown: false to throw errors on unexpected fields. Transform raw inputs with schema validators before handing them to handlers. When validation fails, collect all field errors and serialize them into an application/problem+json payload listing exact parameter paths and failure reasons."
       }
     ]
   },
@@ -609,6 +738,12 @@ function validate(req, res, next) {
     phaseId: 2,
     phaseName: "Core API Architecture & Request Lifecycle",
     duration: "58 min",
+    timeEstimates: {
+      video: "58 min",
+      reading: "40 min",
+      lab: "45 min",
+      total: "2 hrs 25 min"
+    },
     youtubeId: "f7Su4KoqSio",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Three-tier architecture, Clean Architecture, decoupling transport layers from business logic, and repository patterns.",
@@ -668,8 +803,19 @@ export async function registerController(req, res) {
     },
     selfCheckQuestions: [
       {
-        question: "Why should a Service layer method never accept an Express req or res object?",
-        answerExplanation: "Coupling services to HTTP framework objects makes them impossible to reuse in message queue workers, CLI scripts, or alternative protocols (like gRPC or WebSockets)."
+        category: "WHAT",
+        question: "What specific responsibilities belong exclusively to the Controller/Handler layer versus the Service/Business Logic layer?",
+        answerExplanation: "Controllers handle HTTP transport: extracting headers, parsing query params, unmarshaling DTOs, invoking validation, calling the service layer, and mapping domain exceptions to HTTP status codes. The Service layer contains zero HTTP/transport knowledge; it enforces pure business rules, orchestrates repository calls, handles domain events, and manages transactional boundaries."
+      },
+      {
+        category: "WHY",
+        question: "Why should the Service layer remain completely agnostic of HTTP concepts like req, res, status codes, or cookies?",
+        answerExplanation: "Transport agnosticism makes business logic reusable and portable. The exact same OrderService.PlaceOrder() method can be invoked by an HTTP REST controller, a gRPC handler, an asynchronous Kafka message consumer, or a CLI command without rewriting or mocking HTTP objects."
+      },
+      {
+        category: "HOW",
+        question: "How do you test a Service class in total isolation without starting a web server or connecting to a live database?",
+        answerExplanation: "Inject repository interfaces into the Service class constructor (Dependency Injection). In unit tests, pass mock or in-memory stub implementations of the repository interfaces. This allows you to verify domain rules, discount calculations, and error flows in milliseconds without network or database overhead."
       }
     ]
   },
@@ -680,6 +826,12 @@ export async function registerController(req, res) {
     phaseId: 2,
     phaseName: "Core API Architecture & Request Lifecycle",
     duration: "45 min",
+    timeEstimates: {
+      video: "45 min",
+      reading: "35 min",
+      lab: "45 min",
+      total: "2 hrs 05 min"
+    },
     youtubeId: "lsMQRaeKNDk",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Resource modeling, RESTful URI design, OpenAPI 3.0 specification, contract-first development, and generating client SDKs.",
@@ -752,8 +904,19 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(spec));`,
     },
     selfCheckQuestions: [
       {
-        question: "Why should RESTful URIs use nouns (e.g. /orders) rather than verbs (e.g. /getOrders)?",
-        answerExplanation: "HTTP verbs (GET, POST, PUT, DELETE) already declare the action to be taken. Using verbs in the URI violates the uniform interface constraint and creates inconsistent routing."
+        category: "WHAT",
+        question: "What are the four levels of the Richardson Maturity Model for REST APIs?",
+        answerExplanation: "Level 0: The Swamp of POX (single URI, single HTTP POST method, like SOAP/RPC). Level 1: Resources (distinct URIs for individual resources, e.g., /orders/123). Level 2: HTTP Verbs (proper usage of GET, POST, PUT, DELETE and HTTP status codes). Level 3: HATEOAS (Hypermedia As The Engine Of Application State, providing dynamic hypermedia links guiding client state transitions)."
+      },
+      {
+        category: "WHY",
+        question: "Why is a single canonical OpenAPI / Swagger contract essential for contract-driven backend engineering?",
+        answerExplanation: "An OpenAPI specification serves as the single source of truth for API contracts. It enables automated client SDK generation, mock server generation for frontend teams, contract drift validation in CI, and synchronized, interactive documentation that never falls out of date with production code."
+      },
+      {
+        category: "HOW",
+        question: "How do you design a paginated REST endpoint using cursor-based pagination instead of offset/limit pagination for high-volume datasets?",
+        answerExplanation: "Offset pagination (OFFSET 1000000 LIMIT 20) forces the database to scan and discard 1 million rows on disk. Cursor-based pagination indexes on a monotonically increasing, unique column (e.g., created_at, id). The client passes ?cursor=eyJpZCI6OTk5fQ==, and the SQL executes WHERE (created_at, id) < ($1, $2) ORDER BY created_at DESC, id DESC LIMIT 20, utilizing the B-Tree index for an instant O(log N) seek."
       }
     ]
   },
@@ -764,6 +927,12 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(spec));`,
     phaseId: 2,
     phaseName: "Core API Architecture & Request Lifecycle",
     duration: "3 hrs 09 min",
+    timeEstimates: {
+      video: "3 hrs 09 min",
+      reading: "30 min",
+      lab: "60 min",
+      total: "4 hrs 40 min"
+    },
     youtubeId: "rOpEN1JDaD0",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Create, Read, Update, Delete in production: Soft deletes vs hard deletes, cursor vs offset pagination, and optimistic vs pessimistic locking.",
@@ -821,8 +990,19 @@ if (updated.rowCount === 0) {
     },
     selfCheckQuestions: [
       {
-        question: "Why does OFFSET pagination get slower the deeper the page number requested?",
-        answerExplanation: "The database engine must read all N offset records from disk and evaluate sort ordering before throwing them away. At page 10,000, it reads 200,000 rows just to display 20."
+        category: "WHAT",
+        question: "What is the technical and semantic difference between HTTP PUT and HTTP PATCH for state mutation?",
+        answerExplanation: "PUT is an idempotent full resource replacement; any existing fields omitted in the request body are either overwritten with null or set to schema defaults. PATCH is a partial mutation; it only updates the specific fields included in the request body, leaving all other existing properties of the stored entity untouched."
+      },
+      {
+        category: "WHY",
+        question: "Why is Soft Deletion (deleted_at timestamp) both a blessing for auditing and a hazard for unique database constraints?",
+        answerExplanation: "Soft deletion preserves historical records, references in audit logs, and allows accidental deletion recovery. However, standard SQL unique constraints (e.g., UNIQUE(email)) will block re-registration of the same email after soft deletion. It also pollutes B-Tree indexes and requires adding WHERE deleted_at IS NULL to every query, risking slow performance."
+      },
+      {
+        category: "HOW",
+        question: "How do you safely enforce unique constraints on soft-deleted tables in PostgreSQL?",
+        answerExplanation: "Create a partial unique index: CREATE UNIQUE INDEX idx_users_active_email ON users(email) WHERE deleted_at IS NULL;. This only enforces uniqueness among active non-deleted rows, allowing infinite re-creations of previously soft-deleted entities without database constraint violations."
       }
     ]
   },
@@ -837,6 +1017,12 @@ if (updated.rowCount === 0) {
     phaseId: 3,
     phaseName: "Data Persistence & Storage",
     duration: "4 hrs 20 min",
+    timeEstimates: {
+      video: "4 hrs 20 min",
+      reading: "45 min",
+      lab: "60 min",
+      total: "6 hrs"
+    },
     youtubeId: "qw--VYLpxG4",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "PostgreSQL relational architecture, ACID transactions, MVCC row versioning, transaction isolation levels, and PgBouncer connection pooling.",
@@ -887,8 +1073,19 @@ if (updated.rowCount === 0) {
     },
     selfCheckQuestions: [
       {
-        question: "How does MVCC allow readers and writers to operate concurrently without blocking each other?",
-        answerExplanation: "Writers insert new versions of rows with xmin set to their transaction ID rather than mutating rows in-place. Readers look at a snapshot of transaction IDs that were committed before their transaction started, ignoring uncommitted or newer row versions."
+        category: "WHAT",
+        question: "What is Multi-Version Concurrency Control (MVCC), and how does PostgreSQL prevent readers from blocking writers?",
+        answerExplanation: "MVCC creates a new version (tuple) of a row on every UPDATE and flags rows on DELETE with transaction IDs (xmin and xmax) rather than overwriting data in-place. Because readers view a point-in-time snapshot corresponding to their transaction isolation level, read queries scan valid historical tuples without acquiring row locks, meaning readers never block writers and writers never block readers."
+      },
+      {
+        category: "WHY",
+        question: "Why is connection pooling (e.g., PgBouncer) mandatory for PostgreSQL when scaling to thousands of concurrent API requests?",
+        answerExplanation: "PostgreSQL uses a process-per-connection model where each client connection forks a backend process consuming ~5-10MB of RAM, OS file descriptors, and CPU context switching. Without a pooler, 5,000 incoming connections crash the database via out-of-memory or CPU thrashing. PgBouncer multiplexes thousands of incoming client connections onto a small pool of 50-100 real database connections."
+      },
+      {
+        category: "HOW",
+        question: "How do you detect and fix PostgreSQL database bloat caused by dead tuples and abandoned long-running transactions?",
+        answerExplanation: "Query pg_stat_user_tables to check n_dead_tup. Identify old transactions holding locks via pg_stat_activity where now() - xact_start is excessive, as they prevent autovacuum from cleaning dead rows. Terminate offending connections with pg_terminate_backend(pid) and tune autovacuum settings (autovacuum_vacuum_scale_factor = 0.05)."
       }
     ]
   },
@@ -899,6 +1096,12 @@ if (updated.rowCount === 0) {
     phaseId: 3,
     phaseName: "Data Persistence & Storage",
     duration: "5 hrs 55 min",
+    timeEstimates: {
+      video: "5 hrs 55 min",
+      reading: "45 min",
+      lab: "60 min",
+      total: "7 hrs 40 min"
+    },
     youtubeId: "26ls5lNiijk",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Database normalization (1NF to 3NF), intentional denormalization, surrogate vs natural keys, UUIDv7, and foreign key referential integrity.",
@@ -958,8 +1161,19 @@ CREATE INDEX idx_orders_user_id ON orders(user_id);`,
     },
     selfCheckQuestions: [
       {
-        question: "Why does UUIDv4 cause B-Tree index fragmentation while UUIDv7 does not?",
-        answerExplanation: "UUIDv4 is completely random, inserting keys randomly across B-Tree pages and causing constant page splits and disk thrashing. UUIDv7 embeds a timestamp prefix, ensuring new keys append sequentially to the rightmost leaf page."
+        category: "WHAT",
+        question: "What is the difference between Third Normal Form (3NF) and intentional denormalization in relational database design?",
+        answerExplanation: "3NF requires that all non-key columns depend solely and directly on the primary key, eliminating data duplication and update anomalies across tables. Denormalization intentionally reintroduces redundant data (e.g., duplicating user_name inside orders) to eliminate expensive multi-table JOINs and optimize high-frequency read paths in analytical or high-throughput queries."
+      },
+      {
+        category: "WHY",
+        question: "Why are database foreign keys both a guarantee of referential integrity and a bottleneck in distributed or sharded systems?",
+        answerExplanation: "Foreign keys guarantee data consistency at the engine level by preventing orphaned child records. However, during high-throughput concurrent writes, foreign key checks require shared locks on parent rows, introducing lock contention. In horizontally sharded systems where parent and child rows live on separate nodes, cross-network foreign key validation is prohibitively slow and unsupported."
+      },
+      {
+        category: "HOW",
+        question: "How do you model and store complex hierarchical / tree-structured data (like nested comment threads) in a relational database for high-performance querying?",
+        answerExplanation: "Use either the Materialized Path model (e.g., PostgreSQL ltree extension storing paths like 1.4.12), Closure Table (a separate lookup table storing ancestor-descendant pairs with path length), or Nested Sets. For most modern backends, PostgreSQL ltree with GiST indexing enables querying all descendants or ancestors of any comment in a single index scan."
       }
     ]
   },
@@ -970,6 +1184,12 @@ CREATE INDEX idx_orders_user_id ON orders(user_id);`,
     phaseId: 3,
     phaseName: "Data Persistence & Storage",
     duration: "43 min",
+    timeEstimates: {
+      video: "43 min",
+      reading: "40 min",
+      lab: "45 min",
+      total: "2 hrs 10 min"
+    },
     youtubeId: "pomxJOFVcQs",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "B-Tree internals, composite index leftmost prefix rules, reading EXPLAIN (ANALYZE, BUFFERS), and eliminating N+1 query patterns.",
@@ -1028,8 +1248,19 @@ const addresses = await db.query('SELECT * FROM addresses WHERE user_id = ANY($1
     },
     selfCheckQuestions: [
       {
-        question: "What is the Leftmost Prefix rule for composite indexes?",
-        answerExplanation: "A composite index on columns (A, B, C) can only be used by queries that filter on (A), (A, B), or (A, B, C). A query filtering only on (B) or (C) cannot traverse the tree because sorting is hierarchical starting with A."
+        category: "WHAT",
+        question: "How does a B-Tree index work under the hood, and what is the difference between an Index Scan, Index Only Scan, and Bitmap Heap Scan?",
+        answerExplanation: "A B-Tree is a balanced multi-way search tree maintaining sorted keys on disk pages (O(log N) seeks). An Index Scan traverses the B-Tree to find row IDs (cTIDs) and fetches table pages from disk. An Index Only Scan retrieves all requested columns directly from the index leaf without touching table heap pages. A Bitmap Heap Scan collects row pointers from index matches into a memory bitmap, sorts them by physical disk location, and reads table blocks sequentially."
+      },
+      {
+        category: "WHY",
+        question: "Why does putting a function around an indexed column (e.g., WHERE LOWER(email) = 'test@example.com') cause PostgreSQL to ignore a standard B-Tree index?",
+        answerExplanation: "Standard B-Tree indexes store raw values, not computed function outputs. The query engine cannot reverse the mathematical or string function to search the sorted index, forcing it to fall back to an exhaustive, CPU-heavy Sequential Table Scan on every single row. To fix this, you must create an explicit functional expression index: CREATE INDEX ON users (LOWER(email));."
+      },
+      {
+        category: "HOW",
+        question: "How do you detect, profile, and eliminate the classic N+1 query problem in an ORM (Prisma, Hibernate, GORM)?",
+        answerExplanation: "Turn on SQL query logging or use APM tools to spot repetitive queries in logs. The N+1 problem occurs when fetching 1 parent collection followed by N separate queries for each child relation. Eliminate it by using eager loading with SQL JOIN or batch fetching (WHERE id IN (...)), or by utilizing DataLoader patterns that coalesce individual ID requests across an event-loop tick into a single batch query."
       }
     ]
   },
@@ -1040,6 +1271,12 @@ const addresses = await db.query('SELECT * FROM addresses WHERE user_id = ANY($1
     phaseId: 3,
     phaseName: "Data Persistence & Storage",
     duration: "30 min",
+    timeEstimates: {
+      video: "30 min",
+      reading: "35 min",
+      lab: "45 min",
+      total: "1 hr 50 min"
+    },
     youtubeId: "1Lcr2c3MVF4",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Domain-Driven Design (DDD), maintaining business invariants across aggregate roots, and wrapping multi-table workflows in database transactions.",
@@ -1108,8 +1345,19 @@ await client.query('COMMIT');`,
     },
     selfCheckQuestions: [
       {
-        question: "Why does dual-writing to PostgreSQL and RabbitMQ without a Transactional Outbox guarantee eventual data loss?",
-        answerExplanation: "Network calls can fail midway. If the database commit succeeds but the RabbitMQ network connection drops before publishing, the message is lost forever and downstream services never learn of the event."
+        category: "WHAT",
+        question: "What is a Domain Invariant, and where must its validation be enforced to prevent corrupted business states?",
+        answerExplanation: "A domain invariant is a business rule that must always hold true at all times within an application (e.g., 'an account balance cannot drop below zero', 'a confirmed booking cannot have duplicate reserved seats'). It must be enforced inside the Domain Model / Business Logic Layer (via Domain Entities and Aggregate Roots), backed by database constraints (CHECK constraints, foreign keys, and serializable transactions), never solely in frontend code or UI validations."
+      },
+      {
+        category: "WHY",
+        question: "Why is the Transaction Script pattern dangerous for complex enterprise applications compared to Domain-Driven Design (DDD) Aggregates?",
+        answerExplanation: "Transaction Scripts organize logic as single procedural methods interacting directly with database tables. As applications grow, business rules get duplicated across multiple endpoints, leading to fragmented logic, subtle race conditions, inconsistent invariants, and an untestable codebase. DDD Aggregates encapsulate state and rules, ensuring all mutations pass through strict domain methods."
+      },
+      {
+        category: "HOW",
+        question: "How do you implement the Unit of Work pattern to ensure multiple repository operations commit or rollback atomically in a single database transaction?",
+        answerExplanation: "Create a Unit of Work abstraction that maintains a reference to an active database transaction. Repositories accept this context/transaction. All business modifications register changes in memory; when the service finishes, the Unit of Work issues a single COMMIT. If any operation fails, it executes an automatic ROLLBACK, guaranteeing that orphaned mutations never persist."
       }
     ]
   },
@@ -1120,6 +1368,12 @@ await client.query('COMMIT');`,
     phaseId: 3,
     phaseName: "Data Persistence & Storage",
     duration: "1 hr 27 min",
+    timeEstimates: {
+      video: "1 hr 27 min",
+      reading: "35 min",
+      lab: "45 min",
+      total: "2 hrs 45 min"
+    },
     youtubeId: "XCsS_NVAa1g",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "In-memory caching with Redis: Cache-Aside, Write-Through, TTL strategies, Cache Stampede (Thundering Herd), and invalidation patterns.",
@@ -1181,8 +1435,19 @@ await client.query('COMMIT');`,
     },
     selfCheckQuestions: [
       {
-        question: "What is a Cache Stampede (Thundering Herd) and how does TTL Jitter prevent it?",
-        answerExplanation: "When a popular key expires, thousands of concurrent requests all detect a cache miss at the exact same millisecond and simultaneously hit the database with identical queries. Adding random jitter (TTL +/- random delta) ensures keys expire at staggered times."
+        category: "WHAT",
+        question: "What is the difference between Cache-Aside (Lazy Loading) and Write-Through caching patterns?",
+        answerExplanation: "In Cache-Aside, the application first queries Redis; on cache miss, it reads from PostgreSQL, writes the result to Redis with a TTL, and returns it. In Write-Through, the application writes updates to the cache first, and the cache synchronously writes to the database before acknowledging success, ensuring data is always fresh in cache at the cost of higher write latency."
+      },
+      {
+        category: "WHY",
+        question: "Why do Cache Stampedes (Dog-piling) occur when high-traffic cache keys expire, and how do Probabilistic Early Expiration algorithms (XFetch) prevent them?",
+        answerExplanation: "When a popular key expires, hundreds of concurrent requests simultaneously get a cache miss and rush to execute the same heavy query on the database, causing DB CPU spikes and downtime. The XFetch algorithm computes an early refresh probability based on compute time, remaining TTL, and a randomness factor beta, refreshing the cache in the background before it formally expires."
+      },
+      {
+        category: "HOW",
+        question: "How do you solve Cache Penetration (queries for non-existent records repeatedly hitting the DB) using Bloom Filters or null caching?",
+        answerExplanation: "When a query finds no record in the database, write a null sentinel value into Redis with a short TTL (e.g., 60 seconds) so subsequent lookups hit the cache. For massive keyspaces, place a Bloom Filter in front of the cache; if the Bloom Filter indicates an ID definitely does not exist, reject the request immediately without touching Redis or PostgreSQL."
       }
     ]
   },
@@ -1197,6 +1462,12 @@ await client.query('COMMIT');`,
     phaseId: 4,
     phaseName: "Security & Access Control",
     duration: "37 min",
+    timeEstimates: {
+      video: "37 min",
+      reading: "40 min",
+      lab: "45 min",
+      total: "2 hrs"
+    },
     youtubeId: "2PPSXonhIck",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Stateful session cookies (HttpOnly, Secure, SameSite) vs stateless JWTs, cryptographic signing (RS256), and refresh token rotation with reuse detection.",
@@ -1261,8 +1532,19 @@ await client.query('COMMIT');`,
     },
     selfCheckQuestions: [
       {
-        question: "Why should access tokens have short lifetimes (e.g. 10-15 minutes)?",
-        answerExplanation: "Because JWTs are self-contained and verified without database lookups, they cannot be easily revoked. A short expiration window limits the damage if a token is intercepted."
+        category: "WHAT",
+        question: "What is the difference between a stateful session store and a stateless JSON Web Token (JWT) at the architecture layer?",
+        answerExplanation: "Stateful sessions store session IDs in the client cookie and full user metadata/permissions in a centralized server store (e.g., Redis). Every request requires a Redis lookup, but session revocation is instant. Stateless JWTs encode user identity, claims, and cryptographically signed signatures inside the token itself; servers verify signatures locally using public keys without database lookups, making revocation before expiry difficult."
+      },
+      {
+        category: "WHY",
+        question: "Why is storing JWT tokens in browser localStorage an insecure vulnerability compared to httpOnly, Secure, SameSite cookies?",
+        answerExplanation: "Any script executing on the page (including malicious third-party packages or Cross-Site Scripting / XSS exploits) can read localStorage and exfiltrate user tokens. Cookies configured with HttpOnly are inaccessible to JavaScript, Secure ensures transmission only over HTTPS, and SameSite=Strict/Lax prevents Cross-Site Request Forgery (CSRF)."
+      },
+      {
+        category: "HOW",
+        question: "How do you implement Refresh Token Rotation with automatic theft detection?",
+        answerExplanation: "Issue an Access Token (15 min) and a cryptographically random Refresh Token (7 days) stored in a database family table. When the client exchanges the Refresh Token, invalidate it immediately and issue a new pair. If an invalidated or already-used Refresh Token is submitted, detect token reuse as theft, immediately invalidate the entire token family, and force the user to re-authenticate."
       }
     ]
   },
@@ -1273,6 +1555,12 @@ await client.query('COMMIT');`,
     phaseId: 4,
     phaseName: "Security & Access Control",
     duration: "35 min",
+    timeEstimates: {
+      video: "35 min",
+      reading: "35 min",
+      lab: "45 min",
+      total: "1 hr 55 min"
+    },
     youtubeId: "SuycfXLdF8o",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Role-Based Access Control (RBAC), Attribute-Based Access Control (ABAC), policy enforcement points, and multi-tenant data isolation.",
@@ -1332,8 +1620,19 @@ WHERE id = $1
     },
     selfCheckQuestions: [
       {
-        question: "What is the difference between RBAC and ABAC?",
-        answerExplanation: "RBAC makes binary checks based on static roles (e.g. 'Is Admin?'). ABAC evaluates context attributes (e.g. 'Can edit document IF user is author AND document is in DRAFT status AND time is during business hours')."
+        category: "WHAT",
+        question: "What is the fundamental difference between Role-Based Access Control (RBAC) and Attribute-Based Access Control (ABAC)?",
+        answerExplanation: "RBAC assigns permissions to static roles (e.g., admin, editor, viewer) and users to roles, answering: 'Does user role X have permission Y?'. ABAC evaluates dynamic policies based on attributes of the user, the resource, the action, and the environment (e.g., 'Can a doctor edit a medical record if doctor.department == record.department and current_time is during business hours?')."
+      },
+      {
+        category: "WHY",
+        question: "Why is Insecure Direct Object References (IDOR / BOLA - Broken Object Level Authorization) consistently ranked as the #1 API security flaw?",
+        answerExplanation: "Applications often verify that a user is authenticated and possesses a general role (e.g., 'customer'), but forget to verify whether that customer actually owns the specific resource requested by ID (e.g., GET /api/invoices/1234). Attackers simply increment IDs to view or manipulate other users' sensitive private data without triggering standard role guards."
+      },
+      {
+        category: "HOW",
+        question: "How do you architect a declarative Policy Enforcement Point (PEP) middleware that prevents IDOR at the database query level?",
+        answerExplanation: "Instead of checking ownership in handlers, inject the authenticated user_id or tenant_id into repository query scopes. Every mutation query executes with tenant scoping (e.g., UPDATE invoices SET amount = $1 WHERE id = $2 AND tenant_id = $3). If the record belongs to another user, 0 rows update and the API returns 404/403 automatically."
       }
     ]
   },
@@ -1344,6 +1643,12 @@ WHERE id = $1
     phaseId: 4,
     phaseName: "Security & Access Control",
     duration: "1 hr 27 min",
+    timeEstimates: {
+      video: "1 hr 27 min",
+      reading: "40 min",
+      lab: "45 min",
+      total: "2 hrs 50 min"
+    },
     youtubeId: "YYe0FdfdgDU",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "OWASP API Security Top 10, parameterized queries, CORS preflight mechanics, Content Security Policy, and rate limiting against DDoS.",
@@ -1401,8 +1706,19 @@ app.use(cors({
     },
     selfCheckQuestions: [
       {
-        question: "Why does parameterized querying eliminate SQL injection completely?",
-        answerExplanation: "The database compiles the SQL query structure first into a static execution tree before binding input parameters. Parameters are treated strictly as literal data values and cannot alter the SQL command syntax."
+        category: "WHAT",
+        question: "How does Cross-Origin Resource Sharing (CORS) work at the protocol level, and what triggers an HTTP OPTIONS Preflight request?",
+        answerExplanation: "CORS is a browser security mechanism that restricts cross-origin HTTP requests. A preflight OPTIONS request is sent before the actual request if the request uses methods other than GET/POST/HEAD, includes custom headers (like Authorization), or has a Content-Type other than text/plain, multipart/form-data, or application/x-www-form-urlencoded. The browser sends Origin and checks for Access-Control-Allow-Origin."
+      },
+      {
+        category: "WHY",
+        question: "Why do SQL prepared statements (parameterized queries) completely prevent SQL Injection, whereas string sanitization fails?",
+        answerExplanation: "Prepared statements send the SQL query template and the parameter data in two completely separate protocol packets. The database engine compiles and optimizes the SQL execution plan before inserting the user data. The user data is treated strictly as literal scalar values, making it mathematically impossible for malicious input to alter the SQL syntax structure."
+      },
+      {
+        category: "HOW",
+        question: "How do you implement a distributed sliding-window rate limiter using Redis sorted sets (ZSET)?",
+        answerExplanation: "For each client IP, maintain a Redis ZSET where both member and score are the current timestamp in milliseconds. Use a Redis transaction/pipeline: (1) ZREMRANGEBYSCORE key 0 (now - window_size) to drop expired timestamps, (2) ZCARD key to count current requests, (3) if count < limit, ZADD key now now and EXPIRE key window_size. If count >= limit, calculate retry delay from the oldest element and return HTTP 429."
       }
     ]
   },
@@ -1417,6 +1733,12 @@ app.use(cors({
     phaseId: 5,
     phaseName: "Asynchronous Systems & Integrations",
     duration: "31 min",
+    timeEstimates: {
+      video: "31 min",
+      reading: "35 min",
+      lab: "45 min",
+      total: "1 hr 50 min"
+    },
     youtubeId: "nFxjaVmFj5E",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Decoupling synchronous HTTP requests, message brokers (RabbitMQ/BullMQ), worker pools, dead letter queues (DLQ), and exponential retry backoff.",
@@ -1475,8 +1797,19 @@ await queue.add('video', { fileId: '123' }, {
     },
     selfCheckQuestions: [
       {
-        question: "Why do production message queues provide at-least-once delivery rather than exactly-once delivery?",
-        answerExplanation: "Network acknowledgments can fail. If a worker completes a job but the network drops before it can send the ACK back to the broker, the broker will re-assign the message to another worker. Therefore workers must be idempotent."
+        category: "WHAT",
+        question: "What is the difference between an in-memory queue (like Node.js event loop / Go channels) and a durable message queue (like BullMQ / Redis / SQS)?",
+        answerExplanation: "In-memory queues hold task data inside the application process RAM; if the process crashes, deploys, or restarts, all pending and in-flight tasks are permanently lost. Durable message queues persist task state on external, resilient storage with visibility timeouts, acknowledgments (ACK/NACK), automatic retry backoffs, and dead-letter queues."
+      },
+      {
+        category: "WHY",
+        question: "Why is an Exponential Backoff with Jitter algorithm essential for failed queue workers communicating with third-party APIs?",
+        answerExplanation: "If a downstream service experiences high load or a network hiccup, retrying immediately at fixed intervals causes all failed workers to hammer the service at the exact same second (the Thundering Herd problem). Exponential backoff spaces out retries (2^n), and jitter injects random variance, desynchronizing worker retries and allowing the downstream service to recover."
+      },
+      {
+        category: "HOW",
+        question: "How do you design a Dead Letter Queue (DLQ) strategy and alerts to handle poisoned-pill messages without stalling queue consumption?",
+        answerExplanation: "Configure maximum retry limits (e.g., 5 attempts). If a task fails repeatedly due to unrecoverable data errors (a poison pill), the queue moves the job to a DLQ instead of abandoning or crashing the worker. Set Prometheus/CloudWatch alerts on DLQ size > 0, and build an administrative replay script to reprocess fixed messages after bug fixes are deployed."
       }
     ]
   },
@@ -1487,6 +1820,12 @@ await queue.add('video', { fileId: '123' }, {
     phaseId: 5,
     phaseName: "Asynchronous Systems & Integrations",
     duration: "30 min",
+    timeEstimates: {
+      video: "30 min",
+      reading: "30 min",
+      lab: "45 min",
+      total: "1 hr 45 min"
+    },
     youtubeId: "AcBhyCPJTEk",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Asynchronous notification pipelines, SMTP vs API deliverability, DKIM/SPF/DMARC domain authentication, and idempotent notification triggers.",
@@ -1543,8 +1882,19 @@ await queue.add('video', { fileId: '123' }, {
     },
     selfCheckQuestions: [
       {
-        question: "What are SPF, DKIM, and DMARC, and why are they mandatory for backend email deliverability?",
-        answerExplanation: "SPF specifies which IP addresses are authorized to send email for your domain; DKIM cryptographically signs outgoing emails to prevent tampering; DMARC tells receiving mail servers what policy to enforce if SPF or DKIM fails."
+        category: "WHAT",
+        question: "What is the Dual-Write Problem, and how does it cause data inconsistency between databases and email/notification services?",
+        answerExplanation: "The Dual-Write Problem occurs when an application must update two separate systems (e.g., save an order in PostgreSQL and send a confirmation email via SendGrid) in response to one event. Because distributed transactions across DBs and third-party APIs are impossible, if the DB commits but the network fails during email delivery, the customer gets no email. If email sends first but DB rolls back, the customer gets an email for an order that doesn't exist."
+      },
+      {
+        category: "WHY",
+        question: "Why is the Transactional Outbox Pattern the industry-standard architecture for triggering asynchronous side effects from database mutations?",
+        answerExplanation: "The Transactional Outbox Pattern saves the business entity mutation AND an outbox event record inside the same atomic local database transaction. Because both succeed or fail together, no data inconsistency can occur. A separate, reliable background process or CDC (Change Data Capture) tool polls or streams the outbox table to dispatch the events."
+      },
+      {
+        category: "HOW",
+        question: "How do you guarantee that a transactional email is sent exactly once to a user even if the queue worker retries multiple times?",
+        answerExplanation: "Use email idempotency keys. When enqueuing or dispatching the email task, generate an idempotency key composed of the entity ID and event type (e.g., order-confirmed-12345). Send this key in the email provider's API header (Idempotency-Key in SendGrid/Stripe) or track sent keys in a dedicated Redis/DB table so duplicate worker executions do not resend the message."
       }
     ]
   },
@@ -1555,6 +1905,12 @@ await queue.add('video', { fileId: '123' }, {
     phaseId: 5,
     phaseName: "Asynchronous Systems & Integrations",
     duration: "2 hrs 29 min",
+    timeEstimates: {
+      video: "2 hrs 29 min",
+      reading: "35 min",
+      lab: "45 min",
+      total: "3 hrs 50 min"
+    },
     youtubeId: "41NOoEz3Tzc",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Sending and receiving webhooks, HMAC-SHA256 signature verification, exponential retry backoff, and preventing replay attacks with timestamps.",
@@ -1628,8 +1984,19 @@ export function verifyWebhook(rawBody, signatureHeader, secret) {
     },
     selfCheckQuestions: [
       {
-        question: "Why must webhook signature comparisons always use timingSafeEqual rather than ===?",
-        answerExplanation: "The standard === operator returns false on the first mismatched byte, leaking execution timing. Attackers can measure response time variations down to nanoseconds to deduce valid signature bytes one by one (Timing Attack)."
+        category: "WHAT",
+        question: "What is an HMAC SHA-256 signature, and how does a webhook receiver use it to authenticate incoming HTTP payloads?",
+        answerExplanation: "HMAC (Hash-based Message Authentication Code) combines the raw request payload body with a shared secret key using the SHA-256 cryptographic hash function. The sender transmits this digest in a header (e.g., X-Hub-Signature-256). The receiver hashes the raw request body with its copy of the secret and performs a constant-time comparison against the header to verify payload integrity and authenticity."
+      },
+      {
+        category: "WHY",
+        question: "Why must timing attacks be prevented when comparing webhook HMAC signatures, and why is standard string equality unsafe?",
+        answerExplanation: "Standard string equality operators (=== or ==) compare strings character-by-character from left to right and return false at the first mismatch. Attackers can measure tiny CPU latency differences (timing attacks) to guess the signature byte-by-byte. You must use constant-time equality functions (crypto.timingSafeEqual in Node, subtle.timingSafeEqual in Go) that always take identical time regardless of match position."
+      },
+      {
+        category: "HOW",
+        question: "How do you design a high-throughput webhook ingestion endpoint that avoids HTTP 504 timeouts from third-party senders?",
+        answerExplanation: "Keep the ingestion endpoint ultra-lightweight: (1) verify the HMAC signature and timestamp, (2) write the raw event directly to a high-speed durable queue (Kafka, Redis, SQS), and (3) immediately return HTTP 202 Accepted or 200 OK within 100 milliseconds. All heavy business logic, database transactions, and notifications run asynchronously in background queue workers."
       }
     ]
   },
@@ -1640,6 +2007,12 @@ export function verifyWebhook(rawBody, signatureHeader, secret) {
     phaseId: 5,
     phaseName: "Asynchronous Systems & Integrations",
     duration: "48 min",
+    timeEstimates: {
+      video: "48 min",
+      reading: "35 min",
+      lab: "45 min",
+      total: "2 hrs 10 min"
+    },
     youtubeId: "2Nt-ZrNP22A",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Comparing HTTP Long Polling, Server-Sent Events (SSE), and WebSockets, connection state, heartbeats, and scaling with Redis Pub/Sub.",
@@ -1695,8 +2068,19 @@ sub.on('message', (channel, msg) => {
     },
     selfCheckQuestions: [
       {
-        question: "When should you choose Server-Sent Events (SSE) over WebSockets?",
-        answerExplanation: "Choose SSE when data flows unidirectionally from server to client (e.g. notifications, status feeds, live sports scores). SSE operates over standard HTTP/2, supports automatic reconnection, and bypasses complex WebSocket proxy traversal issues."
+        category: "WHAT",
+        question: "What are the architectural trade-offs between WebSockets and Server-Sent Events (SSE) for real-time applications?",
+        answerExplanation: "WebSockets provide full-duplex, bidirectional communication over a single long-lived TCP connection, ideal for chat, gaming, and collaborative editing. SSE is unidirectional (server-to-client only) running over standard HTTP/1.1 or HTTP/2, featuring built-in browser reconnection, event IDs, and compatibility with standard corporate firewalls and HTTP load balancers without protocol upgrade overhead."
+      },
+      {
+        category: "WHY",
+        question: "Why is a Redis Pub/Sub or Redis Streams backbone required when scaling WebSockets across multiple server instances?",
+        answerExplanation: "WebSocket connections are stateful TCP connections bound to a specific server instance's memory. If User A is connected to Server 1 and User B is connected to Server 2, Server 1 cannot directly deliver a message to User B. A shared Redis Pub/Sub message broker broadcasts the message to all servers, allowing whichever server holds User B's socket to forward the message."
+      },
+      {
+        category: "HOW",
+        question: "How do you prevent memory leaks and zombie TCP connections in high-concurrency WebSocket clusters?",
+        answerExplanation: "Implement proactive heartbeat ping/pong frames at the application layer. The server broadcasts a ping frame every 30 seconds; if a client socket fails to acknowledge with a pong within 10 seconds, the server forcefully closes the socket, cleans up event listeners and connection maps from memory, and triggers cleanup callbacks to release resources."
       }
     ]
   },
@@ -1707,6 +2091,12 @@ sub.on('message', (channel, msg) => {
     phaseId: 5,
     phaseName: "Asynchronous Systems & Integrations",
     duration: "3 hrs 58 min",
+    timeEstimates: {
+      video: "3 hrs 58 min",
+      reading: "30 min",
+      lab: "45 min",
+      total: "5 hrs 15 min"
+    },
     youtubeId: "3hLmDS179YE",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Storing BLOBs in cloud object storage (AWS S3/Cloudflare R2), S3 pre-signed upload URLs, multipart uploads for large files, and CDN distribution.",
@@ -1773,8 +2163,19 @@ async function getUploadUrl(userId, fileType) {
     },
     selfCheckQuestions: [
       {
-        question: "Why should file uploads never be saved to the local filesystem of a Docker container in production?",
-        answerExplanation: "Containers are ephemeral; restarting or rescheduling a container to another host immediately destroys local filesystem state. Furthermore, horizontal scaling across multiple container instances creates split state where files exist on some nodes but not others."
+        category: "WHAT",
+        question: "What is an S3 Pre-signed URL, and how does it prevent backend servers from becoming network bottlenecks during file uploads?",
+        answerExplanation: "A pre-signed URL is an Amazon S3/Cloud Storage URL cryptographically signed with backend AWS credentials, granting temporary write or read permissions for a specific object key. Instead of routing multi-gigabyte video or image streams through the backend server (saturating server network bandwidth and RAM), the client uploads the file directly to S3 storage over AWS edge networks."
+      },
+      {
+        category: "WHY",
+        question: "Why is S3 Multipart Upload mandatory for files larger than 100MB in production systems?",
+        answerExplanation: "Single-part uploads must transfer the entire file in one continuous stream; a single network drop at 99% forces the user to re-upload from 0%. Multipart uploads divide the file into independent 5MB-50MB chunks that upload concurrently, allow individual chunk retries on failure, and assemble atomically on S3 once all parts finish."
+      },
+      {
+        category: "HOW",
+        question: "How do you securely validate file types and prevent malicious executable uploads when using pre-signed upload URLs?",
+        answerExplanation: "Never trust file extensions. When generating the pre-signed URL, enforce strict upload conditions: (1) sign the exact Content-Type header (e.g., image/png), (2) specify content-length-range bounds, (3) configure an asynchronous AWS Lambda or worker triggered by S3 ObjectCreated events to inspect the magic bytes (file header signatures) and quarantine invalid files."
       }
     ]
   },
@@ -1785,6 +2186,12 @@ async function getUploadUrl(userId, fileType) {
     phaseId: 5,
     phaseName: "Asynchronous Systems & Integrations",
     duration: "4 hrs 59 min",
+    timeEstimates: {
+      video: "4 hrs 59 min",
+      reading: "40 min",
+      lab: "60 min",
+      total: "6 hrs 40 min"
+    },
     youtubeId: "a4HBKEda_F8",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Inverted indexes, tokenization, stemming, BM25 scoring, fuzzy matching, and syncing search clusters with PostgreSQL via Change Data Capture (CDC).",
@@ -1848,8 +2255,19 @@ Document 2: "Indexing full text in Elasticsearch"
     },
     selfCheckQuestions: [
       {
-        question: "Why can't a standard B-Tree index accelerate a SQL query like WHERE description LIKE '%apple%'?",
-        answerExplanation: "B-Tree indexes sort strings alphabetically from the first character. A leading wildcard (%apple) means the match could begin at any position in the string, forcing the database engine into an O(N) sequential full table scan."
+        category: "WHAT",
+        question: "What is an Inverted Index in Elasticsearch / Lucene, and how does it enable sub-millisecond search across millions of documents?",
+        answerExplanation: "An inverted index is a mapping between individual words (tokens) and the specific documents containing them, similar to the index at the back of a book. Instead of scanning entire text columns on disk (like SQL LIKE %term%), Elasticsearch looks up the search term in a sorted dictionary in memory and instantly retrieves the posting list of matching document IDs in O(1) time."
+      },
+      {
+        category: "WHY",
+        question: "Why is Elasticsearch an anti-pattern when used as a primary system of record for transactional data?",
+        answerExplanation: "Elasticsearch is built for near-real-time search and analytics, not ACID transactions. Writes are acknowledged once written to memory buffers and translog, but are only searchable after index refresh (default 1 second). It lacks multi-document transactions, foreign key constraints, and can lose data during network partitions or split-brain cluster states. Primary data must reside in PostgreSQL."
+      },
+      {
+        category: "HOW",
+        question: "How do you synchronize data between a PostgreSQL primary database and an Elasticsearch cluster without dual-write inconsistency?",
+        answerExplanation: "Use Change Data Capture (CDC) via PostgreSQL Write-Ahead Logs (WAL) and Debezium/Kafka Connect, or read from a Transactional Outbox table. Every committed DB mutation produces a WAL event that streams asynchronously into Elasticsearch. If Elasticsearch crashes, the CDC consumer resumes from its last committed offset without losing records."
       }
     ]
   },
@@ -1864,6 +2282,12 @@ Document 2: "Indexing full text in Elasticsearch"
     phaseId: 6,
     phaseName: "Reliability, Resilience & Observability",
     duration: "32 min",
+    timeEstimates: {
+      video: "32 min",
+      reading: "30 min",
+      lab: "45 min",
+      total: "1 hr 45 min"
+    },
     youtubeId: "ovnyeq-Xxrc",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Standardized RFC 9457 Problem Details, operational vs programmer errors, centralized error handling, and scrubbing sensitive stack traces.",
@@ -1931,8 +2355,19 @@ Document 2: "Indexing full text in Elasticsearch"
     },
     selfCheckQuestions: [
       {
-        question: "Why should API errors never return HTTP 200 with an error flag inside the JSON body?",
-        answerExplanation: "Returning 200 with an error prevents HTTP reverse proxies, API gateways, and CDNs from understanding that the request failed, preventing automated retry policies and polluting uptime monitoring metrics."
+        category: "WHAT",
+        question: "What is the RFC 7807 / RFC 9457 Problem Details specification, and what core fields must it include?",
+        answerExplanation: "RFC 9457 standardizes machine-readable error responses for HTTP APIs using application/problem+json. It defines five standard fields: type (a URI identifier for the error type), title (a short human-readable summary), status (the HTTP status code), detail (a human-readable explanation specific to this occurrence), and instance (a URI reference identifying the specific occurrence, such as /errors/err_123)."
+      },
+      {
+        category: "WHY",
+        question: "Why must internal stack traces, SQL syntax errors, and database connection strings never leak to clients in production API responses?",
+        answerExplanation: "Leaking stack traces and database errors gives attackers critical intelligence regarding your software stack, database dialect, table names, file paths, and vulnerable third-party libraries (Information Disclosure vulnerability). It also creates confusing, unparseable responses for frontend clients. Internal details belong in private structured logs."
+      },
+      {
+        category: "HOW",
+        question: "How do you architect an Error Translation Boundary that maps low-level database and infrastructure errors to high-level domain errors?",
+        answerExplanation: "Wrap repository and external client errors inside typed domain errors (e.g., wrap PostgreSQL error 23505 unique violation into ErrEmailAlreadyRegistered). Controllers catch typed domain errors and map them to HTTP status codes (e.g., ErrEmailAlreadyRegistered -> HTTP 409 Conflict) with clean RFC 9457 messages, while logging the original raw error and stack trace privately."
       }
     ]
   },
@@ -1943,6 +2378,12 @@ Document 2: "Indexing full text in Elasticsearch"
     phaseId: 6,
     phaseName: "Reliability, Resilience & Observability",
     duration: "30 min",
+    timeEstimates: {
+      video: "30 min",
+      reading: "30 min",
+      lab: "45 min",
+      total: "1 hr 45 min"
+    },
     youtubeId: "1OhmRmMsGdQ",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "12-Factor App Factor III: Storing config in the environment, validating configuration schemas on startup (fail-fast), and secret management.",
@@ -2004,8 +2445,19 @@ export const config = ConfigSchema.parse(process.env);`,
     },
     selfCheckQuestions: [
       {
-        question: "Why should an application container image contain zero secrets or configuration baked into its filesystem?",
-        answerExplanation: "Baking secrets into images exposes credentials to anyone with image registry access and requires rebuilding container images for every environment change. Injecting config at runtime allows one verified artifact to run everywhere."
+        category: "WHAT",
+        question: "What is the Twelve-Factor App methodology principle regarding configuration, and what is the difference between build-time and runtime config?",
+        answerExplanation: "Twelve-Factor config requires strict separation of config from code, storing all environment-specific variables (database URLs, API secrets, feature flags) in the environment. Build-time config is baked into the immutable image/bundle at compile time and must never contain secrets. Runtime config is injected dynamically when the container boots, allowing the identical binary to run across Dev, Staging, and Prod."
+      },
+      {
+        category: "WHY",
+        question: "Why should a backend service crash immediately (Fail-Fast) on boot if required environment variables are missing or malformed?",
+        answerExplanation: "If a service starts with missing configuration (like a missing Stripe API key or invalid DB connection string), it enters an unhealthy zombie state: it passes basic liveness probes, accepts customer requests, and then crashes unpredictably in the middle of transactions. Failing fast on boot alerts engineers and triggers automated deployment rollback immediately."
+      },
+      {
+        category: "HOW",
+        question: "How do you validate environment variables at service startup using a strict schema validator?",
+        answerExplanation: "In the application entrypoint (e.g., config.ts or Go config.go), pass process.env through a strict schema validator (Zod, Envalid, or Go envconfig). Define types, default values, and formats (e.g., PORT: z.coerce.number().default(8080), DATABASE_URL: z.string().url()). If parsing throws an error, log the missing fields and invoke process.exit(1)."
       }
     ]
   },
@@ -2016,6 +2468,12 @@ export const config = ConfigSchema.parse(process.env);`,
     phaseId: 6,
     phaseName: "Reliability, Resilience & Observability",
     duration: "4 hrs 57 min",
+    timeEstimates: {
+      video: "4 hrs 57 min",
+      reading: "40 min",
+      lab: "60 min",
+      total: "6 hrs 35 min"
+    },
     youtubeId: "cYAE0ZhT43c",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Structured JSON logging, OpenTelemetry distributed tracing, the RED method (Rate, Errors, Duration), and Prometheus metrics.",
@@ -2083,8 +2541,19 @@ sdk.start();`,
     },
     selfCheckQuestions: [
       {
-        question: "Why is tracking p99 latency much more important than average latency?",
-        answerExplanation: "Average latency masks tail outliers. In an e-commerce platform where 99% of requests take 20ms and 1% take 5,000ms, the average looks healthy (~70ms), but your highest-spending power users are experiencing catastrophic 5-second delays."
+        category: "WHAT",
+        question: "What are the Three Pillars of Observability (Logs, Metrics, Traces), and how do their roles differ?",
+        answerExplanation: "Metrics are numeric, aggregated timeseries data (counters, gauges, histograms) for alerting and detecting that something is wrong (e.g., HTTP 5xx rate > 1%). Traces track the journey of a single request across multiple microservices, showing where latency or failure occurred. Logs are detailed, timestamped event records providing deep context on why the failure happened inside a specific service."
+      },
+      {
+        category: "WHY",
+        question: "Why is structured JSON logging with a logger like Pino or Winston mandatory in production instead of console.log?",
+        answerExplanation: "console.log emits unstructured text strings that are difficult to parse and index at scale, and in runtimes like Node.js, console.log is synchronous and blocks the event loop under heavy volume. Structured loggers emit single-line JSON objects with standard fields (level, time, trace_id, message) that centralized log collectors (Datadog, ELK, Loki) parse, query, and alert on effortlessly."
+      },
+      {
+        category: "HOW",
+        question: "How do you implement the RED Method (Rate, Errors, Duration) for monitoring backend HTTP services using Prometheus?",
+        answerExplanation: "Define Prometheus metrics in an HTTP middleware: (1) Rate: A counter http_requests_total{method, path, status} measuring requests per second, (2) Errors: Calculate error rate from the same counter where status =~ '5..', (3) Duration: A histogram http_request_duration_seconds{method, path} measuring request latencies into percentiles (p50, p95, p99) to detect latency degradation."
       }
     ]
   },
@@ -2095,6 +2564,12 @@ sdk.start();`,
     phaseId: 6,
     phaseName: "Reliability, Resilience & Observability",
     duration: "36 min",
+    timeEstimates: {
+      video: "36 min",
+      reading: "30 min",
+      lab: "45 min",
+      total: "1 hr 50 min"
+    },
     youtubeId: "6rfBgphiCWM",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Intercepting SIGTERM/SIGINT signals, stopping new connections, draining in-flight HTTP requests, and releasing database pools cleanly.",
@@ -2173,8 +2648,19 @@ sdk.start();`,
     },
     selfCheckQuestions: [
       {
-        question: "What is the difference between SIGTERM and SIGKILL?",
-        answerExplanation: "SIGTERM is a polite termination request sent by the OS that application code can catch to perform cleanup. SIGKILL cannot be caught or ignored—the OS kernel immediately terminates the process without cleaning up memory or files."
+        category: "WHAT",
+        question: "What happens during a graceful shutdown when a Kubernetes pod receives a SIGTERM signal?",
+        answerExplanation: "When SIGTERM is emitted, the service should: (1) stop accepting new incoming TCP connections on its listening port, (2) inform load balancers to deregister the instance from routing, (3) allow all currently in-flight HTTP requests and background database transactions to complete within a grace period (e.g., 30s), (4) close database connection pools and message broker sockets cleanly, and (5) exit with code 0."
+      },
+      {
+        category: "WHY",
+        question: "Why does killing a backend process abruptly with SIGKILL (-9) cause database lock contention and corrupted file writes?",
+        answerExplanation: "SIGKILL terminates the operating system process instantly without executing language cleanup handlers, defer statements, or finally blocks. In-flight database transactions remain open on the database server until connection timeout detection terminates them, holding table locks and blocking other active queries. Partially written files or network socket buffers become corrupted."
+      },
+      {
+        category: "HOW",
+        question: "How do you implement a graceful shutdown handler in Node.js or Go that waits for active HTTP requests to drain?",
+        answerExplanation: "Listen for SIGINT and SIGTERM. Upon receipt, call server.close() (which stops accepting new connections but keeps existing sockets open). Start a fallback deadline timer (e.g., 25 seconds). When the server's close callback fires, close database pools (await db.end()) and Redis connections. If the deadline fires first, log a timeout warning and force exit with process.exit(1)."
       }
     ]
   },
@@ -2189,6 +2675,12 @@ sdk.start();`,
     phaseId: 7,
     phaseName: "Advanced Engineering, Scale & Operations",
     duration: "31 min",
+    timeEstimates: {
+      video: "31 min",
+      reading: "35 min",
+      lab: "45 min",
+      total: "1 hr 50 min"
+    },
     youtubeId: "oV9rvDllKEg",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Concurrency vs parallelism, race conditions, mutual exclusion (Mutex), distributed locks (Redlock), and deadlock avoidance.",
@@ -2249,8 +2741,19 @@ if (res.rowCount === 0) {
     },
     selfCheckQuestions: [
       {
-        question: "Why can race conditions still occur in single-threaded runtimes like Node.js?",
-        answerExplanation: "Because Node.js yields execution during asynchronous I/O operations (await). If two requests await a database check concurrently, both inspect the same initial state before either writes its update."
+        category: "WHAT",
+        question: "What is a Data Race, and what is the difference between Pessimistic Locking and Optimistic Locking for preventing race conditions?",
+        answerExplanation: "A Data Race occurs when two concurrent threads/goroutines access the same memory or database record simultaneously and at least one access is a write. Pessimistic Locking locks the record in the database (SELECT ... FOR UPDATE), forcing other transactions to wait in line. Optimistic Locking adds a version integer column; updates execute without locking (UPDATE items SET qty = qty - 1, version = version + 1 WHERE id = 1 AND version = 5), aborting or retrying if another transaction incremented the version first."
+      },
+      {
+        category: "WHY",
+        question: "Why is an in-memory Mutex insufficient for preventing race conditions in horizontally scaled multi-instance backends?",
+        answerExplanation: "An in-memory mutex (like sync.Mutex in Go or semaphore locks in Node.js) only synchronizes threads or coroutines running inside a single operating system process on a single machine. In a production cluster running 10 pod instances, each instance has its own isolated memory, so concurrent requests hitting different pods will execute simultaneous conflicting writes without blocking each other."
+      },
+      {
+        category: "HOW",
+        question: "How do you implement a distributed lock using Redis (Redlock pattern) to prevent concurrent double-booking of a single inventory item?",
+        answerExplanation: "Acquire a lock by setting a unique key with a random UUID and TTL: SET lock:inventory:123 <random_uuid> NX PX 10000. If successful, the worker owns the lock and executes the business logic. To release the lock safely without accidentally releasing another worker's expired lock, execute a Lua script that checks if GET key == random_uuid, deleting the key only if the values match."
       }
     ]
   },
@@ -2261,6 +2764,12 @@ if (res.rowCount === 0) {
     phaseId: 7,
     phaseName: "Advanced Engineering, Scale & Operations",
     duration: "2 hrs 10 min",
+    timeEstimates: {
+      video: "2 hrs 10 min",
+      reading: "40 min",
+      lab: "60 min",
+      total: "3 hrs 50 min"
+    },
     youtubeId: "fqMOX6JJhGo",
     youtubeChannelUrl: CHANNEL_URL,
     shortSummary: "Horizontal scaling, load balancing, Testcontainers integration testing, multi-stage Docker builds, and automated CI/CD quality gates.",
@@ -2340,8 +2849,19 @@ afterAll(async () => {
     },
     selfCheckQuestions: [
       {
+        category: "WHAT",
+        question: "What are the core differences between testing with in-memory mocks versus real containerized dependencies using Testcontainers?",
+        answerExplanation: "In-memory mocks (mocking DB queries or Redis clients) test your application logic against assumptions of how the database behaves, often missing real-world SQL syntax errors, transaction isolation anomalies, foreign key constraints, and specific PostgreSQL extension behaviors. Testcontainers programmatically spins up real, ephemeral Docker containers for PostgreSQL and Redis during test runs, executing true integration tests against real databases."
+      },
+      {
+        category: "WHY",
         question: "Why are multi-stage Docker builds essential for production backend security and performance?",
-        answerExplanation: "Multi-stage builds leave compilers, development dependencies (npm devDependencies), and source code behind in the build stage, creating tiny runtime container images with a minimal attack surface that boot in seconds."
+        answerExplanation: "Multi-stage builds separate the compile/build environment from the final production runtime image. Heavy compilers (Go compiler, TypeScript tsc), development dependencies (devDependencies, build tools), and source code remain behind in early build stages. The final image copies only the compiled binary or stripped production files into a minimal, rootless base image (e.g., alpine or distroless), shrinking image size from 1.5GB to <50MB and drastically reducing vulnerabilities and attack surface."
+      },
+      {
+        category: "HOW",
+        question: "How do you implement zero-downtime rolling deployments and blue-green health check gates without dropping in-flight requests?",
+        answerExplanation: "Configure two distinct health probes: a livenessProbe (detects if the process crashed) and a readinessProbe (verifies the service has established DB connections and is ready to accept traffic). During a rolling deployment, the load balancer only routes traffic to new pods after they pass the readinessProbe. The old pods receive SIGTERM, stop accepting new traffic, finish processing current requests, and exit cleanly, achieving 100% zero dropped requests."
       }
     ]
   }
@@ -2353,41 +2873,48 @@ export const ROADMAP_PHASES: RoadmapPhase[] = [
     name: "Foundations & Web Protocols",
     description: "Master the fundamental principles of backend architecture, networking, HTTP protocols, routing radix trees, and binary/text serialization.",
     topics: ROADMAP_TOPICS.filter((t) => t.phaseId === 1),
+    capstoneProject: CAPSTONE_PROJECTS[1],
   },
   {
     id: 2,
     name: "Core API Architecture & Request Lifecycle",
     description: "Architect clean, modular backend applications: Middlewares, request contexts, input validation, layered architecture, RESTful standards, and state mutations.",
     topics: ROADMAP_TOPICS.filter((t) => t.phaseId === 2),
+    capstoneProject: CAPSTONE_PROJECTS[2],
   },
   {
     id: 3,
     name: "Data Persistence & Storage",
     description: "Master relational and in-memory persistence: PostgreSQL internals, ACID transactions, relational modeling, indexing performance, domain invariants, and caching architectures.",
     topics: ROADMAP_TOPICS.filter((t) => t.phaseId === 3),
+    capstoneProject: CAPSTONE_PROJECTS[3],
   },
   {
     id: 4,
     name: "Security & Access Control",
     description: "Secure APIs and backend systems: Authentication, cryptographic tokens, role and attribute-based authorization, and OWASP API Top 10 hardening.",
     topics: ROADMAP_TOPICS.filter((t) => t.phaseId === 4),
+    capstoneProject: CAPSTONE_PROJECTS[4],
   },
   {
     id: 5,
     name: "Asynchronous Systems & Integrations",
     description: "Decouple synchronous HTTP flows: Task queuing, background workers, transactional email, webhooks with HMAC, real-time websockets/SSE, object storage, and full-text search.",
     topics: ROADMAP_TOPICS.filter((t) => t.phaseId === 5),
+    capstoneProject: CAPSTONE_PROJECTS[5],
   },
   {
     id: 6,
     name: "Reliability, Resilience & Observability",
     description: "Build production-resilient systems: RFC 7807/9457 Problem Details, 12-factor configuration, OpenTelemetry logging/metrics, and graceful shutdown signal handling.",
     topics: ROADMAP_TOPICS.filter((t) => t.phaseId === 6),
+    capstoneProject: CAPSTONE_PROJECTS[6],
   },
   {
     id: 7,
     name: "Advanced Engineering, Scale & Operations",
     description: "Operate at high volume: Concurrency, race conditions, distributed locks, database scaling, read replicas, Testcontainers, and containerized CI/CD pipelines.",
     topics: ROADMAP_TOPICS.filter((t) => t.phaseId === 7),
+    capstoneProject: CAPSTONE_PROJECTS[7],
   },
 ];
