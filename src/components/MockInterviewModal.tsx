@@ -158,7 +158,7 @@ export function MockInterviewModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 sm:p-6 overflow-y-auto animate-in fade-in duration-200">
-      <div className="relative w-full max-w-3xl rounded-3xl border border-zinc-200 bg-white p-6 sm:p-8 dark:border-zinc-800 dark:bg-zinc-950 shadow-2xl space-y-6">
+      <div className="relative w-full max-w-3xl rounded-3xl border border-zinc-200 bg-white p-6 sm:p-8 dark:border-gray-700 dark:bg-gray-800 shadow-2xl space-y-6">
         {/* Top Header Bar */}
         <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-900 pb-4">
           <div className="flex items-center gap-3">
@@ -175,7 +175,7 @@ export function MockInterviewModal({
                   {topicTitle}
                 </span>
               </div>
-              <h2 className="text-base sm:text-lg font-black text-zinc-950 dark:text-zinc-50">
+              <h2 className="text-base sm:text-lg font-black text-zinc-950 dark:text-white">
                 Staff Technical Mock Interview
               </h2>
             </div>
@@ -183,7 +183,7 @@ export function MockInterviewModal({
 
           <button
             onClick={onClose}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 text-zinc-500 hover:bg-zinc-100 hover:text-black dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-white transition-colors"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 text-zinc-500 hover:bg-zinc-100 hover:text-black dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-750 dark:hover:text-white transition-colors"
             aria-label="Close interview modal"
           >
             <X className="h-5 w-5" />
@@ -193,8 +193,8 @@ export function MockInterviewModal({
         {!isCompleted ? (
           <>
             {/* Live Timer & Progress Strip */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-900/40">
-              <div className="flex items-center gap-2 font-mono text-xs font-bold text-zinc-600 dark:text-zinc-300">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-4 dark:border-gray-700 dark:bg-gray-800/40">
+              <div className="flex items-center gap-2 font-mono text-xs font-bold text-zinc-600 dark:text-gray-300">
                 <span>QUESTION {currentIndex + 1} OF {totalQuestions}</span>
                 <span className="text-zinc-400">•</span>
                 <span
@@ -218,7 +218,7 @@ export function MockInterviewModal({
                       ? "border-rose-400 bg-rose-100 text-rose-800 animate-pulse dark:border-rose-800 dark:bg-rose-950/60 dark:text-rose-300"
                       : timeLeft <= 35
                       ? "border-amber-400 bg-amber-100 text-amber-800 dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-300"
-                      : "border-zinc-300 bg-white text-zinc-900 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50"
+                      : "border-zinc-300 bg-white text-zinc-900 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                   }`}
                 >
                   <Timer className="h-4 w-4" />
@@ -228,7 +228,7 @@ export function MockInterviewModal({
                 <button
                   onClick={() => setIsTimerRunning(!isTimerRunning)}
                   title={isTimerRunning ? "Pause Timer" : "Resume Timer"}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 transition-colors"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-600 hover:bg-zinc-100 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 transition-colors"
                 >
                   {isTimerRunning ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
                 </button>
@@ -236,7 +236,7 @@ export function MockInterviewModal({
                 <button
                   onClick={() => setTimeLeft(DEFAULT_TIME_SECONDS)}
                   title="Reset Clock to 75s"
-                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 transition-colors"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-600 hover:bg-zinc-100 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 transition-colors"
                 >
                   <RotateCcw className="h-3.5 w-3.5" />
                 </button>
@@ -245,7 +245,7 @@ export function MockInterviewModal({
 
             {/* Question Card & Oral Prompt */}
             <div className="space-y-4">
-              <div className="rounded-2xl border border-zinc-200 bg-linear-to-b from-zinc-50 to-white p-6 sm:p-7 dark:border-zinc-800 dark:from-zinc-900/60 dark:to-zinc-950 space-y-4 shadow-sm">
+              <div className="rounded-2xl border border-zinc-200 bg-linear-to-b from-zinc-50 to-white p-6 sm:p-7 dark:border-gray-700 dark:from-zinc-900/60 dark:to-gray-800 space-y-4 shadow-sm">
                 <div className="flex items-center gap-2">
                   <span className="flex h-2.5 w-2.5 rounded-full bg-rose-500 animate-ping" />
                   <span className="font-mono text-xs font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400">
@@ -253,7 +253,7 @@ export function MockInterviewModal({
                   </span>
                 </div>
 
-                <h3 className="text-lg sm:text-xl font-black text-zinc-950 dark:text-zinc-50 leading-snug">
+                <h3 className="text-lg sm:text-xl font-black text-zinc-950 dark:text-white leading-snug">
                   "{currentQ?.question}"
                 </h3>
 
@@ -271,7 +271,7 @@ export function MockInterviewModal({
                 <div className="flex justify-center pt-2">
                   <button
                     onClick={handleRevealAnswer}
-                    className="inline-flex items-center gap-2 rounded-xl bg-zinc-950 px-6 py-3.5 text-xs sm:text-sm font-extrabold text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 transition-all shadow-md active:scale-95"
+                    className="inline-flex items-center gap-2 rounded-xl bg-zinc-950 px-6 py-3.5 text-xs sm:text-sm font-extrabold text-white hover:bg-zinc-800 dark:bg-white dark:text-gray-950 dark:hover:bg-zinc-200 transition-all shadow-md active:scale-95"
                   >
                     <Sparkles className="h-4 w-4" />
                     <span>I'm Done Speaking — Reveal Staff Rubric & Answer</span>
@@ -287,13 +287,13 @@ export function MockInterviewModal({
                     </h4>
                   </div>
 
-                  <div className="rounded-xl border border-zinc-200 bg-white p-4.5 text-xs sm:text-sm leading-relaxed text-zinc-800 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 font-medium shadow-xs">
+                  <div className="rounded-xl border border-zinc-200 bg-white p-4.5 text-xs sm:text-sm leading-relaxed text-zinc-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 font-medium shadow-xs">
                     {currentQ?.answerExplanation}
                   </div>
 
                   {/* Self Evaluation Buttons */}
                   <div className="space-y-2 pt-2 border-t border-emerald-200/60 dark:border-emerald-900/60">
-                    <span className="font-mono text-xs font-bold text-zinc-700 dark:text-zinc-300 block">
+                    <span className="font-mono text-xs font-bold text-zinc-700 dark:text-gray-300 block">
                       Honest Self-Evaluation: How well did you articulate this aloud?
                     </span>
 
@@ -335,17 +335,17 @@ export function MockInterviewModal({
             </div>
 
             <div className="space-y-1.5">
-              <h3 className="text-2xl sm:text-3xl font-black text-zinc-950 dark:text-zinc-50">
+              <h3 className="text-2xl sm:text-3xl font-black text-zinc-950 dark:text-white">
                 Mock Interview Completed!
               </h3>
-              <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400 max-w-md mx-auto">
-                Evaluation results for <span className="font-semibold text-zinc-900 dark:text-zinc-100">{topicTitle}</span>
+              <p className="text-sm font-medium text-zinc-600 dark:text-gray-400 max-w-md mx-auto">
+                Evaluation results for <span className="font-semibold text-zinc-900 dark:text-gray-100">{topicTitle}</span>
               </p>
             </div>
 
             {/* Score Ring / Pill */}
-            <div className="inline-block rounded-2xl border border-zinc-200 bg-zinc-50 px-8 py-4 dark:border-zinc-800 dark:bg-zinc-900/60 shadow-xs">
-              <div className="font-mono text-4xl sm:text-5xl font-black text-zinc-950 dark:text-zinc-50">
+            <div className="inline-block rounded-2xl border border-zinc-200 bg-zinc-50 px-8 py-4 dark:border-gray-700 dark:bg-gray-900/80 shadow-xs">
+              <div className="font-mono text-4xl sm:text-5xl font-black text-zinc-950 dark:text-white">
                 {finalScore}%
               </div>
               <div className="font-mono text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mt-1">
@@ -358,8 +358,8 @@ export function MockInterviewModal({
             </div>
 
             {/* Breakdown List */}
-            <div className="rounded-2xl border border-zinc-200 bg-white p-5 text-left dark:border-zinc-800 dark:bg-zinc-900/40 space-y-3">
-              <span className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            <div className="rounded-2xl border border-zinc-200 bg-white p-5 text-left dark:border-gray-700 dark:bg-gray-800/40 space-y-3">
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-gray-400">
                 Performance Breakdown by Question:
               </span>
               <div className="space-y-2">
@@ -368,9 +368,9 @@ export function MockInterviewModal({
                   return (
                     <div
                       key={idx}
-                      className="flex items-center justify-between gap-3 rounded-xl border border-zinc-100 bg-zinc-50/70 p-3 text-xs dark:border-zinc-800 dark:bg-zinc-900/60"
+                      className="flex items-center justify-between gap-3 rounded-xl border border-zinc-100 bg-zinc-50/70 p-3 text-xs dark:border-gray-700 dark:bg-gray-900/80"
                     >
-                      <span className="font-semibold text-zinc-900 dark:text-zinc-100 truncate">
+                      <span className="font-semibold text-zinc-900 dark:text-gray-100 truncate">
                         0{idx + 1}. {q.question}
                       </span>
                       <span
@@ -394,7 +394,7 @@ export function MockInterviewModal({
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
               <button
                 onClick={resetSession}
-                className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 bg-white px-5 py-2.5 text-xs sm:text-sm font-bold text-zinc-800 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 transition-colors shadow-2xs"
+                className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 bg-white px-5 py-2.5 text-xs sm:text-sm font-bold text-zinc-800 hover:bg-zinc-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 transition-colors shadow-2xs"
               >
                 <RotateCcw className="h-4 w-4" />
                 <span>Retake Mock Interview</span>
@@ -402,7 +402,7 @@ export function MockInterviewModal({
 
               <button
                 onClick={onClose}
-                className="inline-flex items-center gap-2 rounded-xl bg-zinc-950 px-6 py-2.5 text-xs sm:text-sm font-bold text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 transition-colors shadow-xs"
+                className="inline-flex items-center gap-2 rounded-xl bg-zinc-950 px-6 py-2.5 text-xs sm:text-sm font-bold text-white hover:bg-zinc-800 dark:bg-white dark:text-gray-950 dark:hover:bg-zinc-200 transition-colors shadow-xs"
               >
                 <span>Continue Roadmap Learning</span>
                 <ArrowRight className="h-4 w-4" />

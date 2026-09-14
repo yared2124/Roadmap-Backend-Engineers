@@ -50,25 +50,25 @@ export function ShortcutsModal({ isOpen, onClose }: ShortcutsModalProps) {
       />
 
       {/* Modal Dialog */}
-      <div className="relative w-full max-w-lg rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-950 transition-all">
+      <div className="relative w-full max-w-lg rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-gray-700 dark:bg-gray-800 transition-all">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-zinc-100 dark:border-zinc-800/80">
+        <div className="flex items-center justify-between pb-4 border-b border-zinc-100 dark:border-gray-800">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
-              <Keyboard className="h-5 w-5 text-zinc-800 dark:text-zinc-200" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-zinc-100 dark:bg-gray-800 border border-zinc-200 dark:border-gray-700">
+              <Keyboard className="h-5 w-5 text-zinc-800 dark:text-gray-200" />
             </div>
             <div>
-              <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 text-base">
+              <h3 className="font-semibold text-zinc-900 dark:text-gray-100 text-base">
                 Keyboard Shortcuts
               </h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-zinc-500 dark:text-gray-400">
                 Navigate the roadmap like a senior engineer
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 transition-colors"
+            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-gray-700 dark:hover:text-zinc-200 transition-colors"
           >
             <X className="h-4 w-4" />
           </button>
@@ -80,16 +80,16 @@ export function ShortcutsModal({ isOpen, onClose }: ShortcutsModalProps) {
             const items = SHORTCUTS.filter((s) => s.category === category);
             return (
               <div key={category} className="space-y-2">
-                <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-gray-500">
                   {category}
                 </span>
                 <div className="space-y-1.5">
                   {items.map((shortcut, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center justify-between rounded-lg px-2.5 py-1.5 hover:bg-zinc-50 dark:hover:bg-zinc-900/60 transition-colors"
+                      className="flex items-center justify-between rounded-lg px-2.5 py-1.5 hover:bg-zinc-50 dark:hover:bg-gray-750/60 transition-colors"
                     >
-                      <span className="text-xs text-zinc-700 dark:text-zinc-300">
+                      <span className="text-xs text-zinc-700 dark:text-gray-300">
                         {shortcut.description}
                       </span>
                       <div className="flex items-center gap-1 shrink-0">
@@ -97,14 +97,14 @@ export function ShortcutsModal({ isOpen, onClose }: ShortcutsModalProps) {
                           k === "or" ? (
                             <span
                               key={kIdx}
-                              className="text-[10px] text-zinc-400 dark:text-zinc-500 px-0.5"
+                              className="text-[10px] text-zinc-400 dark:text-gray-500 px-0.5"
                             >
                               or
                             </span>
                           ) : (
                             <kbd
                               key={kIdx}
-                              className="inline-flex min-w-[22px] items-center justify-center rounded border border-zinc-300 bg-zinc-100 px-1.5 py-0.5 font-mono text-[11px] font-medium text-zinc-800 shadow-xs dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+                              className="inline-flex min-w-[22px] items-center justify-center rounded border border-zinc-300 bg-zinc-100 px-1.5 py-0.5 font-mono text-[11px] font-medium text-zinc-800 shadow-xs dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
                             >
                               {k}
                             </kbd>
@@ -120,9 +120,9 @@ export function ShortcutsModal({ isOpen, onClose }: ShortcutsModalProps) {
         </div>
 
         {/* Footer info */}
-        <div className="mt-6 pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between text-[11px] text-zinc-400">
+        <div className="mt-6 pt-3 border-t border-zinc-100 dark:border-gray-800 flex items-center justify-between text-[11px] text-zinc-400">
           <span>Shortcuts disabled while typing in text inputs</span>
-          <kbd className="rounded border border-zinc-200 dark:border-zinc-800 px-1.5 py-0.5 font-mono text-[10px] text-zinc-500">
+          <kbd className="rounded border border-zinc-200 dark:border-gray-700 px-1.5 py-0.5 font-mono text-[10px] text-zinc-500">
             Esc to dismiss
           </kbd>
         </div>

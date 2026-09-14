@@ -157,21 +157,21 @@ export function NotesDrawer({
   return (
     <div
       id="topic-notes-studio"
-      className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-950 transition-all"
+      className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800 transition-all"
     >
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b border-zinc-100 dark:border-zinc-800/80">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b border-zinc-100 dark:border-gray-800">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
-            <Edit3 className="h-4 w-4 text-zinc-900 dark:text-zinc-100" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 dark:bg-gray-800 border border-zinc-200 dark:border-gray-700">
+            <Edit3 className="h-4 w-4 text-zinc-900 dark:text-gray-100" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-zinc-950 dark:text-zinc-50">
+              <h3 className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-zinc-950 dark:text-white">
                 In-App Topic Notes Studio
               </h3>
               {/* Live Save Status */}
-              <span className="flex items-center gap-1.5 font-mono text-[11px] font-semibold text-zinc-500 dark:text-zinc-400">
+              <span className="flex items-center gap-1.5 font-mono text-[11px] font-semibold text-zinc-500 dark:text-gray-400">
                 {saveStatus === "saving" ? (
                   <>
                     <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
@@ -185,8 +185,8 @@ export function NotesDrawer({
                 )}
               </span>
             </div>
-            <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400 mt-0.5">
-              Personal markdown notes & architecture insights for <span className="font-semibold text-zinc-900 dark:text-zinc-100">{topicTitle}</span>
+            <p className="text-xs font-medium text-zinc-600 dark:text-gray-400 mt-0.5">
+              Personal markdown notes & architecture insights for <span className="font-semibold text-zinc-900 dark:text-gray-100">{topicTitle}</span>
             </p>
           </div>
         </div>
@@ -194,13 +194,13 @@ export function NotesDrawer({
         {/* Top Actions: Edit / Preview Switcher & Save */}
         <div className="flex items-center gap-2 flex-wrap">
           {/* Tab Switcher */}
-          <div className="inline-flex rounded-lg border border-zinc-200 bg-zinc-100/80 p-0.5 dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="inline-flex rounded-lg border border-zinc-200 bg-zinc-100/80 p-0.5 dark:border-gray-700 dark:bg-gray-800">
             <button
               onClick={() => setActiveTab("edit")}
               className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs sm:text-sm font-semibold transition-colors ${
                 activeTab === "edit"
-                  ? "bg-white text-zinc-950 shadow-xs dark:bg-zinc-800 dark:text-white"
-                  : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+                  ? "bg-white text-zinc-950 shadow-xs dark:bg-gray-700 dark:text-white"
+                  : "text-zinc-600 hover:text-zinc-900 dark:text-gray-400 dark:hover:text-zinc-200"
               }`}
             >
               <Edit3 className="h-3.5 w-3.5" />
@@ -210,8 +210,8 @@ export function NotesDrawer({
               onClick={() => setActiveTab("preview")}
               className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs sm:text-sm font-semibold transition-colors ${
                 activeTab === "preview"
-                  ? "bg-white text-zinc-950 shadow-xs dark:bg-zinc-800 dark:text-white"
-                  : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+                  ? "bg-white text-zinc-950 shadow-xs dark:bg-gray-700 dark:text-white"
+                  : "text-zinc-600 hover:text-zinc-900 dark:text-gray-400 dark:hover:text-zinc-200"
               }`}
             >
               <Eye className="h-3.5 w-3.5" />
@@ -222,7 +222,7 @@ export function NotesDrawer({
           <button
             onClick={handleManualSave}
             title="Save note to localStorage"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3 py-1.5 text-xs sm:text-sm font-semibold text-zinc-800 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 transition-colors shadow-2xs"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3 py-1.5 text-xs sm:text-sm font-semibold text-zinc-800 hover:bg-zinc-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 transition-colors shadow-2xs"
           >
             <Save className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Save</span>
@@ -232,62 +232,62 @@ export function NotesDrawer({
 
       {/* Quick Formatting Toolbar (only in Edit mode) */}
       {activeTab === "edit" && (
-        <div className="flex items-center justify-between gap-2 py-2 border-b border-zinc-100 dark:border-zinc-800/80 text-xs overflow-x-auto no-scrollbar">
+        <div className="flex items-center justify-between gap-2 py-2 border-b border-zinc-100 dark:border-gray-800 text-xs overflow-x-auto no-scrollbar">
           <div className="flex items-center gap-1 shrink-0">
             <button
               onClick={() => insertFormatting("**", "**", "bold text")}
               title="Bold (**text**)"
-              className="p-1.5 rounded text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-colors"
+              className="p-1.5 rounded text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-zinc-100 transition-colors"
             >
               <Bold className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={() => insertFormatting("*", "*", "italic text")}
               title="Italic (*text*)"
-              className="p-1.5 rounded text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-colors"
+              className="p-1.5 rounded text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-zinc-100 transition-colors"
             >
               <Italic className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={() => insertFormatting("`", "`", "code")}
               title="Inline code (`code`)"
-              className="p-1.5 rounded text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-colors font-mono text-[11px]"
+              className="p-1.5 rounded text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-zinc-100 transition-colors font-mono text-[11px]"
             >
               <Code className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={() => insertFormatting("```go\n", "\n```", "// code here")}
               title="Fenced code block"
-              className="px-2 py-1 rounded text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-colors font-mono text-[11px] font-bold"
+              className="px-2 py-1 rounded text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-zinc-100 transition-colors font-mono text-[11px] font-bold"
             >
               {"{ }"}
             </button>
-            <div className="h-3.5 w-[1px] bg-zinc-200 dark:bg-zinc-800 mx-1" />
+            <div className="h-3.5 w-[1px] bg-zinc-200 dark:bg-gray-700 mx-1" />
             <button
               onClick={() => insertFormatting("### ", "", "Section Heading")}
               title="Heading (### Heading)"
-              className="p-1.5 rounded text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-colors"
+              className="p-1.5 rounded text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-zinc-100 transition-colors"
             >
               <Heading3 className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={() => insertFormatting("- ", "", "List item")}
               title="Bullet List (- item)"
-              className="p-1.5 rounded text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-colors"
+              className="p-1.5 rounded text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-zinc-100 transition-colors"
             >
               <List className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={() => insertFormatting("- [ ] ", "", "Task checklist item")}
               title="Checklist item (- [ ] task)"
-              className="p-1.5 rounded text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-colors"
+              className="p-1.5 rounded text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-zinc-100 transition-colors"
             >
               <CheckSquare className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={() => insertFormatting("[", "](https://github.com)", "link title")}
               title="Insert link ([title](url))"
-              className="p-1.5 rounded text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-colors"
+              className="p-1.5 rounded text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-zinc-100 transition-colors"
             >
               <Link2 className="h-3.5 w-3.5" />
             </button>
@@ -314,17 +314,17 @@ export function NotesDrawer({
             value={note}
             onChange={handleChange}
             placeholder="Document key architecture trade-offs, gotchas, personal mental models, or paste your GitHub repo link (persisted automatically in localStorage)..."
-            className="w-full rounded-xl border border-zinc-200 bg-zinc-50/60 p-4 sm:p-5 font-mono text-[13px] sm:text-[13.5px] text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:border-zinc-500 transition-colors leading-relaxed resize-y min-h-[220px]"
+            className="w-full rounded-xl border border-zinc-200 bg-zinc-50/60 p-4 sm:p-5 font-mono text-[13px] sm:text-[13.5px] text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-500 focus:bg-white focus:outline-none dark:border-gray-700 dark:bg-gray-900/80 dark:text-gray-100 dark:placeholder:text-zinc-500 dark:focus:border-zinc-500 transition-colors leading-relaxed resize-y min-h-[220px]"
           />
         ) : (
-          <div className="w-full min-h-[220px] max-h-[480px] overflow-y-auto rounded-xl border border-zinc-200 bg-zinc-50/50 p-6 dark:border-zinc-800 dark:bg-zinc-900/50 leading-relaxed text-sm sm:text-[14.5px]">
+          <div className="w-full min-h-[220px] max-h-[480px] overflow-y-auto rounded-xl border border-zinc-200 bg-zinc-50/50 p-6 dark:border-gray-700 dark:bg-gray-800/60 leading-relaxed text-sm sm:text-[14.5px]">
             {note.trim() ? (
               <SimpleMarkdownRenderer content={note} />
             ) : (
               <div className="flex flex-col items-center justify-center py-12 text-zinc-400">
                 <FileText className="h-8 w-8 mb-2 opacity-50" />
-                <p className="font-semibold text-sm text-zinc-600 dark:text-zinc-300">No notes written yet</p>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                <p className="font-semibold text-sm text-zinc-600 dark:text-gray-300">No notes written yet</p>
+                <p className="text-xs text-zinc-500 dark:text-gray-400 mt-1">
                   Switch to the Write tab to draft insights or click "Insert Senior Template".
                 </p>
               </div>
@@ -334,7 +334,7 @@ export function NotesDrawer({
       </div>
 
       {/* Footer Tools: Word Count, Download, Copy, Global Export */}
-      <div className="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-zinc-500 dark:text-zinc-400">
+      <div className="mt-4 pt-3 border-t border-zinc-100 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-zinc-500 dark:text-gray-400">
         <div className="flex items-center gap-3 font-mono text-[11px]">
           <span>{wordCount} words</span>
           <span>•</span>
@@ -345,7 +345,7 @@ export function NotesDrawer({
           <button
             onClick={handleCopy}
             disabled={!note.trim()}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 hover:bg-zinc-50 disabled:opacity-40 disabled:pointer-events-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 hover:bg-zinc-50 disabled:opacity-40 disabled:pointer-events-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors"
           >
             {copied ? (
               <>
@@ -363,7 +363,7 @@ export function NotesDrawer({
           <button
             onClick={handleDownloadNote}
             disabled={!note.trim()}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 hover:bg-zinc-50 disabled:opacity-40 disabled:pointer-events-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 hover:bg-zinc-50 disabled:opacity-40 disabled:pointer-events-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors"
             title="Download this topic's note as a Markdown file"
           >
             <Download className="h-3 w-3" />
@@ -373,7 +373,7 @@ export function NotesDrawer({
           {onExportAllNotes && (
             <button
               onClick={onExportAllNotes}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-900 px-2.5 py-1 text-xs font-medium text-white hover:bg-black dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-900 px-2.5 py-1 text-xs font-medium text-white hover:bg-black dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-white transition-colors"
               title="Download all notes across all 31 modules"
             >
               <Download className="h-3 w-3" />
@@ -426,14 +426,14 @@ function SimpleMarkdownRenderer({ content }: { content: string }) {
 
     // Horizontal Rule
     if (line.trim() === "---" || line.trim() === "***") {
-      elements.push(<hr key={i} className="my-4 border-zinc-200 dark:border-zinc-800" />);
+      elements.push(<hr key={i} className="my-4 border-zinc-200 dark:border-gray-700" />);
       continue;
     }
 
     // Headings
     if (line.startsWith("### ")) {
       elements.push(
-        <h4 key={i} className="mt-4 mb-1.5 font-bold text-sm text-zinc-900 dark:text-zinc-100">
+        <h4 key={i} className="mt-4 mb-1.5 font-bold text-sm text-zinc-900 dark:text-gray-100">
           {renderInline(line.slice(4))}
         </h4>
       );
@@ -441,7 +441,7 @@ function SimpleMarkdownRenderer({ content }: { content: string }) {
     }
     if (line.startsWith("## ")) {
       elements.push(
-        <h3 key={i} className="mt-5 mb-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
+        <h3 key={i} className="mt-5 mb-2 font-bold text-base text-zinc-900 dark:text-gray-100">
           {renderInline(line.slice(3))}
         </h3>
       );
@@ -449,7 +449,7 @@ function SimpleMarkdownRenderer({ content }: { content: string }) {
     }
     if (line.startsWith("# ")) {
       elements.push(
-        <h2 key={i} className="mt-6 mb-2.5 font-bold text-lg text-zinc-900 dark:text-zinc-100">
+        <h2 key={i} className="mt-6 mb-2.5 font-bold text-lg text-zinc-900 dark:text-gray-100">
           {renderInline(line.slice(2))}
         </h2>
       );
@@ -459,7 +459,7 @@ function SimpleMarkdownRenderer({ content }: { content: string }) {
     // Checklist
     if (line.trim().startsWith("- [ ] ")) {
       elements.push(
-        <div key={i} className="flex items-start gap-2 my-1 text-zinc-700 dark:text-zinc-300">
+        <div key={i} className="flex items-start gap-2 my-1 text-zinc-700 dark:text-gray-300">
           <input type="checkbox" disabled className="mt-1 rounded border-zinc-300" />
           <span>{renderInline(line.trim().slice(6))}</span>
         </div>
@@ -468,7 +468,7 @@ function SimpleMarkdownRenderer({ content }: { content: string }) {
     }
     if (line.trim().startsWith("- [x] ") || line.trim().startsWith("- [X] ")) {
       elements.push(
-        <div key={i} className="flex items-start gap-2 my-1 text-zinc-400 dark:text-zinc-500 line-through">
+        <div key={i} className="flex items-start gap-2 my-1 text-zinc-400 dark:text-gray-500 line-through">
           <input type="checkbox" defaultChecked disabled className="mt-1 rounded border-zinc-300" />
           <span>{renderInline(line.trim().slice(6))}</span>
         </div>
@@ -479,7 +479,7 @@ function SimpleMarkdownRenderer({ content }: { content: string }) {
     // Bullet List
     if (line.trim().startsWith("- ") || line.trim().startsWith("* ")) {
       elements.push(
-        <li key={i} className="ml-4 list-disc my-0.5 text-zinc-700 dark:text-zinc-300">
+        <li key={i} className="ml-4 list-disc my-0.5 text-zinc-700 dark:text-gray-300">
           {renderInline(line.trim().slice(2))}
         </li>
       );
@@ -491,7 +491,7 @@ function SimpleMarkdownRenderer({ content }: { content: string }) {
       elements.push(
         <blockquote
           key={i}
-          className="border-l-2 border-zinc-300 dark:border-zinc-700 pl-3 my-2 italic text-zinc-600 dark:text-zinc-400"
+          className="border-l-2 border-zinc-300 dark:border-gray-600 pl-3 my-2 italic text-zinc-600 dark:text-gray-400"
         >
           {renderInline(line.trim().slice(2))}
         </blockquote>
@@ -507,7 +507,7 @@ function SimpleMarkdownRenderer({ content }: { content: string }) {
 
     // Regular paragraph
     elements.push(
-      <p key={i} className="my-1 text-zinc-800 dark:text-zinc-200">
+      <p key={i} className="my-1 text-zinc-800 dark:text-gray-200">
         {renderInline(line)}
       </p>
     );
@@ -533,7 +533,7 @@ function renderInline(text: string): React.ReactNode {
       return (
         <code
           key={idx}
-          className="rounded bg-zinc-200/80 px-1 py-0.5 font-mono text-[11px] text-zinc-900 dark:bg-zinc-800 dark:text-zinc-200"
+          className="rounded bg-zinc-200/80 px-1 py-0.5 font-mono text-[11px] text-zinc-900 dark:bg-gray-700 dark:text-gray-200"
         >
           {part.slice(1, -1)}
         </code>

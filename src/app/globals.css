@@ -10,8 +10,14 @@
 }
 
 .dark {
-  --background: 240 10% 3.9%;
-  --foreground: 0 0% 98%;
+  --background: 221 39% 11%;
+  --foreground: 210 20% 98%;
+}
+
+html.dark,
+body.dark {
+  background-color: #111827;
+  color: #f9fafb;
 }
 
 * {

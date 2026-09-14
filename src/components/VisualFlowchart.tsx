@@ -71,14 +71,14 @@ export function VisualFlowchart({ flow }: VisualFlowchartProps) {
       case "auth":
         return "border-indigo-300 bg-indigo-50 text-indigo-900 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300";
       case "storage":
-        return "border-zinc-300 bg-zinc-100 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200";
+        return "border-zinc-300 bg-zinc-100 text-zinc-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200";
       default:
-        return "border-zinc-300 bg-zinc-50 text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200";
+        return "border-zinc-300 bg-zinc-50 text-zinc-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200";
     }
   };
 
   return (
-    <div className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-7 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-6">
+    <div className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-7 dark:border-gray-700 dark:bg-gray-800 shadow-sm space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-100 dark:border-zinc-900 pb-4">
         <div className="flex items-center gap-2.5">
@@ -87,7 +87,7 @@ export function VisualFlowchart({ flow }: VisualFlowchartProps) {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-zinc-950 dark:text-zinc-50">
+              <h3 className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-zinc-950 dark:text-white">
                 Visual System Architecture & Lifecycle
               </h3>
               <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[10.5px] font-bold text-blue-900 dark:bg-blue-950/70 dark:text-blue-200 font-mono">
@@ -95,7 +95,7 @@ export function VisualFlowchart({ flow }: VisualFlowchartProps) {
                 Interactive Data Flow
               </span>
             </div>
-            <h4 className="text-sm sm:text-base font-bold text-zinc-950 dark:text-zinc-50 mt-0.5">
+            <h4 className="text-sm sm:text-base font-bold text-zinc-950 dark:text-white mt-0.5">
               {flow.title}
             </h4>
           </div>
@@ -103,13 +103,13 @@ export function VisualFlowchart({ flow }: VisualFlowchartProps) {
       </div>
 
       {/* Summary Narrative */}
-      <p className="text-xs sm:text-sm leading-relaxed text-zinc-700 dark:text-zinc-300 font-medium">
+      <p className="text-xs sm:text-sm leading-relaxed text-zinc-700 dark:text-gray-300 font-medium">
         {flow.summary}
       </p>
 
       {/* Node Topology Strip */}
       <div className="space-y-2">
-        <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+        <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-gray-400">
           Architecture Topology Nodes:
         </span>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 pt-1">
@@ -141,7 +141,7 @@ export function VisualFlowchart({ flow }: VisualFlowchartProps) {
       {/* Step-by-Step Flow Path */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+          <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-gray-400">
             Request Execution Lifecycle (Hover to highlight):
           </span>
           <span className="font-mono text-[11px] text-zinc-400">
@@ -162,25 +162,25 @@ export function VisualFlowchart({ flow }: VisualFlowchartProps) {
                 onMouseLeave={() => setActiveStep(null)}
                 className={`rounded-xl border p-3.5 sm:p-4 transition-all cursor-pointer ${
                   isActive
-                    ? "border-zinc-400 bg-zinc-100/90 dark:border-zinc-600 dark:bg-zinc-900 shadow-xs"
+                    ? "border-zinc-400 bg-zinc-100/90 dark:border-gray-500 dark:bg-gray-800 shadow-xs"
                     : step.isFallback
                     ? "border-amber-200/80 bg-amber-50/40 dark:border-amber-900/40 dark:bg-amber-950/20"
-                    : "border-zinc-200/80 bg-zinc-50/60 dark:border-zinc-900 dark:bg-zinc-900/40"
+                    : "border-zinc-200/80 bg-zinc-50/60 dark:border-zinc-900 dark:bg-gray-800/40"
                 }`}
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex items-start sm:items-center gap-2.5 flex-wrap">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-zinc-950 text-white font-mono text-xs font-bold dark:bg-white dark:text-zinc-950">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-zinc-950 text-white font-mono text-xs font-bold dark:bg-white dark:text-gray-950">
                       0{step.stepNumber}
                     </span>
 
-                    <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-zinc-800 dark:text-zinc-200">
+                    <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-zinc-800 dark:text-gray-200">
                       <span>{fromNode?.label || step.from}</span>
                       <ArrowRight className="h-3 w-3 text-zinc-400" />
                       <span>{toNode?.label || step.to}</span>
                     </div>
 
-                    <span className="text-xs sm:text-[13px] font-bold text-zinc-950 dark:text-zinc-50">
+                    <span className="text-xs sm:text-[13px] font-bold text-zinc-950 dark:text-white">
                       • {step.action}
                     </span>
 
@@ -193,14 +193,14 @@ export function VisualFlowchart({ flow }: VisualFlowchartProps) {
                   </div>
 
                   {step.latency && (
-                    <div className="flex items-center gap-1 font-mono text-xs font-semibold text-zinc-500 dark:text-zinc-400 shrink-0">
+                    <div className="flex items-center gap-1 font-mono text-xs font-semibold text-zinc-500 dark:text-gray-400 shrink-0">
                       <Clock className="h-3 w-3" />
                       <span>{step.latency}</span>
                     </div>
                   )}
                 </div>
 
-                <p className="mt-2 text-xs sm:text-[13px] text-zinc-600 dark:text-zinc-300 leading-relaxed font-medium pl-8 sm:pl-8.5">
+                <p className="mt-2 text-xs sm:text-[13px] text-zinc-600 dark:text-gray-300 leading-relaxed font-medium pl-8 sm:pl-8.5">
                   {step.detail}
                 </p>
               </div>

@@ -65,7 +65,7 @@ export function CapstoneViewer({
       case "Staff":
         return "bg-rose-100 text-rose-800 dark:bg-rose-950/70 dark:text-rose-300 border-rose-200 dark:border-rose-800";
       default:
-        return "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300";
+        return "bg-zinc-100 text-zinc-800 dark:bg-gray-700 dark:text-gray-300";
     }
   };
 
@@ -85,7 +85,7 @@ export function CapstoneViewer({
       </div>
 
       {/* Hero Header Card */}
-      <div className="rounded-2xl border border-zinc-200 bg-linear-to-b from-zinc-50 to-white p-6 sm:p-8 dark:border-zinc-800 dark:from-zinc-900/60 dark:to-zinc-950 shadow-sm relative overflow-hidden">
+      <div className="rounded-2xl border border-zinc-200 bg-linear-to-b from-zinc-50 to-white p-6 sm:p-8 dark:border-gray-700 dark:from-zinc-900/60 dark:to-gray-800 shadow-sm relative overflow-hidden">
         <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
           <Trophy className="h-64 w-64 text-zinc-900 dark:text-white" />
         </div>
@@ -103,7 +103,7 @@ export function CapstoneViewer({
             >
               {capstone.difficulty} Level
             </span>
-            <span className="inline-flex items-center gap-1 font-mono text-xs text-zinc-500 dark:text-zinc-400">
+            <span className="inline-flex items-center gap-1 font-mono text-xs text-zinc-500 dark:text-gray-400">
               <Clock className="h-3.5 w-3.5" />
               {capstone.estimatedHours}
             </span>
@@ -113,7 +113,7 @@ export function CapstoneViewer({
             {capstone.title}
           </h1>
 
-          <p className="text-sm sm:text-base leading-relaxed text-zinc-600 dark:text-zinc-300 max-w-3xl">
+          <p className="text-sm sm:text-base leading-relaxed text-zinc-600 dark:text-gray-300 max-w-3xl">
             {capstone.scenario}
           </p>
 
@@ -123,7 +123,7 @@ export function CapstoneViewer({
             {capstone.techStack.map((tech, i) => (
               <span
                 key={i}
-                className="inline-flex items-center rounded-md border border-zinc-200 bg-white px-2 py-0.5 text-xs font-mono font-medium text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+                className="inline-flex items-center rounded-md border border-zinc-200 bg-white px-2 py-0.5 text-xs font-mono font-medium text-zinc-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
               >
                 {tech}
               </span>
@@ -133,15 +133,15 @@ export function CapstoneViewer({
       </div>
 
       {/* Section 1: Key Deliverables Checklist */}
-      <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-7 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-4">
+      <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-7 dark:border-gray-700 dark:bg-gray-800 shadow-sm space-y-4">
         <div className="flex items-center gap-2.5 border-b border-zinc-100 dark:border-zinc-900 pb-3">
-          <Layers className="h-5 w-5 text-zinc-950 dark:text-zinc-50" />
-          <h2 className="text-base sm:text-lg font-extrabold text-zinc-950 dark:text-zinc-50">
+          <Layers className="h-5 w-5 text-zinc-950 dark:text-white" />
+          <h2 className="text-base sm:text-lg font-extrabold text-zinc-950 dark:text-white">
             Core Engineering Deliverables
           </h2>
         </div>
 
-        <p className="text-xs sm:text-[13.5px] font-medium text-zinc-600 dark:text-zinc-300">
+        <p className="text-xs sm:text-[13.5px] font-medium text-zinc-600 dark:text-gray-300">
           Your project repository must satisfy each of the following architectural specifications:
         </p>
 
@@ -149,7 +149,7 @@ export function CapstoneViewer({
           {capstone.keyDeliverables.map((item, idx) => (
             <li
               key={idx}
-              className="flex items-start gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-4 dark:border-zinc-900 dark:bg-zinc-900/40 text-xs sm:text-[14px] leading-relaxed font-semibold text-zinc-900 dark:text-zinc-100 shadow-xs"
+              className="flex items-start gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-4 dark:border-zinc-900 dark:bg-gray-800/40 text-xs sm:text-[14px] leading-relaxed font-semibold text-zinc-900 dark:text-gray-100 shadow-xs"
             >
               <span className="font-mono font-bold text-zinc-400 shrink-0 mt-0.5">
                 0{idx + 1}.
@@ -162,17 +162,17 @@ export function CapstoneViewer({
 
       {/* Section 2: Architecture Diagram */}
       {capstone.architectureDiagram && (
-        <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-7 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-4">
+        <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-7 dark:border-gray-700 dark:bg-gray-800 shadow-sm space-y-4">
           <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-900 pb-3">
             <div className="flex items-center gap-2.5">
-              <Terminal className="h-5 w-5 text-zinc-950 dark:text-zinc-50" />
-              <h2 className="text-base sm:text-lg font-extrabold text-zinc-950 dark:text-zinc-50">
+              <Terminal className="h-5 w-5 text-zinc-950 dark:text-white" />
+              <h2 className="text-base sm:text-lg font-extrabold text-zinc-950 dark:text-white">
                 System Architecture & Data Flow
               </h2>
             </div>
             <button
               onClick={handleCopyDiagram}
-              className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-zinc-600 hover:text-zinc-950 dark:text-gray-400 dark:hover:text-zinc-100 transition-colors"
             >
               {copiedDiagram ? (
                 <>
@@ -188,22 +188,22 @@ export function CapstoneViewer({
             </button>
           </div>
 
-          <pre className="overflow-x-auto rounded-xl bg-zinc-950 p-5 font-mono text-xs sm:text-[12.5px] leading-relaxed text-zinc-200 dark:border dark:border-zinc-800 shadow-inner">
+          <pre className="overflow-x-auto rounded-xl bg-zinc-950 p-5 font-mono text-xs sm:text-[12.5px] leading-relaxed text-zinc-200 dark:border dark:border-gray-700 shadow-inner">
             <code>{capstone.architectureDiagram}</code>
           </pre>
         </div>
       )}
 
       {/* Section 3: Acceptance & Review Criteria */}
-      <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-7 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-4">
+      <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-7 dark:border-gray-700 dark:bg-gray-800 shadow-sm space-y-4">
         <div className="flex items-center gap-2.5 border-b border-zinc-100 dark:border-zinc-900 pb-3">
           <ShieldCheck className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-          <h2 className="text-base sm:text-lg font-extrabold text-zinc-950 dark:text-zinc-50">
+          <h2 className="text-base sm:text-lg font-extrabold text-zinc-950 dark:text-white">
             Acceptance Criteria & Verification Test Suite
           </h2>
         </div>
 
-        <p className="text-xs sm:text-[13.5px] font-medium text-zinc-600 dark:text-zinc-300">
+        <p className="text-xs sm:text-[13.5px] font-medium text-zinc-600 dark:text-gray-300">
           Senior staff criteria used to evaluate whether your repository is production-ready:
         </p>
 
@@ -221,33 +221,33 @@ export function CapstoneViewer({
       </div>
 
       {/* Section 4: GitHub Repository Submission & Portfolio Guide */}
-      <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-7 dark:border-zinc-800 dark:bg-zinc-950 shadow-sm space-y-6">
+      <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-7 dark:border-gray-700 dark:bg-gray-800 shadow-sm space-y-6">
         <div className="flex items-center gap-2.5 border-b border-zinc-100 dark:border-zinc-900 pb-3">
-          <FolderGit2 className="h-5 w-5 text-zinc-950 dark:text-zinc-50" />
-          <h2 className="text-base sm:text-lg font-extrabold text-zinc-950 dark:text-zinc-50">
+          <FolderGit2 className="h-5 w-5 text-zinc-950 dark:text-white" />
+          <h2 className="text-base sm:text-lg font-extrabold text-zinc-950 dark:text-white">
             GitHub Submission & Portfolio Guide
           </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-3">
-            <h3 className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+            <h3 className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-zinc-600 dark:text-gray-400">
               Recommended Repository Structure
             </h3>
-            <pre className="overflow-x-auto rounded-xl bg-zinc-950 p-4 font-mono text-xs text-zinc-200 dark:border dark:border-zinc-800 shadow-inner">
+            <pre className="overflow-x-auto rounded-xl bg-zinc-950 p-4 font-mono text-xs text-zinc-200 dark:border dark:border-gray-700 shadow-inner">
               <code>{capstone.githubSubmissionGuide.folderStructure}</code>
             </pre>
           </div>
 
           <div className="space-y-3">
-            <h3 className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
+            <h3 className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-zinc-600 dark:text-gray-400">
               README.md Portfolio Checklist
             </h3>
             <div className="space-y-2.5">
               {capstone.githubSubmissionGuide.readmeChecklist.map((checkItem, idx) => (
                 <div
                   key={idx}
-                  className="flex items-start gap-2.5 text-xs sm:text-sm font-medium text-zinc-800 dark:text-zinc-200"
+                  className="flex items-start gap-2.5 text-xs sm:text-sm font-medium text-zinc-800 dark:text-gray-200"
                 >
                   <span className="text-emerald-600 dark:text-emerald-400 font-bold">✓</span>
                   <span>{checkItem}</span>
@@ -256,10 +256,10 @@ export function CapstoneViewer({
             </div>
 
             <div className="pt-3 border-t border-zinc-100 dark:border-zinc-900">
-              <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-mono font-medium">
+              <span className="text-xs text-zinc-500 dark:text-gray-400 block font-mono font-medium">
                 Recommended Repository Name:
               </span>
-              <code className="text-xs sm:text-sm font-bold text-zinc-950 dark:text-zinc-50 font-mono bg-zinc-100 dark:bg-zinc-900 px-2.5 py-1 rounded-md inline-block mt-1">
+              <code className="text-xs sm:text-sm font-bold text-zinc-950 dark:text-white font-mono bg-zinc-100 dark:bg-gray-800 px-2.5 py-1 rounded-md inline-block mt-1">
                 {capstone.githubSubmissionGuide.recommendedRepoName}
               </code>
             </div>
@@ -267,7 +267,7 @@ export function CapstoneViewer({
         </div>
 
         {/* Student Submission Form */}
-        <div className="rounded-xl border border-zinc-200/90 bg-zinc-50 p-5 dark:border-zinc-800 dark:bg-zinc-900/60 space-y-4">
+        <div className="rounded-xl border border-zinc-200/90 bg-zinc-50 p-5 dark:border-gray-700 dark:bg-gray-900/80 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Github className="h-4 w-4 text-zinc-900 dark:text-white" />
@@ -288,7 +288,7 @@ export function CapstoneViewer({
               placeholder="https://github.com/your-username/repo-name"
               value={repoInput}
               onChange={(e) => setRepoInput(e.target.value)}
-              className="flex-1 rounded-md border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-hidden focus:ring-2 focus:ring-black dark:border-zinc-700 dark:bg-zinc-950 dark:text-white dark:focus:ring-white font-mono"
+              className="flex-1 rounded-md border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-hidden focus:ring-2 focus:ring-black dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:ring-white font-mono"
             />
             <button
               type="submit"
@@ -301,7 +301,7 @@ export function CapstoneViewer({
 
           {submissionUrl && (
             <div className="flex items-center justify-between text-xs pt-1">
-              <span className="text-zinc-500 dark:text-zinc-400">Current submission:</span>
+              <span className="text-zinc-500 dark:text-gray-400">Current submission:</span>
               <a
                 href={submissionUrl}
                 target="_blank"
@@ -315,7 +315,7 @@ export function CapstoneViewer({
           )}
 
           {/* Toggle Milestone Completion */}
-          <div className="pt-3 border-t border-zinc-200 dark:border-zinc-800 flex justify-end">
+          <div className="pt-3 border-t border-zinc-200 dark:border-gray-700 flex justify-end">
             <button
               onClick={onToggleComplete}
               className={`inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-xs font-bold font-mono transition-colors shadow-xs ${
