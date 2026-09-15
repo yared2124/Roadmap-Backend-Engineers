@@ -6,7 +6,6 @@ import {
   ArrowLeft,
   Layers,
   Terminal,
-  BookOpen,
   Mic,
   CheckCircle2,
   Cpu,
@@ -254,16 +253,6 @@ export function PortfolioHome({
                 Welcome to the Backend Engineering Hub. This platform was engineered from first principles to take you from writing basic APIs to designing resilient, mission-critical distributed systems.
               </p>
             </div>
-
-            {onOpenGuide && (
-              <button
-                onClick={onOpenGuide}
-                className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 dark:border-[#2C2A26] bg-stone-50 dark:bg-[#1A1917] px-5 py-3 text-xs sm:text-sm font-mono font-bold text-zinc-900 dark:text-[#F3EFE6] hover:bg-stone-100 dark:hover:bg-[#22211E] transition-colors shrink-0 shadow-2xs"
-              >
-                <BookOpen className="h-4 w-4 text-zinc-600 dark:text-[#D5CFBF]" />
-                <span>Open Detailed Orientation Modal</span>
-              </button>
-            )}
           </div>
 
           {/* 6 Sequential Onboarding Steps */}
