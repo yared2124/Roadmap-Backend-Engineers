@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import {
   ArrowRight,
   ArrowLeft,
-  Layers,
   Terminal,
   Mic,
   CheckCircle2,
@@ -398,23 +397,17 @@ export function PortfolioHome({
           </div>
 
           {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-10 border-b border-zinc-200/80 dark:border-[#2C2A26]">
-            <div className="max-w-3xl space-y-3">
-              <div className="inline-flex items-center gap-2 rounded-full border border-zinc-300 dark:border-[#2C2A26] bg-stone-100 dark:bg-[#1A1917] px-3.5 py-1 text-xs font-mono font-bold uppercase tracking-wider text-zinc-800 dark:text-[#D5CFBF]">
-                <Layers className="h-3.5 w-3.5 text-zinc-700 dark:text-[#D5CFBF]" />
-                <span>Complete Curriculum</span>
-              </div>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6]">
-                The 7 Architectural Mastery Phases
-              </h2>
-              <p className="text-base sm:text-lg font-serif text-zinc-600 dark:text-[#DDD7CD] leading-relaxed">
-                31 exhaustive production deep-dives arranged in cognitive dependency order. Master networking primitives, storage engines, distributed coordination, and staff architecture.
-              </p>
-            </div>
+          <div className="text-center flex flex-col items-center max-w-3xl mx-auto space-y-4 pb-10 border-b border-zinc-200/80 dark:border-[#2C2A26]">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6]">
+              The 7 Architectural Mastery Phases
+            </h2>
+            <p className="text-base sm:text-lg font-serif text-zinc-600 dark:text-[#DDD7CD] leading-relaxed max-w-2xl mx-auto">
+              31 exhaustive production deep-dives arranged in cognitive dependency order. Master networking primitives, storage engines, distributed coordination, and staff architecture.
+            </p>
 
             <button
               onClick={() => onEnterRoadmap()}
-              className="inline-flex items-center gap-2 rounded-xl bg-zinc-950 px-6 py-3 text-xs sm:text-sm font-bold text-white hover:bg-zinc-800 dark:bg-[#F3EFE6] dark:text-[#141312] dark:hover:bg-white transition-all shrink-0 shadow-sm"
+              className="mt-2 inline-flex items-center gap-2 rounded-xl bg-zinc-950 px-6 py-3 text-xs sm:text-sm font-bold text-white hover:bg-zinc-800 dark:bg-[#F3EFE6] dark:text-[#141312] dark:hover:bg-white transition-all shrink-0 shadow-sm"
             >
               <span>Launch Full Roadmap</span>
               <ArrowRight className="h-4 w-4" />
