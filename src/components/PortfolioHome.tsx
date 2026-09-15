@@ -6,20 +6,16 @@ import {
   Layers,
   Terminal,
   BookOpen,
-  Code2,
-  FileText,
   Mic,
   CheckCircle2,
   Cpu,
   ShieldCheck,
-  Zap,
   Clock,
   Compass,
   Moon,
   Sun,
   ChevronRight,
   Trophy,
-  PlayCircle,
   Check,
 } from "lucide-react";
 import { ROADMAP_PHASES } from "../data/roadmap";
@@ -77,12 +73,6 @@ export function PortfolioHome({
               className="hover:text-zinc-950 dark:hover:text-[#F3EFE6] transition-colors"
             >
               Curriculum
-            </button>
-            <button
-              onClick={() => scrollToSection("study-formula")}
-              className="hover:text-zinc-950 dark:hover:text-[#F3EFE6] transition-colors"
-            >
-              Methodology
             </button>
             <button
               onClick={() => scrollToSection("interview-engine")}
@@ -418,216 +408,7 @@ export function PortfolioHome({
         </div>
       </section>
 
-      {/* 3. The 5-Stage Engineering Study Formula */}
-      <section id="study-formula" className="py-20 sm:py-28 border-b border-zinc-200/80 dark:border-[#2C2A26] bg-stone-50/40 dark:bg-[#161513]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          
-          {/* Section Heading with Inspiring Editorial Typography */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="max-w-3xl space-y-3">
-              <div className="inline-flex items-center gap-2 rounded-full border border-zinc-300 dark:border-[#2C2A26] bg-white dark:bg-[#1A1917] px-3.5 py-1 text-xs font-mono font-bold uppercase tracking-wider text-zinc-800 dark:text-[#D5CFBF]">
-                <Zap className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
-                <span>Pedagogical Architecture</span>
-              </div>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6]">
-                The 5-Stage Engineering Study Lifecycle
-              </h2>
-              <p className="text-base sm:text-lg font-serif text-zinc-600 dark:text-[#DDD7CD] leading-relaxed">
-                Engineers don&apos;t master distributed systems by passively skimming slides. Every single module follows a rigorous 5-step cognitive pipeline designed to build authentic mental models, debate trade-offs, and prove production implementation.
-              </p>
-            </div>
 
-            {/* Quick Link into Roadmap */}
-            <button
-              onClick={() => onEnterRoadmap()}
-              className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-zinc-950 dark:text-[#F3EFE6] hover:underline shrink-0 font-mono"
-            >
-              <span>Experience the 5 stages</span>
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          </div>
-
-          {/* 5-Step Connected Cards Grid in Warm Dark Palette */}
-          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
-            
-            {/* Stage 1: Video Masterclass */}
-            <div className="group relative flex flex-col justify-between rounded-2xl border border-zinc-200/90 bg-white p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:hover:border-[#3D3A34]">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-950 text-white dark:bg-[#F3EFE6] dark:text-[#141312] font-mono font-bold text-sm shadow-sm">
-                    01
-                  </div>
-                  <span className="rounded-full bg-stone-100 dark:bg-[#25231F] px-2.5 py-0.5 font-mono text-[10.5px] font-bold text-zinc-800 dark:text-[#D5CFBF] border border-zinc-200 dark:border-[#35332D]">
-                    30–60m Video
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2 text-zinc-700 dark:text-[#D5CFBF]">
-                  <PlayCircle className="h-4 w-4" />
-                  <span className="font-mono text-xs font-bold uppercase tracking-wider">
-                    Foundation
-                  </span>
-                </div>
-
-                <h3 className="font-serif font-bold text-base text-zinc-950 dark:text-[#F3EFE6] leading-snug">
-                  Canonical Video Masterclass
-                </h3>
-
-                <p className="text-xs text-zinc-600 dark:text-[#A19B8F] leading-relaxed">
-                  High-yield lectures dissecting architectural intent, protocols, and underlying systems mechanics before touching code.
-                </p>
-              </div>
-
-              <div className="mt-5 pt-3 border-t border-zinc-100 dark:border-[#262420]">
-                <span className="inline-block text-[11px] font-mono font-semibold text-zinc-700 dark:text-[#D5CFBF]">
-                  • Mental Models & Protocols
-                </span>
-              </div>
-            </div>
-
-            {/* Stage 2: Authoritative Literature */}
-            <div className="group relative flex flex-col justify-between rounded-2xl border border-zinc-200/90 bg-white p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:hover:border-[#3D3A34]">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-950 text-white dark:bg-[#F3EFE6] dark:text-[#141312] font-mono font-bold text-sm shadow-sm">
-                    02
-                  </div>
-                  <span className="rounded-full bg-stone-100 dark:bg-[#25231F] px-2.5 py-0.5 font-mono text-[10.5px] font-bold text-zinc-800 dark:text-[#D5CFBF] border border-zinc-200 dark:border-[#35332D]">
-                    Core Reading
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2 text-zinc-700 dark:text-[#D5CFBF]">
-                  <BookOpen className="h-4 w-4" />
-                  <span className="font-mono text-xs font-bold uppercase tracking-wider">
-                    Literature
-                  </span>
-                </div>
-
-                <h3 className="font-serif font-bold text-base text-zinc-950 dark:text-[#F3EFE6] leading-snug">
-                  Authoritative Literature
-                </h3>
-
-                <p className="text-xs text-zinc-600 dark:text-[#A19B8F] leading-relaxed">
-                  Curated chapters from foundational texts: Martin Kleppmann (DDIA), Martin Fowler, and Ilya Grigorik.
-                </p>
-              </div>
-
-              <div className="mt-5 pt-3 border-t border-zinc-100 dark:border-[#262420]">
-                <span className="inline-block text-[11px] font-mono font-semibold text-zinc-700 dark:text-[#D5CFBF]">
-                  • Peer-Reviewed Citations
-                </span>
-              </div>
-            </div>
-
-            {/* Stage 3: Visual Architecture Flow */}
-            <div className="group relative flex flex-col justify-between rounded-2xl border border-zinc-200/90 bg-white p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:hover:border-[#3D3A34]">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-950 text-white dark:bg-[#F3EFE6] dark:text-[#141312] font-mono font-bold text-sm shadow-sm">
-                    03
-                  </div>
-                  <span className="rounded-full bg-stone-100 dark:bg-[#25231F] px-2.5 py-0.5 font-mono text-[10.5px] font-bold text-zinc-800 dark:text-[#D5CFBF] border border-zinc-200 dark:border-[#35332D]">
-                    Flowchart
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2 text-zinc-700 dark:text-[#D5CFBF]">
-                  <Cpu className="h-4 w-4" />
-                  <span className="font-mono text-xs font-bold uppercase tracking-wider">
-                    Systems Flow
-                  </span>
-                </div>
-
-                <h3 className="font-serif font-bold text-base text-zinc-950 dark:text-[#F3EFE6] leading-snug">
-                  Visual Architecture Flow
-                </h3>
-
-                <p className="text-xs text-zinc-600 dark:text-[#A19B8F] leading-relaxed">
-                  Interactive flowcharts mapping client, gateway, cache, database, and dead-letter queues with microsecond latencies.
-                </p>
-              </div>
-
-              <div className="mt-5 pt-3 border-t border-zinc-100 dark:border-[#262420]">
-                <span className="inline-block text-[11px] font-mono font-semibold text-zinc-700 dark:text-[#D5CFBF]">
-                  • Latency & Recovery Paths
-                </span>
-              </div>
-            </div>
-
-            {/* Stage 4: Polyglot Code Blueprints */}
-            <div className="group relative flex flex-col justify-between rounded-2xl border border-zinc-200/90 bg-white p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:hover:border-[#3D3A34]">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-950 text-white dark:bg-[#F3EFE6] dark:text-[#141312] font-mono font-bold text-sm shadow-sm">
-                    04
-                  </div>
-                  <span className="rounded-full bg-stone-100 dark:bg-[#25231F] px-2.5 py-0.5 font-mono text-[10.5px] font-bold text-zinc-800 dark:text-[#D5CFBF] border border-zinc-200 dark:border-[#35332D]">
-                    Polyglot
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2 text-zinc-700 dark:text-[#D5CFBF]">
-                  <Code2 className="h-4 w-4" />
-                  <span className="font-mono text-xs font-bold uppercase tracking-wider">
-                    Code Patterns
-                  </span>
-                </div>
-
-                <h3 className="font-serif font-bold text-base text-zinc-950 dark:text-[#F3EFE6] leading-snug">
-                  Polyglot Code Blueprints
-                </h3>
-
-                <p className="text-xs text-zinc-600 dark:text-[#A19B8F] leading-relaxed">
-                  Production implementations switchable across Node.js, Go, Python, and Java with clean dependency layers.
-                </p>
-              </div>
-
-              <div className="mt-5 pt-3 border-t border-zinc-100 dark:border-[#262420]">
-                <span className="inline-block text-[11px] font-mono font-semibold text-zinc-700 dark:text-[#D5CFBF]">
-                  • Go • TS • Python • Java
-                </span>
-              </div>
-            </div>
-
-            {/* Stage 5: Systems Note Studio */}
-            <div className="group relative flex flex-col justify-between rounded-2xl border border-zinc-200/90 bg-white p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:hover:border-[#3D3A34]">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-950 text-white dark:bg-[#F3EFE6] dark:text-[#141312] font-mono font-bold text-sm shadow-sm">
-                    05
-                  </div>
-                  <span className="rounded-full bg-stone-100 dark:bg-[#25231F] px-2.5 py-0.5 font-mono text-[10.5px] font-bold text-zinc-800 dark:text-[#D5CFBF] border border-zinc-200 dark:border-[#35332D]">
-                    Synthesis
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2 text-zinc-700 dark:text-[#D5CFBF]">
-                  <FileText className="h-4 w-4" />
-                  <span className="font-mono text-xs font-bold uppercase tracking-wider">
-                    Retention
-                  </span>
-                </div>
-
-                <h3 className="font-serif font-bold text-base text-zinc-950 dark:text-[#F3EFE6] leading-snug">
-                  Systems Note Studio
-                </h3>
-
-                <p className="text-xs text-zinc-600 dark:text-[#A19B8F] leading-relaxed">
-                  Markdown notes editor with senior templates for documenting trade-offs, edge cases, and exporting master cheat-sheets.
-                </p>
-              </div>
-
-              <div className="mt-5 pt-3 border-t border-zinc-100 dark:border-[#262420]">
-                <span className="inline-block text-[11px] font-mono font-semibold text-zinc-700 dark:text-[#D5CFBF]">
-                  • Senior Trade-off Rubrics
-                </span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
 
       {/* 4. Whiteboard Oral Interview Engine */}
       <section id="interview-engine" className="py-20 sm:py-28 border-b border-zinc-200/80 dark:border-[#2C2A26] bg-white dark:bg-[#141312]">
@@ -1089,13 +870,6 @@ export function PortfolioHome({
               className="hover:text-zinc-950 dark:hover:text-[#F3EFE6] transition-colors"
             >
               Capstones
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => scrollToSection("study-formula")}
-              className="hover:text-zinc-950 dark:hover:text-[#F3EFE6] transition-colors"
-            >
-              Methodology
             </button>
           </div>
         </div>
