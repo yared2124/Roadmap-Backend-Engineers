@@ -45,7 +45,7 @@ export function PortfolioHome({
   const [activeTab, setActiveTab] = useState<PortfolioTab>("home");
 
   useEffect(() => {
-    if (activeTab === "home") {
+    if (activeTab === "home" || activeTab === "oral-exams") {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -65,7 +65,7 @@ export function PortfolioHome({
   return (
     <div
       className={`w-full bg-white text-zinc-900 dark:bg-[#141312] dark:text-[#F3EFE6] selection:bg-zinc-900 selection:text-white dark:selection:bg-[#F3EFE6] dark:selection:text-[#141312] font-sans transition-colors duration-200 flex flex-col justify-between ${
-        activeTab === "home" ? "h-screen max-h-screen overflow-hidden" : "min-h-screen"
+        activeTab === "home" || activeTab === "oral-exams" ? "h-screen max-h-screen overflow-hidden" : "min-h-screen"
       }`}
     >
       {/* 1. Global Navigation Header */}
@@ -532,9 +532,9 @@ export function PortfolioHome({
       {/* VIEW 4: ORAL EXAMS (WHITEBOARD & INTERVIEW SIMULATOR)     */}
       {/* ========================================================= */}
       {activeTab === "oral-exams" && (
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 flex flex-col justify-center overflow-y-auto no-scrollbar">
           {/* Breadcrumb / Back to Home */}
-          <div className="mb-8">
+          <div className="mb-4 sm:mb-6">
             <button
               onClick={() => handleSwitchTab("home")}
               className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-zinc-500 hover:text-zinc-950 dark:text-[#A19B8F] dark:hover:text-[#F3EFE6] transition-colors"
@@ -544,19 +544,14 @@ export function PortfolioHome({
             </button>
           </div>
 
-          <div className="grid gap-12 lg:grid-cols-12 items-center">
+          <div className="grid gap-8 lg:gap-12 lg:grid-cols-12 items-center">
             {/* Left Content */}
-            <div className="lg:col-span-6 space-y-6">
-              <div className="inline-flex items-center gap-2 rounded-full border border-zinc-300 dark:border-[#2C2A26] bg-stone-100 dark:bg-[#1A1917] px-3.5 py-1 text-xs font-mono font-bold uppercase tracking-wider text-zinc-800 dark:text-[#D5CFBF]">
-                <Mic className="h-3.5 w-3.5 text-zinc-700 dark:text-[#D5CFBF]" />
-                <span>Executive Technical Communication</span>
-              </div>
-
+            <div className="lg:col-span-6 space-y-4 sm:space-y-5">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6]">
                 Senior Technical Whiteboard & Oral Exam Simulator
               </h2>
 
-              <p className="text-base sm:text-lg font-serif text-zinc-600 dark:text-[#DDD7CD] leading-relaxed">
+              <p className="text-sm sm:text-base lg:text-lg font-serif text-zinc-600 dark:text-[#DDD7CD] leading-relaxed">
                 Senior and Staff candidates stand out not by typing trivial syntax, but by articulating architectural trade-offs aloud under realistic time constraints.
               </p>
 
