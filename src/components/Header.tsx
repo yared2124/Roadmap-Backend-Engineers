@@ -56,6 +56,7 @@ export function Header({
           </button>
 
           <div className="flex items-center gap-2.5">
+
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-extrabold tracking-tight text-zinc-950 dark:text-white text-base sm:text-lg">

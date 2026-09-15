@@ -313,7 +313,7 @@ export default function Home() {
   }
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-white text-zinc-900 dark:bg-[#111827] dark:text-gray-100 flex flex-col font-sans transition-colors duration-200">
+    <div className="h-screen w-screen overflow-hidden bg-white text-zinc-900 dark:bg-[#141312] dark:text-[#F3EFE6] flex flex-col font-sans transition-colors duration-200">
       {/* Top Navbar - Locked at top */}
       <Header
         completedCount={completedCount}

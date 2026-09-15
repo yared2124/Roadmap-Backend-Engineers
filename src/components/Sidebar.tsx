@@ -73,13 +73,13 @@ export function Sidebar({
 
       {/* Sidebar Container - Stays fixed on left with independent scroll */}
       <aside
-        className={`fixed top-16 bottom-0 left-0 z-30 w-80 shrink-0 border-r border-zinc-200 bg-white dark:border-gray-700 dark:bg-[#111827] transition-transform duration-200 ease-in-out lg:relative lg:top-0 lg:bottom-0 lg:h-full lg:translate-x-0 overflow-y-auto ${
+        className={`fixed top-16 bottom-0 left-0 z-30 w-80 shrink-0 border-r border-zinc-200 bg-white dark:border-[#2C2A26] dark:bg-[#141312] transition-transform duration-200 ease-in-out lg:relative lg:top-0 lg:bottom-0 lg:h-full lg:translate-x-0 overflow-y-auto ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="p-4">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-700 dark:text-gray-300">
+            <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-700 dark:text-[#A19B8F]">
               Syllabus & Modules (31)
             </h2>
           </div>
@@ -96,23 +96,23 @@ export function Sidebar({
               return (
                 <div
                   key={phase.id}
-                  className="rounded-xl border border-zinc-200/90 bg-zinc-50/50 p-2 dark:border-gray-700 dark:bg-gray-900/80"
+                  className="rounded-xl border border-zinc-200/90 bg-zinc-50/50 p-2 dark:border-[#2C2A26] dark:bg-[#1A1917]"
                 >
                   {/* Phase Header */}
                   <button
                     onClick={() => togglePhase(phase.id)}
-                    className="flex w-full items-center justify-between rounded-lg p-2 text-left hover:bg-zinc-100 dark:hover:bg-gray-800/80 transition-colors"
+                    className="flex w-full items-center justify-between rounded-lg p-2 text-left hover:bg-zinc-100 dark:hover:bg-[#22211E] transition-colors"
                   >
                     <div className="flex-1 pr-2">
                       <div className="flex items-center justify-between gap-2 mb-1.5">
-                        <span className="font-mono text-xs font-black tracking-wider text-zinc-950 dark:text-white uppercase bg-zinc-200/90 dark:bg-gray-700 px-2 py-0.5 rounded-md">
+                        <span className="font-mono text-xs font-black tracking-wider text-zinc-950 dark:text-[#F3EFE6] uppercase bg-zinc-200/90 dark:bg-[#25231F] px-2 py-0.5 rounded-md border border-transparent dark:border-[#35332D]">
                           PHASE 0{phase.id}
                         </span>
-                        <span className="font-mono text-xs font-extrabold text-zinc-700 dark:text-gray-300">
+                        <span className="font-mono text-xs font-extrabold text-zinc-700 dark:text-[#D5CFBF]">
                           {progress.completed}/{progress.total}
                         </span>
                       </div>
-                      <h3 className="text-[13.5px] font-extrabold tracking-tight text-zinc-950 dark:text-white leading-snug">
+                      <h3 className="text-[13.5px] font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6] leading-snug">
                         {phase.name}
                       </h3>
                     </div>

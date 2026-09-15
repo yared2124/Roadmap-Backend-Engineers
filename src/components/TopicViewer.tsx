@@ -110,34 +110,34 @@ export function TopicViewer({
   return (
     <div className="mx-auto max-w-4xl space-y-8 pb-20">
       {/* Top Meta Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-200 pb-5 dark:border-gray-700">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-200 pb-5 dark:border-[#2C2A26]">
         <div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-zinc-950 dark:text-white leading-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6] leading-tight">
             <span className="font-mono font-bold text-zinc-400 dark:text-zinc-600 mr-2.5">
               #{String(topic.number).padStart(2, "0")}
             </span>
             {topic.title}
           </h1>
-          <p className="mt-3 text-base sm:text-[17px] text-zinc-700 dark:text-gray-300 leading-relaxed font-normal max-w-4xl">
+          <p className="mt-3 text-lg sm:text-xl font-serif text-zinc-700 dark:text-[#EDE8DF] leading-relaxed font-normal max-w-4xl">
             {topic.shortSummary}
           </p>
 
           {/* Study Plan & Time Commitment */}
           {topic.timeEstimates && (
             <div className="mt-4 flex flex-wrap items-center gap-2.5 pt-1 font-mono">
-              <span className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-950 px-3.5 py-1.5 text-xs font-bold text-white dark:bg-gray-100 dark:text-gray-950 shadow-xs">
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-950 px-3.5 py-1.5 text-xs font-bold text-white dark:bg-[#F3EFE6] dark:text-[#141312] shadow-xs">
                 <Clock className="h-4 w-4" />
                 <span>Est. Total: {topic.timeEstimates.total}</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-semibold text-zinc-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200">
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-semibold text-zinc-800 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#D5CFBF]">
                 <PlayCircle className="h-4 w-4 text-red-500" />
                 <span>Video: {topic.timeEstimates.video}</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-semibold text-zinc-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200">
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-semibold text-zinc-800 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#D5CFBF]">
                 <BookOpen className="h-4 w-4 text-blue-500" />
                 <span>Reading: {topic.timeEstimates.reading}</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-semibold text-zinc-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200">
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-semibold text-zinc-800 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#D5CFBF]">
                 <Code2 className="h-4 w-4 text-emerald-500" />
                 <span>Lab & Practice: {topic.timeEstimates.lab}</span>
               </span>
@@ -150,8 +150,8 @@ export function TopicViewer({
           onClick={onToggleComplete}
           className={`flex items-center gap-2 rounded-xl border px-5 py-2.5 text-sm font-bold transition-all shadow-xs shrink-0 ${
             isCompleted
-              ? "border-zinc-950 bg-zinc-950 text-white dark:border-white dark:bg-white dark:text-black"
-              : "border-zinc-300 bg-white text-zinc-900 hover:border-zinc-500 hover:bg-zinc-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:hover:border-zinc-400"
+              ? "border-zinc-950 bg-zinc-950 text-white dark:border-[#F3EFE6] dark:bg-[#F3EFE6] dark:text-[#141312]"
+              : "border-zinc-300 bg-white text-zinc-900 hover:border-zinc-500 hover:bg-zinc-50 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#F3EFE6] dark:hover:border-zinc-500"
           }`}
         >
           <CheckCircle2 className="h-4 w-4 stroke-[2.5]" />
@@ -160,17 +160,17 @@ export function TopicViewer({
       </div>
 
       {/* Architectural Insights Card */}
-      <div className="rounded-2xl border border-zinc-200 bg-linear-to-br from-zinc-50 via-white to-zinc-50/50 p-6 dark:border-gray-700 dark:from-gray-800 dark:via-gray-800/50 dark:to-gray-800 shadow-sm space-y-4">
+      <div className="rounded-2xl border border-zinc-200 bg-stone-50/50 p-6 dark:border-[#2C2A26] dark:bg-[#1A1917] shadow-sm space-y-4">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-950 text-white dark:bg-white dark:text-black text-xs font-mono font-bold shadow-2xs">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-950 text-white dark:bg-[#F3EFE6] dark:text-[#141312] text-xs font-mono font-bold shadow-2xs">
             <Lightbulb className="h-4 w-4" />
           </div>
-          <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-950 dark:text-white">
+          <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-950 dark:text-[#F3EFE6]">
             Architectural Insights & Best Practices
           </span>
         </div>
 
-        <blockquote className="border-l-4 border-amber-500 pl-4 py-1 text-sm sm:text-base italic font-semibold text-zinc-900 dark:text-gray-100 leading-relaxed">
+        <blockquote className="border-l-4 border-amber-600 pl-4 py-1 text-base sm:text-lg font-serif italic text-zinc-900 dark:text-[#F3EFE6] leading-relaxed">
           &ldquo;{topic.seniorInsight.quote}&rdquo;
         </blockquote>
 
