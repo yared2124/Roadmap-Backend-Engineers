@@ -478,11 +478,8 @@ export function PortfolioHome({
 
                     <div>
                       <h3 className="text-xl font-serif font-bold text-zinc-950 dark:text-[#F3EFE6] group-hover:text-amber-700 dark:group-hover:text-amber-200 transition-colors">
-                        {phase.title}
+                        {phase.name}
                       </h3>
-                      <p className="text-xs font-mono font-medium text-zinc-500 dark:text-[#8E887B] mt-0.5">
-                        {phase.subtitle}
-                      </p>
                     </div>
 
                     <p className="text-xs sm:text-sm font-serif text-zinc-600 dark:text-[#DDD7CD] leading-relaxed">
@@ -687,21 +684,15 @@ export function PortfolioHome({
             </button>
           </div>
 
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-10 border-b border-zinc-200/80 dark:border-[#2C2A26]">
-            <div className="max-w-3xl space-y-3">
-              <div className="inline-flex items-center gap-2 rounded-full border border-zinc-300 dark:border-[#2C2A26] bg-stone-100 dark:bg-[#1A1917] px-3.5 py-1 text-xs font-mono font-bold uppercase tracking-wider text-zinc-800 dark:text-[#D5CFBF]">
-                <Terminal className="h-3.5 w-3.5 text-zinc-700 dark:text-[#D5CFBF]" />
-                <span>Production Portfolio Capstones</span>
-              </div>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6]">
-                7 Industry-Grade Engineering Projects
-              </h2>
-              <p className="text-base sm:text-lg font-serif text-zinc-600 dark:text-[#DDD7CD] leading-relaxed">
-                Build verifiable distributed systems for your portfolio with real latency requirements and failure tests.
-              </p>
-            </div>
+          <div className="text-center flex flex-col items-center max-w-3xl mx-auto space-y-4 pb-10 border-b border-zinc-200/80 dark:border-[#2C2A26]">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6]">
+              7 Industry-Grade Engineering Projects
+            </h2>
+            <p className="text-base sm:text-lg font-serif text-zinc-600 dark:text-[#DDD7CD] leading-relaxed max-w-2xl mx-auto">
+              Build verifiable distributed systems for your portfolio with real latency requirements and failure tests.
+            </p>
 
-            <div className="flex flex-wrap gap-2 text-xs font-mono text-zinc-500 dark:text-[#8E887B]">
+            <div className="flex flex-wrap justify-center gap-2 text-xs font-mono text-zinc-500 dark:text-[#8E887B] pt-2">
               <span className="rounded-lg border border-zinc-200 dark:border-[#2C2A26] bg-white dark:bg-[#1A1917] px-3 py-1.5 font-medium shadow-2xs">
                 Zero Toy Frameworks
               </span>
