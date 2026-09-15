@@ -12,7 +12,6 @@ import {
   Play,
   Pause,
   RotateCcw,
-  Sparkles,
   Trophy,
   ArrowRight,
   ShieldAlert,
@@ -273,7 +272,7 @@ export function MockInterviewModal({
                     onClick={handleRevealAnswer}
                     className="inline-flex items-center gap-2 rounded-xl bg-zinc-950 px-6 py-3.5 text-xs sm:text-sm font-extrabold text-white hover:bg-zinc-800 dark:bg-white dark:text-gray-950 dark:hover:bg-zinc-200 transition-all shadow-md active:scale-95"
                   >
-                    <Sparkles className="h-4 w-4" />
+                    <CheckCircle2 className="h-4 w-4" />
                     <span>I'm Done Speaking — Reveal Staff Rubric & Answer</span>
                   </button>
                 </div>

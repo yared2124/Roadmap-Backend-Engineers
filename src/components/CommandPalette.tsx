@@ -11,7 +11,6 @@ import {
   Layers,
   HelpCircle,
   Clock,
-  Sparkles,
   Command,
   Sun,
   Moon,
@@ -378,7 +377,7 @@ export function CommandPalette({
       case "question":
         return <HelpCircle className="h-4 w-4 text-emerald-500" />;
       case "command":
-        return <Sparkles className="h-4 w-4 text-purple-500" />;
+        return <Command className="h-4 w-4 text-purple-500" />;
     }
   };
 

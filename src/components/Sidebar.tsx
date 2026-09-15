@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { ROADMAP_PHASES } from "../data/roadmap";
 import { RoadmapTopic } from "../types/roadmap";
-import { Check, ChevronDown, ChevronRight, PlayCircle, BookOpen, Trophy, FileText, Compass, Sparkles } from "lucide-react";
+import { Check, ChevronDown, ChevronRight, PlayCircle, BookOpen, Trophy, FileText, Compass } from "lucide-react";
 
 interface SidebarProps {
   activeTopicId: string;

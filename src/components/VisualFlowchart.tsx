@@ -21,7 +21,6 @@ import {
   KeyRound,
   User,
   Workflow,
-  Sparkles,
 } from "lucide-react";
 
 interface VisualFlowchartProps {
@@ -90,8 +89,7 @@ export function VisualFlowchart({ flow }: VisualFlowchartProps) {
               <h3 className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-zinc-950 dark:text-white">
                 Visual System Architecture & Lifecycle
               </h3>
-              <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[10.5px] font-bold text-blue-900 dark:bg-blue-950/70 dark:text-blue-200 font-mono">
-                <Sparkles className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+              <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2.5 py-0.5 text-[10.5px] font-bold text-blue-900 dark:bg-blue-950/70 dark:text-blue-200 font-mono">
                 Interactive Data Flow
               </span>
             </div>

@@ -56,9 +56,6 @@ export function Header({
           </button>
 
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-zinc-950 text-white font-mono font-bold text-base dark:bg-white dark:text-gray-950 shadow-xs">
-              B
-            </div>
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-extrabold tracking-tight text-zinc-950 dark:text-white text-base sm:text-lg">
@@ -76,7 +73,7 @@ export function Header({
                 )}
               </div>
               <p className="hidden md:block text-xs font-semibold text-zinc-500 dark:text-gray-400">
-                Principal Engineer Roadmap • Curated Books • Real Practice
+                Principal Engineer Roadmap
               </p>
             </div>
           </div>

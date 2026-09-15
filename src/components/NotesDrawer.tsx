@@ -8,7 +8,6 @@ import {
   Check,
   Download,
   Copy,
-  Sparkles,
   Bold,
   Italic,
   Code,
@@ -298,7 +297,7 @@ export function NotesDrawer({
             className="inline-flex items-center gap-1.5 rounded-lg bg-amber-100/70 px-2.5 py-1 text-xs font-bold text-amber-900 hover:bg-amber-100 dark:bg-amber-950/60 dark:text-amber-200 dark:hover:bg-amber-950/90 transition-colors shrink-0 font-mono"
             title="Inject structured architecture note template"
           >
-            <Sparkles className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+            <FileText className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
             <span>Insert Senior Template</span>
           </button>
         </div>

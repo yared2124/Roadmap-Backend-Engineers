@@ -16,7 +16,6 @@ import {
   FolderGit2,
   ShieldCheck,
   ChevronRight,
-  Sparkles,
 } from "lucide-react";
 
 interface CapstoneViewerProps {

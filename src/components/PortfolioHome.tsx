@@ -18,7 +18,6 @@ import {
   Moon,
   Sun,
   ChevronRight,
-  Sparkles,
   Trophy,
   PlayCircle,
   Activity,
@@ -59,17 +58,9 @@ export function PortfolioHome({
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Brand Logo */}
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-tr from-blue-600 to-indigo-600 text-white font-mono font-bold text-base shadow-sm">
-              B
-            </div>
-            <div>
-              <span className="font-extrabold tracking-tight text-zinc-950 dark:text-white text-base sm:text-lg">
-                Backend Engineer Hub
-              </span>
-              <span className="hidden sm:inline-block ml-2 text-[11px] font-mono font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 rounded-full border border-blue-200 dark:border-blue-900">
-                PRO ED
-              </span>
-            </div>
+            <span className="font-extrabold tracking-tight text-zinc-950 dark:text-white text-base sm:text-lg">
+              Backend Engineer Hub
+            </span>
           </div>
 
           {/* Center Navigation Links (Desktop) */}
@@ -133,7 +124,6 @@ export function PortfolioHome({
             
             {/* Top Motivating Pill Badge */}
             <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/25 bg-blue-50/90 px-4 py-1.5 text-xs font-semibold text-blue-700 dark:border-blue-400/25 dark:bg-blue-950/50 dark:text-blue-300 shadow-2xs backdrop-blur-md">
-              <Sparkles className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400 animate-pulse" />
               <span>The Systematic Path to Senior & Staff Backend Engineering</span>
             </div>
 
@@ -936,7 +926,6 @@ export function PortfolioHome({
         
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-semibold text-blue-400">
-            <Sparkles className="h-3.5 w-3.5 text-blue-400" />
             <span>Ready for the Next Step in Your Career?</span>
           </div>
 

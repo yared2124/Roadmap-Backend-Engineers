@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Youtube, Layers, PlayCircle, Sparkles, ArrowRight } from "lucide-react";
+import { Youtube, Layers, PlayCircle, ArrowRight } from "lucide-react";
 
 export interface VideoInfo {
   youtubeId: string;
@@ -55,7 +55,6 @@ export function VideoPlayer({
               </h3>
               {hasSecondary && (
                 <span className="inline-flex items-center gap-1 rounded-full bg-indigo-100/80 px-2.5 py-0.5 text-[10.5px] font-bold text-indigo-900 dark:bg-indigo-950/80 dark:text-indigo-200 font-mono border border-indigo-200 dark:border-indigo-800">
-                  <Sparkles className="h-3 w-3 text-indigo-600 dark:text-indigo-400" />
                   2-Part Deep Dive
                 </span>
               )}
