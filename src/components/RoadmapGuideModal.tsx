@@ -401,30 +401,42 @@ export function RoadmapGuideModal({
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2.5">
-                        <span className="flex h-6 w-6 items-center justify-center rounded-md bg-zinc-100 text-zinc-900 dark:bg-gray-700 dark:text-gray-100 font-mono font-bold text-xs">
+                        <span className="flex h-6 w-6 items-center justify-center rounded-md bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-300 font-mono font-bold text-xs">
                           P{capstone.phaseId}
                         </span>
-                        <h4 className="font-bold text-zinc-900 dark:text-gray-100 text-sm">
-                          {capstone.title}
-                        </h4>
+                        <div>
+                          <h4 className="font-bold text-zinc-900 dark:text-gray-100 text-sm">
+                            {capstone.shortName || capstone.title}
+                          </h4>
+                          {capstone.subtitle && (
+                            <p className="text-[11px] text-zinc-500 dark:text-gray-400">
+                              {capstone.subtitle}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                      <span className="text-[11px] font-mono font-semibold text-zinc-500 bg-zinc-100 dark:bg-gray-700 px-2 py-0.5 rounded">
-                        {capstone.estimatedHours} Hours
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-zinc-100 dark:bg-gray-700 text-zinc-700 dark:text-gray-300">
+                          {capstone.difficulty}
+                        </span>
+                        <span className="text-[11px] font-mono font-semibold text-zinc-500 bg-zinc-100 dark:bg-gray-700 px-2 py-0.5 rounded">
+                          {capstone.estimatedHours}
+                        </span>
+                      </div>
                     </div>
 
-                    <p className="text-xs text-zinc-600 dark:text-gray-400 leading-relaxed">
-                      {capstone.scenario}
+                    <p className="text-xs text-zinc-600 dark:text-gray-300 leading-relaxed">
+                      {capstone.pitch || capstone.scenario}
                     </p>
 
                     <div className="flex flex-wrap gap-1.5 pt-1">
-                      {capstone.keyDeliverables?.slice(0, 3).map((del, i) => (
+                      {(capstone.highlights || capstone.techStack).map((item, i) => (
                         <span
                           key={i}
                           className="inline-flex items-center gap-1 rounded-md bg-zinc-100 dark:bg-gray-700/80 px-2 py-0.5 text-[10.5px] font-medium text-zinc-700 dark:text-gray-300"
                         >
                           <CheckCircle2 className="h-3 w-3 text-emerald-500" />
-                          {del}
+                          {item}
                         </span>
                       ))}
                     </div>

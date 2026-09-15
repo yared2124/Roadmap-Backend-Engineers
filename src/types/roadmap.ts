@@ -113,6 +113,10 @@ export interface CapstoneProject {
   phaseId: number;
   phaseName: string;
   title: string;
+  shortName?: string;
+  subtitle?: string;
+  pitch?: string;
+  highlights?: string[];
   difficulty: "Intermediate" | "Advanced" | "Senior" | "Staff";
   estimatedHours: string;
   scenario: string;

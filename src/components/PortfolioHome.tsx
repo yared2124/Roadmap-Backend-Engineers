@@ -21,6 +21,9 @@ import {
   Sun,
   ExternalLink,
   ChevronRight,
+  Sparkles,
+  Trophy,
+  GitBranch,
 } from "lucide-react";
 import { ROADMAP_PHASES, ROADMAP_TOPICS } from "../data/roadmap";
 import { CAPSTONE_PROJECTS } from "../data/capstones";
@@ -471,49 +474,194 @@ export function PortfolioHome({
       </section>
 
       {/* 6. The 7 Production Portfolio Capstone Projects */}
-      <section id="capstone-projects" className="py-16 sm:py-20 border-b border-zinc-200/80 dark:border-gray-800 bg-zinc-50/50 dark:bg-[#0f172a]/50">
+      <section id="capstone-projects" className="py-16 sm:py-24 border-b border-zinc-200/80 dark:border-gray-800 bg-linear-to-b from-zinc-50/70 via-white to-zinc-50/40 dark:from-[#0b1120] dark:via-[#0f172a] dark:to-[#0b1120]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl space-y-2">
-            <span className="font-mono text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-              Verifiable Production Output
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
-              7 Portfolio-Grade Capstone Projects
-            </h2>
-            <p className="text-sm text-zinc-600 dark:text-gray-400">
-              Engineers do not build toy tutorials. Each phase concludes with a portfolio project designed to demonstrate architectural seniority on GitHub.
-            </p>
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div className="max-w-2xl space-y-2">
+              <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-zinc-950 dark:text-white">
+                7 Portfolio-Grade Capstone Projects
+              </h2>
+              <p className="text-sm sm:text-base text-zinc-600 dark:text-gray-300 leading-relaxed">
+                Engineers are hired for proof of work, not toy tutorials. Each curriculum phase culminates in an industry-grade system engineered for your public GitHub portfolio.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-2 text-xs font-mono text-zinc-500 dark:text-gray-400">
+              <span className="rounded-lg border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2.5 py-1.5 font-medium shadow-2xs">
+                Zero Toy Frameworks
+              </span>
+              <span className="rounded-lg border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2.5 py-1.5 font-medium shadow-2xs">
+                Strict Benchmark Suites
+              </span>
+              <span className="rounded-lg border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2.5 py-1.5 font-medium shadow-2xs">
+                Staff Review Rubrics
+              </span>
+            </div>
           </div>
 
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {Object.values(CAPSTONE_PROJECTS).map((capstone) => (
-              <div
-                key={capstone.phaseId}
-                className="flex flex-col justify-between rounded-2xl border border-zinc-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-800 space-y-4 hover:border-zinc-400 dark:hover:border-gray-500 transition-all shadow-xs"
-              >
-                <div className="space-y-2.5">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-bold bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-300 px-2 py-0.5 rounded">
-                      Phase 0{capstone.phaseId} Capstone
+          {/* Grid of Standard Capstones (Phases 1 to 6) */}
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {Object.values(CAPSTONE_PROJECTS)
+              .filter((capstone) => capstone.phaseId !== 7)
+              .map((capstone) => {
+                const phaseBadges: Record<number, { badge: string; hoverBorder: string }> = {
+                  1: {
+                    badge: "bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/25",
+                    hoverBorder: "hover:border-blue-500/60 dark:hover:border-blue-400/60",
+                  },
+                  2: {
+                    badge: "bg-sky-500/10 text-sky-700 dark:text-sky-400 border-sky-500/25",
+                    hoverBorder: "hover:border-sky-500/60 dark:hover:border-sky-400/60",
+                  },
+                  3: {
+                    badge: "bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border-indigo-500/25",
+                    hoverBorder: "hover:border-indigo-500/60 dark:hover:border-indigo-400/60",
+                  },
+                  4: {
+                    badge: "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/25",
+                    hoverBorder: "hover:border-amber-500/60 dark:hover:border-amber-400/60",
+                  },
+                  5: {
+                    badge: "bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-500/25",
+                    hoverBorder: "hover:border-purple-500/60 dark:hover:border-purple-400/60",
+                  },
+                  6: {
+                    badge: "bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/25",
+                    hoverBorder: "hover:border-rose-500/60 dark:hover:border-rose-400/60",
+                  },
+                };
+                const accent = phaseBadges[capstone.phaseId] || {
+                  badge: "bg-zinc-500/10 text-zinc-700 dark:text-zinc-400 border-zinc-500/25",
+                  hoverBorder: "hover:border-zinc-500/60",
+                };
+
+                const difficultyStyles: Record<string, string> = {
+                  Intermediate: "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/50 dark:text-blue-300 dark:border-blue-900",
+                  Advanced: "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/50 dark:text-purple-300 dark:border-purple-900",
+                  Senior: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/50 dark:text-amber-300 dark:border-amber-900",
+                  Staff: "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/50 dark:text-rose-300 dark:border-rose-900",
+                };
+
+                return (
+                  <div
+                    key={capstone.phaseId}
+                    className={`group relative flex flex-col justify-between rounded-2xl border border-zinc-200/90 bg-white p-6 dark:border-gray-800 dark:bg-gray-800/80 hover:shadow-xl ${accent.hoverBorder} transition-all duration-300 shadow-xs`}
+                  >
+                    <div className="space-y-4">
+                      {/* Meta badges row */}
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-1.5">
+                          <span className={`font-mono text-xs font-black tracking-wide border px-2.5 py-0.5 rounded-md ${accent.badge}`}>
+                            PHASE 0{capstone.phaseId}
+                          </span>
+                          <span className={`font-mono text-[11px] font-semibold border px-2 py-0.5 rounded-md ${difficultyStyles[capstone.difficulty] || "bg-zinc-100 text-zinc-700 border-zinc-200"}`}>
+                            {capstone.difficulty}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1 font-mono text-xs font-semibold text-zinc-400 dark:text-gray-400">
+                          <Clock className="h-3.5 w-3.5" />
+                          <span>{capstone.estimatedHours}</span>
+                        </div>
+                      </div>
+
+                      {/* Project Title and Subtitle */}
+                      <div>
+                        <h3 className="text-lg font-black tracking-tight text-zinc-950 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                          {capstone.shortName || capstone.title}
+                        </h3>
+                        {capstone.subtitle && (
+                          <p className="text-xs font-semibold text-zinc-500 dark:text-gray-400 mt-0.5 line-clamp-1">
+                            {capstone.subtitle}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Delightful, readable pitch */}
+                      <p className="text-xs sm:text-[13px] text-zinc-600 dark:text-gray-300 leading-relaxed">
+                        {capstone.pitch || capstone.scenario}
+                      </p>
+
+                      {/* Highlights checklist */}
+                      {capstone.highlights && capstone.highlights.length > 0 && (
+                        <div className="space-y-1.5 pt-2 border-t border-zinc-100 dark:border-gray-800">
+                          {capstone.highlights.map((item, idx) => (
+                            <div key={idx} className="flex items-center gap-2 text-xs font-medium text-zinc-700 dark:text-gray-200">
+                              <CheckCircle2 className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500 shrink-0" />
+                              <span className="truncate">{item}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Tech stack chips */}
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {capstone.techStack.map((tech, i) => (
+                          <span
+                            key={i}
+                            className="rounded-md border border-zinc-200/80 bg-zinc-50 px-2 py-0.5 font-mono text-[11px] font-medium text-zinc-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Action Button */}
+                    <div className="pt-5 mt-4 border-t border-zinc-100 dark:border-gray-800">
+                      <button
+                        onClick={() => onExploreCapstones(capstone.phaseId)}
+                        className="group/btn flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 py-2.5 text-xs font-extrabold text-zinc-900 hover:bg-zinc-950 hover:text-white dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-white dark:hover:text-zinc-950 transition-all duration-200 shadow-2xs"
+                      >
+                        <Terminal className="h-3.5 w-3.5" />
+                        <span>Inspect Spec & Architecture</span>
+                        <ArrowRight className="h-3 w-3 transition-transform group-hover/btn:translate-x-1" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+
+          {/* Featured Grand Finale Flagship Capstone 07 (CloudScale) */}
+          {CAPSTONE_PROJECTS[7] && (
+            <div className="mt-8 rounded-3xl border border-zinc-200/90 dark:border-gray-800 bg-linear-to-br from-zinc-50/80 via-white to-zinc-100/50 dark:from-[#0d1624] dark:via-[#0f172a] dark:to-[#0b1120] p-6 sm:p-8 shadow-xl relative overflow-hidden group hover:border-zinc-400 dark:hover:border-gray-700 transition-all duration-300">
+              <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-zinc-500/5 blur-3xl pointer-events-none" />
+
+              <div className="relative z-10 grid gap-8 lg:grid-cols-12 items-center">
+                {/* Left Side: Overview & Pitch */}
+                <div className="lg:col-span-7 space-y-4">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 font-mono text-xs font-black uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                      <Trophy className="h-3.5 w-3.5" />
+                      Grand Finale • Capstone 07
                     </span>
-                    <span className="font-mono text-xs font-semibold text-zinc-400">
-                      {capstone.estimatedHours} Hours
+                    <span className="font-mono text-xs font-bold border border-rose-500/25 bg-rose-500/10 text-rose-600 dark:text-rose-400 px-2.5 py-0.5 rounded-full">
+                      Staff Level
+                    </span>
+                    <span className="inline-flex items-center gap-1 font-mono text-xs font-semibold text-zinc-500 dark:text-gray-400">
+                      <Clock className="h-3.5 w-3.5" />
+                      20-25 Hours
                     </span>
                   </div>
 
-                  <h3 className="font-bold text-base text-zinc-950 dark:text-white leading-snug">
-                    {capstone.title}
-                  </h3>
+                  <div>
+                    <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-zinc-950 dark:text-white">
+                      {CAPSTONE_PROJECTS[7].shortName || CAPSTONE_PROJECTS[7].title}
+                    </h3>
+                    <p className="text-sm font-semibold text-zinc-600 dark:text-zinc-400 mt-1">
+                      {CAPSTONE_PROJECTS[7].subtitle}
+                    </p>
+                  </div>
 
-                  <p className="text-xs text-zinc-600 dark:text-gray-400 leading-relaxed">
-                    {capstone.scenario}
+                  <p className="text-sm text-zinc-600 dark:text-gray-300 leading-relaxed max-w-2xl">
+                    {CAPSTONE_PROJECTS[7].pitch || CAPSTONE_PROJECTS[7].scenario}
                   </p>
 
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {capstone.techStack.map((tech, i) => (
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {CAPSTONE_PROJECTS[7].techStack.map((tech, i) => (
                       <span
                         key={i}
-                        className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 font-mono text-[10.5px] font-medium text-zinc-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                        className="rounded-lg border border-zinc-200 dark:border-gray-700 bg-white/90 dark:bg-gray-800/90 px-2.5 py-1 font-mono text-xs font-medium text-zinc-800 dark:text-gray-200 shadow-2xs"
                       >
                         {tech}
                       </span>
@@ -521,16 +669,50 @@ export function PortfolioHome({
                   </div>
                 </div>
 
-                <button
-                  onClick={() => onExploreCapstones(capstone.phaseId)}
-                  className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-zinc-300 bg-white py-2 text-xs font-bold text-zinc-900 hover:bg-zinc-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-zinc-700 transition-colors shadow-2xs"
-                >
-                  <Terminal className="h-3.5 w-3.5" />
-                  <span>Inspect Spec & Rubric</span>
-                </button>
+                {/* Right Side: Key Deliverables & Action CTA */}
+                <div className="lg:col-span-5 rounded-2xl border border-zinc-200 dark:border-gray-700 bg-white/90 dark:bg-gray-800/90 p-5 sm:p-6 shadow-sm space-y-4">
+                  <div className="flex items-center justify-between border-b border-zinc-100 dark:border-gray-700 pb-3">
+                    <div className="flex items-center gap-2">
+                      <ShieldCheck className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
+                      <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-900 dark:text-white">
+                        Production Deliverables
+                      </span>
+                    </div>
+                    <span className="text-[11px] font-mono font-semibold text-zinc-500 dark:text-gray-400">
+                      Verifiable Suite
+                    </span>
+                  </div>
+
+                  <ul className="space-y-2.5">
+                    {CAPSTONE_PROJECTS[7].highlights?.map((hl, idx) => (
+                      <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-[13px] font-medium text-zinc-700 dark:text-gray-200">
+                        <CheckCircle2 className="h-4 w-4 text-zinc-500 dark:text-zinc-400 shrink-0 mt-0.5" />
+                        <span>{hl}</span>
+                      </li>
+                    ))}
+                    <li className="flex items-start gap-2.5 text-xs sm:text-[13px] font-medium text-zinc-700 dark:text-gray-200">
+                      <CheckCircle2 className="h-4 w-4 text-zinc-500 dark:text-zinc-400 shrink-0 mt-0.5" />
+                      <span>Zero-Downtime Rolling Updates with Nginx Reverse Proxy</span>
+                    </li>
+                  </ul>
+
+                  <div className="pt-2">
+                    <button
+                      onClick={() => onExploreCapstones(7)}
+                      className="group/cta flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-950 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 py-3 text-xs sm:text-sm font-black transition-all shadow-md active:scale-[0.99]"
+                    >
+                      <Terminal className="h-4 w-4" />
+                      <span>Inspect Flagship Spec & Rubric</span>
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover/cta:translate-x-1" />
+                    </button>
+                    <p className="text-center font-mono text-[11px] text-zinc-400 dark:text-gray-500 mt-2">
+                      Principal & Staff Engineer Resume Milestone
+                    </p>
+                  </div>
+                </div>
               </div>
-            ))}
-          </div>
+            </div>
+          )}
         </div>
       </section>
 

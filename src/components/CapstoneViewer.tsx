@@ -109,13 +109,34 @@ export function CapstoneViewer({
             </span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-zinc-900 dark:text-white">
-            {capstone.title}
-          </h1>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-zinc-900 dark:text-white">
+              {capstone.shortName ? `${capstone.shortName}: ${capstone.subtitle || capstone.title}` : capstone.title}
+            </h1>
+            {capstone.subtitle && (
+              <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 mt-1">
+                {capstone.subtitle}
+              </p>
+            )}
+          </div>
 
           <p className="text-sm sm:text-base leading-relaxed text-zinc-600 dark:text-gray-300 max-w-3xl">
             {capstone.scenario}
           </p>
+
+          {capstone.highlights && capstone.highlights.length > 0 && (
+            <div className="flex flex-wrap gap-2 pt-1">
+              {capstone.highlights.map((hl, i) => (
+                <span
+                  key={i}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-xs font-mono font-medium text-emerald-700 dark:text-emerald-300"
+                >
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+                  {hl}
+                </span>
+              ))}
+            </div>
+          )}
 
           {/* Quick Tech Stack Tags */}
           <div className="pt-2 flex flex-wrap items-center gap-2">
