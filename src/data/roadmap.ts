@@ -23,6 +23,12 @@ export const ROADMAP_TOPICS: RoadmapTopic[] = [
     },
     youtubeId: "0Rwb4Xmlcwc",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "3Kqal7QaCCM",
+      title: "How Garbage Collection Works (Java, Python, Go)",
+      duration: "9 min",
+      description: "ByteByteGo illustrates mark-and-sweep, generational GC algorithms, memory allocation, and CPU trade-offs across backend runtimes."
+    },
     shortSummary: "Foundations of backend systems: CPU, memory, OS processes, network sockets, disk I/O, and distributed computing mental models.",
     seniorInsight: {
       quote: "Software is an illusion run on physical silicon, electricity, and packet switches. High-scale engineers optimize for hardware constraints, not framework abstractions.",
@@ -196,6 +202,12 @@ networks:
     },
     youtubeId: "iYM2zFP3Zn0",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "WvSVSbGo0wI",
+      title: "HTTP vs HTTPS: TLS Handshakes & Packet Mechanics",
+      duration: "10 min",
+      description: "ByteByteGo's animated breakdown of HTTP vs HTTPS, symmetric vs asymmetric encryption, TLS 1.3 handshake negotiation, and SSL/TLS certificate chains."
+    },
     shortSummary: "HTTP/1.1 pipelining, HTTP/2 binary framing & multiplexing, HTTP/3 QUIC over UDP, idempotency, and standardized status codes.",
     seniorInsight: {
       quote: "Understanding idempotency separates engineers who build billing race conditions from engineers who build fault-tolerant payment systems.",
@@ -377,6 +389,12 @@ curl -i -X POST https://api.github.com/zen`,
     },
     youtubeId: "46O73On0gyI",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "gnchfOojMk4",
+      title: "What is RPC? gRPC & Protocol Buffers Introduction",
+      duration: "7 min",
+      description: "ByteByteGo breaks down why modern high-scale distributed backends use binary Protobuf serialization and gRPC instead of text-based JSON over HTTP/1.1."
+    },
     shortSummary: "JSON parsing overhead, Protocol Buffers binary framing, gRPC, and the JavaScript 64-bit integer precision bug.",
     seniorInsight: {
       quote: "JSON numbers are IEEE 754 floating point. A 64-bit database ID (e.g. 9007199254740993) will silently corrupt into 9007199254740992 in JavaScript unless serialized as a string.",
@@ -746,6 +764,12 @@ function validate(req, res, next) {
     },
     youtubeId: "f7Su4KoqSio",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "6ULyxuHKxg8",
+      title: "API Gateway Architecture & Request Routing",
+      duration: "8 min",
+      description: "ByteByteGo explains how API Gateways decouple clients from internal microservices, handling centralized routing, rate limiting, and authentication."
+    },
     shortSummary: "Three-tier architecture, Clean Architecture, decoupling transport layers from business logic, and repository patterns.",
     seniorInsight: {
       quote: "Controllers should be dumb. They unpack HTTP requests, call the service layer, and format the response. Never write SQL or business rules in a controller.",
@@ -1104,6 +1128,12 @@ if (updated.rowCount === 0) {
     },
     youtubeId: "26ls5lNiijk",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "_1IKwnbscQU",
+      title: "7 Must-Know Strategies to Scale Your Database",
+      duration: "10 min",
+      description: "ByteByteGo breaks down vertical scaling, read replicas, database sharding, caching tiers, normalization trade-offs, and CQRS."
+    },
     shortSummary: "Database normalization (1NF to 3NF), intentional denormalization, surrogate vs natural keys, UUIDv7, and foreign key referential integrity.",
     seniorInsight: {
       quote: "Normalize until it hurts, denormalize until it works. Premature denormalization causes data anomalies; premature normalization causes 12-table join deadlocks.",
@@ -1675,6 +1705,12 @@ WHERE id = $1
     },
     youtubeId: "YYe0FdfdgDU",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "YXkOdWBwqaA",
+      title: "Rate Limiter System Design: Token Bucket, Leaky Bucket & Scaling",
+      duration: "14 min",
+      description: "ByteByteGo breaks down how to design a distributed rate limiter, comparing Token Bucket, Leaky Bucket, and Sliding Window algorithms to prevent DDoS attacks."
+    },
     shortSummary: "OWASP API Security Top 10, parameterized queries, CORS preflight mechanics, Content Security Policy, and rate limiting against DDoS.",
     seniorInsight: {
       quote: "String concatenation in SQL queries is professional malpractice. Always use parameterized queries or prepared statements without exception.",
@@ -1943,6 +1979,12 @@ await queue.add('video', { fileId: '123' }, {
     },
     youtubeId: "41NOoEz3Tzc",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "x_jjhcDrISk",
+      title: "Top 3 Things You Should Know About Webhooks!",
+      duration: "8 min",
+      description: "ByteByteGo covers webhook mechanics, idempotency handling, retry backoffs, signature security verification, and webhook vs polling trade-offs."
+    },
     shortSummary: "Sending and receiving webhooks, HMAC-SHA256 signature verification, exponential retry backoff, and preventing replay attacks with timestamps.",
     seniorInsight: {
       quote: "Never process an incoming webhook without verifying its cryptographic HMAC signature against the raw, unparsed request byte buffer.",
@@ -2045,6 +2087,12 @@ export function verifyWebhook(rawBody, signatureHeader, secret) {
     },
     youtubeId: "2Nt-ZrNP22A",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "okrR1KXNLtA",
+      title: "Design a Real-Time Chat System (WebSockets at Scale)",
+      duration: "16 min",
+      description: "ByteByteGo's complete architecture for real-time messaging systems (WhatsApp/Discord), detailing persistent WebSocket connections, presence servers, and message routing."
+    },
     shortSummary: "Comparing HTTP Long Polling, Server-Sent Events (SSE), and WebSockets, connection state, heartbeats, and scaling with Redis Pub/Sub.",
     seniorInsight: {
       quote: "Do not use WebSockets when Server-Sent Events (SSE) will do. If your data flow is unidirectional (server-to-client like dashboards or stock tickers), SSE runs over plain HTTP/2 without firewall or proxy issues.",
@@ -2608,6 +2656,12 @@ sdk.start();`,
     },
     youtubeId: "6rfBgphiCWM",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "3Lis4w4_bBc",
+      title: "8 Critical Rules for Designing Fault-Tolerant Distributed Systems",
+      duration: "9 min",
+      description: "ByteByteGo illustrates redundancy, circuit breakers, graceful degradation, health probes, and self-healing mechanisms under real-world infrastructure failures."
+    },
     shortSummary: "Intercepting SIGTERM/SIGINT signals, stopping new connections, draining in-flight HTTP requests, and releasing database pools cleanly.",
     seniorInsight: {
       quote: "When Kubernetes redeploys your app, it sends a SIGTERM. If your app doesn't handle it gracefully, users will see 502 Bad Gateway errors during every deployment.",
