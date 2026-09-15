@@ -855,50 +855,6 @@ export function PortfolioHome({
         </main>
       )}
 
-      {/* ========================================================= */}
-      {/* GLOBAL MINIMAL FOOTER                                      */}
-      {/* ========================================================= */}
-      <footer className="w-full border-t border-zinc-200 py-6 dark:border-[#2C2A26] bg-white dark:bg-[#141312] text-xs text-zinc-500 dark:text-[#8E887B] shrink-0">
-        <div className="mx-auto flex max-w-7xl flex-col sm:flex-row items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-          <p>© {new Date().getFullYear()} Backend Engineer Hub. Built for Principal & Senior Engineers.</p>
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => handleSwitchTab("how-it-works")}
-              className="hover:text-zinc-950 dark:hover:text-[#F3EFE6] transition-colors"
-            >
-              How It Works
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => handleSwitchTab("curriculum")}
-              className="hover:text-zinc-950 dark:hover:text-[#F3EFE6] transition-colors"
-            >
-              Curriculum
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => handleSwitchTab("oral-exams")}
-              className="hover:text-zinc-950 dark:hover:text-[#F3EFE6] transition-colors"
-            >
-              Oral Exams
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => handleSwitchTab("capstones")}
-              className="hover:text-zinc-950 dark:hover:text-[#F3EFE6] transition-colors"
-            >
-              Capstones
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => onEnterRoadmap()}
-              className="hover:text-zinc-950 dark:hover:text-[#F3EFE6] transition-colors font-bold"
-            >
-              Enter Roadmap →
-            </button>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
