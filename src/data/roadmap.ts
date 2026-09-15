@@ -2506,6 +2506,12 @@ export const config = ConfigSchema.parse(process.env);`,
     },
     youtubeId: "cYAE0ZhT43c",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "QoDqxm7ybLc",
+      title: "How Prometheus Monitoring Works | Architecture Explained",
+      duration: "22 min",
+      description: "TechWorld with Nana breaks down Prometheus metrics architecture, scrape targets, pull vs push models, Alertmanager, and Grafana dashboards."
+    },
     shortSummary: "Structured JSON logging, OpenTelemetry distributed tracing, the RED method (Rate, Errors, Duration), and Prometheus metrics.",
     seniorInsight: {
       quote: "Unstructured plain text logs (console.log('Error occurred!')) are useless in production. Output structured JSON logs with correlation IDs so log aggregators can index and filter them.",
@@ -2806,14 +2812,14 @@ if (res.rowCount === 0) {
       lab: "60 min",
       total: "3 hrs 50 min"
     },
-    youtubeId: "fqMOX6JJhGo",
-    youtubeChannelUrl: CHANNEL_URL,
+    youtubeId: "3c-iLYV7-W8",
+    youtubeChannelUrl: "https://www.youtube.com/@TechWorldwithNana",
     shortSummary: "Horizontal scaling, load balancing, Testcontainers integration testing, multi-stage Docker builds, and automated CI/CD quality gates.",
     secondaryVideo: {
-      youtubeId: "PX3R1fXjJ2M",
-      title: "Globally Distributed Databases with Read Replicas",
-      duration: "25 min",
-      description: "How to scale read-heavy applications using PostgreSQL read replicas and read/write splitting."
+      youtubeId: "X48VuDVv0do",
+      title: "Kubernetes Tutorial for Beginners [Full Course in 4 Hours]",
+      duration: "4 hrs",
+      description: "TechWorld with Nana's definitive deep dive into Kubernetes architecture, Pods, Services, Ingress, ConfigMaps, Secrets, Volumes, and zero-downtime rolling deployments."
     },
     seniorInsight: {
       quote: "Mocking your database in integration tests is lying to yourself. Use Testcontainers to spin up real, ephemeral PostgreSQL and Redis Docker containers during test suites.",
