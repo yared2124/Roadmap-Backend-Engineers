@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ArrowRight,
   ArrowLeft,
@@ -45,6 +45,17 @@ export function PortfolioHome({
 }: PortfolioHomeProps) {
   const [activeTab, setActiveTab] = useState<PortfolioTab>("home");
 
+  useEffect(() => {
+    if (activeTab === "home") {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [activeTab]);
+
   const handleSwitchTab = (tab: PortfolioTab) => {
     setActiveTab(tab);
     if (typeof window !== "undefined") {
@@ -53,7 +64,11 @@ export function PortfolioHome({
   };
 
   return (
-    <div className="min-h-screen w-full bg-white text-zinc-900 dark:bg-[#141312] dark:text-[#F3EFE6] selection:bg-zinc-900 selection:text-white dark:selection:bg-[#F3EFE6] dark:selection:text-[#141312] font-sans transition-colors duration-200 flex flex-col justify-between">
+    <div
+      className={`w-full bg-white text-zinc-900 dark:bg-[#141312] dark:text-[#F3EFE6] selection:bg-zinc-900 selection:text-white dark:selection:bg-[#F3EFE6] dark:selection:text-[#141312] font-sans transition-colors duration-200 flex flex-col justify-between ${
+        activeTab === "home" ? "h-screen max-h-screen overflow-hidden" : "min-h-screen"
+      }`}
+    >
       {/* 1. Global Navigation Header */}
       <header className="sticky top-0 z-40 w-full border-b border-zinc-200/80 bg-white/90 backdrop-blur-md dark:border-[#2C2A26] dark:bg-[#141312]/90">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -138,16 +153,11 @@ export function PortfolioHome({
       {/* VIEW 1: CLEAN STANDALONE HOME / HERO (MATCHING SCREENSHOT) */}
       {/* ========================================================= */}
       {activeTab === "home" && (
-        <main className="relative flex-1 flex flex-col justify-center items-center overflow-hidden px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+        <main className="relative flex-1 flex flex-col justify-center items-center overflow-hidden px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
           {/* Subtle Warm Ambient Glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] sm:w-[950px] h-[450px] bg-gradient-to-tr from-amber-500/5 via-stone-400/5 to-transparent blur-3xl pointer-events-none rounded-full" />
 
-          <div className="relative mx-auto max-w-4xl text-center flex flex-col items-center space-y-7">
-            {/* Top Category / Purpose Pill Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-zinc-300/80 bg-stone-100/80 px-4 py-1.5 text-xs font-mono font-medium text-zinc-800 dark:border-[#35332D] dark:bg-[#1C1B18] dark:text-[#D5CFBF] shadow-2xs">
-              <span>Systematic Mastery • Distributed Systems & Backend Engineering</span>
-            </div>
-
+          <div className="relative mx-auto max-w-4xl text-center flex flex-col items-center space-y-6 sm:space-y-7">
             {/* Headline matching user screenshot */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6] leading-[1.12] max-w-4xl">
               Backend Engineering Roadmap
