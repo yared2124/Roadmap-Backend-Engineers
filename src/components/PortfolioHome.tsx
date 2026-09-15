@@ -843,7 +843,7 @@ export function PortfolioHome({
                     Verification Deliverables:
                   </span>
                   <ul className="space-y-2 text-xs font-medium text-zinc-700 dark:text-[#D5CFBF]">
-                    {CAPSTONE_PROJECTS[7].deliverables.slice(0, 4).map((d, idx) => (
+                    {(CAPSTONE_PROJECTS[7].keyDeliverables || CAPSTONE_PROJECTS[7].highlights || []).slice(0, 4).map((d, idx) => (
                       <li key={idx} className="flex items-start gap-2">
                         <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                         <span>{d}</span>
