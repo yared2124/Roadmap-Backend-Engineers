@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:videos": "node scripts/verify-videos.js"
   },
   "dependencies": {
     "next": "^14.2.15",

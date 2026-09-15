@@ -1483,10 +1483,10 @@ await client.query('COMMIT');`,
     youtubeId: "2PPSXonhIck",
     youtubeChannelUrl: CHANNEL_URL,
     secondaryVideo: {
-      youtubeId: "a0H3N4D3Vps",
-      title: "Session Vs JWT: The Scalability & Security Trade-Offs",
-      duration: "16 min",
-      description: "ByteByteGo explains stateful cookie sessions vs stateless JWT tokens, token revocation challenges, and why hybrid refresh architectures win in production."
+      youtubeId: "T0k-3Ze4NLo",
+      title: "JWT - JSON Web Token Crash Course (NodeJS & Postgres)",
+      duration: "42 min",
+      description: "Hussein Nasser explains stateful cookie sessions vs stateless JWT tokens, token architecture, cryptographic signing, and production security tradeoffs."
     },
     shortSummary: "Stateful session cookies (HttpOnly, Secure, SameSite) vs stateless JWTs, cryptographic signing (RS256), and refresh token rotation with reuse detection.",
     seniorInsight: {
@@ -2812,7 +2812,7 @@ if (res.rowCount === 0) {
       lab: "60 min",
       total: "3 hrs 50 min"
     },
-    youtubeId: "3c-iLYV7-W8",
+    youtubeId: "fqMOX6JJhGo",
     youtubeChannelUrl: "https://www.youtube.com/@TechWorldwithNana",
     shortSummary: "Horizontal scaling, load balancing, Testcontainers integration testing, multi-stage Docker builds, and automated CI/CD quality gates.",
     secondaryVideo: {
