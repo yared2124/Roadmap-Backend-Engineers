@@ -304,6 +304,7 @@ export default function Home() {
       <PortfolioHome
         onEnterRoadmap={handleEnterRoadmap}
         onExploreCapstones={handleExploreCapstones}
+        onOpenGuide={() => setIsGuideOpen(true)}
         isDark={isDark}
         onToggleTheme={handleToggleTheme}
         completedCount={completedCount}

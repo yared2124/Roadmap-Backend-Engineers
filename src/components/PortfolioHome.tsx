@@ -29,6 +29,7 @@ import { RoadmapTopic } from "../types/roadmap";
 interface PortfolioHomeProps {
   onEnterRoadmap: (topic?: RoadmapTopic) => void;
   onExploreCapstones: (phaseId?: number) => void;
+  onOpenGuide?: () => void;
   isDark: boolean;
   onToggleTheme: () => void;
   completedCount: number;
@@ -38,6 +39,7 @@ interface PortfolioHomeProps {
 export function PortfolioHome({
   onEnterRoadmap,
   onExploreCapstones,
+  onOpenGuide,
   isDark,
   onToggleTheme,
   completedCount,
@@ -64,6 +66,12 @@ export function PortfolioHome({
 
           {/* Center Navigation Links (Desktop) */}
           <nav className="hidden md:flex items-center gap-7 text-xs sm:text-sm font-semibold text-zinc-600 dark:text-[#A19B8F]">
+            <button
+              onClick={() => scrollToSection("how-to-use")}
+              className="hover:text-zinc-950 dark:hover:text-[#F3EFE6] transition-colors"
+            >
+              How It Works
+            </button>
             <button
               onClick={() => scrollToSection("curriculum-phases")}
               className="hover:text-zinc-950 dark:hover:text-[#F3EFE6] transition-colors"
@@ -150,10 +158,17 @@ export function PortfolioHome({
               </button>
 
               <button
-                onClick={() => scrollToSection("curriculum-phases")}
+                onClick={() => scrollToSection("how-to-use")}
                 className="flex items-center gap-2 rounded-xl border border-zinc-300 bg-white/90 px-6 py-4 text-sm sm:text-base font-semibold text-zinc-900 hover:bg-zinc-50 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#F3EFE6] dark:hover:bg-[#22211D] transition-colors shadow-2xs"
               >
                 <Compass className="h-4 w-4 text-zinc-500 dark:text-[#A19B8F]" />
+                <span>How It Works</span>
+              </button>
+
+              <button
+                onClick={() => scrollToSection("curriculum-phases")}
+                className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-stone-100/80 px-5 py-4 text-sm sm:text-base font-medium text-zinc-700 hover:bg-stone-200 dark:border-[#2C2A26] dark:bg-[#1E1D1A] dark:text-[#D5CFBF] dark:hover:bg-[#25231F] transition-colors shadow-2xs"
+              >
                 <span>Explore 7 Phases</span>
               </button>
             </div>
@@ -249,6 +264,156 @@ export function PortfolioHome({
                 Portfolio Capstones
               </span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2.5. Platform Introduction & Step-by-Step User Orientation Guide */}
+      <section id="how-to-use" className="py-20 sm:py-28 border-b border-zinc-200/80 dark:border-[#2C2A26] bg-white dark:bg-[#141312]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="max-w-3xl space-y-3">
+              <div className="inline-flex items-center gap-2 rounded-full border border-zinc-300 dark:border-[#2C2A26] bg-stone-100 dark:bg-[#1A1917] px-3.5 py-1 text-xs font-mono font-bold uppercase tracking-wider text-zinc-800 dark:text-[#D5CFBF]">
+                <Compass className="h-3.5 w-3.5 text-zinc-700 dark:text-[#D5CFBF]" />
+                <span>Platform Introduction & User Guide</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6]">
+                How to Use This Learning Platform: Full Step-by-Step Guide
+              </h2>
+              <p className="text-base sm:text-lg font-serif text-zinc-600 dark:text-[#DDD7CD] leading-relaxed">
+                Welcome to the Backend Engineering Hub. This platform was engineered from first principles to take you from writing basic APIs to designing resilient, mission-critical distributed systems. Here is your complete guide to navigating and getting the most out of every feature.
+              </p>
+            </div>
+
+            {onOpenGuide && (
+              <button
+                onClick={onOpenGuide}
+                className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 dark:border-[#2C2A26] bg-stone-50 dark:bg-[#1A1917] px-5 py-3 text-xs sm:text-sm font-mono font-bold text-zinc-900 dark:text-[#F3EFE6] hover:bg-stone-100 dark:hover:bg-[#22211E] transition-colors shrink-0 shadow-2xs"
+              >
+                <BookOpen className="h-4 w-4 text-zinc-600 dark:text-[#D5CFBF]" />
+                <span>Open Detailed Orientation Modal</span>
+              </button>
+            )}
+          </div>
+
+          {/* 5 Sequential Onboarding Steps */}
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            
+            {/* Step 1 */}
+            <div className="rounded-2xl border border-zinc-200/90 bg-stone-50/40 p-6 dark:border-[#2C2A26] dark:bg-[#1A1917] space-y-3.5">
+              <div className="flex items-center justify-between">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-950 text-white dark:bg-[#F3EFE6] dark:text-[#141312] font-mono font-bold text-xs shadow-xs">
+                  01
+                </span>
+                <span className="font-mono text-xs font-semibold text-zinc-500 dark:text-[#8E887B]">
+                  Step 1 • Navigation
+                </span>
+              </div>
+              <h3 className="font-serif font-bold text-lg text-zinc-950 dark:text-[#F3EFE6]">
+                Explore the 7 Sequential Phases
+              </h3>
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed font-sans">
+                The curriculum is divided into 7 sequential phases—from Network Sockets & Wire Protocols to Multi-Region Distributed Consensus. Start from Phase 01 or jump to any topic using the left sidebar or the global command palette (<kbd className="font-mono px-1.5 py-0.5 rounded bg-zinc-200 dark:bg-[#262420] text-[11px]">⌘K</kbd> / <kbd className="font-mono px-1.5 py-0.5 rounded bg-zinc-200 dark:bg-[#262420] text-[11px]">Ctrl+K</kbd>).
+              </p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="rounded-2xl border border-zinc-200/90 bg-stone-50/40 p-6 dark:border-[#2C2A26] dark:bg-[#1A1917] space-y-3.5">
+              <div className="flex items-center justify-between">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-950 text-white dark:bg-[#F3EFE6] dark:text-[#141312] font-mono font-bold text-xs shadow-xs">
+                  02
+                </span>
+                <span className="font-mono text-xs font-semibold text-zinc-500 dark:text-[#8E887B]">
+                  Step 2 • Daily Study
+                </span>
+              </div>
+              <h3 className="font-serif font-bold text-lg text-zinc-950 dark:text-[#F3EFE6]">
+                Follow the 5-Stage Study Routine
+              </h3>
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed font-sans">
+                Inside each module, execute the complete learning pipeline: watch the 30–60m canonical video lecture, read the assigned chapters from DDIA (Kleppmann) and Fowler, trace the live visual latency flowchart, inspect polyglot code (Go, TS, Python, Java), and solve the practice challenges.
+              </p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="rounded-2xl border border-zinc-200/90 bg-stone-50/40 p-6 dark:border-[#2C2A26] dark:bg-[#1A1917] space-y-3.5">
+              <div className="flex items-center justify-between">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-950 text-white dark:bg-[#F3EFE6] dark:text-[#141312] font-mono font-bold text-xs shadow-xs">
+                  03
+                </span>
+                <span className="font-mono text-xs font-semibold text-zinc-500 dark:text-[#8E887B]">
+                  Step 3 • Whiteboard Exam
+                </span>
+              </div>
+              <h3 className="font-serif font-bold text-lg text-zinc-950 dark:text-[#F3EFE6]">
+                Simulate Oral Whiteboard Defense
+              </h3>
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed font-sans">
+                Senior engineering interviews are won out loud. Click the &ldquo;Mock Oral Exam&rdquo; button on any topic to launch a 75-second countdown timer. Speak your architectural answer out loud following the <span className="font-mono font-bold text-zinc-800 dark:text-[#F3EFE6]">[WHAT]</span>, <span className="font-mono font-bold text-zinc-800 dark:text-[#F3EFE6]">[WHY]</span>, and <span className="font-mono font-bold text-zinc-800 dark:text-[#F3EFE6]">[HOW]</span> structure, then self-grade against the official Staff rubric.
+              </p>
+            </div>
+
+            {/* Step 4 */}
+            <div className="rounded-2xl border border-zinc-200/90 bg-stone-50/40 p-6 dark:border-[#2C2A26] dark:bg-[#1A1917] space-y-3.5">
+              <div className="flex items-center justify-between">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-950 text-white dark:bg-[#F3EFE6] dark:text-[#141312] font-mono font-bold text-xs shadow-xs">
+                  04
+                </span>
+                <span className="font-mono text-xs font-semibold text-zinc-500 dark:text-[#8E887B]">
+                  Step 4 • Production Capstones
+                </span>
+              </div>
+              <h3 className="font-serif font-bold text-lg text-zinc-950 dark:text-[#F3EFE6]">
+                Build 7 Production-Grade Capstones
+              </h3>
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed font-sans">
+                Each curriculum phase culminates in a portfolio capstone designed for your public GitHub. Review the architectural specs, implement the verifiable benchmark suites, and record your GitHub repository URL to prove production competence to hiring managers.
+              </p>
+            </div>
+
+            {/* Step 5 */}
+            <div className="rounded-2xl border border-zinc-200/90 bg-stone-50/40 p-6 dark:border-[#2C2A26] dark:bg-[#1A1917] space-y-3.5">
+              <div className="flex items-center justify-between">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-950 text-white dark:bg-[#F3EFE6] dark:text-[#141312] font-mono font-bold text-xs shadow-xs">
+                  05
+                </span>
+                <span className="font-mono text-xs font-semibold text-zinc-500 dark:text-[#8E887B]">
+                  Step 5 • Notes & Retention
+                </span>
+              </div>
+              <h3 className="font-serif font-bold text-lg text-zinc-950 dark:text-[#F3EFE6]">
+                Synthesize & Export Personal Notes
+              </h3>
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed font-sans">
+                Open the slide-over Notes Studio on any topic to document edge cases and architectural tradeoffs. When you are done, export all your notes as a consolidated, publication-ready Markdown handbook with one click.
+              </p>
+            </div>
+
+            {/* Step 6: Quick Action Jump */}
+            <div className="rounded-2xl border border-zinc-300 dark:border-[#35332D] bg-stone-100/70 dark:bg-[#201F1B] p-6 flex flex-col justify-between space-y-4">
+              <div className="space-y-2">
+                <span className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-600 dark:text-[#A19B8F]">
+                  Ready to Begin?
+                </span>
+                <h3 className="font-serif font-bold text-lg text-zinc-950 dark:text-[#F3EFE6]">
+                  Launch Interactive Roadmap
+                </h3>
+                <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed">
+                  Start immediately with Topic #01: Network Sockets, TCP/UDP Wire Mechanics, and Packet Journeys.
+                </p>
+              </div>
+
+              <button
+                onClick={() => onEnterRoadmap()}
+                className="group/start flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-950 py-3 text-xs sm:text-sm font-bold text-white hover:bg-zinc-800 dark:bg-[#F3EFE6] dark:text-[#141312] dark:hover:bg-white transition-all shadow-md active:scale-[0.98]"
+              >
+                <span>Enter Topic #01 Now</span>
+                <ArrowRight className="h-4 w-4 transition-transform group-hover/start:translate-x-1" />
+              </button>
+            </div>
+
           </div>
         </div>
       </section>
@@ -905,6 +1070,13 @@ export function PortfolioHome({
         <div className="mx-auto flex max-w-7xl flex-col sm:flex-row items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <p>© {new Date().getFullYear()} Backend Engineer Hub. Built for Principal & Senior Engineers.</p>
           <div className="flex items-center gap-4">
+            <button
+              onClick={() => scrollToSection("how-to-use")}
+              className="hover:text-zinc-950 dark:hover:text-[#F3EFE6] transition-colors"
+            >
+              How It Works
+            </button>
+            <span>•</span>
             <button
               onClick={() => onEnterRoadmap()}
               className="hover:text-zinc-950 dark:hover:text-[#F3EFE6] transition-colors"
