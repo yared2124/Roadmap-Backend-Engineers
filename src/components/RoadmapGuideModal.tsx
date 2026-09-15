@@ -401,7 +401,7 @@ export function RoadmapGuideModal({
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2.5">
-                        <span className="flex h-6 w-6 items-center justify-center rounded-md bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-300 font-mono font-bold text-xs">
+                        <span className="flex h-6 w-6 items-center justify-center rounded-md bg-zinc-100 text-zinc-900 dark:bg-gray-700 dark:text-gray-100 font-mono font-bold text-xs">
                           P{capstone.phaseId}
                         </span>
                         <div>
@@ -435,7 +435,7 @@ export function RoadmapGuideModal({
                           key={i}
                           className="inline-flex items-center gap-1 rounded-md bg-zinc-100 dark:bg-gray-700/80 px-2 py-0.5 text-[10.5px] font-medium text-zinc-700 dark:text-gray-300"
                         >
-                          <CheckCircle2 className="h-3 w-3 text-emerald-500" />
+                          <CheckCircle2 className="h-3 w-3 text-zinc-500 dark:text-zinc-400" />
                           {item}
                         </span>
                       ))}

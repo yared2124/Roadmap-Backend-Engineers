@@ -160,11 +160,11 @@ export function PortfolioHome({
             {/* Progress Bar indicator if user already has progress */}
             {completedCount > 0 && (
               <div className="inline-flex items-center gap-3 rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-xs dark:border-gray-700 dark:bg-gray-900/80 font-mono font-semibold">
-                <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                <CheckCircle2 className="h-4 w-4 text-blue-500" />
                 <span>Your Current Progress: {completedCount} of {totalTopics} modules completed ({Math.round((completedCount / totalTopics) * 100)}%)</span>
                 <button
                   onClick={() => onEnterRoadmap()}
-                  className="text-emerald-600 dark:text-emerald-400 hover:underline font-bold"
+                  className="text-blue-600 dark:text-blue-400 hover:underline font-bold"
                 >
                   Resume
                 </button>
@@ -214,7 +214,7 @@ export function PortfolioHome({
       <section id="study-formula" className="py-16 sm:py-20 border-b border-zinc-200/80 dark:border-gray-800">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl space-y-3">
-            <span className="font-mono text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+            <span className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
               Systematic Learning Architecture
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
@@ -398,7 +398,7 @@ export function PortfolioHome({
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div className="max-w-2xl space-y-2">
-              <span className="font-mono text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                 Curriculum Progression
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
