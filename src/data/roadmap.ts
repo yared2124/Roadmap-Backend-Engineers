@@ -293,15 +293,21 @@ curl -X POST https://httpbin.org/post -H "Idempotency-Key: 9b1deb4d-3b7d-4bad-9b
     title: "Routing & Request Dispatching (Radix Trees, Versioning)",
     phaseId: 1,
     phaseName: "Foundations & Web Protocols",
-    duration: "3 hrs 07 min",
+    duration: "18 min",
     timeEstimates: {
-      video: "3 hrs 07 min",
+      video: "18 min",
       reading: "30 min",
-      lab: "60 min",
-      total: "4 hrs 35 min"
+      lab: "45 min",
+      total: "1 hr 35 min"
     },
-    youtubeId: "WXsD0ZgxjRw",
+    youtubeId: "m-O5gqCGanA",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "6ULyxuHKxg8",
+      title: "API Gateway Architecture & Request Routing",
+      duration: "8 min",
+      description: "ByteByteGo explains how API Gateways decouple clients from internal services, handling centralized request routing, rate limiting, and SSL termination."
+    },
     shortSummary: "URL dispatching, Trie and Radix tree data structures, path parameters, route grouping, and API versioning strategies.",
     seniorInsight: {
       quote: "Never break public API contracts. URL versioning (/v1) allows internal schema refactoring without bricking mobile applications in the wild.",
@@ -765,10 +771,10 @@ function validate(req, res, next) {
     youtubeId: "f7Su4KoqSio",
     youtubeChannelUrl: CHANNEL_URL,
     secondaryVideo: {
-      youtubeId: "6ULyxuHKxg8",
-      title: "API Gateway Architecture & Request Routing",
-      duration: "8 min",
-      description: "ByteByteGo explains how API Gateways decouple clients from internal microservices, handling centralized routing, rate limiting, and authentication."
+      youtubeId: "c6H2DbIOE0c",
+      title: "Controller vs Service vs Repository Pattern Guide",
+      duration: "12 min",
+      description: "Code Deck breaks down the boundaries, responsibilities, and data flow between HTTP Controllers, business logic Services, and database Repositories."
     },
     shortSummary: "Three-tier architecture, Clean Architecture, decoupling transport layers from business logic, and repository patterns.",
     seniorInsight: {
@@ -1220,13 +1226,13 @@ CREATE INDEX idx_orders_user_id ON orders(user_id);`,
       lab: "45 min",
       total: "2 hrs 10 min"
     },
-    youtubeId: "pomxJOFVcQs",
+    youtubeId: "-qNSXK7s7_w",
     youtubeChannelUrl: CHANNEL_URL,
     secondaryVideo: {
       youtubeId: "clrtT_4WBAw",
-      title: "Database Indexing Explained with PostgreSQL & EXPLAIN ANALYZE",
+      title: "PostgreSQL Indexing: How, Why & When (PyCon AU)",
       duration: "38 min",
-      description: "Hussein Nasser's deep dive into how PostgreSQL reads B-Tree indexes, builds query execution plans, and how to debug slow queries with EXPLAIN ANALYZE."
+      description: "Deep dive into how PostgreSQL reads B-Tree indexes, builds query execution plans, and how to debug slow queries with EXPLAIN ANALYZE."
     },
     shortSummary: "B-Tree internals, composite index leftmost prefix rules, reading EXPLAIN (ANALYZE, BUFFERS), and eliminating N+1 query patterns.",
     seniorInsight: {
@@ -2168,15 +2174,21 @@ sub.on('message', (channel, msg) => {
     title: "Object Storage & Large Files (S3 Pre-signed URLs, Multipart Uploads, CDN)",
     phaseId: 5,
     phaseName: "Asynchronous Systems & Integrations",
-    duration: "3 hrs 58 min",
+    duration: "35 min",
     timeEstimates: {
-      video: "3 hrs 58 min",
+      video: "35 min",
       reading: "30 min",
       lab: "45 min",
-      total: "5 hrs 15 min"
+      total: "1 hr 50 min"
     },
-    youtubeId: "3hLmDS179YE",
+    youtubeId: "tfU0JEZjcsg",
     youtubeChannelUrl: CHANNEL_URL,
+    secondaryVideo: {
+      youtubeId: "77lMCiiMilo",
+      title: "Introduction to Amazon Simple Storage Service (S3)",
+      duration: "10 min",
+      description: "Official AWS architecture breakdown of Amazon S3 storage classes, bucket policies, data durability (11 nines), and security controls."
+    },
     shortSummary: "Storing BLOBs in cloud object storage (AWS S3/Cloudflare R2), S3 pre-signed upload URLs, multipart uploads for large files, and CDN distribution.",
     seniorInsight: {
       quote: "Never proxy file uploads through your backend application server. Let the client upload directly to S3 via pre-signed URLs.",
