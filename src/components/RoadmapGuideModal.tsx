@@ -19,6 +19,7 @@ import {
   Zap,
   GitBranch,
   HelpCircle,
+  Flame,
 } from "lucide-react";
 import { ROADMAP_PHASES } from "../data/roadmap";
 import { CAPSTONE_PROJECTS } from "../data/capstones";
@@ -228,38 +229,38 @@ export function RoadmapGuideModal({
               </div>
 
               <div className="space-y-4">
-                {/* Step 1 */}
-                <div className="flex gap-4 p-4 rounded-xl border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800/40">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 dark:bg-gray-700 text-zinc-800 dark:text-gray-200 font-bold">
-                    <BookOpen className="h-5 w-5" />
-                  </div>
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs font-bold text-zinc-500 uppercase tracking-wider">Step 01</span>
-                      <h4 className="font-bold text-zinc-950 dark:text-white">
-                        First Principles & Free Canonical Literature
-                      </h4>
-                    </div>
-                    <p className="text-xs text-zinc-600 dark:text-gray-400 leading-relaxed">
-                      Before touching code, build mental models. Read the topic overview and click the <strong>Recommended Literature</strong> link to study open canonical chapters (Martin Fowler, RFCs, Google SRE, Use The Index Luke) with zero paywalls.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Step 2 */}
+                {/* Step 1: Watch Video First */}
                 <div className="flex gap-4 p-4 rounded-xl border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800/40">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 dark:bg-gray-700 text-zinc-800 dark:text-gray-200 font-bold">
                     <PlayCircle className="h-5 w-5" />
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs font-bold text-zinc-500 uppercase tracking-wider">Step 02</span>
+                      <span className="font-mono text-xs font-bold text-zinc-500 uppercase tracking-wider">Step 01</span>
                       <h4 className="font-bold text-zinc-950 dark:text-white">
-                        Architectural Video Masterclass Immersion
+                        Watch Architectural Video Masterclasses First
                       </h4>
                     </div>
                     <p className="text-xs text-zinc-600 dark:text-gray-400 leading-relaxed">
-                      Watch the embedded industry masterclasses (ByteByteGo, Hussein Nasser, TechWorld with Nana). Focus on packet journeys, network flowcharts, and distributed coordination.
+                      Start by watching the embedded video masterclasses (ByteByteGo, Hussein Nasser, TechWorld with Nana). Focus on visual architecture diagrams, packet journeys, and distributed failure states to establish a solid mental model.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Step 2: Reinforce with Reading Second */}
+                <div className="flex gap-4 p-4 rounded-xl border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800/40">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 dark:bg-gray-700 text-zinc-800 dark:text-gray-200 font-bold">
+                    <BookOpen className="h-5 w-5" />
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-xs font-bold text-zinc-500 uppercase tracking-wider">Step 02</span>
+                      <h4 className="font-bold text-zinc-950 dark:text-white">
+                        Reinforce & Deepen with Free Canonical Literature
+                      </h4>
+                    </div>
+                    <p className="text-xs text-zinc-600 dark:text-gray-400 leading-relaxed">
+                      Now that you have the visual foundation, solidify your knowledge by reading the literature. Each topic links directly to 100% free canonical texts (Martin Fowler, RFCs, Google SRE, Use The Index Luke) with zero paywalls.
                     </p>
                   </div>
                 </div>
@@ -335,6 +336,17 @@ export function RoadmapGuideModal({
                     </p>
                   </div>
                 </div>
+              </div>
+
+              {/* Crucial Practice Callout */}
+              <div className="p-4 rounded-xl border-2 border-amber-500/30 bg-amber-500/10 dark:border-amber-500/20 dark:bg-amber-950/20 text-xs leading-relaxed text-zinc-800 dark:text-zinc-200 space-y-2">
+                <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-bold font-mono uppercase tracking-wider text-[11px]">
+                  <Flame className="h-4 w-4" />
+                  <span>The Law of Deliberate Practice</span>
+                </div>
+                <p>
+                  <strong>Watching videos and reading alone is never enough.</strong> You cannot learn distributed systems by passively streaming lectures. You must write the socket servers from scratch, break connections under load, benchmark p99 latency, and build the 7 portfolio capstones. True mastery is forged in the terminal.
+                </p>
               </div>
             </div>
           )}

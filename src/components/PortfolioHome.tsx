@@ -26,6 +26,7 @@ import {
   Sparkles,
   FolderGit2,
   ExternalLink,
+  Flame,
 } from "lucide-react";
 import { ROADMAP_PHASES } from "../data/roadmap";
 import { CAPSTONE_PROJECTS } from "../data/capstones";
@@ -303,13 +304,13 @@ export function PortfolioHome({
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 pt-4">
               <div className="rounded-xl border border-zinc-200/80 bg-white p-3 dark:border-[#2C2A26] dark:bg-[#141312] text-center space-y-1">
                 <span className="font-mono text-xs font-bold text-zinc-400">01</span>
-                <p className="text-xs font-bold text-zinc-900 dark:text-[#F3EFE6]">Read Theory</p>
-                <p className="text-[11px] text-zinc-500 dark:text-[#8E887B]">Free Canonical Texts</p>
+                <p className="text-xs font-bold text-zinc-900 dark:text-[#F3EFE6]">Watch Video</p>
+                <p className="text-[11px] text-zinc-500 dark:text-[#8E887B]">Masterclass Streams</p>
               </div>
               <div className="rounded-xl border border-zinc-200/80 bg-white p-3 dark:border-[#2C2A26] dark:bg-[#141312] text-center space-y-1">
                 <span className="font-mono text-xs font-bold text-zinc-400">02</span>
-                <p className="text-xs font-bold text-zinc-900 dark:text-[#F3EFE6]">Watch Video</p>
-                <p className="text-[11px] text-zinc-500 dark:text-[#8E887B]">Masterclass Streams</p>
+                <p className="text-xs font-bold text-zinc-900 dark:text-[#F3EFE6]">Read Theory</p>
+                <p className="text-[11px] text-zinc-500 dark:text-[#8E887B]">Free Canonical Texts</p>
               </div>
               <div className="rounded-xl border border-zinc-200/80 bg-white p-3 dark:border-[#2C2A26] dark:bg-[#141312] text-center space-y-1">
                 <span className="font-mono text-xs font-bold text-zinc-400">03</span>
@@ -336,7 +337,7 @@ export function PortfolioHome({
 
           {/* In-Depth 6 Step Execution Cards */}
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {/* Step 1 */}
+            {/* Step 1: Watch Video First */}
             <div className="rounded-2xl border border-zinc-200/90 bg-stone-50/40 p-6 dark:border-[#2C2A26] dark:bg-[#1A1917] space-y-4 flex flex-col justify-between">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -344,28 +345,28 @@ export function PortfolioHome({
                     01
                   </span>
                   <span className="font-mono text-xs font-semibold text-zinc-500 dark:text-[#8E887B] flex items-center gap-1">
-                    <BookOpen className="h-3.5 w-3.5" />
-                    <span>Theory & Literature</span>
+                    <Video className="h-3.5 w-3.5" />
+                    <span>Video Deep-Dive</span>
                   </span>
                 </div>
                 <h3 className="font-serif font-bold text-lg text-zinc-950 dark:text-[#F3EFE6]">
-                  1. Read First Principles & Canonical Books
+                  1. Watch Architectural Masterclasses First
                 </h3>
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed font-sans">
-                  Never touch code without building mental models. Start each topic by reading the architectural overview, latency flowcharts, and clicking the <strong>Recommended Literature</strong> link.
+                  Start every topic by watching the video masterclass. Industry authorities (ByteByteGo, Hussein Nasser, TechWorld with Nana) break down distributed system topologies, packet journeys, and failure modes visually to build your mental model first.
                 </p>
                 <div className="rounded-xl bg-stone-100 dark:bg-[#141312] p-3 text-xs text-zinc-700 dark:text-[#DDD7CD] space-y-1.5 border border-zinc-200/60 dark:border-[#262420]">
                   <p className="font-semibold text-zinc-900 dark:text-[#F3EFE6]">What to do:</p>
                   <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-[#A19B8F]">
-                    <li>Read the hardware/wire layer tradeoffs</li>
-                    <li>Open the 100% free canonical chapter deep-link</li>
-                    <li>Learn latency numbers & system failure modes</li>
+                    <li>Watch the Primary Masterclass with active focus</li>
+                    <li>Switch to the Secondary Video for deep-dive nuances</li>
+                    <li>Study wire protocol flowcharts & packet sequences visually</li>
                   </ul>
                 </div>
               </div>
             </div>
 
-            {/* Step 2 */}
+            {/* Step 2: Read Literature Second */}
             <div className="rounded-2xl border border-zinc-200/90 bg-stone-50/40 p-6 dark:border-[#2C2A26] dark:bg-[#1A1917] space-y-4 flex flex-col justify-between">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -373,22 +374,22 @@ export function PortfolioHome({
                     02
                   </span>
                   <span className="font-mono text-xs font-semibold text-zinc-500 dark:text-[#8E887B] flex items-center gap-1">
-                    <Video className="h-3.5 w-3.5" />
-                    <span>Video Deep-Dive</span>
+                    <BookOpen className="h-3.5 w-3.5" />
+                    <span>Theory & Literature</span>
                   </span>
                 </div>
                 <h3 className="font-serif font-bold text-lg text-zinc-950 dark:text-[#F3EFE6]">
-                  2. Watch Architectural Masterclasses
+                  2. Reinforce & Deepen with Free Canonical Books
                 </h3>
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed font-sans">
-                  Immerse yourself in the curated YouTube masterclasses from industry leaders (ByteByteGo, Hussein Nasser, TechWorld with Nana). Watch packet journeys and distributed flowcharts come alive.
+                  Now that you understand the visual architecture, solidify and deepen your knowledge by reading the literature. Each topic links directly to 100% free canonical texts (Martin Fowler, RFCs, Google SRE, Use The Index Luke) with zero paywalls.
                 </p>
                 <div className="rounded-xl bg-stone-100 dark:bg-[#141312] p-3 text-xs text-zinc-700 dark:text-[#DDD7CD] space-y-1.5 border border-zinc-200/60 dark:border-[#262420]">
                   <p className="font-semibold text-zinc-900 dark:text-[#F3EFE6]">What to do:</p>
                   <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-[#A19B8F]">
-                    <li>Watch the Primary Masterclass with active focus</li>
-                    <li>Switch to the Secondary Video for deep-dive nuances</li>
-                    <li>Pause to study wire protocol & packet sequences</li>
+                    <li>Read the hardware/wire layer tradeoffs and formulas</li>
+                    <li>Open the 100% free canonical chapter deep-link</li>
+                    <li>Solidify edge cases, latency numbers & failure rules</li>
                   </ul>
                 </div>
               </div>
@@ -619,6 +620,58 @@ git push -u origin main`}
                 <span>Enter Oral Whiteboard Simulator</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </button>
+            </div>
+          </div>
+
+          {/* Deliberate Practice & Engineering Mindset Callout */}
+          <div className="mt-12 rounded-2xl border-2 border-amber-500/40 bg-gradient-to-br from-amber-50/70 via-stone-50/50 to-stone-100/60 p-6 sm:p-8 dark:border-amber-500/30 dark:from-amber-950/25 dark:via-[#1A1917] dark:to-[#141312] space-y-4 shadow-sm">
+            <div className="flex items-center gap-2.5">
+              <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-500/15 text-amber-700 dark:text-amber-400 font-bold">
+                <Flame className="h-4 w-4" />
+              </span>
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400">
+                Core Engineering Principle • The Law of Deliberate Practice
+              </span>
+            </div>
+
+            <h3 className="font-serif font-bold text-xl sm:text-2xl text-zinc-950 dark:text-[#F3EFE6] tracking-tight">
+              Watching Videos & Reading Alone is Never Enough — True Mastery is Built in the Terminal
+            </h3>
+
+            <p className="text-sm sm:text-base text-zinc-700 dark:text-[#DDD7CD] leading-relaxed font-serif">
+              Merely consuming video masterclasses and reading architectural books creates an <em>illusion of competence</em>. In distributed systems and backend engineering, no one is hired or respected for how many hours of video they streamed. You are evaluated solely on <strong>production reliability, concurrency resilience, latency SLAs, and how your systems survive failure under fire</strong>. You cannot learn to swim by watching others from the pool deck — you must jump in and write code.
+            </p>
+
+            <div className="grid gap-3 sm:grid-cols-3 pt-2">
+              <div className="rounded-xl border border-amber-500/20 bg-white/80 dark:bg-[#1A1917]/80 p-4 space-y-1.5 shadow-2xs">
+                <p className="font-mono text-xs font-bold text-zinc-900 dark:text-[#F3EFE6] flex items-center gap-1.5">
+                  <Check className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+                  Code Everything From Scratch
+                </p>
+                <p className="text-xs text-zinc-600 dark:text-[#A19B8F] leading-relaxed">
+                  Never copy-paste mindlessly. Type out socket handlers, database transactions, and cache invalidation logic. Experience compiler errors and runtime race conditions firsthand.
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-amber-500/20 bg-white/80 dark:bg-[#1A1917]/80 p-4 space-y-1.5 shadow-2xs">
+                <p className="font-mono text-xs font-bold text-zinc-900 dark:text-[#F3EFE6] flex items-center gap-1.5">
+                  <Check className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+                  Break Systems Under Load
+                </p>
+                <p className="text-xs text-zinc-600 dark:text-[#A19B8F] leading-relaxed">
+                  Kill database replicas, inject artificial 400ms network packet jitter, flood channels with poison pills, and verify that your circuit breakers and dead-letter queues hold up.
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-amber-500/20 bg-white/80 dark:bg-[#1A1917]/80 p-4 space-y-1.5 shadow-2xs">
+                <p className="font-mono text-xs font-bold text-zinc-900 dark:text-[#F3EFE6] flex items-center gap-1.5">
+                  <Check className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+                  Measure, Qualify & Push
+                </p>
+                <p className="text-xs text-zinc-600 dark:text-[#A19B8F] leading-relaxed">
+                  Measure p99 latencies, run load tests, document architectural trade-offs in READMEs, and push your 7 portfolio capstones to GitHub. That is how you qualify yourself as an elite engineer.
+                </p>
+              </div>
             </div>
           </div>
 
