@@ -57,11 +57,11 @@ export const ROADMAP_TOPICS: RoadmapTopic[] = [
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "Patterns of Enterprise Application Architecture",
+      title: "Software Architecture Guide",
       author: "Martin Fowler",
-      keyChapters: "Chapters 1 & 2: Layering and Organizing Domain Logic (Presentation, Service, Data Source)",
-      whyReadThis: "The seminal master architecture treatise defining three-tier layering (Controller, Service, Repository), stateless service boundaries, and techniques to prevent architectural drift.",
-      readingUrl: "https://martinfowler.com/eaaCatalog/"
+      keyChapters: "Software Architecture Guide & First Principles Layering",
+      whyReadThis: "Foundational architecture treatise explaining why architecture matters, the trade-offs of layering, and separating hardware/runtime boundaries.",
+      readingUrl: "https://martinfowler.com/architecture/"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-001",
@@ -142,11 +142,11 @@ curl -w "DNS: %{time_namelookup}s | Connect: %{time_connect}s | TLS: %{time_appc
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "Designing Data-Intensive Applications (DDIA)",
-      author: "Martin Kleppmann",
-      keyChapters: "Chapter 1: Reliable, Scalable, and Maintainable Applications",
-      whyReadThis: "The seminal master text explaining how distributed backend systems guarantee reliability, scalability, and maintainability.",
-      readingUrl: "https://dataintensive.net/"
+      title: "Patterns of Enterprise Application Architecture",
+      author: "Martin Fowler",
+      keyChapters: "Service Layer Pattern (Decoupling Business Logic from Web Delivery)",
+      whyReadThis: "The canonical definition of why a backend exists: establishing an application boundary that orchestrates business operations and encapsulates state mutations.",
+      readingUrl: "https://martinfowler.com/eaaCatalog/serviceLayer.html"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-002",
@@ -237,11 +237,11 @@ networks:
       blueprintLanguage: "json"
     },
     recommendedBook: {
-      title: "High Performance Browser Networking",
+      title: "High Performance Browser Networking (Free Complete Book)",
       author: "Ilya Grigorik",
-      keyChapters: "Chapters 9, 11 & 13: HTTP 1.X, HTTP/2 Binary Framing & Multiplexing, and HTTP/3 QUIC over UDP",
-      whyReadThis: "The definitive master guide explaining the packet mechanics of TCP Head-of-Line blocking, HTTP/2 binary framing streams, 0-RTT QUIC handshakes, and transport idempotency.",
-      readingUrl: "https://hpbn.co/"
+      keyChapters: "Chapter 11: HTTP/2 Binary Framing & Multiplexing",
+      whyReadThis: "The definitive full-text guide explaining binary framing, header compression (HPACK), multiplexed streams, and 0-RTT transport.",
+      readingUrl: "https://hpbn.co/http2/"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-003",
@@ -334,11 +334,11 @@ curl -X POST https://httpbin.org/post -H "Idempotency-Key: 9b1deb4d-3b7d-4bad-9b
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "Designing Web APIs",
-      author: "Brenda Jin, Saurabh Sahni & Amir Shevat",
-      keyChapters: "Chapter 3: API Design Basics & URL Structure",
-      whyReadThis: "Practical guidelines for constructing intuitive, durable, and REST-compliant route hierarchies.",
-      readingUrl: "https://swagger.io/resources/articles/best-practices-in-api-design/"
+      title: "Microservices Architecture Patterns",
+      author: "Chris Richardson",
+      keyChapters: "API Gateway & Request Routing Pattern",
+      whyReadThis: "Practical guide explaining request dispatching, path routing, protocol translation, and versioning across backend endpoints.",
+      readingUrl: "https://microservices.io/patterns/apigateway.html"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-004",
@@ -426,11 +426,11 @@ export const CreateUserSchema = z.object({
       blueprintLanguage: "typescript"
     },
     recommendedBook: {
-      title: "Designing Data-Intensive Applications (DDIA)",
-      author: "Martin Kleppmann",
-      keyChapters: "Chapter 4: Encoding and Evolution (Formats, Thrift, Protocol Buffers, Avro)",
-      whyReadThis: "The definitive analysis of binary formats, schema evolution, backward/forward compatibility, and RPC serialization.",
-      readingUrl: "https://dataintensive.net/"
+      title: "Protocol Buffers Documentation & Wire Format",
+      author: "Google Protocol Buffers Team",
+      keyChapters: "Protocol Buffers Overview, Binary Wire Format & Scalar Value Types",
+      whyReadThis: "Official specification of binary serialization, 64-bit integer handling (int64/uint64), schema evolution, and performance comparisons over JSON.",
+      readingUrl: "https://protobuf.dev/overview/"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-005",
@@ -522,11 +522,11 @@ BigInt.prototype.toJSON = function() {
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "Node.js Design Patterns (3rd Edition)",
-      author: "Mario Casciaro & Luciano Mammino",
-      keyChapters: "Chapter 9: Behavioral Design Patterns (Middleware & Pipeline)",
-      whyReadThis: "Comprehensive breakdown of interceptor, chain of responsibility, and pipeline patterns in production web backends.",
-      readingUrl: "https://www.nodejsdesignpatterns.com/"
+      title: "Express.js Core Architectural Guides",
+      author: "OpenJS Foundation",
+      keyChapters: "Using Middleware: Pipeline Processing & Request-Response Interceptors",
+      whyReadThis: "Practical architecture guide showing how request lifecycle interceptors, chaining, and error-handling middlewares work under the hood.",
+      readingUrl: "https://expressjs.com/en/guide/using-middleware.html"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-006",
@@ -612,10 +612,10 @@ BigInt.prototype.toJSON = function() {
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "Concurrency in Go",
-      author: "Katherine Cox-Buday",
-      keyChapters: "Chapter 4: Concurrency Patterns in Go (The Context Package)",
-      whyReadThis: "The gold-standard resource for understanding request timeouts, cancellation trees, and deadline propagation.",
+      title: "Go Concurrency & Context Patterns",
+      author: "Sameer Ajmani (Go Core Team)",
+      keyChapters: "Go Concurrency Patterns: Context (Deadlines, Cancellation & Request Scopes)",
+      whyReadThis: "The definitive master guide on propagating cancellation signals, preventing leaked goroutines, and enforcing SLA timeouts across backend microservices.",
       readingUrl: "https://go.dev/blog/context"
     },
     handsOnChallenge: {
@@ -705,11 +705,11 @@ export type UpdateProfileDTO = z.infer<typeof UpdateProfileSchema>;`,
       blueprintLanguage: "typescript"
     },
     recommendedBook: {
-      title: "Secure by Design",
-      author: "Dan Bergh Johnsson, Daniel Deogun & Daniel Sawano",
-      keyChapters: "Chapter 3: Domain Primitives (Making illegal states unrepresentable)",
-      whyReadThis: "Teaches how domain primitives and strict input typing eliminate whole classes of security and logic bugs.",
-      readingUrl: "https://cheatsheetseries.owasp.org/"
+      title: "OWASP Secure Coding Practice Guidelines",
+      author: "OWASP Foundation",
+      keyChapters: "Input Validation & Data Transfer Object (DTO) Cheat Sheet",
+      whyReadThis: "Industry standard guide on allow-list validation, schema guards, type coercion defense, and preventing mass assignment vulnerabilities.",
+      readingUrl: "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-008",
@@ -804,10 +804,10 @@ function validate(req, res, next) {
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "Clean Architecture: A Craftsman's Guide",
+      title: "The Clean Architecture",
       author: "Robert C. Martin (Uncle Bob)",
-      keyChapters: "Chapters 20 & 22 (Business Rules and Clean Architecture)",
-      whyReadThis: "The classic architectural treatise on decoupling business logic from databases, frameworks, and UI boundaries.",
+      keyChapters: "The Clean Architecture: Layered Boundaries, Controllers & Use Cases",
+      whyReadThis: "The original full-text architectural manifesto defining the Dependency Inversion Principle, separation of transport controllers from domain services, and testability.",
       readingUrl: "https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html"
     },
     handsOnChallenge: {
@@ -908,11 +908,11 @@ paths:
       blueprintLanguage: "yaml"
     },
     recommendedBook: {
-      title: "RESTful Web APIs",
-      author: "Leonard Richardson & Mike Amundsen",
-      keyChapters: "Chapter 4: The Resource-Oriented Architecture",
-      whyReadThis: "The authoritative book on resource design, uniform interfaces, and stateless REST representations.",
-      readingUrl: "https://restfulapi.net/"
+      title: "Steps Toward the Glory of REST",
+      author: "Martin Fowler",
+      keyChapters: "Richardson Maturity Model (Level 0 to Level 3 HATEOAS)",
+      whyReadThis: "The industry standard breakdown of what makes an API truly RESTful: resources, standardized HTTP verbs, and hypermedia controls.",
+      readingUrl: "https://martinfowler.com/articles/richardsonMaturityModel.html"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-010",
@@ -991,11 +991,11 @@ LIMIT 20;`,
       blueprintLanguage: "sql"
     },
     recommendedBook: {
-      title: "Designing Web APIs",
-      author: "Brenda Jin, Saurabh Sahni & Amir Shevat",
-      keyChapters: "Chapter 4: Working with HTTP Methods & State Mutations (PUT vs PATCH, Soft Deletes, and Partial Updates)",
-      whyReadThis: "The industry standard guide for resource state mutation, idempotent replacement (PUT) vs delta updates (PATCH / RFC 7396), and soft deletion design patterns using PostgreSQL partial indexes.",
-      readingUrl: "https://www.postgresql.org/docs/current/indexes-partial.html"
+      title: "RESTful API Design & HTTP Methods",
+      author: "Lokesh Gupta",
+      keyChapters: "HTTP Methods: GET, POST, PUT, DELETE, and PATCH (Idempotency & Safe Methods)",
+      whyReadThis: "Clear, exhaustive explanation of state mutations, difference between replacement (PUT) and partial modification (PATCH), and status code contracts.",
+      readingUrl: "https://restfulapi.net/http-methods/"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-011",
@@ -1080,11 +1080,11 @@ if (updated.rowCount === 0) {
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "The Art of PostgreSQL",
-      author: "Dimitri Fontaine",
-      keyChapters: "Chapters 4, 6 & 7 (Data Types, Concurrency, and Indexing Strategies)",
-      whyReadThis: "Master-level exploration of SQL set-theory, concurrency control, and relational modeling in PostgreSQL.",
-      readingUrl: "https://theartofpostgresql.com/"
+      title: "PostgreSQL Concurrency Control & Internals",
+      author: "The PostgreSQL Global Development Group",
+      keyChapters: "Chapter 13: Concurrency Control (MVCC, Transaction Isolation Levels, and Locks)",
+      whyReadThis: "Official documentation explaining how Multi-Version Concurrency Control (MVCC) prevents readers from blocking writers and avoids phantom reads.",
+      readingUrl: "https://www.postgresql.org/docs/current/mvcc.html"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-012",
@@ -1170,11 +1170,11 @@ CREATE INDEX idx_orders_user_id ON orders(user_id);`,
       blueprintLanguage: "sql"
     },
     recommendedBook: {
-      title: "SQL Antipatterns: Avoiding the Pitfalls of Database Programming",
-      author: "Bill Karwin",
-      keyChapters: "Chapter 2: Naive Trees (Hierarchical Data & Closure Tables) and Chapter 4: Keyless Entry (Foreign Keys)",
-      whyReadThis: "The classic engineering guide breaking down the exact architectural trade-offs between Normalization, Foreign Key locks in distributed clusters, and how to model tree structures like comment threads with Closure Tables.",
-      readingUrl: "https://pragprog.com/titles/bksqla/sql-antipatterns/"
+      title: "PostgreSQL Data Definition & Relational Modeling",
+      author: "The PostgreSQL Global Development Group",
+      keyChapters: "Chapter 5: Constraints (Check, Unique, Foreign Keys & Referential Integrity)",
+      whyReadThis: "Official guide on enforcing relational domain invariants, cascading deletes, natural vs surrogate keys, and preventing corrupted database records.",
+      readingUrl: "https://www.postgresql.org/docs/current/ddl-constraints.html"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-013",
@@ -1264,11 +1264,11 @@ SELECT * FROM users WHERE email = 'alice@example.com';
       blueprintLanguage: "sql"
     },
     recommendedBook: {
-      title: "SQL Performance Explained",
+      title: "Use The Index, Luke! (Free Complete Book)",
       author: "Markus Winand",
-      keyChapters: "Chapters 1 & 2 (Anatomy of an Index, The WHERE Clause)",
-      whyReadThis: "The undisputed industry guide for understanding B-Trees, composite indexing, and database query plan optimization.",
-      readingUrl: "https://use-the-index-luke.com/"
+      keyChapters: "Anatomy of an Index: B-Trees, Leaf Nodes, and Query Execution Plans",
+      whyReadThis: "The undisputed master textbook on database indexing, completely free online, explaining how B-Trees work, leftmost prefix rules, and EXPLAIN ANALYZE.",
+      readingUrl: "https://use-the-index-luke.com/sql/anatomy"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-014",
@@ -1361,11 +1361,11 @@ const addresses = await db.query('SELECT * FROM addresses WHERE user_id = ANY($1
       blueprintLanguage: "javascript"
     },
     recommendedBook: {
-      title: "Domain-Driven Design: Tackling Complexity in the Heart of Software",
-      author: "Eric Evans",
-      keyChapters: "Chapters 5 & 6 (Entities, Value Objects, and Aggregates)",
-      whyReadThis: "The foundational bible for structuring complex enterprise software and modeling business invariants.",
-      readingUrl: "https://www.domainlanguage.com/ddd/reference/"
+      title: "Patterns of Enterprise Application Architecture",
+      author: "Martin Fowler",
+      keyChapters: "Repository Pattern (Mediating Between Domain Entities and Data Mapping)",
+      whyReadThis: "The authoritative definition of the Repository pattern, separating domain rules and transaction aggregates from database queries.",
+      readingUrl: "https://martinfowler.com/eaaCatalog/repository.html"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-015",
@@ -1455,11 +1455,11 @@ await client.query('COMMIT');`,
       blueprintLanguage: "javascript"
     },
     recommendedBook: {
-      title: "Redis in Action",
-      author: "Josiah L. Carlson",
-      keyChapters: "Chapters 1, 2 & 6 (Data Structures, Web Application Caching, and Distributed Locks)",
-      whyReadThis: "The canonical guide for mastering Redis data structures (Hashes, Sorted Sets, Bitmaps) and production caching.",
-      readingUrl: "https://redis.io/docs/latest/"
+      title: "Redis Architecture & Data Structures Guide",
+      author: "Redis Core Team",
+      keyChapters: "Redis Data Types: Strings, Hashes, Sorted Sets & In-Memory Caching",
+      whyReadThis: "Official guide covering cache keys, memory optimization, eviction policies (LRU/LFU), and atomic commands.",
+      readingUrl: "https://redis.io/docs/latest/develop/data-types/"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-016",
@@ -1555,11 +1555,11 @@ await client.query('COMMIT');`,
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "Web Security for Developers",
-      author: "Malcolm McDonald",
-      keyChapters: "Chapters 5 & 6 (Authentication, Password Storage, and Session Management)",
-      whyReadThis: "Clear real-world guide to password hashing, session vulnerabilities, CSRF defenses, and authentication architecture.",
-      readingUrl: "https://owasp.org/www-project-web-security-testing-guide/"
+      title: "OWASP Authentication Cheat Sheet",
+      author: "OWASP Foundation",
+      keyChapters: "Authentication & Password Storage, Multi-Factor Auth, and Session Defense",
+      whyReadThis: "Exhaustive industry standard on password hashing (Argon2id/bcrypt), session IDs, JWT claims, and refresh token security.",
+      readingUrl: "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-017",
@@ -1648,11 +1648,11 @@ WHERE id = $1
       blueprintLanguage: "sql"
     },
     recommendedBook: {
-      title: "API Security in Action",
-      author: "Neil Madden",
-      keyChapters: "Chapter 4: Microservice Authorization with Scopes and Capabilities",
-      whyReadThis: "In-depth guide to modern API access control, capability tokens, ABAC, and zero-trust authorization architectures.",
-      readingUrl: "https://owasp.org/API-Security/"
+      title: "OWASP Authorization & Access Control Cheat Sheet",
+      author: "OWASP Foundation",
+      keyChapters: "Role-Based Access Control (RBAC) & Attribute-Based Access Control (ABAC)",
+      whyReadThis: "Definitive guide on enforcing principle of least privilege, avoiding BOLA/IDOR vulnerabilities, and policy enforcement points.",
+      readingUrl: "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-018",
@@ -1740,11 +1740,11 @@ db.query("SELECT * FROM users WHERE email = $1", [req.body.email]);`,
       blueprintLanguage: "javascript"
     },
     recommendedBook: {
-      title: "API Security in Action",
-      author: "Neil Madden",
-      keyChapters: "Chapters 3 & 8 (Object-Level Security, Rate Limiting, and DoS Prevention)",
-      whyReadThis: "Comprehensive coverage of OWASP API Top 10 vulnerabilities, input validation, and defensive API architectures.",
-      readingUrl: "https://owasp.org/API-Security/"
+      title: "OWASP API Security Top 10 (2023 Edition)",
+      author: "OWASP Foundation",
+      keyChapters: "API Security Top 10: Rate Limiting, Injection, Broken Object Level Authorization",
+      whyReadThis: "The globally recognized security benchmark for protecting backend APIs against DDoS, credential stuffing, and injection exploits.",
+      readingUrl: "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-019",
@@ -1840,11 +1840,11 @@ app.use(cors({
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "Enterprise Integration Patterns",
+      title: "Enterprise Integration Patterns (Online Book)",
       author: "Gregor Hohpe & Bobby Woolf",
-      keyChapters: "Chapters 3 & 4 (Messaging Systems & Message Routing)",
-      whyReadThis: "The seminal master architecture book covering point-to-point queues, publish-subscribe, and message routing patterns.",
-      readingUrl: "https://www.enterpriseintegrationpatterns.com/"
+      keyChapters: "Point-to-Point Channel & Competing Consumers Pattern",
+      whyReadThis: "The definitive patterns book on asynchronous message queuing, decoupled background workers, and dead-letter queues.",
+      readingUrl: "https://www.enterpriseintegrationpatterns.com/patterns/messaging/PointToPointChannel.html"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-020",
@@ -1926,10 +1926,10 @@ await queue.add('video', { fileId: '123' }, {
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "Microservices Patterns: With examples in Java",
+      title: "Microservices Architecture Patterns",
       author: "Chris Richardson",
-      keyChapters: "Chapter 3: Interprocess Communication (Publishing Events Using the Transactional Outbox Pattern)",
-      whyReadThis: "The canonical guide by the creator of microservices.io solving the Dual-Write Problem, detailing how to atomically update local database tables and publish reliable asynchronous event triggers.",
+      keyChapters: "Transactional Outbox Pattern (Dual-Write Prevention & Event Triggers)",
+      whyReadThis: "Authoritative architectural pattern showing how to commit database state and publish asynchronous events atomically without data loss.",
       readingUrl: "https://microservices.io/patterns/data/transactional-outbox.html"
     },
     handsOnChallenge: {
@@ -2029,11 +2029,11 @@ export function verifyWebhook(rawBody, signatureHeader, secret) {
       blueprintLanguage: "javascript"
     },
     recommendedBook: {
-      title: "Designing Web APIs",
-      author: "Brenda Jin, Saurabh Sahni & Amir Shevat",
-      keyChapters: "Chapter 7: Webhooks and Push Subscriptions (HMAC Signatures, Delivery Retries & Security)",
-      whyReadThis: "Practical senior-level guide explaining how platforms like Stripe and GitHub compute HMAC-SHA256 signatures, how to mitigate timing discrepancy attacks, and how to buffer webhook ingestion pipelines.",
-      readingUrl: "https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#constant-time-comparison"
+      title: "The Webhooks Guide & Best Practices",
+      author: "Svix / Webhooks.fyi Community",
+      keyChapters: "Webhook Security: HMAC Signatures, Replay Attack Prevention & Idempotency",
+      whyReadThis: "Comprehensive open-source resource on webhook engineering: cryptographic verification, exponential backoff retries, and failure delivery.",
+      readingUrl: "https://webhooks.fyi/"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-022",
@@ -2122,11 +2122,11 @@ export function verifyWebhook(rawBody, signatureHeader, secret) {
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "High Performance Browser Networking",
+      title: "High Performance Browser Networking (Free Complete Book)",
       author: "Ilya Grigorik",
-      keyChapters: "Chapters 14 & 15 (Server-Sent Events and WebSockets)",
-      whyReadThis: "The definitive technical comparison of transport overhead, connection negotiation, and scaling for real-time protocols.",
-      readingUrl: "https://hpbn.co/"
+      keyChapters: "Chapter 15: The WebSocket Protocol (and Chapter 14: Server-Sent Events)",
+      whyReadThis: "Full-text explanation of WebSocket framing, TCP connection upgrading, subprotocols, and comparisons with HTTP streaming.",
+      readingUrl: "https://hpbn.co/websocket/"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-023",
@@ -2218,11 +2218,11 @@ sub.on('message', (channel, msg) => {
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "Cloud Application Architectures",
-      author: "George Reese",
-      keyChapters: "Chapter 4: Designing for Infrastructure (Decoupled Storage & Asset Delivery)",
-      whyReadThis: "Practical architecture patterns for leveraging cloud object stores, CDNs, and stateless compute infrastructure.",
-      readingUrl: "https://docs.aws.amazon.com/AmazonS3/latest/userguide/"
+      title: "Amazon Simple Storage Service (S3) User Guide",
+      author: "Amazon Web Services",
+      keyChapters: "Working with Pre-signed URLs for Secure Direct-to-S3 Uploads",
+      whyReadThis: "Official architectural guide on generating time-limited pre-signed URLs, handling multipart uploads, and offloading large file streaming from API servers.",
+      readingUrl: "https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-presigned-url.html"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-024",
@@ -2310,11 +2310,11 @@ Document 2: "Indexing full text in Elasticsearch"
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "Relevant Search",
-      author: "Doug Turnbull & John Berryman",
-      keyChapters: "Chapters 2 & 3 (The Anatomy of a Search Engine, Inverted Indexes)",
-      whyReadThis: "Master-level exploration of search engine internals, relevance tuning, BM25 scoring, and token analyzers.",
-      readingUrl: "https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html"
+      title: "Elasticsearch Reference Architecture",
+      author: "Elastic Documentation Team",
+      keyChapters: "Documents, Indices, and Inverted Index Mapping",
+      whyReadThis: "Official deep-dive into how Elasticsearch tokens, analyzers, and inverted indexes enable sub-second full-text and fuzzy search.",
+      readingUrl: "https://www.elastic.co/guide/en/elasticsearch/reference/current/documents-indices.html"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-025",
@@ -2408,11 +2408,11 @@ Document 2: "Indexing full text in Elasticsearch"
       blueprintLanguage: "json"
     },
     recommendedBook: {
-      title: "Release It! (2nd Edition)",
-      author: "Michael T. Nygard",
-      keyChapters: "Chapters 3, 4 & 5 (Stability Antipatterns: Integration Points, Cascading Failures)",
-      whyReadThis: "The seminal engineering classic on building fault-tolerant software that survives production chaos.",
-      readingUrl: "https://learn.microsoft.com/en-us/azure/architecture/patterns/"
+      title: "RFC 9457: Problem Details for HTTP APIs (IETF Standard)",
+      author: "Mark Nottingham, Erik Wilde & Sanjay Dalal",
+      keyChapters: "RFC 9457 Specification (Standardizing Machine-Readable Error Responses)",
+      whyReadThis: "The official IETF standard defining type, title, status, and detail schemas for robust, consistent API error responses.",
+      readingUrl: "https://datatracker.ietf.org/doc/html/rfc9457"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-026",
@@ -2509,9 +2509,9 @@ export const config = ConfigSchema.parse(process.env);`,
     recommendedBook: {
       title: "The Twelve-Factor App",
       author: "Adam Wiggins",
-      keyChapters: "Factor III: Config (Store config in the environment)",
-      whyReadThis: "The foundational architectural manifesto for building modern, cloud-native backend applications.",
-      readingUrl: "https://12factor.net/"
+      keyChapters: "Factor III: Config (Store Configuration in the Environment)",
+      whyReadThis: "The canonical cloud-native engineering manifesto on strict separation of code from configuration, 12-factor env vars, and fail-fast startup.",
+      readingUrl: "https://12factor.net/config"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-027",
@@ -2605,11 +2605,11 @@ export const config = ConfigSchema.parse(process.env);`,
       blueprintLanguage: "json"
     },
     recommendedBook: {
-      title: "Site Reliability Engineering (Google SRE Book)",
-      author: "Betsy Beyer, Chris Jones, Jennifer Petoff & Niall Richard Murphy",
-      keyChapters: "Chapters 6 & 10 (Monitoring Distributed Systems and Being On-Call)",
-      whyReadThis: "Google's landmark textbook defining production observability, SLIs, SLOs, and incident response.",
-      readingUrl: "https://sre.google/sre-book/table-of-contents/"
+      title: "Site Reliability Engineering (Google SRE Book - Free Online)",
+      author: "Betsy Beyer, Chris Jones, Jennifer Petoff & Niall Murphy (Google)",
+      keyChapters: "Chapter 6: Monitoring Distributed Systems (The 4 Golden Signals: Latency, Traffic, Errors, Saturation)",
+      whyReadThis: "Google's landmark SRE book, completely free online, defining production telemetry, RED metrics, and alerting strategies.",
+      readingUrl: "https://sre.google/sre-book/monitoring-distributed-systems/"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-028",
@@ -2710,11 +2710,11 @@ sdk.start();`,
       blueprintLanguage: "text"
     },
     recommendedBook: {
-      title: "The Linux Programming Interface",
-      author: "Michael Kerrisk",
-      keyChapters: "Chapters 20 & 21 (Signals: Fundamental Concepts & Handlers)",
-      whyReadThis: "The definitive encyclopedia on UNIX signals, process lifecycles, and OS termination mechanics.",
-      readingUrl: "https://man7.org/tlpi/"
+      title: "The Twelve-Factor App",
+      author: "Adam Wiggins",
+      keyChapters: "Factor IX: Disposability (Maximize Robustness with Fast Startup and Graceful Shutdown)",
+      whyReadThis: "The canonical principle for handling SIGTERM signals, connection draining, and zero-downtime rolling deploys.",
+      readingUrl: "https://12factor.net/disposability"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-029",
@@ -2820,11 +2820,11 @@ COMMIT; -- User B unblocks and sees correct balance of 50`,
       blueprintLanguage: "sql"
     },
     recommendedBook: {
-      title: "Designing Data-Intensive Applications (DDIA)",
-      author: "Martin Kleppmann",
-      keyChapters: "Chapter 7: Transactions (Race Conditions, Serializability, 2PL, SSI)",
-      whyReadThis: "The undisputed master breakdown of concurrency anomalies: Dirty Reads, Non-repeatable Reads, Phantom Reads, and Lost Updates.",
-      readingUrl: "https://dataintensive.net/"
+      title: "Redis Distributed Systems Patterns",
+      author: "Salvatore Sanfilippo (antirez)",
+      keyChapters: "Distributed Locks with Redis (The Redlock Algorithm & Fencing Tokens)",
+      whyReadThis: "The definitive technical guide on coordinating mutual exclusion across multi-instance clusters and preventing race conditions.",
+      readingUrl: "https://redis.io/docs/latest/develop/use/patterns/distributed-locks/"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-030",
@@ -2923,11 +2923,11 @@ CMD ["node", "dist/server.js"]`,
       blueprintLanguage: "dockerfile"
     },
     recommendedBook: {
-      title: "The DevOps Handbook (2nd Edition)",
-      author: "Gene Kim, Jez Humble, Patrick Debois & John Willis",
-      keyChapters: "Chapters 5 & 6 (The Technical Practices of Flow, Telemetry, and Continuous Delivery)",
-      whyReadThis: "The seminal guide for implementing automated testing, continuous integration, and high-trust deployment pipelines.",
-      readingUrl: "https://continuousdelivery.com/"
+      title: "Docker Architecture & Container Concepts",
+      author: "Docker Documentation Team",
+      keyChapters: "Containerization Basics: Namespaces, cgroups, Multi-Stage Builds & Isolation",
+      whyReadThis: "Official guide on container primitives, deterministic packaging, minimal production runtime images, and CI/CD pipelines.",
+      readingUrl: "https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/"
     },
     handsOnChallenge: {
       ticketNumber: "TICKET-031",
