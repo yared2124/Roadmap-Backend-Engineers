@@ -127,7 +127,7 @@ export function RoadmapGuideModal({
               }`}
             >
               <Mic className="h-4 w-4" />
-              <span>3. Whiteboard Oral Exam</span>
+              <span>3. Mock Interview Simulator</span>
             </button>
 
             <button
@@ -155,23 +155,27 @@ export function RoadmapGuideModal({
                   Curriculum Structure & Engineering Trajectory
                 </h3>
                 <p className="mt-2 text-zinc-600 dark:text-gray-400 leading-relaxed">
-                  This platform is not a random collection of videos. It is a systematic curriculum designed to advance software engineers from standard application developers into <strong>Senior and Principal Distributed Systems Architects</strong> across <strong>7 progressive phases</strong>, <strong>31 in-depth modules</strong>, and <strong>7 production capstones</strong>.
+                  This platform is not a random collection of videos. It is a systematic curriculum designed to advance software engineers from standard application developers into <strong>Senior and Principal Distributed Systems Architects</strong> across <strong>7 progressive phases</strong>, <strong>31 in-depth modules</strong>, <strong>51 video masterclasses (56+ hours)</strong>, and <strong>7 production capstones</strong>.
                 </p>
               </div>
 
               {/* Key Metrics Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
                 <div className="p-4 rounded-xl border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-center">
                   <span className="block text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white font-mono">07</span>
                   <span className="text-xs font-semibold text-zinc-500 dark:text-gray-400">Architectural Phases</span>
                 </div>
                 <div className="p-4 rounded-xl border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-center">
                   <span className="block text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white font-mono">31</span>
-                  <span className="text-xs font-semibold text-zinc-500 dark:text-gray-400">Deep Core Modules</span>
+                  <span className="text-xs font-semibold text-zinc-500 dark:text-gray-400">Core Modules</span>
+                </div>
+                <div className="p-4 rounded-xl border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-center">
+                  <span className="block text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white font-mono">51</span>
+                  <span className="text-xs font-semibold text-zinc-500 dark:text-gray-400">Videos (56+ Hrs)</span>
                 </div>
                 <div className="p-4 rounded-xl border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-center">
                   <span className="block text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white font-mono">93</span>
-                  <span className="text-xs font-semibold text-zinc-500 dark:text-gray-400">Oral Whiteboard Qs</span>
+                  <span className="text-xs font-semibold text-zinc-500 dark:text-gray-400">Mock Interview Qs</span>
                 </div>
                 <div className="p-4 rounded-xl border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-center">
                   <span className="block text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white font-mono">07</span>
@@ -357,10 +361,10 @@ export function RoadmapGuideModal({
               <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-5 dark:border-gray-700 dark:bg-gray-800/60">
                 <h3 className="text-base font-bold text-zinc-950 dark:text-white flex items-center gap-2">
                   <Mic className="h-5 w-5 text-rose-500" />
-                  Executive Technical Communication & Oral Whiteboard Mastery
+                  Technical Mock Interview & Whiteboard Defense Simulator
                 </h3>
                 <p className="mt-1 text-zinc-600 dark:text-gray-400 text-xs sm:text-sm leading-relaxed">
-                  Most candidates fail senior evaluations not because of syntax, but because they cannot articulate architectural choices aloud under time pressure. Use the 75-second formula:
+                  Senior engineering interviews evaluate how you articulate architectural choices aloud under pressure. Across all 31 modules, use the built-in 75-second Mock Interview Simulator with the 3-tier formula:
                 </p>
               </div>
 

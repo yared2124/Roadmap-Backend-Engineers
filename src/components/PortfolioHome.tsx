@@ -212,11 +212,15 @@ export function PortfolioHome({
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-md bg-stone-100 dark:bg-[#1C1B18] border border-zinc-200/80 dark:border-[#2C2A26] px-3 py-1">
                 <Check className="h-3 w-3 text-zinc-700 dark:text-[#D5CFBF]" />
+                51 Masterclasses (56+ Hours)
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-md bg-stone-100 dark:bg-[#1C1B18] border border-zinc-200/80 dark:border-[#2C2A26] px-3 py-1">
+                <Check className="h-3 w-3 text-zinc-700 dark:text-[#D5CFBF]" />
                 Authoritative Literature (DDIA, Fowler)
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-md bg-stone-100 dark:bg-[#1C1B18] border border-zinc-200/80 dark:border-[#2C2A26] px-3 py-1">
                 <Check className="h-3 w-3 text-zinc-700 dark:text-[#D5CFBF]" />
-                Whiteboard Oral Exam Simulator
+                Mock Technical Interview Simulator
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-md bg-stone-100 dark:bg-[#1C1B18] border border-zinc-200/80 dark:border-[#2C2A26] px-3 py-1">
                 <Check className="h-3 w-3 text-zinc-700 dark:text-[#D5CFBF]" />
@@ -346,14 +350,14 @@ export function PortfolioHome({
                   </span>
                   <span className="font-mono text-xs font-semibold text-zinc-500 dark:text-[#8E887B] flex items-center gap-1">
                     <Video className="h-3.5 w-3.5" />
-                    <span>Video Deep-Dive</span>
+                    <span>51 Masterclasses (56+ Hrs)</span>
                   </span>
                 </div>
                 <h3 className="font-serif font-bold text-lg text-zinc-950 dark:text-[#F3EFE6]">
                   1. Watch Architectural Masterclasses First
                 </h3>
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed font-sans">
-                  Start every topic by watching the video masterclass. Industry authorities (ByteByteGo, Hussein Nasser, TechWorld with Nana) break down distributed system topologies, packet journeys, and failure modes visually to build your mental model first.
+                  Start every topic by watching the curated video masterclasses (51 high-impact videos totaling 56+ hours across the roadmap). Industry authorities (ByteByteGo, Hussein Nasser, TechWorld with Nana) break down distributed system topologies, packet journeys, and failure modes visually to build your mental model first.
                 </p>
                 <div className="rounded-xl bg-stone-100 dark:bg-[#141312] p-3 text-xs text-zinc-700 dark:text-[#DDD7CD] space-y-1.5 border border-zinc-200/60 dark:border-[#262420]">
                   <p className="font-semibold text-zinc-900 dark:text-[#F3EFE6]">What to do:</p>
@@ -402,23 +406,23 @@ export function PortfolioHome({
                   <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-950 text-white dark:bg-[#F3EFE6] dark:text-[#141312] font-mono font-bold text-xs shadow-xs">
                     03
                   </span>
-                  <span className="font-mono text-xs font-semibold text-zinc-500 dark:text-[#8E887B] flex items-center gap-1">
-                    <HelpCircle className="h-3.5 w-3.5" />
-                    <span>Active Recall</span>
+                  <span className="font-mono text-xs font-semibold text-rose-600 dark:text-rose-400 flex items-center gap-1">
+                    <Mic className="h-3.5 w-3.5" />
+                    <span>Mock Interview Simulator</span>
                   </span>
                 </div>
                 <h3 className="font-serif font-bold text-lg text-zinc-950 dark:text-[#F3EFE6]">
-                  3. Solve Self-Check Diagnostic Questions
+                  3. Run Timed Mock Technical Interview
                 </h3>
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed font-sans">
-                  Passive video viewing creates an illusion of competence. Immediately solve the 3 diagnostic questions on each topic before revealing answers to uncover blind spots.
+                  Senior engineers are evaluated on spontaneous oral architectural defense. In every module, click &ldquo;Start Mock Interview&rdquo; to launch the 75s countdown simulator and verbally answer the WHAT, WHY, and HOW questions.
                 </p>
                 <div className="rounded-xl bg-stone-100 dark:bg-[#141312] p-3 text-xs text-zinc-700 dark:text-[#DDD7CD] space-y-1.5 border border-zinc-200/60 dark:border-[#262420]">
                   <p className="font-semibold text-zinc-900 dark:text-[#F3EFE6]">What to do:</p>
                   <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-[#A19B8F]">
-                    <li>Formulate your technical defense out loud or in writing</li>
-                    <li>Test your grasp on race conditions and latency cost</li>
-                    <li>Expand Staff Breakdown to calibrate your depth</li>
+                    <li>Click &ldquo;Start Mock Interview&rdquo; in the module header</li>
+                    <li>Speak your defense aloud under the 75-second timer</li>
+                    <li>Reveal the Staff Rubric & grade yourself (Mastered / Partial / Missed)</li>
                   </ul>
                 </div>
               </div>
@@ -584,41 +588,99 @@ git push -u origin main`}
             </div>
           </div>
 
-          {/* Capstones & Oral Whiteboard Milestones */}
-          <div className="mt-10 grid gap-6 sm:grid-cols-2">
-            {/* Capstone Box */}
-            <div className="rounded-2xl border border-zinc-200/90 bg-stone-50/50 dark:border-[#2C2A26] dark:bg-[#1A1917] p-6 space-y-3">
-              <div className="flex items-center gap-2 text-zinc-950 dark:text-[#F3EFE6]">
+          {/* Capstone Box & Quick Links */}
+          <div className="mt-10 rounded-2xl border border-zinc-200/90 bg-stone-50/50 dark:border-[#2C2A26] dark:bg-[#1A1917] p-6 sm:p-7 space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-2.5 text-zinc-950 dark:text-[#F3EFE6]">
                 <Trophy className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-                <h4 className="font-serif font-bold text-base">The 7 Production Portfolio Capstones</h4>
+                <h4 className="font-serif font-bold text-base sm:text-lg">The 7 Production Portfolio Capstones</h4>
               </div>
-              <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed">
-                At the conclusion of each Phase, build an industry-grade portfolio capstone (Distributed Rate Limiter, Raft Consensus, Event-Driven Outbox). Record your GitHub URL in the Capstone Viewer to mark your achievement.
-              </p>
               <button
                 onClick={() => handleSwitchTab("capstones")}
-                className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-zinc-900 hover:text-zinc-600 dark:text-[#F3EFE6] dark:hover:text-[#A19B8F] transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-zinc-900 hover:text-zinc-600 dark:text-[#F3EFE6] dark:hover:text-[#A19B8F] transition-colors shrink-0"
               >
                 <span>View 7 Capstone Specifications</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </button>
             </div>
+            <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed">
+              At the conclusion of each Phase, build an industry-grade portfolio capstone (Distributed Rate Limiter, Raft Consensus, Event-Driven Outbox). Record your GitHub URL in the Capstone Viewer to mark your achievement.
+            </p>
+          </div>
 
-            {/* Oral Whiteboard Box */}
-            <div className="rounded-2xl border border-zinc-200/90 bg-stone-50/50 dark:border-[#2C2A26] dark:bg-[#1A1917] p-6 space-y-3">
-              <div className="flex items-center gap-2 text-zinc-950 dark:text-[#F3EFE6]">
-                <Mic className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-                <h4 className="font-serif font-bold text-base">Oral Whiteboard Defense Simulator</h4>
+          {/* Dedicated Mock Technical Interview & Whiteboard Defense Simulator Guide */}
+          <div className="mt-8 rounded-2xl border-2 border-purple-500/30 bg-gradient-to-br from-purple-50/70 via-stone-50/50 to-stone-100/60 p-6 sm:p-8 dark:border-purple-500/30 dark:from-purple-950/20 dark:via-[#1A1917] dark:to-[#141312] space-y-6 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-purple-200/60 dark:border-purple-900/40 pb-5">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-purple-700 dark:text-purple-400 font-mono text-xs font-bold uppercase tracking-wider">
+                  <Mic className="h-4 w-4" />
+                  <span>Integrated Feature • Mock Technical Interview Simulator</span>
+                </div>
+                <h3 className="font-serif font-bold text-xl sm:text-2xl text-zinc-950 dark:text-[#F3EFE6]">
+                  Senior & Staff Technical Mock Interview Simulator
+                </h3>
               </div>
-              <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed">
-                Senior engineering interviews are architectural defenses under time pressure. Rehearse the 3 oral questions per topic with the built-in timer before reviewing staff-level answers.
-              </p>
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={() => handleSwitchTab("oral-exams")}
+                  className="inline-flex items-center gap-2 rounded-xl bg-purple-700 hover:bg-purple-800 dark:bg-purple-600 dark:hover:bg-purple-500 text-white px-4 py-2.5 text-xs font-bold transition-all shadow-xs active:scale-95"
+                >
+                  <Mic className="h-3.5 w-3.5" />
+                  <span>Launch Simulator (93 Prompts)</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+
+            <p className="text-sm sm:text-[15px] text-zinc-700 dark:text-[#DDD7CD] leading-relaxed font-serif">
+              In senior engineering loops at high-bar tech companies, coding syntax is only 30% of the evaluation. Over 70% of hiring committee decisions hinge on your ability to <strong>defend architectural decisions out loud under realistic time pressure</strong>. For every single one of the 31 topics, we have integrated an interactive <strong>Technical Mock Interview Simulator</strong> equipped with 3 authentic staff-level prompts (93 total), a real-time 75-second countdown timer, and benchmark grading rubrics.
+            </p>
+
+            <div className="grid gap-4 sm:grid-cols-3 pt-1">
+              <div className="rounded-xl border border-purple-200/70 bg-white/90 dark:border-[#2C2A26] dark:bg-[#141312] p-4 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 font-mono text-xs font-bold">1</span>
+                  <h4 className="font-bold text-xs sm:text-sm text-zinc-900 dark:text-[#F3EFE6]">[WHAT] Abstraction & Invariants</h4>
+                </div>
+                <p className="text-xs text-zinc-600 dark:text-[#A19B8F] leading-relaxed">
+                  State the fundamental mechanism and mental model in two crisp sentences without hesitation. Zero fluff, zero filler.
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-purple-200/70 bg-white/90 dark:border-[#2C2A26] dark:bg-[#141312] p-4 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-md bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 font-mono text-xs font-bold">2</span>
+                  <h4 className="font-bold text-xs sm:text-sm text-zinc-900 dark:text-[#F3EFE6]">[WHY] Trade-offs & Alternatives</h4>
+                </div>
+                <p className="text-xs text-zinc-600 dark:text-[#A19B8F] leading-relaxed">
+                  Justify why you chose this design over 2 viable alternatives, quantifying latency, memory, and operational cost curves.
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-purple-200/70 bg-white/90 dark:border-[#2C2A26] dark:bg-[#141312] p-4 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-md bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 font-mono text-xs font-bold">3</span>
+                  <h4 className="font-bold text-xs sm:text-sm text-zinc-900 dark:text-[#F3EFE6]">[HOW] Pathologies & Failures</h4>
+                </div>
+                <p className="text-xs text-zinc-600 dark:text-[#A19B8F] leading-relaxed">
+                  Explain exactly how the subsystem behaves under network partitions, split-brain, memory saturation, or crash loops.
+                </p>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-zinc-200 dark:border-[#2C2A26] bg-stone-100/70 dark:bg-[#1A1917] p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2 text-zinc-700 dark:text-[#DDD7CD]">
+                <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                <span>
+                  <strong>Interactive Scoring:</strong> Click <em>&ldquo;Start Mock Interview&rdquo;</em> in any topic to test yourself against the clock, reveal the staff breakdown, and self-grade your performance (Mastered, Partial, or Missed).
+                </span>
+              </div>
               <button
-                onClick={() => handleSwitchTab("oral-exams")}
-                className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-zinc-900 hover:text-zinc-600 dark:text-[#F3EFE6] dark:hover:text-[#A19B8F] transition-colors"
+                onClick={() => onEnterRoadmap()}
+                className="inline-flex items-center gap-1.5 font-mono font-bold text-zinc-900 hover:text-zinc-600 dark:text-[#F3EFE6] dark:hover:text-[#A19B8F] shrink-0 underline"
               >
-                <span>Enter Oral Whiteboard Simulator</span>
-                <ArrowRight className="h-3.5 w-3.5" />
+                <span>Try in Topic #01</span>
+                <ArrowRight className="h-3 w-3" />
               </button>
             </div>
           </div>
@@ -732,36 +794,52 @@ git push -u origin main`}
           </div>
 
           {/* Metric Stats Grid */}
-          <div className="my-10 grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="rounded-2xl border border-zinc-200/80 bg-stone-50/60 dark:border-[#2C2A26] dark:bg-[#1A1917] p-5 text-center shadow-2xs">
-              <span className="block font-mono text-3xl sm:text-4xl font-bold text-zinc-950 dark:text-[#F3EFE6]">
+          <div className="my-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+            <div className="rounded-2xl border border-zinc-200/80 bg-stone-50/60 dark:border-[#2C2A26] dark:bg-[#1A1917] p-4 text-center shadow-2xs">
+              <span className="block font-mono text-2xl sm:text-3xl font-bold text-zinc-950 dark:text-[#F3EFE6]">
                 07
               </span>
-              <span className="text-xs sm:text-sm font-serif font-medium text-zinc-600 dark:text-[#A19B8F]">
+              <span className="text-[11px] sm:text-xs font-serif font-medium text-zinc-600 dark:text-[#A19B8F]">
                 Architectural Phases
               </span>
             </div>
-            <div className="rounded-2xl border border-zinc-200/80 bg-stone-50/60 dark:border-[#2C2A26] dark:bg-[#1A1917] p-5 text-center shadow-2xs">
-              <span className="block font-mono text-3xl sm:text-4xl font-bold text-zinc-950 dark:text-[#F3EFE6]">
+            <div className="rounded-2xl border border-zinc-200/80 bg-stone-50/60 dark:border-[#2C2A26] dark:bg-[#1A1917] p-4 text-center shadow-2xs">
+              <span className="block font-mono text-2xl sm:text-3xl font-bold text-zinc-950 dark:text-[#F3EFE6]">
                 31
               </span>
-              <span className="text-xs sm:text-sm font-serif font-medium text-zinc-600 dark:text-[#A19B8F]">
-                Production Deep Dives
+              <span className="text-[11px] sm:text-xs font-serif font-medium text-zinc-600 dark:text-[#A19B8F]">
+                Core Modules
               </span>
             </div>
-            <div className="rounded-2xl border border-zinc-200/80 bg-stone-50/60 dark:border-[#2C2A26] dark:bg-[#1A1917] p-5 text-center shadow-2xs">
-              <span className="block font-mono text-3xl sm:text-4xl font-bold text-zinc-950 dark:text-[#F3EFE6]">
+            <div className="rounded-2xl border border-zinc-200/80 bg-stone-50/60 dark:border-[#2C2A26] dark:bg-[#1A1917] p-4 text-center shadow-2xs">
+              <span className="block font-mono text-2xl sm:text-3xl font-bold text-zinc-950 dark:text-[#F3EFE6]">
+                51
+              </span>
+              <span className="text-[11px] sm:text-xs font-serif font-medium text-zinc-600 dark:text-[#A19B8F]">
+                Masterclass Videos
+              </span>
+            </div>
+            <div className="rounded-2xl border border-zinc-200/80 bg-stone-50/60 dark:border-[#2C2A26] dark:bg-[#1A1917] p-4 text-center shadow-2xs">
+              <span className="block font-mono text-2xl sm:text-3xl font-bold text-zinc-950 dark:text-[#F3EFE6]">
+                56+
+              </span>
+              <span className="text-[11px] sm:text-xs font-serif font-medium text-zinc-600 dark:text-[#A19B8F]">
+                Video Watch Hours
+              </span>
+            </div>
+            <div className="rounded-2xl border border-zinc-200/80 bg-stone-50/60 dark:border-[#2C2A26] dark:bg-[#1A1917] p-4 text-center shadow-2xs">
+              <span className="block font-mono text-2xl sm:text-3xl font-bold text-zinc-950 dark:text-[#F3EFE6]">
                 93
               </span>
-              <span className="text-xs sm:text-sm font-serif font-medium text-zinc-600 dark:text-[#A19B8F]">
-                Whiteboard Oral Questions
+              <span className="text-[11px] sm:text-xs font-serif font-medium text-zinc-600 dark:text-[#A19B8F]">
+                Mock Interview Qs
               </span>
             </div>
-            <div className="rounded-2xl border border-zinc-200/80 bg-stone-50/60 dark:border-[#2C2A26] dark:bg-[#1A1917] p-5 text-center shadow-2xs">
-              <span className="block font-mono text-3xl sm:text-4xl font-bold text-zinc-950 dark:text-[#F3EFE6]">
+            <div className="rounded-2xl border border-zinc-200/80 bg-stone-50/60 dark:border-[#2C2A26] dark:bg-[#1A1917] p-4 text-center shadow-2xs">
+              <span className="block font-mono text-2xl sm:text-3xl font-bold text-zinc-950 dark:text-[#F3EFE6]">
                 07
               </span>
-              <span className="text-xs sm:text-sm font-serif font-medium text-zinc-600 dark:text-[#A19B8F]">
+              <span className="text-[11px] sm:text-xs font-serif font-medium text-zinc-600 dark:text-[#A19B8F]">
                 Portfolio Capstones
               </span>
             </div>

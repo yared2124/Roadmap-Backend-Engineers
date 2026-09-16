@@ -16,10 +16,10 @@ export const ROADMAP_TOPICS: RoadmapTopic[] = [
     phaseName: "Foundations & Web Protocols",
     duration: "31 min",
     timeEstimates: {
-      video: "31 min",
+      video: "40 min",
       reading: "30 min",
       lab: "45 min",
-      total: "1 hr 45 min"
+      total: "1 hr 55 min"
     },
     youtubeId: "0Rwb4Xmlcwc",
     youtubeChannelUrl: CHANNEL_URL,
@@ -107,10 +107,10 @@ curl -w "DNS: %{time_namelookup}s | Connect: %{time_connect}s | TLS: %{time_appc
     phaseName: "Foundations & Web Protocols",
     duration: "2 hrs 26 min",
     timeEstimates: {
-      video: "2 hrs 26 min",
+      video: "2 hr 26 min",
       reading: "45 min",
       lab: "45 min",
-      total: "4 hrs"
+      total: "3 hr 56 min"
     },
     youtubeId: "KOutPbKc9UM",
     youtubeChannelUrl: CHANNEL_URL,
@@ -195,10 +195,10 @@ networks:
     phaseName: "Foundations & Web Protocols",
     duration: "39 min",
     timeEstimates: {
-      video: "39 min",
+      video: "49 min",
       reading: "45 min",
       lab: "45 min",
-      total: "2 hrs 10 min"
+      total: "2 hr 19 min"
     },
     youtubeId: "iYM2zFP3Zn0",
     youtubeChannelUrl: CHANNEL_URL,
@@ -295,10 +295,10 @@ curl -X POST https://httpbin.org/post -H "Idempotency-Key: 9b1deb4d-3b7d-4bad-9b
     phaseName: "Foundations & Web Protocols",
     duration: "18 min",
     timeEstimates: {
-      video: "18 min",
+      video: "26 min",
       reading: "30 min",
       lab: "45 min",
-      total: "1 hr 35 min"
+      total: "1 hr 41 min"
     },
     youtubeId: "m-O5gqCGanA",
     youtubeChannelUrl: CHANNEL_URL,
@@ -388,10 +388,10 @@ curl -i -X POST https://api.github.com/zen`,
     phaseName: "Foundations & Web Protocols",
     duration: "36 min",
     timeEstimates: {
-      video: "36 min",
+      video: "43 min",
       reading: "30 min",
       lab: "45 min",
-      total: "1 hr 50 min"
+      total: "1 hr 58 min"
     },
     youtubeId: "46O73On0gyI",
     youtubeChannelUrl: CHANNEL_URL,
@@ -483,7 +483,7 @@ BigInt.prototype.toJSON = function() {
       video: "1 hr 46 min",
       reading: "35 min",
       lab: "45 min",
-      total: "3 hrs"
+      total: "3 hr 6 min"
     },
     youtubeId: "CnH3kAXSrmU",
     youtubeChannelUrl: CHANNEL_URL,
@@ -583,7 +583,7 @@ BigInt.prototype.toJSON = function() {
       video: "33 min",
       reading: "30 min",
       lab: "45 min",
-      total: "1 hr 50 min"
+      total: "1 hr 48 min"
     },
     youtubeId: "LSzR0VEraWw",
     youtubeChannelUrl: CHANNEL_URL,
@@ -673,7 +673,7 @@ curl -m 1 http://localhost:3000/api/heavy-query`,
       video: "37 min",
       reading: "30 min",
       lab: "45 min",
-      total: "1 hr 50 min"
+      total: "1 hr 52 min"
     },
     youtubeId: "Dgym6yLNUbM",
     youtubeChannelUrl: CHANNEL_URL,
@@ -763,10 +763,10 @@ function validate(req, res, next) {
     phaseName: "Core API Architecture & Request Lifecycle",
     duration: "58 min",
     timeEstimates: {
-      video: "58 min",
+      video: "1 hr 10 min",
       reading: "40 min",
       lab: "45 min",
-      total: "2 hrs 25 min"
+      total: "2 hr 35 min"
     },
     youtubeId: "f7Su4KoqSio",
     youtubeChannelUrl: CHANNEL_URL,
@@ -857,10 +857,10 @@ export async function registerController(req, res) {
     phaseName: "Core API Architecture & Request Lifecycle",
     duration: "45 min",
     timeEstimates: {
-      video: "45 min",
+      video: "55 min",
       reading: "35 min",
       lab: "45 min",
-      total: "2 hrs 05 min"
+      total: "2 hr 15 min"
     },
     youtubeId: "lsMQRaeKNDk",
     youtubeChannelUrl: CHANNEL_URL,
@@ -958,10 +958,10 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(spec));`,
     phaseName: "Core API Architecture & Request Lifecycle",
     duration: "3 hrs 09 min",
     timeEstimates: {
-      video: "3 hrs 09 min",
+      video: "3 hr 9 min",
       reading: "30 min",
       lab: "60 min",
-      total: "4 hrs 40 min"
+      total: "4 hr 39 min"
     },
     youtubeId: "rOpEN1JDaD0",
     youtubeChannelUrl: CHANNEL_URL,
@@ -1048,10 +1048,10 @@ if (updated.rowCount === 0) {
     phaseName: "Data Persistence & Storage",
     duration: "4 hrs 20 min",
     timeEstimates: {
-      video: "4 hrs 20 min",
+      video: "4 hr 20 min",
       reading: "45 min",
       lab: "60 min",
-      total: "6 hrs"
+      total: "6 hr 5 min"
     },
     youtubeId: "qw--VYLpxG4",
     youtubeChannelUrl: CHANNEL_URL,
@@ -1127,10 +1127,10 @@ if (updated.rowCount === 0) {
     phaseName: "Data Persistence & Storage",
     duration: "5 hrs 55 min",
     timeEstimates: {
-      video: "5 hrs 55 min",
+      video: "6 hr 5 min",
       reading: "45 min",
       lab: "60 min",
-      total: "7 hrs 40 min"
+      total: "7 hr 50 min"
     },
     youtubeId: "26ls5lNiijk",
     youtubeChannelUrl: CHANNEL_URL,
@@ -1221,10 +1221,10 @@ CREATE INDEX idx_orders_user_id ON orders(user_id);`,
     phaseName: "Data Persistence & Storage",
     duration: "43 min",
     timeEstimates: {
-      video: "43 min",
+      video: "1 hr 21 min",
       reading: "40 min",
       lab: "45 min",
-      total: "2 hrs 10 min"
+      total: "2 hr 46 min"
     },
     youtubeId: "-qNSXK7s7_w",
     youtubeChannelUrl: CHANNEL_URL,
@@ -1411,10 +1411,10 @@ await client.query('COMMIT');`,
     phaseName: "Data Persistence & Storage",
     duration: "1 hr 27 min",
     timeEstimates: {
-      video: "1 hr 27 min",
+      video: "1 hr 39 min",
       reading: "35 min",
       lab: "45 min",
-      total: "2 hrs 45 min"
+      total: "2 hr 59 min"
     },
     youtubeId: "XCsS_NVAa1g",
     youtubeChannelUrl: CHANNEL_URL,
@@ -1511,10 +1511,10 @@ await client.query('COMMIT');`,
     phaseName: "Security & Access Control",
     duration: "37 min",
     timeEstimates: {
-      video: "37 min",
+      video: "1 hr 19 min",
       reading: "40 min",
       lab: "45 min",
-      total: "2 hrs"
+      total: "2 hr 44 min"
     },
     youtubeId: "2PPSXonhIck",
     youtubeChannelUrl: CHANNEL_URL,
@@ -1610,10 +1610,10 @@ await client.query('COMMIT');`,
     phaseName: "Security & Access Control",
     duration: "35 min",
     timeEstimates: {
-      video: "35 min",
+      video: "53 min",
       reading: "35 min",
       lab: "45 min",
-      total: "1 hr 55 min"
+      total: "2 hr 13 min"
     },
     youtubeId: "SuycfXLdF8o",
     youtubeChannelUrl: CHANNEL_URL,
@@ -1704,10 +1704,10 @@ WHERE id = $1
     phaseName: "Security & Access Control",
     duration: "1 hr 27 min",
     timeEstimates: {
-      video: "1 hr 27 min",
+      video: "1 hr 41 min",
       reading: "40 min",
       lab: "45 min",
-      total: "2 hrs 50 min"
+      total: "3 hr 6 min"
     },
     youtubeId: "YYe0FdfdgDU",
     youtubeChannelUrl: CHANNEL_URL,
@@ -1800,10 +1800,10 @@ app.use(cors({
     phaseName: "Asynchronous Systems & Integrations",
     duration: "31 min",
     timeEstimates: {
-      video: "31 min",
+      video: "1 hr 11 min",
       reading: "35 min",
       lab: "45 min",
-      total: "1 hr 50 min"
+      total: "2 hr 31 min"
     },
     youtubeId: "nFxjaVmFj5E",
     youtubeChannelUrl: CHANNEL_URL,
@@ -1978,10 +1978,10 @@ await queue.add('video', { fileId: '123' }, {
     phaseName: "Asynchronous Systems & Integrations",
     duration: "2 hrs 29 min",
     timeEstimates: {
-      video: "2 hrs 29 min",
+      video: "2 hr 37 min",
       reading: "35 min",
       lab: "45 min",
-      total: "3 hrs 50 min"
+      total: "3 hr 57 min"
     },
     youtubeId: "41NOoEz3Tzc",
     youtubeChannelUrl: CHANNEL_URL,
@@ -2086,10 +2086,10 @@ export function verifyWebhook(rawBody, signatureHeader, secret) {
     phaseName: "Asynchronous Systems & Integrations",
     duration: "48 min",
     timeEstimates: {
-      video: "48 min",
+      video: "1 hr 4 min",
       reading: "35 min",
       lab: "45 min",
-      total: "2 hrs 10 min"
+      total: "2 hr 24 min"
     },
     youtubeId: "2Nt-ZrNP22A",
     youtubeChannelUrl: CHANNEL_URL,
@@ -2176,10 +2176,10 @@ sub.on('message', (channel, msg) => {
     phaseName: "Asynchronous Systems & Integrations",
     duration: "35 min",
     timeEstimates: {
-      video: "35 min",
+      video: "45 min",
       reading: "30 min",
       lab: "45 min",
-      total: "1 hr 50 min"
+      total: "2 hrs"
     },
     youtubeId: "tfU0JEZjcsg",
     youtubeChannelUrl: CHANNEL_URL,
@@ -2277,10 +2277,10 @@ async function getUploadUrl(userId, fileType) {
     phaseName: "Asynchronous Systems & Integrations",
     duration: "4 hrs 59 min",
     timeEstimates: {
-      video: "4 hrs 59 min",
+      video: "4 hr 59 min",
       reading: "40 min",
       lab: "60 min",
-      total: "6 hrs 40 min"
+      total: "6 hr 39 min"
     },
     youtubeId: "a4HBKEda_F8",
     youtubeChannelUrl: CHANNEL_URL,
@@ -2376,7 +2376,7 @@ Document 2: "Indexing full text in Elasticsearch"
       video: "32 min",
       reading: "30 min",
       lab: "45 min",
-      total: "1 hr 45 min"
+      total: "1 hr 47 min"
     },
     youtubeId: "ovnyeq-Xxrc",
     youtubeChannelUrl: CHANNEL_URL,
@@ -2559,10 +2559,10 @@ export const config = ConfigSchema.parse(process.env);`,
     phaseName: "Reliability, Resilience & Observability",
     duration: "4 hrs 57 min",
     timeEstimates: {
-      video: "4 hrs 57 min",
+      video: "5 hr 19 min",
       reading: "40 min",
       lab: "60 min",
-      total: "6 hrs 35 min"
+      total: "6 hr 59 min"
     },
     youtubeId: "cYAE0ZhT43c",
     youtubeChannelUrl: CHANNEL_URL,
@@ -2661,10 +2661,10 @@ sdk.start();`,
     phaseName: "Reliability, Resilience & Observability",
     duration: "36 min",
     timeEstimates: {
-      video: "36 min",
+      video: "45 min",
       reading: "30 min",
       lab: "45 min",
-      total: "1 hr 50 min"
+      total: "2 hrs"
     },
     youtubeId: "6rfBgphiCWM",
     youtubeChannelUrl: CHANNEL_URL,
@@ -2778,10 +2778,10 @@ sdk.start();`,
     phaseName: "Advanced Engineering, Scale & Operations",
     duration: "31 min",
     timeEstimates: {
-      video: "31 min",
+      video: "46 min",
       reading: "35 min",
       lab: "45 min",
-      total: "1 hr 50 min"
+      total: "2 hr 6 min"
     },
     youtubeId: "oV9rvDllKEg",
     youtubeChannelUrl: CHANNEL_URL,
@@ -2873,10 +2873,10 @@ if (res.rowCount === 0) {
     phaseName: "Advanced Engineering, Scale & Operations",
     duration: "2 hrs 10 min",
     timeEstimates: {
-      video: "2 hrs 10 min",
+      video: "6 hr 10 min",
       reading: "40 min",
       lab: "60 min",
-      total: "3 hrs 50 min"
+      total: "7 hr 50 min"
     },
     youtubeId: "fqMOX6JJhGo",
     youtubeChannelUrl: "https://www.youtube.com/@TechWorldwithNana",

@@ -31,28 +31,51 @@ async function verifyLiterature() {
   const failed = [];
 
   for (const b of books) {
-    try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 12000);
-      const res = await fetch(b.readingUrl, {
-        method: "GET",
-        headers: {
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-        },
-        signal: controller.signal
-      });
-      clearTimeout(timeout);
-
-      if (res.ok) {
-        valid.push(b);
-        console.log(`✓ [Topic ${b.topicNumber.padStart(2, "0")}] HTTP ${res.status}: "${b.bookTitle}" -> ${b.readingUrl}`);
-      } else {
-        failed.push({ ...b, status: res.status });
-        console.error(`✗ [Topic ${b.topicNumber.padStart(2, "0")}] HTTP ${res.status}: "${b.bookTitle}" -> ${b.readingUrl}`);
+    let res = null;
+    let lastError = null;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 15000);
+        res = await fetch(b.readingUrl, {
+          method: "GET",
+          headers: {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          signal: controller.signal
+        });
+        clearTimeout(timeout);
+        if (res.ok) break;
+      } catch (err) {
+        lastError = err;
+        await new Promise((r) => setTimeout(r, 1000));
       }
-    } catch (e) {
-      failed.push({ ...b, error: e.message });
-      console.error(`✗ [Topic ${b.topicNumber.padStart(2, "0")}] ERROR: "${b.bookTitle}" -> ${e.message}`);
+    }
+
+    if ((!res || !res.ok)) {
+      // Fallback with curl
+      try {
+        const { execSync } = require("child_process");
+        const statusStr = execSync(`curl -s -o /dev/null -w "%{http_code}" -L --max-time 15 "${b.readingUrl}"`).toString().trim();
+        const statusCode = parseInt(statusStr, 10);
+        if (statusCode >= 200 && statusCode < 400) {
+          res = { ok: true, status: statusCode };
+          lastError = null;
+        }
+      } catch (fallbackErr) {
+        lastError = fallbackErr;
+      }
+    }
+
+    if (res && res.ok) {
+      valid.push(b);
+      console.log(`✓ [Topic ${b.topicNumber.padStart(2, "0")}] HTTP ${res.status}: "${b.bookTitle}" -> ${b.readingUrl}`);
+    } else if (res) {
+      failed.push({ ...b, status: res.status });
+      console.error(`✗ [Topic ${b.topicNumber.padStart(2, "0")}] HTTP ${res.status}: "${b.bookTitle}" -> ${b.readingUrl}`);
+    } else {
+      failed.push({ ...b, error: lastError ? lastError.message : "Network error" });
+      console.error(`✗ [Topic ${b.topicNumber.padStart(2, "0")}] ERROR: "${b.bookTitle}" -> ${lastError ? lastError.message : "Network error"}`);
     }
   }
 
