@@ -492,7 +492,7 @@ export function PortfolioHome({
                             className="cursor-pointer flex items-center justify-between text-xs text-zinc-700 dark:text-[#D5CFBF] hover:text-zinc-950 dark:hover:text-white transition-colors group/item"
                           >
                             <span className="truncate pr-2 font-medium">
-                              #{topic.number} {topic.title}
+                              {String(topic.number).padStart(2, "0")}. {topic.title}
                             </span>
                             <ChevronRight className="h-3 w-3 text-zinc-400 group-hover/item:translate-x-0.5 transition-transform shrink-0" />
                           </li>

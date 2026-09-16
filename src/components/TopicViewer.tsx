@@ -114,7 +114,7 @@ export function TopicViewer({
         <div>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6] leading-tight">
             <span className="font-mono font-bold text-zinc-400 dark:text-zinc-600 mr-2.5">
-              #{String(topic.number).padStart(2, "0")}
+              {String(topic.number).padStart(2, "0")}
             </span>
             {topic.title}
           </h1>
