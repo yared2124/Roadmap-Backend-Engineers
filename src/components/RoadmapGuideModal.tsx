@@ -17,6 +17,8 @@ import {
   Terminal,
   Clock,
   Zap,
+  GitBranch,
+  HelpCircle,
 } from "lucide-react";
 import { ROADMAP_PHASES } from "../data/roadmap";
 import { CAPSTONE_PROJECTS } from "../data/capstones";
@@ -69,14 +71,14 @@ export function RoadmapGuideModal({
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1.5">
               <div className="inline-flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-900 px-3 py-1 text-xs font-semibold text-zinc-300">
-                <Compass className="h-3.5 w-3.5" />
-                <span>Student Orientation & Strategy Blueprint</span>
+                <BookOpen className="h-3.5 w-3.5" />
+                <span>Student Docs & Strategy Blueprint</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white">
                 How to Study, What to Build, and How to Communicate Architecture
               </h2>
               <p className="text-xs sm:text-sm text-zinc-400 font-medium">
-                The 5-stage daily routine, oral whiteboard exam mastery, and 7 production portfolio capstones.
+                The 6-stage daily routine, oral whiteboard exam mastery, and 7 production portfolio capstones.
               </p>
             </div>
 
@@ -112,7 +114,7 @@ export function RoadmapGuideModal({
               }`}
             >
               <Zap className="h-4 w-4" />
-              <span>2. 5-Stage Study Routine</span>
+              <span>2. 6-Stage Study Routine</span>
             </button>
 
             <button
@@ -212,16 +214,16 @@ export function RoadmapGuideModal({
             </div>
           )}
 
-          {/* TAB 2: THE 5-STAGE STUDY ROUTINE */}
+          {/* TAB 2: THE 6-STAGE STUDY ROUTINE */}
           {activeTab === "how-to-study" && (
             <div className="space-y-6 animate-in fade-in duration-200">
               <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-5 dark:border-gray-700 dark:bg-gray-800/60">
                 <h3 className="text-base font-bold text-zinc-950 dark:text-white flex items-center gap-2">
                   <Zap className="h-5 w-5 text-zinc-800 dark:text-gray-200" />
-                  The 5-Stage Daily Engineering Routine
+                  The 6-Stage Daily Engineering Routine
                 </h3>
                 <p className="mt-1 text-zinc-600 dark:text-gray-400 text-xs sm:text-sm leading-relaxed">
-                  Execute the following 5 structured steps on every module to ensure complete mastery:
+                  Execute the following 6 structured steps on every module to ensure complete mastery from first principles to production:
                 </p>
               </div>
 
@@ -229,17 +231,17 @@ export function RoadmapGuideModal({
                 {/* Step 1 */}
                 <div className="flex gap-4 p-4 rounded-xl border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800/40">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 dark:bg-gray-700 text-zinc-800 dark:text-gray-200 font-bold">
-                    <PlayCircle className="h-5 w-5" />
+                    <BookOpen className="h-5 w-5" />
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-mono text-xs font-bold text-zinc-500 uppercase tracking-wider">Step 01</span>
                       <h4 className="font-bold text-zinc-950 dark:text-white">
-                        Canonical Video Masterclass
+                        First Principles & Free Canonical Literature
                       </h4>
                     </div>
                     <p className="text-xs text-zinc-600 dark:text-gray-400 leading-relaxed">
-                      Watch the curated 30-to-60 minute lecture. Focus on architectural intent, mental models, network boundaries, and common pitfalls.
+                      Before touching code, build mental models. Read the topic overview and click the <strong>Recommended Literature</strong> link to study open canonical chapters (Martin Fowler, RFCs, Google SRE, Use The Index Luke) with zero paywalls.
                     </p>
                   </div>
                 </div>
@@ -247,17 +249,17 @@ export function RoadmapGuideModal({
                 {/* Step 2 */}
                 <div className="flex gap-4 p-4 rounded-xl border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800/40">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 dark:bg-gray-700 text-zinc-800 dark:text-gray-200 font-bold">
-                    <BookOpen className="h-5 w-5" />
+                    <PlayCircle className="h-5 w-5" />
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-mono text-xs font-bold text-zinc-500 uppercase tracking-wider">Step 02</span>
                       <h4 className="font-bold text-zinc-950 dark:text-white">
-                        Authoritative Literature & Chapters
+                        Architectural Video Masterclass Immersion
                       </h4>
                     </div>
                     <p className="text-xs text-zinc-600 dark:text-gray-400 leading-relaxed">
-                      Read assigned chapters from foundational texts: Martin Fowler, Martin Kleppmann (DDIA), and Ilya Grigorik. This builds internal algorithm and protocol depth.
+                      Watch the embedded industry masterclasses (ByteByteGo, Hussein Nasser, TechWorld with Nana). Focus on packet journeys, network flowcharts, and distributed coordination.
                     </p>
                   </div>
                 </div>
@@ -265,17 +267,17 @@ export function RoadmapGuideModal({
                 {/* Step 3 */}
                 <div className="flex gap-4 p-4 rounded-xl border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800/40">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 dark:bg-gray-700 text-zinc-800 dark:text-gray-200 font-bold">
-                    <Layers className="h-5 w-5" />
+                    <HelpCircle className="h-5 w-5" />
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-mono text-xs font-bold text-zinc-500 uppercase tracking-wider">Step 03</span>
                       <h4 className="font-bold text-zinc-950 dark:text-white">
-                        Interactive System Architecture Flowcharts
+                        Self-Check Diagnostic Questions
                       </h4>
                     </div>
                     <p className="text-xs text-zinc-600 dark:text-gray-400 leading-relaxed">
-                      Trace the request lifecycle through Client $\rightarrow$ API Gateway $\rightarrow$ Service $\rightarrow$ Cache $\rightarrow$ Database. Inspect step latencies and fallback routes.
+                      Solve the 3 diagnostic self-check questions per topic before checking solutions. Formulate your reasoning to eliminate illusions of competence and expose blind spots.
                     </p>
                   </div>
                 </div>
@@ -289,11 +291,11 @@ export function RoadmapGuideModal({
                     <div className="flex items-center gap-2">
                       <span className="font-mono text-xs font-bold text-zinc-500 uppercase tracking-wider">Step 04</span>
                       <h4 className="font-bold text-zinc-950 dark:text-white">
-                        Polyglot Production Code Blueprints
+                        Hands-On Production Ticket & Blueprints
                       </h4>
                     </div>
                     <p className="text-xs text-zinc-600 dark:text-gray-400 leading-relaxed">
-                      Review and test blueprints switchable across TypeScript/Node.js, Go, Python, and Java. Implement the patterns in your development environment.
+                      Open your local IDE and implement the assigned ticket (e.g. TICKET-001) using the multi-language blueprints in Go, TypeScript, Python, or Java with real latency and concurrency constraints.
                     </p>
                   </div>
                 </div>
@@ -307,11 +309,29 @@ export function RoadmapGuideModal({
                     <div className="flex items-center gap-2">
                       <span className="font-mono text-xs font-bold text-zinc-500 uppercase tracking-wider">Step 05</span>
                       <h4 className="font-bold text-zinc-950 dark:text-white">
-                        Systems Note Studio
+                        Notes Studio & Handbook Export
                       </h4>
                     </div>
                     <p className="text-xs text-zinc-600 dark:text-gray-400 leading-relaxed">
-                      Use &ldquo;Insert Senior Template&rdquo; to document trade-offs, edge cases, and SLAs. Export all your accumulated notes as a master Markdown document.
+                      Press <kbd className="font-mono text-[10px] px-1 py-0.5 rounded bg-zinc-200 dark:bg-zinc-700">N</kbd> to open Notes Studio. Document tradeoffs, benchmarks, and gotchas. Click &ldquo;Export All Notes&rdquo; to build your personal Markdown handbook.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Step 6 */}
+                <div className="flex gap-4 p-4 rounded-xl border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800/40">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 dark:bg-gray-700 text-zinc-800 dark:text-gray-200 font-bold">
+                    <GitBranch className="h-5 w-5" />
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-xs font-bold text-zinc-500 uppercase tracking-wider">Step 06</span>
+                      <h4 className="font-bold text-zinc-950 dark:text-white">
+                        Push to GitHub & Build Public Portfolio
+                      </h4>
+                    </div>
+                    <p className="text-xs text-zinc-600 dark:text-gray-400 leading-relaxed">
+                      Organize your implementations into clean topic directories, write informative READMEs with benchmark graphs, commit using Conventional Commits, and push to your public GitHub portfolio.
                     </p>
                   </div>
                 </div>

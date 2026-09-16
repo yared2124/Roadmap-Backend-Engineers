@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Moon, Sun, CheckCircle2, Search, Menu, X, Keyboard, Command, Compass, ArrowLeft } from "lucide-react";
+import { Moon, Sun, CheckCircle2, Search, Menu, X, Keyboard, Command, Compass, ArrowLeft, BookOpen } from "lucide-react";
 
 interface HeaderProps {
   completedCount: number;
@@ -120,14 +120,14 @@ export function Header({
             <Search className="h-4 w-4" />
           </button>
 
-          {/* Student Orientation & Strategy Guide Button */}
+          {/* Student Orientation & Docs Button */}
           <button
             onClick={onOpenGuide}
             className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-stone-50/80 px-2.5 sm:px-3 py-1.5 text-xs font-mono font-bold text-zinc-800 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#D5CFBF] hover:bg-stone-100 dark:hover:bg-[#22211E] transition-all shadow-2xs group"
-            title="Roadmap Orientation & Strategy Guide"
+            title="Student Documentation & Study Methodology"
           >
-            <Compass className="h-4 w-4 text-zinc-600 dark:text-[#A19B8F] transition-transform group-hover:rotate-45" />
-            <span className="hidden sm:inline">Guide</span>
+            <BookOpen className="h-4 w-4 text-zinc-600 dark:text-[#A19B8F] transition-transform group-hover:scale-110" />
+            <span className="hidden sm:inline">Docs</span>
           </button>
 
           {/* Progress Pill */}
