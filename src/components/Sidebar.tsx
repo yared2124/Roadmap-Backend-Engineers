@@ -38,9 +38,16 @@ export function Sidebar({
 }: SidebarProps) {
   // Start with all phases collapsed by default on startup as requested
   const [expandedPhases, setExpandedPhases] = useState<Record<number, boolean>>({});
+  const [selectedPhaseId, setSelectedPhaseId] = useState<number | null>(null);
 
   const togglePhase = (phaseId: number) => {
-    setExpandedPhases((prev) => ({ ...prev, [phaseId]: !prev[phaseId] }));
+    const nextState = !expandedPhases[phaseId];
+    setExpandedPhases((prev) => ({ ...prev, [phaseId]: nextState }));
+    if (nextState) {
+      setSelectedPhaseId(phaseId);
+    } else if (selectedPhaseId === phaseId) {
+      setSelectedPhaseId(null);
+    }
   };
 
   const matchesSearch = (topic: RoadmapTopic) => {
@@ -79,6 +86,7 @@ export function Sidebar({
                 const count = Object.values(expandedPhases).filter(Boolean).length;
                 if (count >= 4) {
                   setExpandedPhases({});
+                  setSelectedPhaseId(null);
                 } else {
                   setExpandedPhases({ 1: true, 2: true, 3: true, 4: true, 5: true, 6: true, 7: true });
                 }
@@ -97,14 +105,15 @@ export function Sidebar({
 
               const isExpanded = searchQuery.trim() ? true : Boolean(expandedPhases[phase.id]);
               const progress = getPhaseProgress(phase.id);
-              const hasActiveTopic = phase.topics.some((t) => t.id === activeTopicId);
+              // Dynamic phase highlight follows the clicked/expanded phase
+              const isPhaseSelected = selectedPhaseId !== null ? selectedPhaseId === phase.id : isExpanded;
 
               return (
                 <div
                   key={phase.id}
                   className={`rounded-xl border transition-all ${
-                    hasActiveTopic
-                      ? "border-amber-500/70 bg-amber-500/[0.04] dark:border-amber-500/50 dark:bg-amber-950/15 shadow-2xs"
+                    isPhaseSelected
+                      ? "border-amber-500/80 bg-amber-500/[0.05] ring-1 ring-amber-500/30 dark:border-amber-500/60 dark:bg-amber-950/20 shadow-xs"
                       : "border-zinc-200/90 bg-stone-50/50 dark:border-[#2C2A26] dark:bg-[#1A1917]"
                   } p-2`}
                 >
@@ -115,7 +124,13 @@ export function Sidebar({
                   >
                     <div className="flex-1 pr-2">
                       <div className="flex items-center justify-between gap-2 mb-1.5">
-                        <span className="font-mono text-xs font-black tracking-wider text-zinc-950 dark:text-[#F3EFE6] uppercase bg-zinc-200/90 dark:bg-[#25231F] px-2.5 py-1 rounded-md border border-zinc-300/80 dark:border-[#35332D]">
+                        <span
+                          className={`font-mono text-xs font-black tracking-wider uppercase px-2.5 py-1 rounded-md border transition-colors ${
+                            isPhaseSelected
+                              ? "bg-amber-500/20 text-amber-950 dark:bg-amber-500/25 dark:text-amber-300 border-amber-500/40"
+                              : "text-zinc-950 dark:text-[#F3EFE6] bg-zinc-200/90 dark:bg-[#25231F] border-zinc-300/80 dark:border-[#35332D]"
+                          }`}
+                        >
                           PHASE 0{phase.id}
                         </span>
                         <span className="font-mono text-xs font-black text-zinc-800 dark:text-[#E8E2D5] bg-white dark:bg-[#1A1917] px-2 py-0.5 rounded border border-zinc-200 dark:border-[#2C2A26]">
@@ -126,7 +141,7 @@ export function Sidebar({
                         {phase.name}
                       </h3>
                     </div>
-                    <div className="text-zinc-500 dark:text-zinc-400">
+                    <div className={isPhaseSelected ? "text-amber-600 dark:text-amber-400" : "text-zinc-500 dark:text-zinc-400"}>
                       {isExpanded ? (
                         <ChevronDown className="h-4 w-4" />
                       ) : (
@@ -155,6 +170,7 @@ export function Sidebar({
                             {/* Topic Title Click */}
                             <button
                               onClick={() => {
+                                setSelectedPhaseId(phase.id);
                                 onSelectTopic(topic);
                                 onClose();
                               }}
@@ -241,6 +257,7 @@ export function Sidebar({
                         >
                           <button
                             onClick={() => {
+                              setSelectedPhaseId(phase.id);
                               onSelectCapstone(phase.id);
                               onClose();
                             }}
