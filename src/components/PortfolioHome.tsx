@@ -67,10 +67,10 @@ export function PortfolioHome({
 
   return (
     <div
-      className="w-full min-h-screen bg-white text-zinc-900 dark:bg-[#141312] dark:text-[#F3EFE6] selection:bg-zinc-900 selection:text-white dark:selection:bg-[#F3EFE6] dark:selection:text-[#141312] font-sans transition-colors duration-200 flex flex-col justify-between"
+      className="w-full max-w-full overflow-x-hidden min-h-screen pt-16 bg-white text-zinc-900 dark:bg-[#141312] dark:text-[#F3EFE6] selection:bg-zinc-900 selection:text-white dark:selection:bg-[#F3EFE6] dark:selection:text-[#141312] font-sans transition-colors duration-200 flex flex-col justify-between"
     >
-      {/* 1. Global Navigation Header */}
-      <header className="sticky top-0 z-40 w-full border-b border-zinc-200/80 bg-white/90 backdrop-blur-md dark:border-[#2C2A26] dark:bg-[#141312]/90">
+      {/* 1. Global Navigation Header - Permanently Fixed at Top */}
+      <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-zinc-200/80 bg-white/95 backdrop-blur-md dark:border-[#2C2A26] dark:bg-[#141312]/95 shadow-2xs">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-3 sm:px-6 lg:px-8">
           {/* Brand Title: Clicking returns to Home */}
           <button
@@ -239,8 +239,10 @@ export function PortfolioHome({
       {/* ========================================================= */}
       {activeTab === "home" && (
         <main className="relative flex-1 flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          {/* Subtle Warm Ambient Glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] sm:w-[950px] h-[450px] bg-gradient-to-tr from-amber-500/5 via-stone-400/5 to-transparent blur-3xl pointer-events-none rounded-full" />
+          {/* Subtle Warm Ambient Glow (clipped inside container to prevent horizontal scroll) */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[950px] h-[450px] bg-gradient-to-tr from-amber-500/5 via-stone-400/5 to-transparent blur-3xl rounded-full" />
+          </div>
 
           <div className="relative mx-auto max-w-4xl text-center flex flex-col items-center space-y-6 sm:space-y-7">
             {/* Headline matching user screenshot */}

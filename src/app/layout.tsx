@@ -61,8 +61,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen bg-white text-zinc-900 antialiased selection:bg-zinc-900 selection:text-white dark:bg-[#111827] dark:text-gray-100 dark:selection:bg-white dark:selection:text-gray-950">
+    <html lang="en" className="max-w-full overflow-x-hidden" suppressHydrationWarning>
+      <body className="min-h-screen max-w-full overflow-x-hidden bg-white text-zinc-900 antialiased selection:bg-zinc-900 selection:text-white dark:bg-[#111827] dark:text-gray-100 dark:selection:bg-white dark:selection:text-gray-950">
         {children}
         <Analytics />
       </body>
