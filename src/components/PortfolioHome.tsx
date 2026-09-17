@@ -74,14 +74,25 @@ export function PortfolioHome({
       <header className="sticky top-0 z-40 w-full border-b border-zinc-200/80 bg-white/90 backdrop-blur-md dark:border-[#2C2A26] dark:bg-[#141312]/90">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Brand Title: Clicking returns to Home */}
-          <button
-            onClick={() => handleSwitchTab("home")}
-            className="flex items-center gap-3 text-left group focus:outline-hidden"
-          >
-            <span className="font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6] text-lg sm:text-xl group-hover:opacity-85 transition-opacity">
-              Backend Engineer Hub
-            </span>
-          </button>
+          <div className="flex items-center gap-2.5">
+            <button
+              onClick={() => handleSwitchTab("home")}
+              className="flex items-center gap-3 text-left group focus:outline-hidden"
+            >
+              <span className="font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6] text-lg sm:text-xl group-hover:opacity-85 transition-opacity">
+                Backend Engineer Hub
+              </span>
+            </button>
+            <a
+              href="https://t.me/techyada"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 rounded-md border border-zinc-200/90 bg-stone-50/80 px-2 py-0.5 text-[11px] font-mono font-medium text-zinc-600 hover:text-sky-600 hover:border-sky-300 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#A19B8F] dark:hover:text-sky-400 dark:hover:border-sky-600 transition-colors shadow-2xs"
+              title="Built by Tech Yada (Telegram Channel)"
+            >
+              Built by Tech Yada
+            </a>
+          </div>
 
           {/* Center Navigation Links: Switching tabs on click instead of scrolling down */}
           <nav className="flex items-center gap-3 sm:gap-6 text-xs sm:text-sm font-semibold text-zinc-600 dark:text-[#A19B8F] overflow-x-auto">

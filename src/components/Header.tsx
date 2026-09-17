@@ -53,7 +53,7 @@ export function Header({
 
           <div className="flex items-center gap-2.5">
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 {onBackToPortfolio ? (
                   <button
                     onClick={onBackToPortfolio}
@@ -67,6 +67,15 @@ export function Header({
                     Backend Engineer Hub
                   </span>
                 )}
+                <a
+                  href="https://t.me/techyada"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 rounded-md border border-zinc-200/90 bg-stone-50/80 px-2 py-0.5 text-[11px] font-mono font-medium text-zinc-600 hover:text-sky-600 hover:border-sky-300 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#A19B8F] dark:hover:text-sky-400 dark:hover:border-sky-600 transition-colors shadow-2xs"
+                  title="Built by Tech Yada (Telegram Channel)"
+                >
+                  Built by Tech Yada
+                </a>
                 {onBackToPortfolio && (
                   <button
                     onClick={onBackToPortfolio}
