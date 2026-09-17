@@ -84,7 +84,7 @@ export function PortfolioHome({
               </span>
             </button>
             <a
-              href="https://t.me/techyada"
+              href="https://t.me/Techyada21"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 rounded-md border border-zinc-200/90 bg-stone-50/80 px-2 py-0.5 text-[11px] font-mono font-medium text-zinc-600 hover:text-sky-600 hover:border-sky-300 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#A19B8F] dark:hover:text-sky-400 dark:hover:border-sky-600 transition-colors shadow-2xs"
