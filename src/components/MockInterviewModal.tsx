@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { SelfCheckQuestion } from "../types/roadmap";
 import {
   Mic,
@@ -14,9 +14,6 @@ import {
   RotateCcw,
   Trophy,
   ArrowRight,
-  ShieldAlert,
-  HelpCircle,
-  Flame,
 } from "lucide-react";
 
 interface MockInterviewModalProps {

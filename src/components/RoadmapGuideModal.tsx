@@ -12,7 +12,6 @@ import {
   CheckCircle2,
   Layers,
   FileText,
-  Lightbulb,
   Award,
   Terminal,
   Clock,

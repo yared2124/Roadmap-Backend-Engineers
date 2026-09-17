@@ -14,12 +14,10 @@
     "test:books": "node scripts/verify-books.js"
   },
   "dependencies": {
-    "clsx": "^2.1.1",
     "lucide-react": "^0.446.0",
     "next": "^14.2.15",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "tailwind-merge": "^2.5.2"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",

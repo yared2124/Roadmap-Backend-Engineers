@@ -19,7 +19,6 @@ export default function Home() {
   const [activeTopic, setActiveTopic] = useState<RoadmapTopic>(ROADMAP_TOPICS[0]);
   const [activeCapstonePhaseId, setActiveCapstonePhaseId] = useState<number | null>(null);
   const [isDark, setIsDark] = useState<boolean>(true);
-  const [searchQuery, setSearchQuery] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
@@ -304,7 +303,6 @@ export default function Home() {
       <PortfolioHome
         onEnterRoadmap={handleEnterRoadmap}
         onExploreCapstones={handleExploreCapstones}
-        onOpenGuide={() => setIsGuideOpen(true)}
         isDark={isDark}
         onToggleTheme={handleToggleTheme}
         completedCount={completedCount}
@@ -322,8 +320,6 @@ export default function Home() {
         overallPercentage={overallPercentage}
         isDark={isDark}
         onToggleTheme={handleToggleTheme}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
         onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         onOpenShortcuts={() => setIsShortcutsOpen(true)}
         onOpenGuide={() => setIsGuideOpen(true)}
@@ -351,11 +347,9 @@ export default function Home() {
           isCapstoneCompleted={isCapstoneCompleted}
           onToggleTopic={toggleTopic}
           getPhaseProgress={getPhaseProgress}
-          searchQuery={searchQuery}
           notes={notes}
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
-          onOpenGuide={() => setIsGuideOpen(true)}
         />
 
         {/* Center/Right Content Canvas - Only this scrolls when reading */}
@@ -393,7 +387,6 @@ export default function Home() {
               onSelectNext={handleSelectNext}
               hasPrev={hasPrev}
               hasNext={hasNext}
-              onOpenGuide={() => setIsGuideOpen(true)}
             />
           )}
         </main>

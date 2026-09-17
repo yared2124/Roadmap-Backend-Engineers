@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { ROADMAP_PHASES } from "../data/roadmap";
 import { RoadmapTopic } from "../types/roadmap";
-import { Check, ChevronDown, ChevronRight, PlayCircle, BookOpen, Trophy, FileText, Compass } from "lucide-react";
+import { Check, ChevronDown, ChevronRight, Trophy, FileText } from "lucide-react";
 
 interface SidebarProps {
   activeTopicId: string;
@@ -14,11 +14,10 @@ interface SidebarProps {
   isCapstoneCompleted?: (phaseId: number) => boolean;
   onToggleTopic: (id: string) => void;
   getPhaseProgress: (phaseId: number) => { total: number; completed: number; percentage: number };
-  searchQuery: string;
+  searchQuery?: string;
   notes?: Record<string, string>;
   isOpen: boolean;
   onClose: () => void;
-  onOpenGuide?: () => void;
 }
 
 export function Sidebar({
@@ -30,11 +29,10 @@ export function Sidebar({
   isCapstoneCompleted,
   onToggleTopic,
   getPhaseProgress,
-  searchQuery,
+  searchQuery = "",
   notes = {},
   isOpen,
   onClose,
-  onOpenGuide,
 }: SidebarProps) {
   // Start with all phases collapsed by default on startup as requested
   const [expandedPhases, setExpandedPhases] = useState<Record<number, boolean>>({});

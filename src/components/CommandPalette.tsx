@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { ROADMAP_TOPICS, ROADMAP_PHASES } from "../data/roadmap";
+import { ROADMAP_TOPICS } from "../data/roadmap";
 import { CAPSTONE_PROJECTS } from "../data/capstones";
 import { RoadmapTopic } from "../types/roadmap";
 import {
@@ -10,16 +10,8 @@ import {
   Trophy,
   Layers,
   HelpCircle,
-  Clock,
   Command,
-  Sun,
-  Moon,
-  Keyboard,
-  FileDown,
-  ArrowRight,
-  ArrowLeft,
   X,
-  CheckCircle2,
 } from "lucide-react";
 
 export type PaletteCategory = "all" | "topics" | "capstones" | "books" | "questions" | "commands";

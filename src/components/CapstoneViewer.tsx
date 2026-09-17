@@ -12,10 +12,8 @@ import {
   ExternalLink,
   Copy,
   Check,
-  Code2,
   FolderGit2,
   ShieldCheck,
-  ChevronRight,
 } from "lucide-react";
 
 interface CapstoneViewerProps {

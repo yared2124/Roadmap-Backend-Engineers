@@ -7,10 +7,8 @@ import {
   Terminal,
   Mic,
   CheckCircle2,
-  Cpu,
   ShieldCheck,
   Clock,
-  Compass,
   Moon,
   Sun,
   ChevronRight,
@@ -18,14 +16,9 @@ import {
   Check,
   BookOpen,
   Video,
-  HelpCircle,
   Code2,
   FileText,
   GitBranch,
-  Layers,
-  Sparkles,
-  FolderGit2,
-  ExternalLink,
   Flame,
 } from "lucide-react";
 import { ROADMAP_PHASES } from "../data/roadmap";
@@ -37,7 +30,6 @@ export type PortfolioTab = "home" | "docs" | "how-it-works" | "curriculum" | "or
 interface PortfolioHomeProps {
   onEnterRoadmap: (topic?: RoadmapTopic) => void;
   onExploreCapstones: (phaseId?: number) => void;
-  onOpenGuide?: () => void;
   isDark: boolean;
   onToggleTheme: () => void;
   completedCount: number;
@@ -47,7 +39,6 @@ interface PortfolioHomeProps {
 export function PortfolioHome({
   onEnterRoadmap,
   onExploreCapstones,
-  onOpenGuide,
   isDark,
   onToggleTheme,
   completedCount,

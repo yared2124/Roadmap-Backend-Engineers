@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { HandsOnChallenge } from "../types/roadmap";
-import { Terminal, Lightbulb, Code2, Copy, Check, ChevronDown, ChevronUp, AlertCircle } from "lucide-react";
+import { Terminal, Lightbulb, Code2, Copy, Check, ChevronDown, ChevronUp } from "lucide-react";
 
 interface ChallengeSectionProps {
   challenge: HandsOnChallenge;

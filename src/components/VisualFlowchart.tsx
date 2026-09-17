@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import {
   ArchitectureDiagramFlow,
   ArchitectureFlowNode,
-  ArchitectureFlowStep,
 } from "../types/roadmap";
 import {
   Server,
@@ -16,7 +15,6 @@ import {
   ArrowRight,
   Clock,
   AlertTriangle,
-  CheckCircle2,
   HardDrive,
   KeyRound,
   User,

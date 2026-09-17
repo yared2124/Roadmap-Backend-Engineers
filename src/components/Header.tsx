@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Moon, Sun, CheckCircle2, Search, Menu, X, Keyboard, Command, Compass, ArrowLeft, BookOpen } from "lucide-react";
+import { Moon, Sun, CheckCircle2, Search, Menu, X, Keyboard, ArrowLeft, BookOpen } from "lucide-react";
 
 interface HeaderProps {
   completedCount: number;
@@ -9,8 +9,6 @@ interface HeaderProps {
   overallPercentage: number;
   isDark: boolean;
   onToggleTheme: () => void;
-  searchQuery: string;
-  onSearchChange: (query: string) => void;
   onOpenCommandPalette: () => void;
   onOpenShortcuts: () => void;
   onOpenGuide: () => void;
@@ -25,8 +23,6 @@ export function Header({
   overallPercentage,
   isDark,
   onToggleTheme,
-  searchQuery,
-  onSearchChange,
   onOpenCommandPalette,
   onOpenShortcuts,
   onOpenGuide,

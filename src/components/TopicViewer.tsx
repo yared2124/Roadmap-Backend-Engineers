@@ -27,7 +27,6 @@ import {
   PlayCircle,
   Copy,
   Mic,
-  Compass,
   ChevronRight,
 } from "lucide-react";
 
@@ -45,7 +44,6 @@ interface TopicViewerProps {
   onSelectNext: () => void;
   hasPrev: boolean;
   hasNext: boolean;
-  onOpenGuide?: () => void;
 }
 
 export function TopicViewer({
@@ -62,7 +60,6 @@ export function TopicViewer({
   onSelectNext,
   hasPrev,
   hasNext,
-  onOpenGuide,
 }: TopicViewerProps) {
   const [preferredLang, setPreferredLang] = useState<SupportedLanguage>("go");
   const [copiedCode, setCopiedCode] = useState(false);
@@ -604,7 +601,7 @@ export function TopicViewer({
         topicId={topic.id}
         topicTitle={topic.title}
         questions={topic.selfCheckQuestions}
-        onSaveScore={(tId, score) => setInterviewScore(score)}
+        onSaveScore={(_, score) => setInterviewScore(score)}
       />
     </div>
   );

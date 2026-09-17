@@ -15,7 +15,6 @@ import {
   CheckSquare,
   Heading3,
   Link2,
-  Trash2,
   FileText,
 } from "lucide-react";
 
@@ -391,7 +390,6 @@ function SimpleMarkdownRenderer({ content }: { content: string }) {
 
   let inCodeBlock = false;
   let codeBlockContent: string[] = [];
-  let codeBlockLang = "";
 
   const elements: React.ReactNode[] = [];
 
@@ -413,7 +411,6 @@ function SimpleMarkdownRenderer({ content }: { content: string }) {
         codeBlockContent = [];
       } else {
         inCodeBlock = true;
-        codeBlockLang = line.trim().slice(3);
       }
       continue;
     }
