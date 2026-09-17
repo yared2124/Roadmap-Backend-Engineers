@@ -30,6 +30,7 @@ import { RoadmapTopic } from "../types/roadmap";
 export type PortfolioTab = "home" | "docs" | "how-it-works" | "curriculum" | "oral-exams" | "capstones";
 
 interface PortfolioHomeProps {
+  initialTab?: PortfolioTab;
   onEnterRoadmap: (topic?: RoadmapTopic) => void;
   onExploreCapstones: (phaseId?: number) => void;
   isDark: boolean;
@@ -39,6 +40,7 @@ interface PortfolioHomeProps {
 }
 
 export function PortfolioHome({
+  initialTab = "home",
   onEnterRoadmap,
   onExploreCapstones,
   isDark,
@@ -46,24 +48,14 @@ export function PortfolioHome({
   completedCount,
   totalTopics,
 }: PortfolioHomeProps) {
-  const [activeTab, setActiveTab] = useState<PortfolioTab>("home");
+  const [activeTab, setActiveTab] = useState<PortfolioTab>(initialTab);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => {
-      if (typeof window !== "undefined" && window.innerWidth >= 1024 && (activeTab === "home" || activeTab === "oral-exams")) {
-        document.body.style.overflow = "hidden";
-      } else {
-        document.body.style.overflow = "auto";
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      document.body.style.overflow = "auto";
-    };
-  }, [activeTab]);
+    if (initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab]);
 
   const handleSwitchTab = (tab: PortfolioTab) => {
     setActiveTab(tab);
@@ -75,9 +67,7 @@ export function PortfolioHome({
 
   return (
     <div
-      className={`w-full bg-white text-zinc-900 dark:bg-[#141312] dark:text-[#F3EFE6] selection:bg-zinc-900 selection:text-white dark:selection:bg-[#F3EFE6] dark:selection:text-[#141312] font-sans transition-colors duration-200 flex flex-col justify-between ${
-        activeTab === "home" || activeTab === "oral-exams" ? "min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden" : "min-h-screen"
-      }`}
+      className="w-full min-h-screen bg-white text-zinc-900 dark:bg-[#141312] dark:text-[#F3EFE6] selection:bg-zinc-900 selection:text-white dark:selection:bg-[#F3EFE6] dark:selection:text-[#141312] font-sans transition-colors duration-200 flex flex-col justify-between"
     >
       {/* 1. Global Navigation Header */}
       <header className="sticky top-0 z-40 w-full border-b border-zinc-200/80 bg-white/90 backdrop-blur-md dark:border-[#2C2A26] dark:bg-[#141312]/90">
@@ -240,17 +230,6 @@ export function PortfolioHome({
                 Capstones
               </button>
             </nav>
-            <div className="mt-3 pt-3 border-t border-zinc-100 dark:border-[#2C2A26]">
-              <a
-                href="https://t.me/Techyada21"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-stone-50 py-2 px-3 text-xs font-mono font-medium text-zinc-700 hover:text-sky-600 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#D5CFBF] dark:hover:text-sky-400 transition-colors"
-              >
-                <span>Built by <strong className="font-bold text-zinc-950 dark:text-[#F3EFE6]">Tech Yada</strong></span>
-                <span className="text-sky-600 dark:text-sky-400 font-bold">(@Techyada21)</span>
-              </a>
-            </div>
           </div>
         )}
       </header>
@@ -259,7 +238,7 @@ export function PortfolioHome({
       {/* VIEW 1: CLEAN STANDALONE HOME / HERO (MATCHING SCREENSHOT) */}
       {/* ========================================================= */}
       {activeTab === "home" && (
-        <main className="relative flex-1 flex flex-col justify-center items-center overflow-hidden px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <main className="relative flex-1 flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           {/* Subtle Warm Ambient Glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] sm:w-[950px] h-[450px] bg-gradient-to-tr from-amber-500/5 via-stone-400/5 to-transparent blur-3xl pointer-events-none rounded-full" />
 

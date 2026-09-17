@@ -12,10 +12,11 @@ import { CapstoneViewer } from "../components/CapstoneViewer";
 import { CommandPalette } from "../components/CommandPalette";
 import { ShortcutsModal } from "../components/ShortcutsModal";
 import { RoadmapGuideModal } from "../components/RoadmapGuideModal";
-import { PortfolioHome } from "../components/PortfolioHome";
+import { PortfolioHome, PortfolioTab } from "../components/PortfolioHome";
 
 export default function Home() {
   const [viewMode, setViewMode] = useState<"portfolio" | "roadmap">("portfolio");
+  const [portfolioTab, setPortfolioTab] = useState<PortfolioTab>("home");
   const [activeTopic, setActiveTopic] = useState<RoadmapTopic>(ROADMAP_TOPICS[0]);
   const [activeCapstonePhaseId, setActiveCapstonePhaseId] = useState<number | null>(null);
   const [isDark, setIsDark] = useState<boolean>(true);
@@ -134,6 +135,15 @@ export default function Home() {
 
   // Return to Portfolio Homepage
   const handleBackToPortfolio = useCallback(() => {
+    setPortfolioTab("home");
+    setViewMode("portfolio");
+    localStorage.setItem("backend_roadmap_view_mode", "portfolio");
+    scrollToTop();
+  }, []);
+
+  // Open Full Docs Page (identical to homepage Docs tab)
+  const handleOpenDocs = useCallback(() => {
+    setPortfolioTab("docs");
     setViewMode("portfolio");
     localStorage.setItem("backend_roadmap_view_mode", "portfolio");
     scrollToTop();
@@ -301,6 +311,7 @@ export default function Home() {
   if (viewMode === "portfolio") {
     return (
       <PortfolioHome
+        initialTab={portfolioTab}
         onEnterRoadmap={handleEnterRoadmap}
         onExploreCapstones={handleExploreCapstones}
         isDark={isDark}
@@ -322,7 +333,7 @@ export default function Home() {
         onToggleTheme={handleToggleTheme}
         onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         onOpenShortcuts={() => setIsShortcutsOpen(true)}
-        onOpenGuide={() => setIsGuideOpen(true)}
+        onOpenGuide={handleOpenDocs}
         onBackToPortfolio={handleBackToPortfolio}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         isSidebarOpen={isSidebarOpen}
@@ -407,7 +418,7 @@ export default function Home() {
         }}
         onToggleTheme={handleToggleTheme}
         onOpenShortcuts={() => setIsShortcutsOpen(true)}
-        onOpenGuide={() => setIsGuideOpen(true)}
+        onOpenGuide={handleOpenDocs}
         onBackToPortfolio={handleBackToPortfolio}
         onExportAllNotes={handleExportAllNotes}
         onSelectNext={handleSelectNext}
