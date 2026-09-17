@@ -1315,20 +1315,19 @@ git push -u origin main`}
       )}
 
       {/* Persistent Global Footer: Placed cleanly at the bottom */}
-      <footer className="w-full shrink-0 border-t border-zinc-200/80 bg-stone-50/70 py-3.5 px-4 sm:px-6 dark:border-[#2C2A26] dark:bg-[#11100F] z-20">
-        <div className="mx-auto flex max-w-7xl items-center justify-between flex-wrap gap-2 text-xs">
-          <p className="text-zinc-500 dark:text-[#8E887B] font-mono text-[11px] sm:text-xs">
+      <footer className="w-full shrink-0 border-t border-zinc-200/80 bg-stone-50/70 py-3 px-4 sm:px-6 dark:border-[#2C2A26] dark:bg-[#11100F] z-20">
+        <div className="mx-auto flex max-w-7xl items-center justify-center sm:justify-between text-xs">
+          <p className="text-zinc-500 dark:text-[#8E887B] font-mono text-[11px] sm:text-xs text-center sm:text-left">
             Backend Engineering Master Roadmap
           </p>
           <a
             href="https://t.me/Techyada21"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-mono text-xs font-semibold text-zinc-700 hover:border-sky-300 hover:text-sky-600 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#D5CFBF] dark:hover:border-sky-600 dark:hover:text-sky-400 transition-colors shadow-2xs"
+            className="hidden sm:inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-mono text-xs font-semibold text-zinc-700 hover:border-sky-300 hover:text-sky-600 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#D5CFBF] dark:hover:border-sky-600 dark:hover:text-sky-400 transition-colors shadow-2xs"
             title="Join Tech Yada on Telegram"
           >
-            <span>Built by <strong className="font-bold text-zinc-900 dark:text-[#F3EFE6]">Tech Yada</strong></span>
-            <span className="text-sky-600 dark:text-sky-400 font-medium">(@Techyada21)</span>
+            <span>Built by <strong className="font-bold text-zinc-950 dark:text-[#F3EFE6]">Tech Yada</strong></span>
           </a>
         </div>
       </footer>
