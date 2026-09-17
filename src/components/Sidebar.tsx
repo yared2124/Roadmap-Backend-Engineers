@@ -280,6 +280,20 @@ export function Sidebar({
             })}
           </div>
         </div>
+
+        {/* Footer: Built by Tech Yada */}
+        <div className="shrink-0 border-t border-zinc-200 p-3 dark:border-[#2C2A26] bg-stone-50/70 dark:bg-[#141312]">
+          <a
+            href="https://t.me/Techyada21"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-1.5 rounded-lg border border-zinc-200 bg-white py-1.5 px-3 font-mono text-xs font-semibold text-zinc-700 hover:border-sky-300 hover:text-sky-600 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#D5CFBF] dark:hover:border-sky-600 dark:hover:text-sky-400 transition-colors shadow-2xs"
+            title="Join Tech Yada on Telegram"
+          >
+            <span>Built by <strong className="font-bold text-zinc-950 dark:text-[#F3EFE6]">Tech Yada</strong></span>
+            <span className="text-sky-600 dark:text-sky-400 font-medium">(@Techyada21)</span>
+          </a>
+        </div>
       </aside>
     </>
   );

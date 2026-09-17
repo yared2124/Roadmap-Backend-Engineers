@@ -53,29 +53,20 @@ export function Header({
 
           <div className="flex items-center gap-2.5">
             <div>
-              <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center gap-2">
                 {onBackToPortfolio ? (
                   <button
                     onClick={onBackToPortfolio}
-                    className="font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6] text-base sm:text-lg hover:opacity-85 transition-opacity text-left"
+                    className="font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6] text-base sm:text-lg hover:opacity-85 transition-opacity text-left whitespace-nowrap"
                     title="Return to Home"
                   >
                     Backend Engineer Hub
                   </button>
                 ) : (
-                  <span className="font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6] text-base sm:text-lg">
+                  <span className="font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6] text-base sm:text-lg whitespace-nowrap">
                     Backend Engineer Hub
                   </span>
                 )}
-                <a
-                  href="https://t.me/Techyada21"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 rounded-md border border-zinc-200/90 bg-stone-50/80 px-2 py-0.5 text-[11px] font-mono font-medium text-zinc-600 hover:text-sky-600 hover:border-sky-300 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#A19B8F] dark:hover:text-sky-400 dark:hover:border-sky-600 transition-colors shadow-2xs"
-                  title="Built by Tech Yada (Telegram Channel)"
-                >
-                  Built by Tech Yada
-                </a>
                 {onBackToPortfolio && (
                   <button
                     onClick={onBackToPortfolio}

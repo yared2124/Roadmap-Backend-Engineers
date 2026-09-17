@@ -20,6 +20,8 @@ import {
   FileText,
   GitBranch,
   Flame,
+  Menu,
+  X,
 } from "lucide-react";
 import { ROADMAP_PHASES } from "../data/roadmap";
 import { CAPSTONE_PROJECTS } from "../data/capstones";
@@ -45,20 +47,27 @@ export function PortfolioHome({
   totalTopics,
 }: PortfolioHomeProps) {
   const [activeTab, setActiveTab] = useState<PortfolioTab>("home");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    if (activeTab === "home" || activeTab === "oral-exams") {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    const handleResize = () => {
+      if (typeof window !== "undefined" && window.innerWidth >= 1024 && (activeTab === "home" || activeTab === "oral-exams")) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "auto";
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
     return () => {
+      window.removeEventListener("resize", handleResize);
       document.body.style.overflow = "auto";
     };
   }, [activeTab]);
 
   const handleSwitchTab = (tab: PortfolioTab) => {
     setActiveTab(tab);
+    setIsMobileMenuOpen(false);
     if (typeof window !== "undefined") {
       window.scrollTo({ top: 0, behavior: "instant" });
     }
@@ -67,35 +76,27 @@ export function PortfolioHome({
   return (
     <div
       className={`w-full bg-white text-zinc-900 dark:bg-[#141312] dark:text-[#F3EFE6] selection:bg-zinc-900 selection:text-white dark:selection:bg-[#F3EFE6] dark:selection:text-[#141312] font-sans transition-colors duration-200 flex flex-col justify-between ${
-        activeTab === "home" || activeTab === "oral-exams" ? "h-screen max-h-screen overflow-hidden" : "min-h-screen"
+        activeTab === "home" || activeTab === "oral-exams" ? "min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden" : "min-h-screen"
       }`}
     >
       {/* 1. Global Navigation Header */}
       <header className="sticky top-0 z-40 w-full border-b border-zinc-200/80 bg-white/90 backdrop-blur-md dark:border-[#2C2A26] dark:bg-[#141312]/90">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-3 sm:px-6 lg:px-8">
           {/* Brand Title: Clicking returns to Home */}
-          <div className="flex items-center gap-2.5">
-            <button
-              onClick={() => handleSwitchTab("home")}
-              className="flex items-center gap-3 text-left group focus:outline-hidden"
-            >
-              <span className="font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6] text-lg sm:text-xl group-hover:opacity-85 transition-opacity">
-                Backend Engineer Hub
-              </span>
-            </button>
-            <a
-              href="https://t.me/Techyada21"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 rounded-md border border-zinc-200/90 bg-stone-50/80 px-2 py-0.5 text-[11px] font-mono font-medium text-zinc-600 hover:text-sky-600 hover:border-sky-300 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#A19B8F] dark:hover:text-sky-400 dark:hover:border-sky-600 transition-colors shadow-2xs"
-              title="Built by Tech Yada (Telegram Channel)"
-            >
-              Built by Tech Yada
-            </a>
-          </div>
+          <button
+            onClick={() => {
+              handleSwitchTab("home");
+              setIsMobileMenuOpen(false);
+            }}
+            className="flex items-center gap-2 text-left group focus:outline-hidden shrink-0"
+          >
+            <span className="font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6] text-base sm:text-lg lg:text-xl group-hover:opacity-85 transition-opacity whitespace-nowrap">
+              Backend Engineer Hub
+            </span>
+          </button>
 
-          {/* Center Navigation Links: Switching tabs on click instead of scrolling down */}
-          <nav className="flex items-center gap-3 sm:gap-6 text-xs sm:text-sm font-semibold text-zinc-600 dark:text-[#A19B8F] overflow-x-auto">
+          {/* Desktop Navigation Links */}
+          <nav className="hidden md:flex items-center gap-3 lg:gap-6 text-xs sm:text-sm font-semibold text-zinc-600 dark:text-[#A19B8F]">
             <button
               onClick={() => handleSwitchTab("docs")}
               className={`transition-colors py-1 whitespace-nowrap ${
@@ -138,8 +139,8 @@ export function PortfolioHome({
             </button>
           </nav>
 
-          {/* Right Action: Theme Toggle & Launch Roadmap */}
-          <div className="flex items-center gap-3 shrink-0">
+          {/* Right Action: Theme Toggle, Roadmap CTA & Mobile Hamburger */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {/* Theme Toggle */}
             <button
               onClick={onToggleTheme}
@@ -152,13 +153,106 @@ export function PortfolioHome({
             {/* Top Right "Roadmap" Action Button */}
             <button
               onClick={() => onEnterRoadmap()}
-              className="group flex items-center gap-2 rounded-xl bg-zinc-950 px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-zinc-800 dark:bg-[#F3EFE6] dark:text-[#141312] dark:hover:bg-[#EDE8DF] transition-all active:scale-[0.98]"
+              className="group flex items-center gap-1.5 sm:gap-2 rounded-xl bg-zinc-950 px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-zinc-800 dark:bg-[#F3EFE6] dark:text-[#141312] dark:hover:bg-[#EDE8DF] transition-all active:scale-[0.98] whitespace-nowrap"
             >
               <span>Roadmap</span>
               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
             </button>
+
+            {/* Mobile Menu Toggle Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 text-zinc-700 hover:bg-zinc-100 dark:border-[#2C2A26] dark:text-[#EDE8DF] dark:hover:bg-[#1F1E1B] transition-colors md:hidden"
+              aria-label="Toggle Navigation Menu"
+            >
+              {isMobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Dropdown Navigation Menu */}
+        {isMobileMenuOpen && (
+          <div className="border-t border-zinc-200 bg-white px-4 py-3 dark:border-[#2C2A26] dark:bg-[#141312] shadow-xl md:hidden">
+            <nav className="flex flex-col gap-1">
+              <button
+                onClick={() => {
+                  handleSwitchTab("home");
+                  setIsMobileMenuOpen(false);
+                }}
+                className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+                  activeTab === "home"
+                    ? "bg-zinc-100 text-zinc-950 dark:bg-[#1F1E1B] dark:text-[#F3EFE6]"
+                    : "text-zinc-600 hover:bg-zinc-50 dark:text-[#A19B8F] dark:hover:bg-[#1A1917]"
+                }`}
+              >
+                Home
+              </button>
+              <button
+                onClick={() => {
+                  handleSwitchTab("docs");
+                  setIsMobileMenuOpen(false);
+                }}
+                className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+                  activeTab === "docs" || activeTab === "how-it-works"
+                    ? "bg-zinc-100 text-zinc-950 dark:bg-[#1F1E1B] dark:text-[#F3EFE6]"
+                    : "text-zinc-600 hover:bg-zinc-50 dark:text-[#A19B8F] dark:hover:bg-[#1A1917]"
+                }`}
+              >
+                Docs
+              </button>
+              <button
+                onClick={() => {
+                  handleSwitchTab("curriculum");
+                  setIsMobileMenuOpen(false);
+                }}
+                className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+                  activeTab === "curriculum"
+                    ? "bg-zinc-100 text-zinc-950 dark:bg-[#1F1E1B] dark:text-[#F3EFE6]"
+                    : "text-zinc-600 hover:bg-zinc-50 dark:text-[#A19B8F] dark:hover:bg-[#1A1917]"
+                }`}
+              >
+                Curriculum
+              </button>
+              <button
+                onClick={() => {
+                  handleSwitchTab("oral-exams");
+                  setIsMobileMenuOpen(false);
+                }}
+                className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+                  activeTab === "oral-exams"
+                    ? "bg-zinc-100 text-zinc-950 dark:bg-[#1F1E1B] dark:text-[#F3EFE6]"
+                    : "text-zinc-600 hover:bg-zinc-50 dark:text-[#A19B8F] dark:hover:bg-[#1A1917]"
+                }`}
+              >
+                Oral Exams
+              </button>
+              <button
+                onClick={() => {
+                  handleSwitchTab("capstones");
+                  setIsMobileMenuOpen(false);
+                }}
+                className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+                  activeTab === "capstones"
+                    ? "bg-zinc-100 text-zinc-950 dark:bg-[#1F1E1B] dark:text-[#F3EFE6]"
+                    : "text-zinc-600 hover:bg-zinc-50 dark:text-[#A19B8F] dark:hover:bg-[#1A1917]"
+                }`}
+              >
+                Capstones
+              </button>
+            </nav>
+            <div className="mt-3 pt-3 border-t border-zinc-100 dark:border-[#2C2A26]">
+              <a
+                href="https://t.me/Techyada21"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-stone-50 py-2 px-3 text-xs font-mono font-medium text-zinc-700 hover:text-sky-600 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#D5CFBF] dark:hover:text-sky-400 transition-colors"
+              >
+                <span>Built by <strong className="font-bold text-zinc-950 dark:text-[#F3EFE6]">Tech Yada</strong></span>
+                <span className="text-sky-600 dark:text-sky-400 font-bold">(@Techyada21)</span>
+              </a>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* ========================================================= */}
@@ -1241,6 +1335,24 @@ git push -u origin main`}
         </main>
       )}
 
+      {/* Persistent Global Footer: Placed cleanly at the bottom */}
+      <footer className="w-full shrink-0 border-t border-zinc-200/80 bg-stone-50/70 py-3.5 px-4 sm:px-6 dark:border-[#2C2A26] dark:bg-[#11100F] z-20">
+        <div className="mx-auto flex max-w-7xl items-center justify-between flex-wrap gap-2 text-xs">
+          <p className="text-zinc-500 dark:text-[#8E887B] font-mono text-[11px] sm:text-xs">
+            Backend Engineering Master Roadmap
+          </p>
+          <a
+            href="https://t.me/Techyada21"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-mono text-xs font-semibold text-zinc-700 hover:border-sky-300 hover:text-sky-600 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#D5CFBF] dark:hover:border-sky-600 dark:hover:text-sky-400 transition-colors shadow-2xs"
+            title="Join Tech Yada on Telegram"
+          >
+            <span>Built by <strong className="font-bold text-zinc-900 dark:text-[#F3EFE6]">Tech Yada</strong></span>
+            <span className="text-sky-600 dark:text-sky-400 font-medium">(@Techyada21)</span>
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }
