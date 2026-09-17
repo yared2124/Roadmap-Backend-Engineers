@@ -326,18 +326,23 @@ export function PortfolioHome({
       {/* ========================================================= */}
       {/* VIEW 2: DOCS (STUDENT ONBOARDING & STUDY METHODOLOGY)     */}
       {/* ========================================================= */}
-      {(activeTab === "docs" || activeTab === "how-it-works") && (
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+      {(activeTab === "docs" || activeTab === "how-it-works" || activeTab === "home") && (
+        <section
+          id="docs"
+          className={`${activeTab === "home" ? "md:hidden border-t border-zinc-200/80 dark:border-[#2C2A26]" : ""} flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16`}
+        >
           {/* Breadcrumb / Back to Home */}
-          <div className="mb-8">
-            <button
-              onClick={() => handleSwitchTab("home")}
-              className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-zinc-500 hover:text-zinc-950 dark:text-[#A19B8F] dark:hover:text-[#F3EFE6] transition-colors"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" />
-              <span>Back to Home</span>
-            </button>
-          </div>
+          {activeTab !== "home" && (
+            <div className="mb-8">
+              <button
+                onClick={() => handleSwitchTab("home")}
+                className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-zinc-500 hover:text-zinc-950 dark:text-[#A19B8F] dark:hover:text-[#F3EFE6] transition-colors"
+              >
+                <ArrowLeft className="h-3.5 w-3.5" />
+                <span>Back to Home</span>
+              </button>
+            </div>
+          )}
 
           {/* Header Banner */}
           <div className="text-center flex flex-col items-center max-w-3xl mx-auto space-y-4 pb-10 border-b border-zinc-200/80 dark:border-[#2C2A26]">
@@ -831,24 +836,29 @@ git push -u origin main`}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </button>
           </div>
-        </main>
+        </section>
       )}
 
       {/* ========================================================= */}
       {/* VIEW 3: CURRICULUM (THE 7 PHASES & MODULES)               */}
       {/* ========================================================= */}
-      {activeTab === "curriculum" && (
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+      {(activeTab === "curriculum" || activeTab === "home") && (
+        <section
+          id="curriculum"
+          className={`${activeTab === "home" ? "md:hidden border-t border-zinc-200/80 dark:border-[#2C2A26]" : ""} flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16`}
+        >
           {/* Breadcrumb / Back to Home */}
-          <div className="mb-8">
-            <button
-              onClick={() => handleSwitchTab("home")}
-              className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-zinc-500 hover:text-zinc-950 dark:text-[#A19B8F] dark:hover:text-[#F3EFE6] transition-colors"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" />
-              <span>Back to Home</span>
-            </button>
-          </div>
+          {activeTab !== "home" && (
+            <div className="mb-8">
+              <button
+                onClick={() => handleSwitchTab("home")}
+                className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-zinc-500 hover:text-zinc-950 dark:text-[#A19B8F] dark:hover:text-[#F3EFE6] transition-colors"
+              >
+                <ArrowLeft className="h-3.5 w-3.5" />
+                <span>Back to Home</span>
+              </button>
+            </div>
+          )}
 
           {/* Header */}
           <div className="text-center flex flex-col items-center max-w-3xl mx-auto space-y-4 pb-10 border-b border-zinc-200/80 dark:border-[#2C2A26]">
@@ -995,24 +1005,29 @@ git push -u origin main`}
               );
             })}
           </div>
-        </main>
+        </section>
       )}
 
       {/* ========================================================= */}
       {/* VIEW 4: ORAL EXAMS (WHITEBOARD & INTERVIEW SIMULATOR)     */}
       {/* ========================================================= */}
-      {activeTab === "oral-exams" && (
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 flex flex-col justify-center overflow-y-auto no-scrollbar">
+      {(activeTab === "oral-exams" || activeTab === "home") && (
+        <section
+          id="oral-exams"
+          className={`${activeTab === "home" ? "md:hidden border-t border-zinc-200/80 dark:border-[#2C2A26]" : ""} flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 flex flex-col justify-center`}
+        >
           {/* Breadcrumb / Back to Home */}
-          <div className="mb-4 sm:mb-6">
-            <button
-              onClick={() => handleSwitchTab("home")}
-              className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-zinc-500 hover:text-zinc-950 dark:text-[#A19B8F] dark:hover:text-[#F3EFE6] transition-colors"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" />
-              <span>Back to Home</span>
-            </button>
-          </div>
+          {activeTab !== "home" && (
+            <div className="mb-4 sm:mb-6">
+              <button
+                onClick={() => handleSwitchTab("home")}
+                className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-zinc-500 hover:text-zinc-950 dark:text-[#A19B8F] dark:hover:text-[#F3EFE6] transition-colors"
+              >
+                <ArrowLeft className="h-3.5 w-3.5" />
+                <span>Back to Home</span>
+              </button>
+            </div>
+          )}
 
           <div className="grid gap-8 lg:gap-12 lg:grid-cols-12 items-center">
             {/* Left Content */}
@@ -1123,24 +1138,29 @@ git push -u origin main`}
               </div>
             </div>
           </div>
-        </main>
+        </section>
       )}
 
       {/* ========================================================= */}
       {/* VIEW 5: CAPSTONES (7 PRODUCTION PORTFOLIO PROJECTS)       */}
       {/* ========================================================= */}
-      {activeTab === "capstones" && (
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+      {(activeTab === "capstones" || activeTab === "home") && (
+        <section
+          id="capstones"
+          className={`${activeTab === "home" ? "md:hidden border-t border-zinc-200/80 dark:border-[#2C2A26]" : ""} flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16`}
+        >
           {/* Breadcrumb / Back to Home */}
-          <div className="mb-8">
-            <button
-              onClick={() => handleSwitchTab("home")}
-              className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-zinc-500 hover:text-zinc-950 dark:text-[#A19B8F] dark:hover:text-[#F3EFE6] transition-colors"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" />
-              <span>Back to Home</span>
-            </button>
-          </div>
+          {activeTab !== "home" && (
+            <div className="mb-8">
+              <button
+                onClick={() => handleSwitchTab("home")}
+                className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-zinc-500 hover:text-zinc-950 dark:text-[#A19B8F] dark:hover:text-[#F3EFE6] transition-colors"
+              >
+                <ArrowLeft className="h-3.5 w-3.5" />
+                <span>Back to Home</span>
+              </button>
+            </div>
+          )}
 
           <div className="text-center flex flex-col items-center max-w-3xl mx-auto space-y-4 pb-10 border-b border-zinc-200/80 dark:border-[#2C2A26]">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight text-zinc-950 dark:text-[#F3EFE6]">
@@ -1311,14 +1331,14 @@ git push -u origin main`}
               </div>
             </div>
           )}
-        </main>
+        </section>
       )}
 
       {/* Persistent Global Footer: Placed cleanly at the bottom */}
       <footer className="w-full shrink-0 border-t border-zinc-200/80 bg-stone-50/70 py-3 px-4 sm:px-6 dark:border-[#2C2A26] dark:bg-[#11100F] z-20">
         <div className="mx-auto flex max-w-7xl items-center justify-center sm:justify-between text-xs">
           <p className="text-zinc-500 dark:text-[#8E887B] font-mono text-[11px] sm:text-xs text-center sm:text-left">
-            Backend Engineering Master Roadmap
+            Roadmap Backend Engineers
           </p>
           <a
             href="https://t.me/Techyada21"
