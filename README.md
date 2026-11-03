@@ -43,7 +43,8 @@ Most developer roadmaps fail because they are lists of buzzwords without cogniti
 
 ## 🌟 Key Features
 
-- **Zero-Barrier Instant Access**: No login, no sign-up paywall, and no tracking cookies. All progress is saved automatically to client-side `localStorage`.
+- **Zero-Barrier Instant Access & Privacy**: No login, no sign-up paywall, and no tracking cookies. All progress and notes are saved exclusively in your browser's `localStorage`. We use cookieless, anonymized Vercel Web Analytics strictly for aggregate traffic measurements without storing personal identifiers or tracking users across sites.
+- **Progress Checkpoint Backup & Restore**: One-click JSON export and import for seamless progress backups across devices and browsers without risk of data loss.
 - **Command Palette (`Ctrl+K` / `⌘K`)**: Lightning-fast fuzzy search across all 31 modules, 7 capstones, recommended books, questions, and quick actions.
 - **Multi-Language Code Switcher**: Toggle seamlessly between Go, TypeScript, and Python with persistent language preference.
 - **Live Mock Interview Timer**: Timed oral assessment simulator with Staff Engineer rubric breakdowns and scoring.
@@ -196,10 +197,16 @@ npm run test:e2e
 npm run test:e2e:ui
 ```
 
-### 2. Run Comprehensive Production Audit
+### 2. Run Comprehensive Production Audit & Unit Tests
 ```bash
+# Runs full test suite (production integrity audit + progress schema unit tests)
+npm test
+
 # Audits 311 data integrity constraints, SEO assets, and code samples
 npm run test:prod
+
+# Validates progress schema sanitization, backward compatibility & export/import
+npm run test:progress
 ```
 
 ### 3. Verify Video & Literature Availability

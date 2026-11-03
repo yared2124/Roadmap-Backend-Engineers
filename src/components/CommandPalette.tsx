@@ -37,6 +37,8 @@ interface CommandPaletteProps {
   onOpenGuide: () => void;
   onBackToPortfolio?: () => void;
   onExportAllNotes: () => void;
+  onExportProgress?: () => void;
+  onImportProgress?: () => void;
   onSelectNext: () => void;
   onSelectPrev: () => void;
   isDark: boolean;
@@ -54,6 +56,8 @@ export function CommandPalette({
   onOpenGuide,
   onBackToPortfolio,
   onExportAllNotes,
+  onExportProgress,
+  onImportProgress,
   onSelectNext,
   onSelectPrev,
   isDark,
@@ -133,6 +137,36 @@ export function CommandPalette({
         onClose();
       },
     });
+
+    if (onExportProgress) {
+      results.push({
+        id: "cmd-export-progress",
+        type: "command",
+        title: "Export Learning Progress (.json)",
+        subtitle: "Download full learning checkpoint backup with completion status & notes",
+        badge: "Backup",
+        badgeColor: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300",
+        onSelect: () => {
+          onExportProgress();
+          onClose();
+        },
+      });
+    }
+
+    if (onImportProgress) {
+      results.push({
+        id: "cmd-import-progress",
+        type: "command",
+        title: "Import Learning Progress (.json)",
+        subtitle: "Restore previously exported progress checkpoint from JSON file",
+        badge: "Restore",
+        badgeColor: "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300",
+        onSelect: () => {
+          onClose();
+          setTimeout(onImportProgress, 50);
+        },
+      });
+    }
 
     results.push({
       id: "cmd-shortcuts",

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { ROADMAP_TOPICS } from "../data/roadmap";
 import { CAPSTONE_PROJECTS } from "../data/capstones";
 import { RoadmapTopic } from "../types/roadmap";
@@ -41,6 +41,8 @@ export default function Home() {
     saveNote,
     notes,
     getPhaseProgress,
+    exportProgress,
+    importProgress,
   } = useProgress();
 
   // Dark Mode Theme synchronization
@@ -308,6 +310,35 @@ export default function Home() {
     URL.revokeObjectURL(url);
   }, [notes]);
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleTriggerImport = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
+
+  const handleFileChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const content = event.target?.result;
+        if (typeof content === "string") {
+          const res = importProgress(content);
+          if (res.success) {
+            alert("✅ Progress checkpoint restored successfully!");
+          } else {
+            alert(`⚠️ Failed to import progress: ${res.error}`);
+          }
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = "";
+    },
+    [importProgress]
+  );
+
   if (viewMode === "portfolio") {
     return (
       <PortfolioHome
@@ -421,11 +452,23 @@ export default function Home() {
         onOpenGuide={handleOpenDocs}
         onBackToPortfolio={handleBackToPortfolio}
         onExportAllNotes={handleExportAllNotes}
+        onExportProgress={exportProgress}
+        onImportProgress={handleTriggerImport}
         onSelectNext={handleSelectNext}
         onSelectPrev={handleSelectPrev}
         isDark={isDark}
         isTopicCompleted={isTopicCompleted}
         isCapstoneCompleted={isCapstoneCompleted}
+      />
+
+      {/* Hidden file input for progress import */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        accept=".json,application/json"
+        onChange={handleFileChange}
+        className="hidden"
+        aria-hidden="true"
       />
 
       {/* Keyboard Shortcuts Cheat-sheet Modal (?) */}

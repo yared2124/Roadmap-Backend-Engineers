@@ -7,8 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "clean": "rm -rf .next test-results playwright-report tsconfig.tsbuildinfo",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
+    "test": "npm run test:prod && npm run test:progress",
+    "test:progress": "node scripts/test-progress.js",
     "test:prod": "node scripts/verify-production.js",
     "test:videos": "node scripts/verify-videos.js",
     "test:books": "node scripts/verify-books.js"
