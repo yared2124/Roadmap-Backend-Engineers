@@ -165,15 +165,15 @@ export function RoadmapGuideModal({
                   <span className="text-xs font-semibold text-zinc-500 dark:text-gray-400">Architectural Phases</span>
                 </div>
                 <div className="p-4 rounded-xl border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-center">
-                  <span className="block text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white font-mono">31</span>
+                  <span className="block text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white font-mono">37</span>
                   <span className="text-xs font-semibold text-zinc-500 dark:text-gray-400">Core Modules</span>
                 </div>
                 <div className="p-4 rounded-xl border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-center">
-                  <span className="block text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white font-mono">51</span>
-                  <span className="text-xs font-semibold text-zinc-500 dark:text-gray-400">Videos (56+ Hrs)</span>
+                  <span className="block text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white font-mono">57</span>
+                  <span className="text-xs font-semibold text-zinc-500 dark:text-gray-400">Videos (62+ Hrs)</span>
                 </div>
                 <div className="p-4 rounded-xl border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-center">
-                  <span className="block text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white font-mono">93</span>
+                  <span className="block text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white font-mono">111</span>
                   <span className="text-xs font-semibold text-zinc-500 dark:text-gray-400">Mock Interview Qs</span>
                 </div>
                 <div className="p-4 rounded-xl border border-zinc-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-center">

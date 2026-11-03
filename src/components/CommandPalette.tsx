@@ -434,7 +434,7 @@ export function CommandPalette({
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search 31 topics, capstones, books, self-check questions, or actions..."
+            placeholder={`Search ${ROADMAP_TOPICS.length} topics, capstones, books, self-check questions, or actions...`}
             className="w-full bg-transparent text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none dark:text-gray-100 dark:placeholder:text-zinc-500"
           />
           {query ? (

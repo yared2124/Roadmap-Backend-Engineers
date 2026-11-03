@@ -715,14 +715,14 @@ git push -u origin main`}
                   className="inline-flex items-center gap-2 rounded-xl bg-purple-700 hover:bg-purple-800 dark:bg-purple-600 dark:hover:bg-purple-500 text-white px-4 py-2.5 text-xs font-bold transition-all shadow-xs active:scale-95"
                 >
                   <Mic className="h-3.5 w-3.5" />
-                  <span>Launch Simulator (93 Prompts)</span>
+                  <span>Launch Simulator (111 Prompts)</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </button>
               </div>
             </div>
 
             <p className="text-sm sm:text-[15px] text-zinc-700 dark:text-[#DDD7CD] leading-relaxed font-serif">
-              In senior engineering loops at high-bar tech companies, coding syntax is only 30% of the evaluation. Over 70% of hiring committee decisions hinge on your ability to <strong>defend architectural decisions out loud under realistic time pressure</strong>. For every single one of the 31 topics, we have integrated an interactive <strong>Technical Mock Interview Simulator</strong> equipped with 3 authentic staff-level prompts (93 total), a real-time 75-second countdown timer, and benchmark grading rubrics.
+              In senior engineering loops at high-bar tech companies, coding syntax is only 30% of the evaluation. Over 70% of hiring committee decisions hinge on your ability to <strong>defend architectural decisions out loud under realistic time pressure</strong>. For every single one of the 37 topics, we have integrated an interactive <strong>Technical Mock Interview Simulator</strong> equipped with 3 authentic staff-level prompts (111 total), a real-time 75-second countdown timer, and benchmark grading rubrics.
             </p>
 
             <div className="grid gap-4 sm:grid-cols-3 pt-1">
@@ -918,7 +918,7 @@ git push -u origin main`}
             </div>
             <div className="rounded-2xl border border-zinc-200/80 bg-stone-50/60 dark:border-[#2C2A26] dark:bg-[#1A1917] p-4 text-center shadow-2xs">
               <span className="block font-mono text-2xl sm:text-3xl font-bold text-zinc-950 dark:text-[#F3EFE6]">
-                93
+                111
               </span>
               <span className="text-[11px] sm:text-xs font-serif font-medium text-zinc-600 dark:text-[#A19B8F]">
                 Mock Interview Qs

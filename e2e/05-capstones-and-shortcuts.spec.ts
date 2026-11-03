@@ -59,7 +59,7 @@ test.describe("Portfolio Capstones & Global Keyboard Shortcuts", () => {
     await searchTrigger.click();
 
     // Command palette should open
-    const cmdInput = page.getByPlaceholder(/Search 31 topics, capstones/i);
+    const cmdInput = page.getByPlaceholder(/Search \d+ topics, capstones/i);
     await expect(cmdInput).toBeVisible();
 
     // Type a query

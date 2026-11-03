@@ -32,7 +32,7 @@ test.describe("Roadmap Workspace & Navigation Flow", () => {
     await searchTrigger.click();
 
     // In command palette, input search term
-    const searchInput = page.getByPlaceholder(/Search 31 topics, capstones/i);
+    const searchInput = page.getByPlaceholder(/Search \d+ topics, capstones/i);
     await expect(searchInput).toBeVisible();
     await searchInput.fill("Database Basics");
 

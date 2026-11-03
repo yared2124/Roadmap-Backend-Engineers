@@ -62,8 +62,10 @@ test.describe("Topic Deep Dive & Interactive Features", () => {
     // Verify button text updates to completed state
     await expect(page.getByRole("button", { name: /Completed|Mark Incomplete/i }).first()).toBeVisible();
 
-    // Verify progress updated in localStorage (backend_roadmap_progress_v1)
-    const storedProgress = await page.evaluate(() => localStorage.getItem("backend_roadmap_progress_v1"));
+    // Verify progress updated in localStorage (backend_roadmap_progress_v2)
+    const storedProgress = await page.evaluate(
+      () => localStorage.getItem("backend_roadmap_progress_v2") || localStorage.getItem("backend_roadmap_progress_v1")
+    );
     expect(storedProgress).not.toBeNull();
     const parsed = JSON.parse(storedProgress || "{}");
     expect(parsed.completedTopics).toContain("backend-first-principles");
