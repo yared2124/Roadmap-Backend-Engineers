@@ -37,6 +37,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ─── Global Serif for all paragraph / description text ─── */
+p,
+li,
+blockquote,
+figcaption,
+.description,
+.lead {
+  font-family: "Newsreader", "Lora", "Playfair Display", Georgia, Cambria, "Times New Roman", serif;
+  font-feature-settings: "kern", "liga", "onum";
+}
+
 /* Custom minimal sleek scrollbar */
 ::-webkit-scrollbar {
   width: 7px;

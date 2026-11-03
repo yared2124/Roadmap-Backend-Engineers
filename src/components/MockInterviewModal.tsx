@@ -153,7 +153,7 @@ export function MockInterviewModal({
   const finalScore = calculateFinalScore();
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 sm:p-6 overflow-y-auto animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 sm:p-6 overflow-y-hidden animate-in fade-in duration-200">
       <div className="relative w-full max-w-3xl rounded-3xl border border-zinc-200 bg-white p-6 sm:p-8 dark:border-gray-700 dark:bg-gray-800 shadow-2xl space-y-6">
         {/* Top Header Bar */}
         <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-900 pb-4">

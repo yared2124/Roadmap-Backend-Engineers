@@ -57,6 +57,18 @@ export function PortfolioHome({
     }
   }, [initialTab]);
 
+  // Lock body scroll when on oral-exams tab to hide the window scrollbar
+  useEffect(() => {
+    if (activeTab === "oral-exams") {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [activeTab]);
+
   const handleSwitchTab = (tab: PortfolioTab) => {
     setActiveTab(tab);
     setIsMobileMenuOpen(false);
@@ -433,12 +445,12 @@ export function PortfolioHome({
                 <h3 className="font-serif font-bold text-lg text-zinc-950 dark:text-[#F3EFE6]">
                   1. Watch Architectural Masterclasses First
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed font-sans">
+                <p className="text-xs sm:text-sm font-serif text-zinc-600 dark:text-[#DDD7CD] leading-relaxed">
                   Start every topic by watching the curated video masterclasses (51 high-impact videos totaling 56+ hours across the roadmap). Industry authorities (ByteByteGo, Hussein Nasser, TechWorld with Nana) break down distributed system topologies, packet journeys, and failure modes visually to build your mental model first.
                 </p>
-                <div className="rounded-xl bg-stone-100 dark:bg-[#141312] p-3 text-xs text-zinc-700 dark:text-[#DDD7CD] space-y-1.5 border border-zinc-200/60 dark:border-[#262420]">
+                <div className="rounded-xl bg-stone-100 dark:bg-[#141312] p-4 text-xs sm:text-sm font-serif text-zinc-700 dark:text-[#DDD7CD] space-y-2 border">
                   <p className="font-semibold text-zinc-900 dark:text-[#F3EFE6]">What to do:</p>
-                  <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-[#A19B8F]">
+                  <ul className="list-disc pl-5 space-y-1.5 leading-relaxed text-zinc-600 dark:text-[#DDD7CD]">
                     <li>Watch the Primary Masterclass with active focus</li>
                     <li>Switch to the Secondary Video for deep-dive nuances</li>
                     <li>Study wire protocol flowcharts & packet sequences visually</li>
@@ -462,12 +474,12 @@ export function PortfolioHome({
                 <h3 className="font-serif font-bold text-lg text-zinc-950 dark:text-[#F3EFE6]">
                   2. Reinforce & Deepen with Free Canonical Books
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed font-sans">
+                <p className="text-xs sm:text-sm font-serif text-zinc-600 dark:text-[#DDD7CD] leading-relaxed">
                   Now that you understand the visual architecture, solidify and deepen your knowledge by reading the literature. Each topic links directly to 100% free canonical texts (Martin Fowler, RFCs, Google SRE, Use The Index Luke) with zero paywalls.
                 </p>
-                <div className="rounded-xl bg-stone-100 dark:bg-[#141312] p-3 text-xs text-zinc-700 dark:text-[#DDD7CD] space-y-1.5 border border-zinc-200/60 dark:border-[#262420]">
+                <div className="rounded-xl bg-stone-100 dark:bg-[#141312] p-4 text-xs sm:text-sm font-serif text-zinc-700 dark:text-[#DDD7CD] space-y-2 border">
                   <p className="font-semibold text-zinc-900 dark:text-[#F3EFE6]">What to do:</p>
-                  <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-[#A19B8F]">
+                  <ul className="list-disc pl-5 space-y-1.5 leading-relaxed text-zinc-600 dark:text-[#DDD7CD]">
                     <li>Read the hardware/wire layer tradeoffs and formulas</li>
                     <li>Open the 100% free canonical chapter deep-link</li>
                     <li>Solidify edge cases, latency numbers & failure rules</li>
@@ -491,12 +503,12 @@ export function PortfolioHome({
                 <h3 className="font-serif font-bold text-lg text-zinc-950 dark:text-[#F3EFE6]">
                   3. Run Timed Mock Technical Interview
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed font-sans">
+                <p className="text-xs sm:text-sm font-serif text-zinc-600 dark:text-[#DDD7CD] leading-relaxed">
                   Senior engineers are evaluated on spontaneous oral architectural defense. In every module, click &ldquo;Start Mock Interview&rdquo; to launch the 75s countdown simulator and verbally answer the WHAT, WHY, and HOW questions.
                 </p>
-                <div className="rounded-xl bg-stone-100 dark:bg-[#141312] p-3 text-xs text-zinc-700 dark:text-[#DDD7CD] space-y-1.5 border border-zinc-200/60 dark:border-[#262420]">
+                <div className="rounded-xl bg-stone-100 dark:bg-[#141312] p-4 text-xs sm:text-sm font-serif text-zinc-700 dark:text-[#DDD7CD] space-y-2 border">
                   <p className="font-semibold text-zinc-900 dark:text-[#F3EFE6]">What to do:</p>
-                  <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-[#A19B8F]">
+                  <ul className="list-disc pl-5 space-y-1.5 leading-relaxed text-zinc-600 dark:text-[#DDD7CD]">
                     <li>Click &ldquo;Start Mock Interview&rdquo; in the module header</li>
                     <li>Speak your defense aloud under the 75-second timer</li>
                     <li>Reveal the Staff Rubric & grade yourself (Mastered / Partial / Missed)</li>
@@ -520,12 +532,12 @@ export function PortfolioHome({
                 <h3 className="font-serif font-bold text-lg text-zinc-950 dark:text-[#F3EFE6]">
                   4. Code the Hands-On Engineering Ticket
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed font-sans">
+                <p className="text-xs sm:text-sm font-serif text-zinc-600 dark:text-[#DDD7CD] leading-relaxed">
                   Open the topic challenge ticket (e.g. TICKET-001) with realistic latency and concurrency criteria. Study the production blueprints in Go, TypeScript, Python, or Java and write the code.
                 </p>
-                <div className="rounded-xl bg-stone-100 dark:bg-[#141312] p-3 text-xs text-zinc-700 dark:text-[#DDD7CD] space-y-1.5 border border-zinc-200/60 dark:border-[#262420]">
+                <div className="rounded-xl bg-stone-100 dark:bg-[#141312] p-4 text-xs sm:text-sm font-serif text-zinc-700 dark:text-[#DDD7CD] space-y-2 border">
                   <p className="font-semibold text-zinc-900 dark:text-[#F3EFE6]">What to do:</p>
-                  <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-[#A19B8F]">
+                  <ul className="list-disc pl-5 space-y-1.5 leading-relaxed text-zinc-600 dark:text-[#DDD7CD]">
                     <li>Implement the ticket in your local development editor</li>
                     <li>Enforce zero-toy standards with real concurrency</li>
                     <li>Run performance benchmarks to verify latency SLOs</li>
@@ -549,12 +561,12 @@ export function PortfolioHome({
                 <h3 className="font-serif font-bold text-lg text-zinc-950 dark:text-[#F3EFE6]">
                   5. Take Notes & Export Your Handbook
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed font-sans">
+                <p className="text-xs sm:text-sm font-serif text-zinc-600 dark:text-[#DDD7CD] leading-relaxed">
                   Open the slide-over Notes Studio (press <kbd className="font-mono text-[10px] px-1 py-0.5 rounded bg-zinc-200 dark:bg-zinc-800">N</kbd>) to document your mental models, benchmark measurements, and gotchas.
                 </p>
-                <div className="rounded-xl bg-stone-100 dark:bg-[#141312] p-3 text-xs text-zinc-700 dark:text-[#DDD7CD] space-y-1.5 border border-zinc-200/60 dark:border-[#262420]">
+                <div className="rounded-xl bg-stone-100 dark:bg-[#141312] p-4 text-xs sm:text-sm font-serif text-zinc-700 dark:text-[#DDD7CD] space-y-2 border">
                   <p className="font-semibold text-zinc-900 dark:text-[#F3EFE6]">What to do:</p>
-                  <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-[#A19B8F]">
+                  <ul className="list-disc pl-5 space-y-1.5 leading-relaxed text-zinc-600 dark:text-[#DDD7CD]">
                     <li>Record tradeoffs, diagrams, and personal insights</li>
                     <li>Notes persist automatically in your local storage</li>
                     <li>Export your complete unified Markdown Handbook</li>
@@ -578,12 +590,12 @@ export function PortfolioHome({
                 <h3 className="font-serif font-bold text-lg text-zinc-950 dark:text-[#F3EFE6]">
                   6. Push Clean Code to Public GitHub
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-600 dark:text-[#A19B8F] leading-relaxed font-sans">
+                <p className="text-xs sm:text-sm font-serif text-zinc-600 dark:text-[#DDD7CD] leading-relaxed">
                   Build verifiable proof of work for employers. Structure your code into clean directories, write professional commit messages, and push your benchmarked projects to public GitHub repositories.
                 </p>
-                <div className="rounded-xl bg-stone-100 dark:bg-[#141312] p-3 text-xs text-zinc-700 dark:text-[#DDD7CD] space-y-1.5 border border-zinc-200/60 dark:border-[#262420]">
+                <div className="rounded-xl bg-stone-100 dark:bg-[#141312] p-4 text-xs sm:text-sm font-serif text-zinc-700 dark:text-[#DDD7CD] space-y-2 border">
                   <p className="font-semibold text-zinc-900 dark:text-[#F3EFE6]">What to do:</p>
-                  <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-[#A19B8F]">
+                  <ul className="list-disc pl-5 space-y-1.5 leading-relaxed text-zinc-600 dark:text-[#DDD7CD]">
                     <li>Commit clean implementations with Conventional Commits</li>
                     <li>Include READMEs with architecture & benchmark output</li>
                     <li>Link public repositories in your hiring portfolio</li>
@@ -1115,7 +1127,7 @@ git push -u origin main`}
                       <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                       <span>Staff Defense Rubric:</span>
                     </div>
-                    <p className="text-[11px] text-zinc-600 dark:text-[#A19B8F] leading-normal font-sans">
+                    <p className="text-xs text-zinc-600 dark:text-[#DDD7CD] leading-relaxed font-serif">
                       1. Identify Pre-Vote phase (Raft extension) where candidates query peers before incrementing term.<br />
                       2. Mention leader lease timers and heartbeats preventing disruptive re-elections.<br />
                       3. State quorum acknowledgment invariants (majority requirement of (N/2) + 1).
@@ -1316,23 +1328,6 @@ git push -u origin main`}
         </main>
       )}
 
-      {/* Persistent Global Footer: Placed cleanly at the bottom */}
-      <footer className="w-full shrink-0 border-t border-zinc-200/80 bg-stone-50/70 py-3 px-4 sm:px-6 dark:border-[#2C2A26] dark:bg-[#11100F] z-20">
-        <div className="mx-auto flex max-w-7xl items-center justify-center sm:justify-between text-xs">
-          <p className="text-zinc-500 dark:text-[#8E887B] font-mono text-[11px] sm:text-xs text-center sm:text-left">
-            Roadmap Backend Engineers
-          </p>
-          <a
-            href="https://t.me/Techyada21"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 font-mono text-xs font-semibold text-zinc-700 hover:border-sky-300 hover:text-sky-600 dark:border-[#2C2A26] dark:bg-[#1A1917] dark:text-[#D5CFBF] dark:hover:border-sky-600 dark:hover:text-sky-400 transition-colors shadow-2xs"
-            title="Join Tech Yada on Telegram"
-          >
-            <span>Built by <strong className="font-bold text-zinc-950 dark:text-[#F3EFE6]">Tech Yada</strong></span>
-          </a>
-        </div>
-      </footer>
     </div>
   );
 }
